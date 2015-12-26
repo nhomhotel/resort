@@ -1,76 +1,78 @@
 <?php
-	/**
-	* 
-	*/
-	class Upload_library
-	{
-		var $CI = '';
-		function __construct()
-		{
-			$this->CI = & get_instance();
-		}
 
-		function upload($upload_path = '', $file_name = ''){
+/**
+ * 
+ */
+class Upload_library {
 
-			$data = array();
-			if($_FILES[$file_name] !== NULL){
-				$config = $this->config($upload_path);
+    var $CI = '';
 
-				$this->CI->load->library('upload', $config);
+    function __construct() {
+        $this->CI = & get_instance();
+    }
 
-				if($this->CI->upload->do_upload($file_name)){
+    function upload($upload_path = '', $file_name = '') {
 
-					$data['data_upload'] = $this->CI->upload->data();
-				}else{
+        $data = array();
+        if ($_FILES[$file_name] !== NULL) {
+            $config = $this->config($upload_path);
 
-					$data['error_upload'] = $this->CI->upload->display_errors();
-				}
-			}
-			return $data;
-		}
+            $this->CI->load->library('upload', $config);
 
-		function upload_files($upload_path = '', $file_name = ''){
+            if ($this->CI->upload->do_upload($file_name)) {
 
-			$data = array();
-			if($_FILES[$file_name] !== NULL){
+                $data['data_upload'] = $this->CI->upload->data();
+            } else {
 
-				$config = $this->config($upload_path);
-				$file = $_FILES[$file_name];
-				$count = count($file['name']);
-				for($i = 0; $i <= $count-1; $i++){
+                $data['error_upload'] = $this->CI->upload->display_errors();
+            }
+        }
+        return $data;
+    }
 
-					$_FILES['userfile']['name'] = $file['name'][$i];
-					$_FILES['userfile']['type'] = $file['type'][$i];
-					$_FILES['userfile']['tmp_name'] = $file['tmp_name'][$i];
-					$_FILES['userfile']['error'] = $file['error'][$i];
-					$_FILES['userfile']['size'] = $file['size'][$i];
+    function upload_files($upload_path = '', $file_name = '') {
 
-					$this->CI->load->library('upload', $config);
-					if($this->CI->upload->do_upload()){
+        $data = array();
+        if ($_FILES[$file_name] !== NULL) {
 
-						$dataImage = $this->CI->upload->data();
-						$data[] = $upload_path.'/'.$dataImage['file_name'];
-					}
-					// else{
-					// 	if($this->CI->upload->display_errors()){
-					// 		echo "Upload Fails";
-					// 		return false;
-					// 	}
-					// }
-				}
-			}
-			return $data;
-		}
+            $config = $this->config($upload_path);
+            $file = $_FILES[$file_name];
+            $count = count($file['name']);
+            for ($i = 0; $i <= $count - 1; $i++) {
 
-		function config($upload_path = ''){
+                $_FILES['userfile']['name'] = $file['name'][$i];
+                $_FILES['userfile']['type'] = $file['type'][$i];
+                $_FILES['userfile']['tmp_name'] = $file['tmp_name'][$i];
+                $_FILES['userfile']['error'] = $file['error'][$i];
+                $_FILES['userfile']['size'] = $file['size'][$i];
 
-			$config = array();
-			$config['upload_path'] = $upload_path;
-			$config['allowed_types'] = 'gif|jpg|png|jpeg';
-			$config['max_size']	= '4000';
-			$config['max_width']  = '2000';
-			$config['max_height']  = '2000';
-			return $config;
-		}
-	}
+                $this->CI->load->library('upload', $config);
+                if ($this->CI->upload->do_upload()) {
+
+                    $dataImage = $this->CI->upload->data();
+                    $data[] = $upload_path . '/' . $dataImage['file_name'];
+                } else {
+                    if ($this->CI->upload->display_errors()) {
+                        echo $this->CI->upload->display_errors();
+                        return false;
+                    }
+                }
+            }
+        }
+        return $data;
+    }
+
+    function config($upload_path = '') {
+
+        $config = array();
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size'] = '4000';
+        $config['max_width'] = '2000';
+        $config['max_height'] = '2000';
+        return $config;
+    }
+
+}
+
 ?>

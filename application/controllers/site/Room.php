@@ -268,6 +268,7 @@ class Room extends MY_Controller {
     }
 
     public function search() {
+        $this->output->enable_profiler(TRUE);
         $show_query = $this->input->get('show_query');
         if (!empty($show_query)) {
             $this->output->enable_profiler(TRUE);
@@ -335,6 +336,7 @@ class Room extends MY_Controller {
         $this->db->select('post_room.*,house_type.house_type_name,house_type.house_type_id,address.address_detail,room_type.room_type_name');
         $this->db->from('post_room');
         $this->db->join('address', 'address.address_id = post_room.address_id');
+        $this->db->join('area', 'area.area_id = address.area_id','left');
         $this->db->join('room_type', 'room_type.room_type_id = post_room.room_type');
         $this->db->join('house_type', 'house_type.house_type_id = post_room.house_type');
         $this->db->join('user c', 'post_room.user_id = c.user_id', 'left');
@@ -360,7 +362,7 @@ class Room extends MY_Controller {
                     $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
                     $this->db->where('replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[1] . '%\'');
                 } else {
-                    $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('(replace(lower(tbl_area.name), " ", "") like \'%'.$location_parts[0].'%\' or replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[0] . '%\')');
                 }
             }
 

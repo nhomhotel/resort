@@ -1,7 +1,3 @@
-<?php
-$lang = get_lang();
-?>
-
 <!-- Main content -->			
 <!-- Title area -->
 <div class="titleArea clearfix">
@@ -13,7 +9,7 @@ $lang = get_lang();
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo base_url('admin/amenities/create'); ?>">
+                    <a href="<?php echo base_url('admin/area/create'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png">
                         <span>Thêm mới</span>
                     </a>
@@ -43,19 +39,17 @@ $lang = get_lang();
                     <tr>
                         <td><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
                         <td>STT</td>
-                        <td>Tiện nghi</td>
-                        <td>Mô tả</td>
-                        <td>Trạng thái</td>
-                        <td>Ngày tạo</td>
+                        <td>Khu vực</td>
+                        <td>Hình đại diện</td>
+                        <td>Vị trí hiển thị trên web</td>
                         <td>Hành động</td>
-                        <td>ID</td>
                     </tr>
                 </thead>
                 <tfoot class="auto_check_pages">
                     <tr>
                         <td colspan="9">
                             <div class="list_action itemActions">
-                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('amenities/deleteAll'); ?>">
+                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('area/deleteAll'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     &nbsp;
                                     <span style='color:white;'>Xóa chọn</span>
@@ -74,47 +68,30 @@ $lang = get_lang();
                     $i = 1;
                     foreach ($list as $row) {
                         ?>
-                        <tr class='row_<?php echo $row->amenities_id; ?>'>
+                        <tr class='row_<?php echo $row->area_id; ?>'>
                             <td class="textC">
-                                <input type="checkbox" name="id[]" value="<?php echo $row->amenities_id; ?>" />
+                                <input type="checkbox" name="id[]" value="<?php echo $row->area_id; ?>" />
                             </td>
                             <td class="textC"><?php echo $i; ?></td>
                             <td class="textC">
                                 <?php echo $row->name; ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->description; ?>
-                            </td>
-                            <td class="textC" id="status">
-                                <?php
-                                if ($row->status == 1) {
-                                    ?>
-                                    <a href="javascript:void(0)" onclick="status(<?php echo $row->amenities_id; ?>)" class="lightbox" title="block">
-                                        <img src="<?php echo base_url(); ?>public/admin/images/icons/color/tick.png" />
-                                    </a>
-                                    <?php
-                                } else {
-                                    ?>
-                                    <a href="javascript:void(0)" onclick="status(<?php echo $row->amenities_id; ?>)" class="lightbox" title="active">
-                                        <img src="<?php echo base_url(); ?>public/admin/images/icons/color/block.png" />
-                                    </a>
-                                    <?php
-                                }
-                                ?>
+                                <image src="<?php echo $row->image; ?>" style="width: 145px;"/>
                             </td>
                             <td class="textC">
-    <?php echo ($row->created) ? date('d/m/Y - H:i:s', strtotime($row->created)) : ''; ?>
+                                <?php echo $row->sort; ?>
                             </td>
+                            
                             <td class="textC">
-                                <a href="<?php echo base_url('admin/amenities/edit/' . $row->amenities_id); ?>" class="lightbox" title="edit">
+                                <a href="<?php echo base_url('admin/area/edit/' . $row->area_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                                 &nbsp;
-                                <a href="<?php echo base_url('admin/amenities/delete/' . $row->amenities_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
+                                <a href="<?php echo base_url('admin/area/delete/' . $row->area_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/uninstall.png" />
                                 </a>
                             </td>
-                            <td class="textC"><?php echo $row->amenities_id; ?></td>
                         </tr>	
                         <?php
                         $i++;
@@ -132,7 +109,7 @@ $lang = get_lang();
         var admin_url = "<?php echo admin_url(); ?>";
         var curUrl = window.location.href;
         $.ajax({
-            url: admin_url + '/amenities/status',
+            url: admin_url + '/area/status',
             type: "post",
             dataType: "text",
             data: {

@@ -10,6 +10,7 @@ class Post_room extends AdminHome {
         parent::__construct(get_class());
         $this->load->model("post_room_model");
         $this->load->model("Address_model");
+        $this->load->model("Area_model");
         $this->load->model("house_type_model");
         $this->load->model("room_type_model");
         $this->load->model("amenities_model");
@@ -72,36 +73,41 @@ class Post_room extends AdminHome {
     }
 
     function post($id = -1) {
-//        pre($this->session->userdata);
         $post_info = $this->session->userdata('post_info');
-        if ($post_info != NULL) {
-            foreach ($post_info as $key => $value) {
-                $post_info[$key] = '';
+        if($this->session->userdata('current_link')!='post_price'){
+            if ($post_info != NULL) {
+                foreach ($post_info as $key => $value) {
+                    $post_info[$key] = '';
+                    $this->session->unset_userdata($post_info[$key]);
+                }
             }
-            $this->session->unset_userdata('post_info');
+        }else{
+            $this->session->unset_userdata('current_link');
         }
-//        $userLogin = $this->session->userdata('userLogin');
-//        $this->session->sess_destroy();
-//        $this->session->set_userdata('userLogin',$userLogin);
         if ($this->session->userdata('userLogin')) {
             $userLogin = $this->session->userdata('userLogin');
         }
         if ($id > 0) {
             $data_post_room = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
+            $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
         }
 
         $input = array();
         $input['where'] = array('status' => 1);
+        $this->load->model("area_model");
         $list_house_type = $this->house_type_model->get_list($input);
         $list_room_type = $this->room_type_model->get_list($input);
         $list_amenities = $this->amenities_model->get_list($input);
+        $list_area      = $this->area_model->get_list();
         $list_experience = $this->experience_model->getListAll($input);
 
         $data["list_house_type"] = $list_house_type;
         $data["list_room_type"] = $list_room_type;
         $data["list_amenities"] = $list_amenities;
         $data["list_experience"] = $list_experience;
+        $data["list_area"] = $list_area;
+//        pre($id);return;
 
         if ($this->input->post()) {
 
@@ -113,7 +119,6 @@ class Post_room extends AdminHome {
             $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required|min_length[20]|max_length[50]');
             $this->form_validation->set_rules('description', 'description', 'trim|required|min_length[300]|max_length[1000]');
             $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
-
             if ($this->form_validation->run()) {
 
                 $parent_id = $this->input->post('parent_id');
@@ -129,6 +134,7 @@ class Post_room extends AdminHome {
                 $zip_code = $this->input->post('zip_code');
                 $country = $this->input->post('country');
                 $country_ascii = stripUnicode($country);
+                $area_id = $this->input->post('area_name');
 
                 $post_room_name = $this->input->post('post_room_name');
                 $description = $this->input->post('description');
@@ -164,6 +170,7 @@ class Post_room extends AdminHome {
                         'zip_code' => $zip_code,
                         'country' => $country,
                         'country_ascii' => $country_ascii,
+                        'area_id'       => $area_id
                     ),
                     'parent_id' => $parent_id,
                     'post_room_name' => $post_room_name,
@@ -541,6 +548,7 @@ class Post_room extends AdminHome {
     }
 
     function edit($id = -1) {
+        $this->output->enable_profiler(TRUE);
         if ($this->session->userdata('userLogin')) {
             $userLogin = $this->session->userdata('userLogin');
         }
@@ -551,9 +559,11 @@ class Post_room extends AdminHome {
                 $data_post_room->parent = $this->post_room_model->get_row(array('where' => array('post_room_id' => $data_post_room->parent_id)));
             }
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
+            $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
             $this->load->model("house_type_model");
             $this->load->model("room_type_model");
             $this->load->model("amenities_model");
+            $this->load->model("area_model");
             $this->load->model("experience_model");
 
             $this->load->library('form_validation');
@@ -563,15 +573,17 @@ class Post_room extends AdminHome {
             $list_house_type = $this->house_type_model->get_list($input);
             $list_room_type = $this->room_type_model->get_list($input);
             $list_amenities = $this->amenities_model->get_list($input);
+            $list_area = $this->area_model->get_list();
             $list_experience = $this->experience_model->getListAll($input);
 
             $data["list_house_type"] = $list_house_type;
             $data["list_room_type"] = $list_room_type;
             $data["list_amenities"] = $list_amenities;
+            $data["list_area"] = $list_area;
             $data["list_experience"] = $list_experience;
             $data['data_post_room'] = $data_post_room;
             $data['post_room_id'] = $id;
-//            pre($data['data_post_room']);return;
+//            pre($data['list_area']);return;
 
             if ($this->input->post()) {
 
@@ -598,6 +610,7 @@ class Post_room extends AdminHome {
                     $zip_code = $this->input->post('zip_code');
                     $country = $this->input->post('country');
                     $country_ascii = stripUnicode($country);
+                    $area_id = $this->input->post('area');
 
                     $post_room_name = $this->input->post('post_room_name');
                     $description = $this->input->post('description');
@@ -633,6 +646,7 @@ class Post_room extends AdminHome {
                             'zip_code' => $zip_code,
                             'country' => $country,
                             'country_ascii' => $country_ascii,
+                            'area_id'       => $area_id
                         ),
                         'parent_id' => $parent_id,
                         'post_room_name' => $post_room_name,

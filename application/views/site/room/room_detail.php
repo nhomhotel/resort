@@ -358,6 +358,10 @@ $(document).ready(function(){
             }
             var urlCurl = window.location.href;
             urlCurl = urlCurl.split('#')[0];
+//            ch_in=17/07/2016&ch_out=20/07/2016&guest
+//var ch_in = $('#bookin-dpk');
+//var ch_out = $('#bookout-dpk');
+//if(typeof ch_in !== undefined && ch_in.val().trim()!='')urlCurl
             var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
             $.ajax({
                 type : 'POST',

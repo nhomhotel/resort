@@ -1,8 +1,8 @@
 <?php
 if ($this->session->userdata('post_price') !== NULL) {
     $post_price = $this->session->userdata('post_price');
-    // pre($post_price);
 }
+$this->session->set_userdata('current_link','post_price');
 ?>
 
 <div class="titleArea clearfix">
@@ -354,14 +354,12 @@ foreach ($arr_clearning_type as $key => $value) {
         $checked = 'checked';
     } else {
         $checked = '';
-    }
-    ?>
+    }?>
                                                 <label>
                                                     <input type="radio" name="clearning_type" value="<?php echo $key; ?>" <?php echo $checked; ?>> <?php echo $value; ?> 
                                                 </label>
     <?php
-}
-?>
+}?>
                                         </div>
                                         <div name="image_error" class="clear error"></div>
                                         <div for="clearning_type" generated="true" class="error"></div>
@@ -384,9 +382,7 @@ if (isset($post_price))
 elseif (isset($data_post_room))
     echo $data_post_room->cancel_police;
 else
-    echo set_value('cancel_police');
-//                                                                                        echo (isset($post_price))?$post_price['cancel_police']:set_value('cancel_police');
-?>">
+    echo set_value('cancel_police');?>">
                                         </div>
                                         <div name="image_error" class="clear error"></div>
                                     </div>
@@ -403,9 +399,7 @@ if (isset($post_price))
 elseif (isset($data_post_room))
     echo $data_post_room->regulations;
 else
-    echo set_value('regulations');
-//                                                                                        echo (isset($post_price))?$post_price['regulations']:set_value('regulations');
-?></textarea>
+    echo set_value('regulations');?></textarea>
                                         </div>
                                         <div name="image_error" class="clear error"></div>
                                     </div>

@@ -98,14 +98,14 @@
                             <tr class='row_20'>
                                 <td class="textC"><?php echo $i; ?></td>
                                 <td class="textC img_room" >
-                                    <a href="<?php echo base_url('admin/post_room/edit/' . $row->post_room_id); ?>" target = "_blank">
+                                    <a href="<?php echo base_url('admin/post_room/edit/' . $row->post_room_id); ?>" >
         <?php $img = json_decode($row->image_list); ?>
                                         <img src="<?php echo $img['0'] ?>" width = "120px" height = "90px"/>
                                     </a>
                                 </td>
                                 <td class="textC" style="text-align: left;">
                                     <p class="room_name">
-                                        <a href = "<?php echo base_url('admin/post_room/edit/' . $row->post_room_id); ?>" target = "_blank"><?php echo $row->post_room_name; ?></a>
+                                        <a href = "<?php echo base_url('admin/post_room/edit/' . $row->post_room_id); ?>" ><?php echo $row->post_room_name; ?></a>
                                     </p>
                                     <p class="address"><?php echo $row->address_detail ?></p>
                                     <p class="info_room">

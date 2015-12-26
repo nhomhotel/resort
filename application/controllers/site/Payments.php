@@ -119,23 +119,10 @@ class payments extends MY_Controller {
         $content_gui_dat_phong = $email_contact[2]->description;
         $content_gui_doi_tac = $email_contact[1]->description;
         $content_gui_quan_tri = $email_contact[0]->description;
-
-        $content_gui_dat_phong = str_replace('__user_name__', $data['user']->first_name, $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__user_name__', $data['user']->first_name, $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__customer_name__', $data['user']->last_name, $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__phone_number__', $data['user']->phone, $content_gui_dat_phong);
-
-        $content_gui_dat_phong = str_replace('__room_name__', $data['name_room'], $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__email_address__', $data['user']->email, $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__check_in__', $data['checkin']->format('d-m-Y'), $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__check_out__', $data['checkout']->format('d-m-Y'), $content_gui_dat_phong);
-        $content_gui_dat_phong = str_replace('__prices__', $data['price_all_night_add_fee'], $content_gui_dat_phong); //$data['guests']
-        $content_gui_dat_phong = str_replace('__guest__', $data['guests'], $content_gui_dat_phong);
-
-
-        echo $this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title, $content_gui_dat_phong, $config);
-        echo $this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $content_gui_dat_phong, $config);
-        echo $this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title, $content_gui_dat_phong, $config);
+        
+        echo $this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title, $this->replaceContenEmail($content_gui_dat_phong), $config);
+        echo $this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail($content_gui_doi_tac), $config);
+        echo $this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title, $this->replaceContenEmail($content_gui_quan_tri), $config);
         echo 'Đã gửi mail thành công';
     }
 
@@ -148,6 +135,21 @@ class payments extends MY_Controller {
 //         $body = $this->load->view('email_config_order.php',$data,TRUE);
         $mail_object->email->message($content);
         return $mail_object->email->send();
+    }
+    
+    function replaceContenEmail($data){
+        $data = str_replace('__user_name__', $data['user']->first_name, $data);
+        $data = str_replace('__user_name__', $data['user']->first_name, $data);
+        $data = str_replace('__customer_name__', $data['user']->last_name, $data);
+        $data = str_replace('__phone_number__', $data['user']->phone, $data);
+
+        $data = str_replace('__room_name__', $data['name_room'], $data);
+        $data = str_replace('__email_address__', $data['user']->email, $data);
+        $data = str_replace('__check_in__', $data['checkin']->format('d-m-Y'), $data);
+        $data = str_replace('__check_out__', $data['checkout']->format('d-m-Y'), $data);
+        $data = str_replace('__prices__', $data['price_all_night_add_fee'], $data); //$data['guests']
+        $data = str_replace('__guest__', $data['guests'], $data);
+        return $data;
     }
 
 }

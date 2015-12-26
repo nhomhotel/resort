@@ -146,8 +146,16 @@ body{
 	padding:10px;
 }
 #location-to ul .location-item a{
-	display: block;
-	position: relative;
+	display: table-cell;
+        height: 30vw !important;
+        border-radius: 4px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1.2857142857em;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background: transparent;
 }
 #location-to ul .location-item a img{
 	border-radius:5px;
@@ -163,6 +171,16 @@ body{
 	font-weight: 600;
 	color: #fff;
 }
+/*@media screen and (min-width : 1200px) {
+    #location-to ul .location-item a {
+        height: 264px !important;
+    }
+}
+@media screen and (min-width : 992px) {
+    #location-to ul .location-item a {
+        font-size: 1.5714285714em;
+    }
+}*/
 
 #tinh-nang{
 	padding: 50px 0px 20px 0px;

@@ -209,6 +209,32 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         <div name="image_error" class="clear error"><?php echo form_error('country'); ?></div>
                                     </div>
                                 </div>
+                                <div class="formRow clearfix">
+                                    <label for="area" class="col-sm-4 control-label">Thuộc khu vực:</label>
+                                    <div class="col-sm-8">
+                                        <select name="area_name">
+                                    <?php
+                                            $selected = '';
+                                            foreach ($list_area as $area) {
+                                                if (isset($post_info)) {
+                                                    if ($post_info['area_id'] == $area->area_id) {
+                                                        $selected = 'selected';
+                                                    } else {
+                                                        $selected = '';
+                                                    }
+                                                } elseif (isset($data_post_room)) {
+                                                    if ($area_room->area_id == $area->area_id) {
+                                                        $selected = 'selected';
+                                                    } else {
+                                                        $selected = '';
+                                                    }
+                                                }?>
+                                                        <option value="<?php echo $area->area_id; ?>" <?php echo $selected; ?>><?php echo $area->name; ?></option>
+                                                        <?php
+                                                    }?>
+                                    </select>
+                                </div>
+                                </div>
                             </div>	
                         </div><!-- End Address  -->
                         <!-- info room -->
@@ -274,12 +300,10 @@ if ($this->session->userdata('post_info') !== NULL) {
             } else {
                 $selected = '';
             }
-        }
-        ?>
+        }?>
                                                         <option value="<?php echo $house->house_type_id; ?>" <?php echo $selected; ?>><?php echo $house->house_type_name; ?></option>
                                                         <?php
-                                                    }
-                                                    ?>
+                                                    }?>
                                                 </select>
                                             </div>
                                             <div name="image_error" class="clear error"></div>
@@ -490,8 +514,7 @@ for ($i = 1; $i <= 10; $i++) {
 
                         <!-- amenities -->
 <?php
-if (isset($list_amenities) && $list_amenities) {
-    ?>
+if (isset($list_amenities) && $list_amenities) {?>
                             <div class="panel panel-default info-post clearfix">
                                 <div class="panel-heading">Tiện nghi</div>
                                 <div class="panel-body">

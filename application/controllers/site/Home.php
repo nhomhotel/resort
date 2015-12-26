@@ -11,8 +11,16 @@ class Home extends MY_Controller {
     }
 
     public function index() {
+//        $this->output->enable_profiler(TRUE);
+        $this->load->model('area_model');
         $data['meta_title'] = 'STAR VIEW Home page';
         $data['temp'] = ('site/home/index');
+        $data['popular'] = getSile($this->area_model->get_list(array(
+            'where' => array('sort>' => 0),
+            'limit'=>array('9'=>'0')
+        )));
+//        pre($data['popular']);
+//        return;
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 

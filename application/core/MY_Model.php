@@ -191,6 +191,7 @@ class MY_Model extends CI_Model {
      */
     function get_row($input = array(),$join = array()){
         $this->get_list_set_input($input);
+        if($join);
         if(count($join)>0){
             foreach ($join as $key => $value){
                 $tmp = explode('::', $value);
