@@ -41,7 +41,7 @@
                     
                     $config['total_rows'] = $data['total'];
                     $config['base_url'] = rtrim(base_url()."room/search?location=".$_GET['location']);
-                    $config['per_page'] = 2;
+                    $config['per_page'] = 4;
                     $config['use_page_numbers'] = TRUE;
                     $config['page_query_string'] = TRUE;
                     $config['query_string_segment'] = 'page';
@@ -83,8 +83,7 @@
                         exit;
                     }
                     
-                    $start = isset($_GET['page'])&&trim($_GET['page'])!=''?$_GET['page']-1:0;
-                    
+                    $start = isset($_GET['page'])&&trim($_GET['page'])!=''?($_GET['page']-1)*$data['per_page']:0;
                     $this->load->library('pagination', $config);
                     $list_room = $this->post_room_model->search($search_input,$data['per_page'],$start)->result();
                     if(count($list_room)>0){

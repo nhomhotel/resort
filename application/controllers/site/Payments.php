@@ -21,7 +21,6 @@ class payments extends MY_Controller
     }
     function book($id=''){
         //check điều kiện
-        pre($this->session->userdata);return;
         $user_id = $this->session->userdata('user_id');
         if(!isset($user_id)||$user_id==''){
             redirect(base_url());
@@ -71,7 +70,7 @@ class payments extends MY_Controller
         }
         //check room in database
         if($this->order_room_model->check_exists_room($id_decode[0], $data['checkin'], $data['checkout'])){
-            // đã tồn tại phòng
+            echo 'Phòng này đã có người đặt trước đó.';
             return;
         }
         $prices = $this->post_room_model->get_row($input);
@@ -105,7 +104,7 @@ class payments extends MY_Controller
              'checkout'=>$data['checkout']->format('Y-m-d'),
              'guests'=>$data['guests'],
          );
-//        $this->order_room_model->create($data_insert);
+        $this->order_room_model->create($data_insert);
         //gửi email
         $input = array();
         $input = array(
@@ -118,12 +117,29 @@ class payments extends MY_Controller
         
         $config = get_config_email($this->config->item('address_email'),$this->config->item('pass_email'));
         echo $this->email->print_debugger();
-        $email_contact = $this->email_model->get_list(array('1','2','3'));
-        pre($email_contact);
-        return;
-        echo $this->sendEmail($this, $data['user']->email, 'Email thông báo đặt phòng', 'email đặt phòng thành công từ người quản trị đến người đặt phòng',$config);
-        echo $this->sendEmail($this, $this->config->item('address_email'), 'Email thông báo đặt phòng', 'email đặt phòng thành công từ hệ thống đến người quản trị ',$config);
-        echo $this->sendEmail($this, $data['doitac']->email, 'Email thông báo đặt phòng', 'email đặt phòng thành công từ hệ thống đến Đối tác ',$config);
+        $email_contact = $this->email_model->getEmailBook(array('1','2','3'))->result();
+        //replace email content
+        $content_gui_dat_phong = $email_contact[2]->description;
+        $content_gui_doi_tac = $email_contact[1]->description;
+        $content_gui_quan_tri = $email_contact[0]->description;
+        
+        $content_gui_dat_phong = str_replace('__user_name__', $data['user']->first_name, $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__user_name__', $data['user']->first_name, $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__customer_name__', $data['user']->last_name, $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__phone_number__', $data['user']->phone, $content_gui_dat_phong);
+
+        $content_gui_dat_phong = str_replace('__room_name__', $data['name_room'], $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__email_address__', $data['user']->email, $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__check_in__', $data['checkin']->format('d-m-Y'), $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__check_out__', $data['checkout']->format('d-m-Y'), $content_gui_dat_phong);
+        $content_gui_dat_phong = str_replace('__prices__', $data['price_all_night_add_fee'], $content_gui_dat_phong);//$data['guests']
+        $content_gui_dat_phong = str_replace('__guest__', $data['guests'], $content_gui_dat_phong);
+        
+        
+        echo $this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title, $content_gui_dat_phong,$config);
+        echo $this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title,$content_gui_dat_phong,$config);
+        echo $this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title,$content_gui_dat_phong,$config);
+        echo 'Đã gửi mail thành công';
     }
     
     function sendEmail(&$mail_object, $mailTo,$mailSubject,$content,$config){

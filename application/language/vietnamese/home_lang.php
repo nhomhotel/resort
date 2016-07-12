@@ -29,3 +29,12 @@ $lang['home_list_room'] = 'Từ phòng riêng, căn hộ, biệt thự biệt l�
 $lang['home_introduced_on'] = 'Được giới thiệu trên';
 $lang['home_register'] = 'Đăng ký';
 $lang['home_login'] = 'Đăng nhập';
+$lang['home_top_destinations'] = 'Điểm đến nổi bật';
+$lang['home_company_info'] = 'Thông tin công ty';
+$lang['home_follow_us'] = 'Theo dõi trên';
+$lang['home_secure_payment'] = 'Thanh toán bảo mật';
+$lang['home_about_us'] = 'Về chúng tôi';
+$lang['home_contact'] = 'Liên hệ';
+$lang['home_news'] = 'Báo chí';
+$lang['home_help'] = 'Trợ giúp';
+

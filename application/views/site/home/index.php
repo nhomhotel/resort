@@ -151,7 +151,7 @@
         </div>
     </div>
 </section>
-<section id="subjects">
+<!--<section id="subjects">
     <div class="container">
         <div class="row">
             <div class="block">
@@ -194,7 +194,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>-->
 <section id="partner">
     <div class="container">
         <div class="row">

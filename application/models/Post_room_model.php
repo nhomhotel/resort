@@ -96,6 +96,7 @@
 //                            if($key==)
 //                    }
                 }
+                $this->db->group_by('post_room.post_room_id');
                 $this->db->limit($limit);
                 $this->db->offset($start);
                 return $this->db->get();

@@ -28,4 +28,13 @@ $lang['home_list_room'] = 'From private rooms to apartments, exotic villas or tr
 $lang['home_introduced_on'] = 'Introduced on';
 $lang['home_register'] = 'Register';
 $lang['home_login'] = 'Login';
+$lang['home_top_destinations'] = 'Top Destinations';
+$lang['home_company_info'] = 'Companny info';
+$lang['home_follow_us'] = 'Follow Us';
+$lang['home_secure_payment'] = 'Secure Payments';
+$lang['home_about_us'] = 'About us';
+$lang['home_contact'] = 'Contact';
+$lang['home_news'] = 'News';
+$lang['home_help'] = 'Helps';
+
 

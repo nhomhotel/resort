@@ -26,10 +26,10 @@
                     </div>
                 </li>
                 <?php if(isset($_SESSION['user_name'])&&$_SESSION['role_id']==3){?>
-                <li><a href="<?php echo base_url()?>">Xin chào <?php echo $_SESSION['user_name']?></a></li>
+                <li><a href="<?php echo base_url()?>"><?php echo lang('hello');?> <?php echo $_SESSION['user_name']?></a></li>
             <?php }else{?>
-                <li><a href="<?php echo base_url();?>home/register">Đăng kí</a></li>
-                    <li><a href="<?php echo base_url();?>home/login">Đăng nhập</a></li>
+                <li><a href="<?php echo base_url();?>home/register"><?php echo lang('home_register');?></a></li>
+                    <li><a href="<?php echo base_url();?>home/login"><?php echo lang('home_login');?></a></li>
                 <?php }?>
                 
             </ul>
