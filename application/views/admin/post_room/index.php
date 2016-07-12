@@ -91,33 +91,29 @@
                         if(isset($list_room)){
                             $i = 0;
                             foreach ($list_room as $row) {
-                                $i++;
-                    ?>
+                                $i++;?>
                     <tr class='row_20'>
                         <td class="textC"><?php echo $i;?></td>
                         <td class="textC img_room" >
-                        	<a href="<?php echo base_url('admin/post_room/edit/'.$row->post_room_id);?>" target = "_blank">
-                        		<?php
-                        			$img = json_decode($row->image_list);
-                        		?>
-                        		<img src="<?php echo $img['0']?>" width = "120px" height = "90px"/>
-                        	</a>
+                            <a href="<?php echo base_url('admin/post_room/edit/'.$row->post_room_id);?>" target = "_blank">
+                                <?php $img = json_decode($row->image_list);?>
+                                <img src="<?php echo $img['0']?>" width = "120px" height = "90px"/>
+                            </a>
                         </td>
                         <td class="textC" style="text-align: left;">
-                        	<p class="room_name">
-                            <a href = "<?php echo base_url('room/room_detail/'.$row->post_room_id);?>" target = "_blank"><?php echo $row->post_room_name;?></a>
+                            <p class="room_name">
+                                <a href = "<?php echo base_url('admin/room/post_room/edit/'.$row->post_room_id);?>" target = "_blank"><?php echo $row->post_room_name;?></a>
                             </p>
-                        	<p class="address"><?php echo $row->address_detail?></p>
-                        	<p class="info_room">
-                        		<?php
-                        		echo '<span>'.$row->house_type_name.'</span>';
-                        		?>
-                        		<p>
-	                        		<span class="num_bed">Phòng ngủ: <?php echo $row->num_bed;?></span>
-	                        		-
-	                        		<span class="num_bed">Số khách tối đa: <?php echo $row->num_guest;?></span>
-	                        	</p>
-                        	</p>
+                            <p class="address"><?php echo $row->address_detail?></p>
+                            <p class="info_room">
+                                <?php
+                                echo '<span>'.$row->house_type_name.'</span>';?>
+                                <p>
+                                    <span class="num_bed">Phòng ngủ: <?php echo $row->num_bed;?></span>
+                                    -
+                                    <span class="num_bed">Số khách tối đa: <?php echo $row->num_guest;?></span>
+                                </p>
+                            </p>
                         </td>
                         <td class="textC price">
                         	<p class="price_vn price-item">
@@ -133,20 +129,17 @@
                         </td>
                         <td class="textC" id="status">
                             <?php
-                            if($row->status == 1){
-                            ?>
+                            if($row->status == 1){ ?>
                                 <a href="javascript:void(0)" onclick="status(<?php echo $row->post_room_id;?>)" class="lightbox" title="block">
                                     <img src="<?php echo base_url();?>public/admin/images/icons/color/tick.png" />
                                 </a>
                             <?php
-                            }else{
-                            ?>
+                            }else{ ?>
                                 <a href="javascript:void(0)" onclick="status(<?php echo $row->post_room_id;?>)" class="lightbox" title="active">
                                     <img src="<?php echo base_url();?>public/admin/images/icons/color/block.png" />
                                 </a>
                             <?php
-                            }
-                            ?>
+                            } ?>
                         </td>
                         <td class="textC"><?php echo date('d-m-Y - H:i:s',strtotime($row->created));?></td>
                         <td class="textC">
@@ -158,8 +151,7 @@
                     </tr>
                     <?php
                             }
-                        }
-                    ?>
+                        } ?>
                 </tbody>
             </table>
         </div>

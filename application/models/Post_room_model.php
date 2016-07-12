@@ -91,10 +91,6 @@
 //                        $this->db->or_like('lower(provincial_ascii)', $query); 
 //                        $this->db->or_like('lower(country_ascii)', $query);
                     }
-//                    foreach ($search_input as $key => $line) {
-//                            pre($key);
-//                            if($key==)
-//                    }
                 }
                 $this->db->group_by('post_room.post_room_id');
                 $this->db->limit($limit);

@@ -1,15 +1,15 @@
 <?php
     // Lay du lieu tu adminLogin
-    if($this->session->userdata('adminLogin')){
-        $adminLogin = $this->session->userdata('adminLogin');
+    if($this->session->userdata('userLogin')){
+        $userLogin = $this->session->userdata('userLogin');
     }
 ?>
 <div class="sideProfile">
     <a href="#" title="" class="profileFace">
         <img width="40" src="<?php echo base_url();?>public/admin/images/user.png">
     </a>
-    <span><?php echo lang('hello');?>: <strong><?php echo (isset($adminLogin)) ? $adminLogin['user_name'] : '' ;?></strong></span>
-    <span><?php echo (isset($adminLogin)) ? $adminLogin['last_name'].' '.$adminLogin['first_name'] : '' ;?> </span>
+    <span><?php echo lang('hello');?>: <strong><?php echo (isset($userLogin)) ? $userLogin['user_name'] : '' ;?></strong></span>
+    <span><?php echo (isset($userLogin)) ? $userLogin['last_name'].' '.$userLogin['first_name'] : '' ;?> </span>
 
     <div class="clear"></div>
 </div>

@@ -97,43 +97,51 @@ $(document).ready(function(){
                     return;
                 }
                 window.location.href = url+'room/order_room/'+id+'?checkin='+checkin.val()+"&checkout="+checkout.val()+"&guests="+guest.val();
-            }else{
-            var amenities = '';
-            var experiences = '';
-            var bedroom     =$('#bedroom').val();
-            var bathroom    =$('#bathroom').val();
-            var beds        =$('#beds').val();
-            $('[name="amenities"]:checked').each(function(){
-                amenities +=$(this).data('tloc')+',';
-            })
-            $('[name="experiences"]:checked').each(function(){
-                experiences +=$(this).data('tloc')+',';
-            })
+            }
+            else{
+                var amenities = '';
+                var experiences = '';
+                var bedroom     =$('#bedroom').val();
+                var bathroom    =$('#bathroom').val();
+                var beds        =$('#beds').val();
+                $('[name="amenities"]:checked').each(function(){
+                    amenities +=$(this).data('tloc')+',';
+                })
+                $('[name="experiences"]:checked').each(function(){
+                    experiences +=$(this).data('tloc')+',';
+                })
 
-            $("#room_type label.tclick ").each(function(index){
-                var cur = $(this);
-                data_tloc = cur.data('tloc');
-    //            if(room_type.length==0){room_type.push(data_tloc);}
-    //            else{
-                    var index = room_type.indexOf(data_tloc);
-                    if(index==-1){
-                        room_type.push(data_tloc);
-                    }else{
-                        room_type.splice(index,1);
-                    }
-    //            }
-            })
-    $.ajax({
-        url:url+'room/search',
-        data:amenities,
-        type:'POST',
-        success:function(data){
-            
-            console.log(data);
-        },
-        error:'',
-        dataType: 'json',
-    })}
+                $("#room_type label.tclick ").each(function(index){
+                    var cur = $(this);
+                    data_tloc = cur.data('tloc');
+        //            if(room_type.length==0){room_type.push(data_tloc);}
+        //            else{
+                        var index = room_type.indexOf(data_tloc);
+                        if(index==-1){
+                            room_type.push(data_tloc);
+                        }else{
+                            room_type.splice(index,1);
+                        }
+        //            }
+                })
+                console.log(amenities);
+                console.log(experiences);
+                console.log(bedroom);
+                console.log(bathroom);
+                console.log(beds);
+                console.log($('input#location,input#checkin,input#checkout,input#guest,input#option1,input#price-sort,input#entry-home'));
+                return false;
+                $.ajax({
+                    url:url+'room/search',
+                    data:amenities,
+                    type:'POST',
+                    success:function(data){
+                        console.log(data);
+                    },
+                    error:'',
+                    dataType: 'json',
+                })
+            }
         })
     });
     $(function(){
