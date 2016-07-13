@@ -15,19 +15,24 @@
                 public function search(){
                     $data['encode'] = $this->config->item('encode_id');
                     $_location = trim($this->input->get('location'));
+                    $query = '?';
                     if($_location!=NULL) $_location = vn_str_filter (strtolower ($_location));
                     
                     if(isset($_GET['location'])&&trim($_GET['location'])!=''){
                         $data['location'] = trim($_GET['location']);
+                        $query .='location=?'.trim($_GET['location']);
                     }
                     if(isset($_GET['checkin'])&&trim($_GET['checkin'])!=''){
                         $data['checkin'] = trim($_GET['checkin']);
+                        $query .='checkin=?'.trim($_GET['checkin']);
                     }
                     if(isset($_GET['checkout'])&&trim($_GET['checkout'])!=''){
                         $data['checkout'] = trim($_GET['checkout']);
+                        $query .='checkout=?'.trim($_GET['checkout']);
                     }
                     if(isset($_GET['guest'])&&trim($_GET['guest'])!=''){
                         $data['guest'] = trim($_GET['guest']);
+                        $query .='guest=?'.trim();
                     }
                     
                     $search_input = array(
@@ -39,8 +44,9 @@
                     $total = $this->post_room_model->search($search_input)->num_rows();
                     $data['total'] = $total;
                     
+                    if($query=='?')$query='';
                     $config['total_rows'] = $data['total'];
-                    $config['base_url'] = rtrim(base_url()."room/search?location=".$_GET['location']);
+                    $config['base_url'] = rtrim(base_url()."room/search?location=".$query);
                     $config['per_page'] = 4;
                     $config['use_page_numbers'] = TRUE;
                     $config['page_query_string'] = TRUE;

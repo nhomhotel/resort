@@ -236,148 +236,148 @@ var id='<?php echo $id_encode;?>';
 <section id="post-same">
 </section>
 <script type="text/javascript">
-	$(document).ready(function(){
-            $('.book-action .tclick').click(function(){
-                <?php if(!$this->session->userdata('user_id')){?>
-                    $('#myModal').modal('show');
-                    return false;
-                <?php }?>
-            });
-            $('#name_customer').keydown(function(){$('.error_submit').html('');});
-            $('#phone_number').keydown(function(){$('.error_submit').html('');});
-            $('#email').keydown(function(){$('.error_submit').html('');});
-		var nowTemp = new Date();
-		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-		var checkin = $('#bookin-dpk');
-                var checkout = $('#bookout-dpk')
-		checkin.datepicker({
-                    onRender: function(date) {
-                        return date.valueOf() < now.valueOf() ? 'disabled' : '';
-                    },
-                        format: 'dd/mm/yyyy',
-                        startDate:now
-                  }).on('changeDate', function(ev) {
-                    var newDate;
-                    if (ev.date.valueOf() > checkout.val()) {
-                        newDate  = new Date(ev.date)
-                        newDate.setDate(newDate.getDate() );
-                    }
-                    checkout.datepicker('setStartDate',newDate);
-                    checkin.datepicker('hide');
-                    checkout[0].focus();
-                    if(checkout.valueOf()!=''){
-                        $.ajax({
-                            url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
-                            success: function (data) {
-                              if(typeof  data.error!= undefined){$('.fees').html(data.error);}
-                              if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
-                            }
-                        })
-                    }
-
-                }).data('datepicker');
-                checkout.datepicker({
-                onRender: function(date) {
-                    return date.valueOf() <= checkin.val() ? 'disabled' : '';
-                },
+$(document).ready(function(){
+    $('.book-action .tclick').click(function(){
+        <?php if(!$this->session->userdata('user_id')){?>
+            $('#myModal').modal('show');
+            return false;
+        <?php }?>
+    });
+    $('#name_customer').keydown(function(){$('.error_submit').html('');});
+    $('#phone_number').keydown(function(){$('.error_submit').html('');});
+    $('#email').keydown(function(){$('.error_submit').html('');});
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+        var checkin = $('#bookin-dpk');
+        var checkout = $('#bookout-dpk')
+        checkin.datepicker({
+            onRender: function(date) {
+                return date.valueOf() < now.valueOf() ? 'disabled' : '';
+            },
                 format: 'dd/mm/yyyy',
                 startDate:now
-                }).on('changeDate', function(ev) {
-                    checkout.datepicker('hide');
-                    var newDate = new Date(ev.date)
-                    newDate.setDate(newDate.getDate() );
-                    if(checkin.valueOf()!=''){
-                        $.ajax({
-                          url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
-                          type: 'POST',
-                          dataType: 'json',
-                          data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
-                          success: function (data) {
-                            if(typeof  data.error!= undefined){$('.fees').html(data.error);}
-                            if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
-                            }
-                        })
+          }).on('changeDate', function(ev) {
+            var newDate;
+            if (ev.date.valueOf() > checkout.val()) {
+                newDate  = new Date(ev.date)
+                newDate.setDate(newDate.getDate() );
+            }
+            checkout.datepicker('setStartDate',newDate);
+            checkin.datepicker('hide');
+            checkout[0].focus();
+            if(checkout.valueOf()!=''){
+                $.ajax({
+                    url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
+                    success: function (data) {
+                      if(typeof  data.error!= undefined){$('.fees').html(data.error);}
+                      if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
-                }).data('datepicker');
-                $('#guests').on('change',function(){
-                var checkin     = $('#bookin-dpk');
-                var checkout    = $('#bookout-dpk');
-                    if(typeof checkin != undefined && checkin.val().trim() != '' && typeof checkout != undefined && checkout.val().trim() != ''){
-                        $.ajax({
-                          url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
-                          type: 'POST',
-                          dataType: 'json',
-                          data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
-                          success: function (data) {
-                                if(typeof  data.error!= undefined){$('.fees').html(data.error);}
-                                if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
-                            }
-                        })
-                    }    
                 })
-                $('#frm-book').on('submit', function(ev) {
-                    var checkin = $('#bookin-dpk');
-                    var checkout = $('#bookout-dpk');
-                    var guest = $('#guests');
-                    <?php if(!$this->session->userdata('user_id')){?>
-                    $('#myModal').modal('show');
-                    return false;
-                    <?php }?>
-                    var data = {checkin:checkin.val(),checkout:checkout.val(),guest:guest.val()};
-                    $.ajax({
-                        type : 'POST',
-                        url  : $(this).attr('action'),
-                        data : data,
-                        success :  function(data){
-                            console.log(data);
-                        },
-                        dataType:'JSON',
-                    })
-                    ev.preventDefault();
-                });
-                $('#save_info_customer').on('click',function(ev){
-                    
-                    var name_customer = $('#name_customer').val();
-                    var phone_number = $("#phone_number").val();
-                    var email = $("#email").val();
-                    //check info
-                    if(typeof  name_customer ==undefined || name_customer.length <6 || name_customer.trim()==''){
-                        $('.error_submit').html('Thông tin người dùng sai');
-                        return false;
+            }
+
+        }).data('datepicker');
+        checkout.datepicker({
+        onRender: function(date) {
+            return date.valueOf() <= checkin.val() ? 'disabled' : '';
+        },
+        format: 'dd/mm/yyyy',
+        startDate:now
+        }).on('changeDate', function(ev) {
+            checkout.datepicker('hide');
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate() );
+            if(checkin.valueOf()!=''){
+                $.ajax({
+                  url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
+                  type: 'POST',
+                  dataType: 'json',
+                  data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
+                  success: function (data) {
+                    if(typeof  data.error!= undefined){$('.fees').html(data.error);}
+                    if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
-                    if(typeof  phone_number ==undefined || phone_number.length <9 || phone_number.trim()==''){
-                        $('.error_submit').html('Thông tin số điện thoại sai');
-                        return false;
-                    }
-                    if(typeof  email ==undefined || email.length <9 || email.trim()==''){
-                        $('.error_submit').html('Thông tin email sai');
-                        return false;
-                    }
-                    var urlCurl = window.location.href;
-                    <?php $urlCurrent = url_origin($_SERVER);?>
-                    urlCurl = urlCurl.split('#')[0];
-                    var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email,urlCurl:urlCurl};
-                    $.ajax({
-                        type : 'POST',
-                        url  : "<?php echo base_url().'user/createFast'?>",
-                        data : data,
-                        success :  function(data){
-                            if(typeof data.error != undefined){
-                                alert(data.error);
-                                return;
-                            }
-                            if(typeof data.success !=undefined){
-                                location.reload();
-                            }
-                            window.location.href = '<?php echo $urlCurrent;?>';
-                        },
-                        dataType:'JSON',
-                    })
                 })
-	})
+            }
+        }).data('datepicker');
+        $('#guests').on('change',function(){
+        var checkin     = $('#bookin-dpk');
+        var checkout    = $('#bookout-dpk');
+            if(typeof checkin != undefined && checkin.val().trim() != '' && typeof checkout != undefined && checkout.val().trim() != ''){
+                $.ajax({
+                  url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
+                  type: 'POST',
+                  dataType: 'json',
+                  data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
+                  success: function (data) {
+                        if(typeof  data.error!= undefined){$('.fees').html(data.error);}
+                        if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
+                    }
+                })
+            }    
+        })
+        $('#frm-book').on('submit', function(ev) {
+            var checkin = $('#bookin-dpk');
+            var checkout = $('#bookout-dpk');
+            var guest = $('#guests');
+            <?php if(!$this->session->userdata('user_id')){?>
+            $('#myModal').modal('show');
+            return false;
+            <?php }?>
+            var data = {checkin:checkin.val(),checkout:checkout.val(),guest:guest.val()};
+            $.ajax({
+                type : 'POST',
+                url  : $(this).attr('action'),
+                data : data,
+                success :  function(data){
+                    console.log(data);
+                },
+                dataType:'JSON',
+            })
+            ev.preventDefault();
+        });
+        $('#save_info_customer').on('click',function(ev){
+
+            var name_customer = $('#name_customer').val();
+            var phone_number = $("#phone_number").val();
+            var email = $("#email").val();
+            //check info
+            if(typeof  name_customer ==undefined || name_customer.length <6 || name_customer.trim()==''){
+                $('.error_submit').html('Thông tin người dùng sai');
+                return false;
+            }
+            if(typeof  phone_number ==undefined || phone_number.length <9 || phone_number.trim()==''){
+                $('.error_submit').html('Thông tin số điện thoại sai');
+                return false;
+            }
+            if(typeof  email ==undefined || email.length <9 || email.trim()==''){
+                $('.error_submit').html('Thông tin email sai');
+                return false;
+            }
+            var urlCurl = window.location.href;
+            <?php $urlCurrent = url_origin($_SERVER);?>
+            urlCurl = urlCurl.split('#')[0];
+            var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email,urlCurl:urlCurl};
+            $.ajax({
+                type : 'POST',
+                url  : "<?php echo base_url().'user/createFast'?>",
+                data : data,
+                success :  function(data){
+                    if(typeof data.error != undefined){
+                        alert(data.error);
+                        return;
+                    }
+                    if(typeof data.success !=undefined){
+                        location.reload();
+                    }
+                    window.location.href = '<?php echo $urlCurrent;?>';
+                },
+                dataType:'JSON',
+            })
+        })
+})
 </script>
 
 <script type="text/javascript">

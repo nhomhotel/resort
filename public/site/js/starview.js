@@ -69,9 +69,9 @@ $(document).ready(function(){
         var room_type = [];
         var amenities = '';
         var experiences = '';
-        var bedroom ;
-        var bathroom ;
-        var beds ;
+        var bedroom = $('#bedroom');
+        var bathroom =$('#bathroom');
+        var beds =$('#beds');
         $('.tclick').click(function(){
             var currentclick = $(this);
             if(currentclick.parent().hasClass('book-action')){
@@ -99,11 +99,9 @@ $(document).ready(function(){
                 window.location.href = url+'room/order_room/'+id+'?checkin='+checkin.val()+"&checkout="+checkout.val()+"&guests="+guest.val();
             }
             else{
+//                if(typeof )
                 var amenities = '';
-                var experiences = '';
-                var bedroom     =$('#bedroom').val();
-                var bathroom    =$('#bathroom').val();
-                var beds        =$('#beds').val();
+                var experiences = '';      
                 $('[name="amenities"]:checked').each(function(){
                     amenities +=$(this).data('tloc')+',';
                 })
@@ -124,17 +122,41 @@ $(document).ready(function(){
                         }
         //            }
                 })
-                console.log(amenities);
-                console.log(experiences);
-                console.log(bedroom);
-                console.log(bathroom);
-                console.log(beds);
-                console.log($('input#location,input#checkin,input#checkout,input#guest,input#option1,input#price-sort,input#entry-home'));
-                return false;
-                $.ajax({
+//                console.log(amenities);
+//                console.log(experiences);
+//                console.log(bedroom);
+//                console.log(bathroom);
+//                console.log(beds);
+//                console.log($('input#location,input#checkin,input#checkout,input#guest,input#option1,input#price-sort,input#entry-home'));
+                var currentthis = $(this);
+                var room_types = '';
+//                $('#room_type .tclick').each(function(){
+//                    if(currentthis.data('tloc')==$(this).data('tloc')){
+//                         var xxx = $(this).attr("class").split(' ');
+//                         $.each(xxx, function(a,v){
+//                             if(v==='active'){
+//                                 console.log('da active truoc day');
+//                             }
+//                         })
+//                         
+//                    }
+//                    console.log(currentthis.data('tloc'));
+//                    console.log($(this).data('tloc'));
+//                });
+//                return false;
+                var data = {};
+                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+                if(typeof experiences !==undefined && experiences !='')data['experiences'] = experiences;
+                if(typeof bedroom !==undefined && $.isNumeric(bedroom.val()))data['bedroom'] = bedroom.val();
+                if(typeof bathroom !==undefined && $.isNumeric(bathroom.val()))data['bathroom'] = bathroom.val();
+                if(typeof beds !==undefined && $.isNumeric(beds.val()))data['beds'] = beds.val();
+//                window.location.href = $.query.set("amenities", amenities);
+                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+                var xhr = $.ajax({
                     url:url+'room/search',
-                    data:amenities,
-                    type:'POST',
+                    data:data,
+                    type:'GET',
                     success:function(data){
                         console.log(data);
                     },
