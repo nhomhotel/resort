@@ -425,6 +425,7 @@ class Post_room extends AdminHome
 
                 if ($this->form_validation->run()) {
 
+                    $parent_id = $this->input->post('parent_id');
                     $address_detail = $this->input->post('address_detail');
                     $lat = $this->input->post('lat');
                     $lng = $this->input->post('lng');
@@ -473,6 +474,7 @@ class Post_room extends AdminHome
                             'country' => $country,
                             'country_ascii' => $country_ascii,
                         ),
+                        'parent_id' => $parent_id,
                         'post_room_name' => $post_room_name,
                         'description' => $description,
                         'house_type' => $house_type,
@@ -496,6 +498,26 @@ class Post_room extends AdminHome
             $data['temp'] = 'admin/post_room/post';
             $this->load->view('admin/layout', isset($data) ? $data : '');
         }
+    }
+
+    /* Get results for auto complete search */
+    public function ajax_search() {
+        $keyword = $this->input->get('term');
+        $result = array();
+
+        /* Check empty keyword */
+        if (empty($keyword)) {
+            echo json_encode($result);
+            return;
+        }
+
+        /* Filters and return results */
+        $this->post_room_model->db->select('post_room_id, post_room_name');
+        $this->post_room_model->db->from('post_room');
+        $this->post_room_model->db->where('post_room_name_ascii LIKE "%' . stripUnicode($keyword) . '%"');
+        $result = $this->post_room_model->db->get()->result();
+        echo json_encode($result);
+        return;
     }
 }
 

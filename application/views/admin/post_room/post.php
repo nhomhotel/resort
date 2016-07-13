@@ -221,6 +221,41 @@
 									}
 								?>
 								<!--end room type -->
+                                <!-- room by house -->
+                                <div class="formRow">
+                                    <label class="formLeft">Phòng theo căn [#<span id="label-post-room-id"><?php if (isset($post_info['parent_id'])) :?><?php echo $post_info['parent_id']; ?><?php else :?>0<?php endif; ?></span>] </label>
+                                    <div class="formRight">
+                                        <div class="ui-widget">
+                                            <input type="text" id="auto-complete-parent-id" autocomplete="off"/>
+                                            <input type="hidden" value="<?php if (isset($post_info['parent_id'])) :?><?php echo $post_info['parent_id']; ?><?php else :?>0<?php endif; ?>" id="post-room-parent-id" name="parent_id" />
+                                        </div>
+                                        <div name="image_error" class="clear error"></div>
+                                    </div>
+                                    <!-- Handle Js -->
+                                    <script type="text/javascript">
+                                        /* Auto search by name to get post room id */
+                                        $(function() {
+                                            $("#auto-complete-parent-id").autocomplete({
+                                                source: "<?php echo site_url('admin/post_room/ajax_search'); ?>",
+                                                dataType: "json",
+                                                minLength: 1,
+                                                select: function(event, ui) {
+                                                    event.preventDefault();
+                                                    if (ui.item.post_room_id != undefined && ui.item.post_room_name != undefined) {
+                                                        $("#post-room-parent-id").val(ui.item.post_room_id);
+                                                        $("#auto-complete-parent-id").val(ui.item.post_room_name);
+                                                        $("#label-post-room-id").text(ui.item.post_room_id);
+                                                    }
+                                                }
+                                            }).data("uiAutocomplete")._renderItem =  function(ul, item) {
+                                                return $("<li class='post-room-item'>").append("<a>" + item.post_room_name + "</a>").appendTo(ul);
+                                            };;
+                                        });
+                                    </script>
+                                    <!-- End Handle -->
+                                    <div class="clear"></div>
+                                </div>
+                                <!-- room by house -->
 								<div class="formRow">
 									<label class="formLeft">Số khách tối đa:</label>
 									<div class="formRight">
