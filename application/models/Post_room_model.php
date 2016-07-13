@@ -91,6 +91,9 @@
 //                        $this->db->or_like('lower(provincial_ascii)', $query); 
 //                        $this->db->or_like('lower(country_ascii)', $query);
                     }
+                    if(isset($search_input['guest'])&&trim($search_input['guest'])!=''){
+                        $this->db->where('post_room.num_guest>=',trim($search_input['guest']));
+                    }
                 }
                 $this->db->group_by('post_room.post_room_id');
                 $this->db->limit($limit);

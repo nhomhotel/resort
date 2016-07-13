@@ -32,7 +32,7 @@
                     }
                     if(isset($_GET['guest'])&&trim($_GET['guest'])!=''){
                         $data['guest'] = trim($_GET['guest']);
-                        $query .='guest=?'.trim();
+                        $query .='guest=?'.trim($_GET['guest']);
                     }
                     
                     $search_input = array(
