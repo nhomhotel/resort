@@ -6,6 +6,8 @@ class Errors extends CI_Controller {
     }
     public function pageNotFound(){
         $this->output->set_status_header('404'); // setting header to 404
-        $this->load->view('errors/pagenotfound');//loading view
+        $data['meta_title'] = 'STAR VIEW Home page';
+        $data['temp'] = ('site/error/pagenotfound');
+        $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 }
