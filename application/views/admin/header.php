@@ -1,7 +1,7 @@
 <?php
-    // Lay du lieu tu adminLogin
-    if($this->session->userdata('adminLogin')){
-        $adminLogin = $this->session->userdata('adminLogin');
+    // Lay du lieu tu userLogin
+    if($this->session->userdata('userLogin')){
+        $userLogin = $this->session->userdata('userLogin');
     }
 ?>
 <div class="wrapper clearfix col-md-12">
@@ -11,7 +11,7 @@
         </button>
     </div>
     <div class="welcome hidden-xs">
-        <span><?php echo lang('hello');?>: <b><?php echo (isset($adminLogin))? $adminLogin['user_name'] : '';?></b></span>
+        <span><?php echo lang('hello');?>: <b><?php echo (isset($userLogin))? $userLogin['user_name'] : '';?></b></span>
         <span><a href="<?php echo base_url('admin/amenities/lang/english').'?redirect='.$_SERVER['PATH_INFO'];?>"><b>EN</b></a></span>
         <span><a href="<?php echo base_url('admin/amenities/lang/vietnamese').'?redirect='.$_SERVER['PATH_INFO'];?>"><b>VN</b></a></span>
     </div>

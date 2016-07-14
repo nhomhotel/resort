@@ -102,7 +102,7 @@
                         </td>
                         <td class="textC" style="text-align: left;">
                             <p class="room_name">
-                                <a href = "<?php echo base_url('admin/room/post_room/edit/'.$row->post_room_id);?>" target = "_blank"><?php echo $row->post_room_name;?></a>
+                                <a href = "<?php echo base_url('admin/post_room/edit/'.$row->post_room_id);?>" target = "_blank"><?php echo $row->post_room_name;?></a>
                             </p>
                             <p class="address"><?php echo $row->address_detail?></p>
                             <p class="info_room">

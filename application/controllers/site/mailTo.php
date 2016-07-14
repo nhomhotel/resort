@@ -66,10 +66,10 @@ class MailTo extends CI_Controller
              $input['where']['tbl_user.role_id'] = $role_id;
         }
 
-        //Lay session adminLogin de list user != adminLogin
-        if(!is_NULL($this->session->userdata('adminLogin'))){
-            $adminLogin = $this->session->userdata('adminLogin');
-            $input['where']['user_id !='] = $adminLogin['user_id'];
+        //Lay session userLogin de list user != userLogin
+        if(!is_NULL($this->session->userdata('userLogin'))){
+            $userLogin = $this->session->userdata('userLogin');
+            $input['where']['user_id !='] = $userLogin['user_id'];
         }
         $list = $this->user_model->getList($input);
         $data['total'] = $total;

@@ -76,8 +76,19 @@ class Post_room extends AdminHome
 
     function post($id = -1)
     {
-        if ($this->session->userdata('adminLogin')) {
-            $adminLogin = $this->session->userdata('adminLogin');
+//        pre($this->session->userdata);
+        $post_info = $this->session->userdata('post_info');
+        if($post_info!=NULL){
+            foreach ($post_info as $key =>$value){
+                $post_info[$key] = '';
+            }
+            $this->session->unset_userdata('post_info');
+        }
+//        $userLogin = $this->session->userdata('userLogin');
+//        $this->session->sess_destroy();
+//        $this->session->set_userdata('userLogin',$userLogin);
+        if ($this->session->userdata('userLogin')) {
+            $userLogin = $this->session->userdata('userLogin');
         }
         if ($id > 0) {
             $data_post_room = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
@@ -131,7 +142,7 @@ class Post_room extends AdminHome
                 $num_bed = $this->input->post('num_bed');
                 $num_bathroom = $this->input->post('num_bathroom');
                 $acreage = $this->input->post('acreage');
-                $user_id = (isset($adminLogin) && is_array($adminLogin)) ? $adminLogin['user_id'] : 0;
+                $user_id = (isset($userLogin) && is_array($userLogin)) ? $userLogin['user_id'] : 0;
                 if ($this->input->post('amenities') && is_array($this->input->post('amenities'))) {
                     $amenities = implode(',', $this->input->post('amenities'));
                 } else {
@@ -175,7 +186,6 @@ class Post_room extends AdminHome
                 redirect(admin_url('post_room/post_price/' . $id));
             }
         }
-
         $data['title'] = 'Đăng phòng cho thuê';
         $data['temp'] = 'admin/post_room/post';
         $this->load->view('admin/layout', isset($data) ? $data : '');
@@ -188,12 +198,11 @@ class Post_room extends AdminHome
             $post_info = $this->session->userdata('post_info');
         }
         if (!isset($post_info)) {
-            redirect(admin_url('post_room/post'));
+            redirect(admin_url('post_room/edit/'.$id));
         }
         if ($this->session->userdata('post_news') !== NULL) {
             $post_news['post_news'] = $this->session->userdata('post_news');
         }
-
         if ($this->input->post()) {
             $this->form_validation->set_rules("price_night_vn", "Price night", "trim|required|integer");
             $this->form_validation->set_rules("price_night_en", "Price night", "trim|required|integer");
@@ -266,6 +275,96 @@ class Post_room extends AdminHome
         $data['temp'] = 'admin/post_room/post_price';
         $this->load->view('admin/layout', isset($data) ? $data : '');
     }
+    
+    
+    function edit_price($id = -1)
+    {
+
+        if ($this->session->userdata('post_info') !== NULL) {
+            $post_info = $this->session->userdata('post_info');
+        }
+        if (!isset($post_info)) {
+            redirect(admin_url('post_room/edit/'.$id));
+        }
+        if ($this->session->userdata('post_news') !== NULL) {
+            $post_news['post_news'] = $this->session->userdata('post_news');
+        }
+        if($id>0){
+            $data['id'] = $id;
+            $data['data_post_room'] = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+        }
+        if ($this->input->post()) {
+            $this->form_validation->set_rules("price_night_vn", "Price night", "trim|required|integer");
+            $this->form_validation->set_rules("price_night_en", "Price night", "trim|required|integer");
+
+            if ($this->form_validation->run()) {
+                $price_night_vn = $this->input->post('price_night_vn');
+
+                if ($this->input->post('price_night_en') == '') {
+
+                    $price_night_en = $price_night_vn;
+                } else {
+
+                    $price_night_en = $this->input->post('price_night_en');
+                }
+                $price_lastweek_vn = $this->input->post('price_lastweek_vn');
+                $price_lastweek_en = $this->input->post('price_lastweek_en');
+
+                if ($this->input->post('type_last_week')) {
+
+                    $type_last_week = implode(',', $this->input->post('type_last_week'));
+                } else {
+                    $type_last_week = NULL;
+                }
+
+                $price_week_vn = $this->input->post('price_week_vn');
+                $price_week_en = $this->input->post('price_week_en');
+                $price_month_vn = $this->input->post('price_month_vn');
+                $price_month_en = $this->input->post('price_month_en');
+                $deposit_vn = $this->input->post('deposit_vn');
+                $deposit_en = $this->input->post('deposit_en');
+                $price_guest_more_vn = $this->input->post('price_guest_more_vn');
+                $price_guest_more_en = $this->input->post('price_guest_more_en');
+                $clearning_fee_vn = $this->input->post('clearning_fee_vn');
+                $clearning_fee_en = $this->input->post('clearning_fee_en');
+                if ($this->input->post('clearning_type')) {
+                    $clearning_type = $this->input->post('clearning_type');
+                } else {
+                    $clearning_type = NULL;
+                }
+                $cancel_police = $this->input->post('cancel_police');
+                $regulations = $this->input->post('regulations');
+
+                $sess = array(
+                    'price_night_vn' => $price_night_vn,
+                    'price_night_en' => $price_night_en,
+                    'price_lastweek_vn' => $price_lastweek_vn,
+                    'price_lastweek_en' => $price_lastweek_en,
+                    'type_last_week' => $type_last_week,
+                    'price_week_vn' => $price_week_vn,
+                    'price_week_en' => $price_week_en,
+                    'price_month_vn' => $price_month_vn,
+                    'price_month_en' => $price_month_en,
+                    'deposit_vn' => $deposit_vn,
+                    'deposit_en' => $deposit_en,
+                    'price_guest_more_vn' => $price_guest_more_vn,
+                    'price_guest_more_en' => $price_guest_more_en,
+                    'clearning_fee_vn' => $clearning_fee_vn,
+                    'clearning_fee_en' => $clearning_fee_en,
+                    'clearning_type' => $clearning_type,
+                    'cancel_police' => $cancel_police,
+                    'regulations' => $regulations
+                );
+
+                $post_price['post_price'] = $sess;
+                $this->session->set_userdata($post_price);
+                redirect(admin_url('post_room/edit_photo/'.$id));
+            }
+        }
+        $data['title'] = 'Đăng phòng cho thuê';
+        $data['temp'] = 'admin/post_room/post_price';
+        $this->load->view('admin/layout', isset($data) ? $data : '');
+    }
 
     function post_photo($id = -1)
     {
@@ -318,6 +417,74 @@ class Post_room extends AdminHome
             $post = array_merge($post_info, $post_price, $post_photo);
 
             if ($this->post_room_model->create($post)) {
+                $this->session->unset_userdata('post_info');
+                $this->session->unset_userdata('post_price');
+                $this->session->unset_userdata('post_photo');
+                redirect(admin_url('post_room/index'));
+            }
+        }
+
+        $data['title'] = 'Đăng phòng cho thuê';
+        $data['temp'] = 'admin/post_room/post_photo';
+        $this->load->view('admin/layout', isset($data) ? $data : '');
+    }
+    
+    
+    function edit_photo($id = -1)
+    {
+
+        if ($this->session->userdata('post_info') !== NULL) {
+            $post_info = $this->session->userdata('post_info');
+        }
+        if ($this->session->userdata('post_price') !== NULL) {
+            $post_price = $this->session->userdata('post_price');
+        }
+
+        if (!isset($post_info) && !isset($post_price)) {
+            redirect(admin_url('post_room/edit'));
+        } else if (isset($post_info) && !isset($post_price)) {
+            redirect(admin_url('post_room/edit_price'));
+        }
+        if($id>0){
+            $data['data_post_room'] = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            $data['id'] = $id;
+        }
+        $this->load->model('address_model');
+
+        if ($this->input->post('submit')) {
+
+            $upload_path = '/uploads/room';
+            $this->load->library('upload_library');
+            $imageList = array();
+            $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
+            if(count($imageList)<=0) $imageList = $data['data_post_room']->image_list;
+            // pre($imageList);die;
+            $image_list = json_encode($imageList);
+
+            $created = date('Y-m-d : H-i-s');
+            $updated = $created;
+            $sess = array(
+                'image_list' => $image_list,
+                'created' => $created,
+                'updated' => $updated
+            );
+
+            $data_sess['post_photo'] = $sess;
+            $this->session->set_userdata($data_sess);
+            $post_photo = $this->session->userdata('post_photo');
+            /*
+            *	Thêm dữ liệu từ session post_info
+            *
+            *	Thêm dữ liệu vào table address, get id_address
+            *	unset address trong array post_info
+            */
+            $address_id = $this->address_model->insertGetId($post_info['address']);
+            unset($post_info['address']);
+            $post_info['address_id'] = $address_id;
+
+            $post = array_merge($post_info, $post_price, $post_photo);
+
+            if ($this->post_room_model->update($id,$post)) {
                 $this->session->unset_userdata('post_info');
                 $this->session->unset_userdata('post_price');
                 $this->session->unset_userdata('post_photo');
@@ -386,8 +553,8 @@ class Post_room extends AdminHome
 
     function edit($id = -1)
     {
-        if ($this->session->userdata('adminLogin')) {
-            $adminLogin = $this->session->userdata('adminLogin');
+        if ($this->session->userdata('userLogin')) {
+            $userLogin = $this->session->userdata('userLogin');
         }
         if ($id > 0) {
             $data_post_room = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
@@ -411,6 +578,8 @@ class Post_room extends AdminHome
             $data["list_room_type"] = $list_room_type;
             $data["list_amenities"] = $list_amenities;
             $data["list_experience"] = $list_experience;
+            $data['data_post_room'] = $data_post_room;
+//            pre($data['data_post_room']);return;
 
             if ($this->input->post()) {
 
@@ -448,7 +617,7 @@ class Post_room extends AdminHome
                     $num_bed = $this->input->post('num_bed');
                     $num_bathroom = $this->input->post('num_bathroom');
                     $acreage = $this->input->post('acreage');
-                    $user_id = (isset($adminLogin) && is_array($adminLogin)) ? $adminLogin['user_id'] : 0;
+                    $user_id = (isset($userLogin) && is_array($userLogin)) ? $userLogin['user_id'] : 0;
                     if ($this->input->post('amenities') && is_array($this->input->post('amenities'))) {
                         $amenities = implode(',', $this->input->post('amenities'));
                     } else {
@@ -490,7 +659,7 @@ class Post_room extends AdminHome
                     );
                     $data_sess['post_info'] = $sess;
                     $this->session->set_userdata($data_sess);
-                    redirect(admin_url('post_room/post_price'));
+                    redirect(admin_url('post_room/edit_price/'.$id));
                 }
             }
 

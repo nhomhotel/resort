@@ -1,5 +1,5 @@
 <?php
-    // Lay du lieu tu adminLogin
+    // Lay du lieu tu userLogin
     if($this->session->userdata('userLogin')){
         $userLogin = $this->session->userdata('userLogin');
     }

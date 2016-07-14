@@ -55,7 +55,7 @@
 			<div class="widget">
 			    <div class="title">
 					<img src="<?php echo base_url();?>public/admin/images/icons/dark/add.png" class="titleIcon" />
-					<h6><?php echo $title;?></h6>
+					<h6><?php echo $title; ?></h6>
 				</div>								
 				<div class="tab_container tab-content">
 				    <div id='tab1' class="tab_content pd0 tab-pane active" role="tabpanel">
@@ -64,11 +64,30 @@
 							<div class="formRight">
 								<span class="oneTwo">
 
-                                                                    <input type="text" name="address_detail" id="autocomplete" value="<?php echo (isset($post_info))?$post_info['address']['address_detail']:isset($address)?$address->address_detail:set_value('address_detail');?>" _autocheck="true"  placeholder="Nhập địa chỉ ... " />
+                                                                    <input type="text" name="address_detail" id="autocomplete" value="<?php 
+                                                                    
+                                                                    if(isset($post_info)){
+                                                                        echo $post_info['address']['address_detail'];
+                                                                    }elseif(isset($address)){
+                                                                        echo $address->address_detail;
+                                                                    }else{
+                                                                        echo set_value('address_detail');
+                                                                    }?>" _autocheck="true"  placeholder="Nhập địa chỉ ... " />
 
-									<input name="lat" id="lat" value="<?php echo (isset($post_info))?$post_info['address']['lat']:isset($address)?$address->lat:set_value('lat');?>" type="hidden" />
+									<input name="lat" id="lat" value="<?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['lat'];
+                                                                        elseif(isset($address)) echo $address->lat;
+                                                                        else echo set_value('lat');
+                                                                        
+                                                                        
+                                                                        
+                                                                        ?>" type="hidden" />
 
-									<input name="lng" id="lng" value="<?php echo (isset($post_info))?$post_info['address']['lng']:isset($address)?$address->lng:set_value('lng');?>" type="hidden" />
+									<input name="lng" id="lng" value="<?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['lng'];
+                                                                        elseif(isset($address)) echo $address->lng;
+                                                                        else echo set_value('lng');
+//                                                                        echo (isset($post_info))?$post_info['address']['lng']:isset($address)?$address->lng:set_value('lng');?>" type="hidden" />
 								</span>
 								<span name="name_autocheck" class="autocheck"></span>
 								<div name="name_error" class="clear error"></div>
@@ -84,21 +103,34 @@
 								<div class="formRow clearfix address-first">
 								    <label for="address_street" class="col-sm-4 control-label">Địa chỉ 1:</label>
 								    <div class="col-sm-8">
-								      	<textarea placeholder="Tên đường" id="address_1" class="required"  name="address_street"><?php echo (isset($post_info))?$post_info['address']['address_street']:isset($address)?$address->address_street:set_value('address_street'); ?></textarea>
+								      	<textarea placeholder="Tên đường" id="address_1" class="required"  name="address_street"><?php
+                                                                        if(isset($post_info)) echo $post_info['address']['address_street'];
+                                                                        elseif(isset($address)) echo $address->address_street;
+                                                                        else echo set_value('address_street');
+                                                                        
+//                                                                        echo (isset($post_info))?$post_info['address']['address_street']:isset($address)?$address->address_street:set_value('address_street'); ?></textarea>
 								      	<div name="image_error" class="clear error"><?php echo form_error('address_street');?></div>
 								    </div>
 								</div>
 								<div class="formRow clearfix">
 								    <label for="address_2" class="col-sm-4 control-label">Địa chỉ 2:</label>
 								    <div class="col-sm-8">
-								      	<textarea placeholder="Khu du lịch, Căn hộ, tòa nhà, tầng, vv" name="address_2" id="address_2"><?php echo (isset($post_info))?$post_info['address']['address_2']:isset($address)?$address->address_2:set_value('address_2'); ?></textarea>
+								      	<textarea placeholder="Khu du lịch, Căn hộ, tòa nhà, tầng, vv" name="address_2" id="address_2"><?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['address_2'];
+                                                                        elseif(isset($address)) echo $address->address_2;
+                                                                        else echo set_value('address_2');
+//                                                                        echo (isset($post_info))?$post_info['address']['address_2']:isset($address)?$address->address_2:set_value('address_2'); ?></textarea>
 								    </div>
 								</div>
 								<div class="formRow clearfix">
 								    <label for="district" class="col-sm-4 control-label">Quận/Huyện:</label>
 								    <div class="col-sm-8">
 
-								      	<input type="text" name="district" class="required" placeholder="Quận/huyện" id="administrative_area_level_2" readonly="true" value="<?php echo (isset($post_info))?$post_info['address']['district']:isset($address)?$address->district:set_value('district'); ?>">
+								      	<input type="text" name="district" class="required" placeholder="Quận/huyện" id="administrative_area_level_2" readonly="true" value="<?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['district'];
+                                                                        elseif(isset($address)) echo $address->district;
+                                                                        else echo set_value('district');
+//                                                                        echo (isset($post_info))?$post_info['address']['district']:isset($address)?$address->district:set_value('district'); ?>">
 
 								      	<div name="image_error" class="clear error"><?php echo form_error('district');?></div>
 								    </div>
@@ -106,7 +138,11 @@
 								<div class="formRow clearfix">
 								    <label for="provincial" class="col-sm-4 control-label">Tỉnh/Thành phố:</label>
 								    <div class="col-sm-8">
-								      	<input type="text" class="required" placeholder="Tỉnh/Thành phố" name="provincial" id = "administrative_area_level_1" readonly="true" value="<?php echo (isset($post_info))?$post_info['address']['provincial']:isset($address)?$address->provincial:set_value('provincial'); ?>">
+								      	<input type="text" class="required" placeholder="Tỉnh/Thành phố" name="provincial" id = "administrative_area_level_1" readonly="true" value="<?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['provincial'];
+                                                                        elseif(isset($address)) echo $address->provincial;
+                                                                        else echo set_value('provincial');
+//                                                                        echo (isset($post_info))?$post_info['address']['provincial']:isset($address)?$address->provincial:set_value('provincial'); ?>">
 								      	<div name="image_error" class="clear error"><?php echo form_error('provincial');?></div>
 								    </div>
 								</div>
@@ -114,7 +150,11 @@
 								    <label for="zip_code"  class="col-sm-4 control-label">ZIP/ Mã bưu điện</label>
 								    <div class="col-sm-8">
 
-								      	<input type="text" class="required number" placeholder="ZIP/ Mã bưu điện" name="zip_code" id="postal_code" value="<?php echo (isset($post_info))?$post_info['address']['zip_code']:isset($address)?$address->zip_code:set_value('zip_code'); ?>">
+								      	<input type="text" class="required number" placeholder="ZIP/ Mã bưu điện" name="zip_code" id="postal_code" value="<?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['zip_code'];
+                                                                        elseif(isset($address)) echo $address->zip_code;
+                                                                        else echo set_value('zip_code');
+//                                                                        echo (isset($post_info))?$post_info['address']['zip_code']:isset($address)?$address->zip_code:set_value('zip_code'); ?>">
 
 								      	<div name="image_error" class="clear error"><?php echo form_error('zip_code');?></div>
 								    </div>
@@ -123,7 +163,11 @@
 								    <label for="country" class="col-sm-4 control-label">Quốc gia:</label>
 								    <div class="col-sm-8">
 
-								      	<input type="text" class="required" readonly="true" name="country" id="country" value="<?php echo (isset($post_info))?$post_info['address']['country']:isset($address)?$address->country:set_value('country'); ?>">
+								      	<input type="text" class="required" readonly="true" name="country" id="country" value="<?php 
+                                                                        if(isset($post_info)) echo $post_info['address']['country'];
+                                                                        elseif(isset($address)) echo $address->country;
+                                                                        else echo set_value('country');
+//                                                                        echo (isset($post_info))?$post_info['address']['country']:isset($address)?$address->country:set_value('country'); ?>">
 
 								      	<div name="image_error" class="clear error"><?php echo form_error('country');?></div>
 								    </div>
@@ -138,7 +182,11 @@
 									<label class="formLeft">Tên bài đăng:<span class="req">*</span></label>
 									<div class="formRight">
 										<div class="left">
-											<input type="text" class="required" minlength="20" maxlength="50"  id="post_room_name" name="post_room_name" value="<?php echo (isset($post_info))? $post_info['post_room_name'] : set_value('post_room_name');?>" >
+                                                                                    <input type="text" class="required" minlength="20" maxlength="50"  id="post_room_name" name="post_room_name" value="<?php 
+                                                                                    if(isset($post_info)) echo $post_info['post_room_name'];
+                                                                                    elseif(isset($data_post_room)) echo $data_post_room->post_room_name;
+                                                                                    else echo set_value('post_room_name');
+//                                                                                    echo (isset($post_info))? $post_info['post_room_name'] : isset($data_post_room)?$data_post_room->post_room_name:set_value('post_room_name');?>" >
 										</div>
 										<div name="image_error" class="clear error"><?php echo form_error('post_room_name');?></div>
 									</div>
@@ -148,7 +196,11 @@
 									<label class="formLeft">Mô tả:<span class="req">*</span></label>
 									<div class="formRight">
 										<div class="left">
-											<textarea rows="5" name="description" class="required" minlength="300" maxlength="1000" ><?php echo (isset($post_info))? $post_info['description'] : isset($address)?$address->address_detail:set_value('description');?></textarea>
+											<textarea rows="5" name="description" class="required" minlength="300" maxlength="1000" ><?php 
+                                                                                        if(isset($post_info)) echo $post_info['description'];
+                                                                                        elseif(isset($data_post_room)) echo $data_post_room->description;
+                                                                                        else echo set_value('description');
+//                                                                                        echo (isset($post_info))? $post_info['description'] : isset($data_post_room)?$data_post_room->description:set_value('description');?></textarea>
 										</div>
 										<div name="image_error" class="clear error"></div>
 									</div>
@@ -171,7 +223,13 @@
 														}else{
 															$selected = '';
 														}
-													}
+													}elseif(isset ($data_post_room)){
+                                                                                                            if($data_post_room->house_type == $house->house_type_id){
+                                                                                                                    $selected = 'selected';
+                                                                                                            }else{
+                                                                                                                    $selected = '';
+                                                                                                            }
+                                                                                                        }
 											?>
 												<option value="<?php echo $house->house_type_id;?>" <?php echo $selected;?>><?php echo $house->house_type_name;?></option>
 											<?php
@@ -200,6 +258,13 @@
 												foreach ($list_room_type as $room) {
 													if(isset($post_info)){
 														if($post_info['room_type'] == $room->room_type_id){
+															$selected = 'selected';
+														}else{
+															$selected = '';
+														}
+													}
+                                                                                                        elseif(isset($data_post_room)){
+														if($data_post_room->room_type == $room->room_type_id){
 															$selected = 'selected';
 														}else{
 															$selected = '';
@@ -268,6 +333,9 @@
 														if(isset($post_info)){
 															$selected = ($post_info['num_guest'] == $i)?'selected':'';
 														}
+                                                                                                                elseif(isset($data_post_room)){
+															$selected = ($data_post_room->num_guest == $i)?'selected':'';
+														}
 														$more = ($i==10)?'+':'';
 														echo '<option value="'.$i.'" '.$selected.'>'.$i.$more.' người</option>';
 													}
@@ -291,6 +359,9 @@
 														if(isset($post_info)){
 															$selected = ($post_info['num_bedroom'] == $i)?'selected':'';
 														}
+                                                                                                                elseif(isset($data_post_room)){
+															$selected = ($data_post_room->num_bedroom == $i)?'selected':'';
+														}
 														$more = ($i==10)?'+':'';
 														echo '<option value="'.$i.'" '.$selected.'>'.$i.$more.' phòng ngủ</option>';
 													}
@@ -312,6 +383,9 @@
 													for($i = 1; $i <= 10; $i++){
 														if(isset($post_info)){
 															$selected = ($post_info['num_bed'] == $i)?'selected':'';
+														}
+                                                                                                                if(isset($data_post_room)){
+															$selected = ($data_post_room->num_bed == $i)?'selected':'';
 														}
 														$more = ($i==10)?'+':'';
 														echo '<option value="'.$i.'" '.$selected.'>'.$i.$more.' giường</option>';
@@ -336,6 +410,9 @@
 														if(isset($post_info)){
 															$selected = ($post_info['num_bathroom'] == $i)?'selected':'';
 														}
+                                                                                                                elseif(isset($data_post_room)){
+															$selected = ($data_post_room->num_bathroom == $i)?'selected':'';
+														}
 														$more = ($i==10)?'+':'';
 														echo '<option value="'.$i.'" '.$selected.'>'.$i.$more.' phòng tắm</option>';
 													}
@@ -351,7 +428,11 @@
 									<label class="formLeft">Diện tích:</label>
 									<div class="formRight">
 										<div class="left">
-											<input type="text" name="acreage" class="mw160 number" value="<?php echo (isset($post_info))?$post_info['acreage']:isset($address)?$address->address_detail:set_value('acreage');?>"> <strong>m<sup>2</sup></strong>
+											<input type="text" name="acreage" class="mw160 number" value="<?php 
+                                                                                        if(isset($post_info)) echo $post_info['acreage'];
+                                                                                        elseif(isset($data_post_room)) echo $data_post_room->acreage;
+                                                                                        else echo set_value('acreage');
+//                                                                                        echo (isset($post_info))?$post_info['acreage']:isset($data_post_room)?$data_post_room->acreage:set_value('acreage');?>"> <strong>m<sup>2</sup></strong>
 										</div>
 										<div for="acreage" generated="true" class="error"></div>
 										<div name="image_error" class="clear error"></div>
@@ -373,6 +454,9 @@
 									<?php
 										if(isset($post_info)){
 											$amenitiesArr = explode(',', $post_info['amenities']);
+										}
+                                                                                elseif(isset($data_post_room)){
+											$amenitiesArr = explode(',', $data_post_room->amenities);
 										}
 										$checked = '';
 										foreach ($list_amenities as $amenities) {
@@ -418,6 +502,10 @@
 						  				
 						  					if(isset($post_info)){
 						  						$expArr = explode(',', $post_info['experience']);
+
+						  					}
+                                                                                        elseif(isset($data_post_room)){
+						  						$expArr = explode(',', $data_post_room->experience);
 
 						  					}
 						  					$active = '';

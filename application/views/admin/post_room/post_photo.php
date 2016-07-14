@@ -77,7 +77,8 @@
         		</div><!-- End tab_container-->
         		<div class="formSubmit">
         			<div class="prev-step">
-						<a href="<?php echo admin_url('post_room/post_price');?>" class="btn btn-default redB"><< Quay lại</a>
+						<a href="<?php if(isset($data_post_room))echo admin_url('post_room/edit_price/'.$id);
+                                                else echo admin_url('post_room/post_price');?>" class="btn btn-default redB"><< Quay lại</a>
 					</div>
 					<div class="next-tep"> 
            				<input type="submit" name="submit" value="Tiếp tục >>" class="redB" />

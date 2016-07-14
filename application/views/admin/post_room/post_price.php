@@ -71,11 +71,21 @@
 										<div class="left">
 											<label for="name">
 												<span>VNĐ</span>
-												<input type="text" class="required digits mw150" id="price_night_vn" name="price_night_vn" value="<?php echo (isset($post_price))?$post_price['price_night_vn']: set_value('price_night_vn') ;?>">
+												<input type="text" class="required digits mw150" id="price_night_vn" name="price_night_vn" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_night_vn'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_night_vn;
+                                                                                                else echo set_value('price_night_vn');
+                                                                    
+//                                                                                                echo (isset($post_price))?$post_price['price_night_vn']: set_value('price_night_vn') ;?>">
 											</label>
 											<label for="name">
 												<span>USD</span>
-												<input type="text" class="required digits mw150" id="price_night_en" name="price_night_en" value="<?php echo (isset($post_price))?$post_price['price_night_en']: set_value('price_night_en') ;?>">
+												<input type="text" class="required digits mw150" id="price_night_en" name="price_night_en" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_night_en'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_night_en;
+                                                                                                else echo set_value('price_night_en');
+                                                                                                
+//                                                                                                echo (isset($post_price))?$post_price['price_night_en']: set_value('price_night_en') ;?>">
 											</label>
 										</div>
 										<div name="image_error" class="clear error"></div>
@@ -89,11 +99,19 @@
 										<div class="left">
 											<label for="">
 												<span>VNĐ</span>
-												<input type="text" class="digits mw150"  id="price_lastweek_vn" name="price_lastweek_vn" value="<?php echo (isset($post_price))?$post_price['price_lastweek_vn']: set_value('price_lastweek_vn') ;?>">
+												<input type="text" class="digits mw150"  id="price_lastweek_vn" name="price_lastweek_vn" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_lastweek_vn'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_lastweek_vn;
+                                                                                                else echo set_value('price_lastweek_vn');
+//                                                                                                echo (isset($post_price))?$post_price['price_lastweek_vn']: set_value('price_lastweek_vn') ;?>">
 											</label>
 											<label for="">
 												<span>USD</span>
-												<input type="text" class="digits mw150"  id="price_lastweek_en" name="price_lastweek_en" value="<?php echo (isset($post_price))?$post_price['price_lastweek_en']: set_value('price_lastweek_en') ;?>">
+												<input type="text" class="digits mw150"  id="price_lastweek_en" name="price_lastweek_en" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_lastweek_en'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_lastweek_en;
+                                                                                                else echo set_value('price_lastweek_en');
+//                                                                                                echo (isset($post_price))?$post_price['price_lastweek_en']: set_value('price_lastweek_en') ;?>">
 											</label>
 										</div>
 										<div name="image_error" class="clear error"></div>
@@ -109,6 +127,9 @@
 											$day = '';
 											if(isset($post_price)){
 												$set_last_week = explode(',', $post_price['type_last_week']);
+											}
+                                                                                        elseif(isset($data_post_room)){
+												$set_last_week = explode(',', $data_post_room->type_last_week);
 											}
 											foreach ($arrValue as $value) {
 												$checked = '';
@@ -148,11 +169,19 @@
 										<div class="left">
 											<label for="name">
 												<span>VNĐ</span>
-												<input type="text" class="digits mw150" id="price_week_vn" name="price_week_vn" value="<?php echo (isset($post_price))?$post_price['price_week_vn']:set_value('price_week_vn');?>">
+												<input type="text" class="digits mw150" id="price_week_vn" name="price_week_vn" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_week_vn'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_week_vn;
+                                                                                                else echo set_value('price_week_vn');
+//                                                                                                echo (isset($post_price))?$post_price['price_week_vn']:set_value('price_week_vn');?>">
 											</label>
 											<label for="name">
 												<span>USD</span>
-												<input type="text" class="digits mw150" id="price_week_en" name="price_week_en" value="<?php echo (isset($post_price))?$post_price['price_week_en']:set_value('price_week_en');?>">
+												<input type="text" class="digits mw150" id="price_week_en" name="price_week_en" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_week_en'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_week_en;
+                                                                                                else echo set_value('price_week_en');
+//                                                                                                echo (isset($post_price))?$post_price['price_week_en']:set_value('price_week_en');?>">
 											</label>
 										</div>
 										<div name="image_error" class="clear error"></div>
@@ -166,11 +195,19 @@
 										<div class="left">
 											<label for="">
 												<span>VNĐ</span>
-												<input type="text" class="digits mw150"  id="price_month_vn" name="price_month_vn" value="<?php echo (isset($post_price))?$post_price['price_month_vn']:set_value('price_month_vn');?>">
+												<input type="text" class="digits mw150"  id="price_month_vn" name="price_month_vn" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_month_vn'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_month_vn;
+                                                                                                else echo set_value('price_month_vn');
+//                                                                                                echo (isset($post_price))?$post_price['price_month_vn']:set_value('price_month_vn');?>">
 											</label>
 											<label for="">
 												<span>USD</span>
-												<input type="text" class="digits mw150" id="price_month_en" name="price_month_en" value="<?php echo (isset($post_price))?$post_price['price_month_en']:set_value('price_month_en');?>">
+												<input type="text" class="digits mw150" id="price_month_en" name="price_month_en" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_month_en'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_month_en;
+                                                                                                else echo set_value('price_month_en');
+//                                                                                                echo (isset($post_price))?$post_price['price_month_en']:set_value('price_month_en');?>">
 											</label>
 										</div>
 										<div name="image_error" class="clear error"></div>
@@ -191,11 +228,19 @@
 										<div class="left">
 											<label for="name">
 												<span>VNĐ</span>
-												<input type="text" class="digits mw150" id="deposit_vn" name="deposit_vn" value="<?php echo (isset($post_price))?$post_price['deposit_vn']:set_value('deposit_vn');?>">
+												<input type="text" class="digits mw150" id="deposit_vn" name="deposit_vn" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['deposit_vn'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->deposit_vn;
+                                                                                                else echo set_value('deposit_vn');
+//                                                                                                echo (isset($post_price))?$post_price['deposit_vn']:set_value('deposit_vn');?>">
 											</label>
 											<label for="name">
 												<span>USD</span>
-												<input type="text" class="digits mw150" id="deposit_en" name="deposit_en" value="<?php echo (isset($post_price))?$post_price['deposit_en']:set_value('deposit_en');?>">
+												<input type="text" class="digits mw150" id="deposit_en" name="deposit_en" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['deposit_en'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->deposit_en;
+                                                                                                else echo set_value('deposit_en');
+//                                                                                                echo (isset($post_price))?$post_price['deposit_en']:set_value('deposit_en');?>">
 											</label>
 										</div>
 										<div name="image_error" class="clear error"></div>
@@ -214,11 +259,19 @@
 										<div class="left clearfix">
 											<label for="name">
 												<span>VNĐ</span>
-												<input type="text" class="digits mw150" id="price_guest_more_vn" name="price_guest_more_vn" value="<?php echo (isset($post_price))?$post_price['price_guest_more_vn']:set_value('price_guest_more_vn');?>">
+												<input type="text" class="digits mw150" id="price_guest_more_vn" name="price_guest_more_vn" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_guest_more_vn'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_guest_more_vn;
+                                                                                                else echo set_value('price_guest_more_vn');
+//                                                                                                echo (isset($post_price))?$post_price['price_guest_more_vn']:set_value('price_guest_more_vn');?>">
 											</label>
 											<label for="name">
 												<span>USD</span>
-												<input type="text" class="digits mw150" id="price_guest_more_en" name="price_guest_more_en" value="<?php echo (isset($post_price))?$post_price['price_guest_more_en']:set_value('price_guest_more_en');?>">
+												<input type="text" class="digits mw150" id="price_guest_more_en" name="price_guest_more_en" value="<?php 
+                                                                                                if(isset($post_price)) echo $post_price['price_guest_more_en'];
+                                                                                                elseif(isset($data_post_room))echo $data_post_room->price_guest_more_en;
+                                                                                                else echo set_value('price_guest_more_en');
+//                                                                                                echo (isset($post_price))?$post_price['price_guest_more_en']:set_value('price_guest_more_en');?>">
 											</label>
 										</div>
 										<div name="image_error" class="clear error"></div>
@@ -245,6 +298,9 @@
 											$arr_clearning_type = array('0'=>'Một lần ở','1'=>'Một ngày/đêm');
 											if(isset($post_price)){
 												$clearning_type = $post_price['clearning_type'];
+											}
+                                                                                        elseif(isset($data_post_room)){
+												$clearning_type = $data_post_room->clearning_type;
 											}
 											$checked = '';
 											foreach ($arr_clearning_type as $key => $value) {
@@ -276,7 +332,11 @@
 									<label class="formLeft">Chính sách hủy bỏ:</label>
 									<div class="formRight">
 										<div class="left">	
-											<input type="text" class="" id="cancel_police" name="cancel_police" value="<?php echo (isset($post_price))?$post_price['cancel_police']:set_value('cancel_police');?>">
+											<input type="text" class="" id="cancel_police" name="cancel_police" value="<?php 
+                                                                                        if(isset($post_price)) echo $post_price['cancel_police'];
+                                                                                        elseif(isset($data_post_room))echo $data_post_room->cancel_police;
+                                                                                        else echo set_value('cancel_police');
+//                                                                                        echo (isset($post_price))?$post_price['cancel_police']:set_value('cancel_police');?>">
 										</div>
 										<div name="image_error" class="clear error"></div>
 									</div>
@@ -287,7 +347,11 @@
 									<label class="formLeft">Quy định:</label>
 									<div class="formRight">
 										<div class="left">	
-											<textarea rows="5" name="regulations"><?php echo (isset($post_price))?$post_price['regulations']:set_value('regulations');?></textarea>
+											<textarea rows="5" name="regulations"><?php 
+                                                                                        if(isset($post_price)) echo $post_price['regulations'];
+                                                                                        elseif(isset($data_post_room))echo $data_post_room->regulations;
+                                                                                        else echo set_value('regulations');
+//                                                                                        echo (isset($post_price))?$post_price['regulations']:set_value('regulations');?></textarea>
 										</div>
 										<div name="image_error" class="clear error"></div>
 									</div>
@@ -300,7 +364,8 @@
         		</div><!-- End tab_container-->
         		<div class="formSubmit">
         			<div class="prev-step">
-						<a href="<?php echo admin_url('post_room/post');?>" class="btn btn-default redB"><< Quay lại</a>
+						<a href="<?php if(isset($data_post_room))echo admin_url('post_room/edit/'.$id);
+                                                else echo admin_url('post_room/post');?>" class="btn btn-default redB"><< Quay lại</a>
 					</div>
 					<div class="next-tep"> 
            				<input type="submit" name="" value="Tiếp tục >>" class="redB" />

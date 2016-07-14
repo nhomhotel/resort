@@ -66,10 +66,10 @@ class User extends AdminHome
              $input['where']['user.role_id'] = $role_id;
         }
 
-        //Lay session adminLogin de list user != adminLogin
-        if(!is_NULL($this->session->userdata('adminLogin'))){
-            $adminLogin = $this->session->userdata('adminLogin');
-            $input['where']['user_id !='] = $adminLogin['user_id'];
+        //Lay session userLogin de list user != userLogin
+        if(!is_NULL($this->session->userdata('userLogin'))){
+            $userLogin = $this->session->userdata('userLogin');
+            $input['where']['user_id !='] = $userLogin['user_id'];
         }
         $list = $this->user_model->getList($input);
         $data['total'] = $total;
@@ -230,9 +230,9 @@ class User extends AdminHome
     }
 
     function view_account(){
-        if(!is_null($this->session->userdata('adminLogin'))){
-            $adminLogin = $this->session->userdata('adminLogin');
-            // pre($adminLogin);
+        if(!is_null($this->session->userdata('userLogin'))){
+            $userLogin = $this->session->userdata('userLogin');
+            // pre($userLogin);
         }
 
         $data['title'] = 'Thông tin tài khoản';
@@ -289,7 +289,7 @@ class User extends AdminHome
     }
 
     function logout(){
-        if($this->session->userdata('adminLogin')){
+        if($this->session->userdata('userLogin')){
             $this->session->sess_destroy();
         }
         redirect(admin_url('login'));
