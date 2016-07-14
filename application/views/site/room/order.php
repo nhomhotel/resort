@@ -80,20 +80,23 @@ var id = '<?php echo $id_encode;?>';
       <div class="row">
         <div class="form-group col-xs-6">
           <label for="method">Phương thức thanh toán</label>
-          <select>
-            <option value="volvo">Visa</option>
-            <option value="saab">MasterCard</option>
-            <option value="opel">Amex</option>
-            <option value="audi">JCB</option>
-          </select>
+          <div class="dropdown ready open">
+            <button class="dropdown-toggle form-control" type="button" id="method" data-toggle="dropdown"><span class="placeholder">Chọn phương thức thanh toán</span><span class="display"></span></button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="method" style="margin-right: -60px; max-width: 1243px;">
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="visa">Visa</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="mastercard">MasterCard</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="paypal">PayPal</a></li>
+              
+            </ul>
+            <div class="dropdown-menu-chevron" style="left: 185px;"></div>
+            <input type="hidden" name="payment_type" id="payment-type" class="validate" value="">
+          </div>
         </div>
-        <div class="payment-icons no-label form-group col-xs-6">
+          <div class="payment-icons no-label form-group col-xs-6">
           <ul class="list-inline">
-            <li class="payment-visa"></li>
-            <li class="payment-mastercard"></li>
-            <li class="payment-amex"></li>
-            <li class="payment-jcb"></li>
-            <li class="payment-paypal"></li>
+            <li class="payment-visa">111111111</li>
+            <li class="payment-mastercard">22222222222222</li>
+            <li class="payment-paypal">5555555555</li>
           </ul>
         </div>
       </div>

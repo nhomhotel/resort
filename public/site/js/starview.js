@@ -41,6 +41,11 @@ $(document).ready(function(){
             slide: function( event, ui ) {
                 $( "#min-amount" ).val( "$" + ui.values[ 0 ] );
                 $( "#max-amount" ).val( "$" + ui.values[ 1 ] );
+            },
+            change:function(ev, ui){
+                console.log(ui.values[0]);
+                console.log(ui.values[1]);
+                console.log(ev);
             }
         });
         $( "#min-amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ));
@@ -150,9 +155,8 @@ $(document).ready(function(){
                 if(typeof bedroom !==undefined && $.isNumeric(bedroom.val()))data['bedroom'] = bedroom.val();
                 if(typeof bathroom !==undefined && $.isNumeric(bathroom.val()))data['bathroom'] = bathroom.val();
                 if(typeof beds !==undefined && $.isNumeric(beds.val()))data['beds'] = beds.val();
-//                window.location.href = $.query.set("amenities", amenities);
-                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
-                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+//                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+//                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
                 var xhr = $.ajax({
                     url:url+'room/search',
                     data:data,

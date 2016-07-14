@@ -1,8 +1,47 @@
 <?php
+$lang['search_sort_by'] = '';
+$lang['search_popular'] = '';
+$lang['search_price'] = '';
+$lang['search_in_number'] = '';
+$lang['search_post'] = '';
+$lang['search_room_type'] = '';
+$lang['search_size_type'] = '';
+$lang['search_bedroom'] = '';
+$lang['search_bathroom'] = '';
+$lang['search_beds'] = '';
+$lang['search_amenitie'] = '';
+$lang['search_experience'] = '';
+$lang['search_read_more'] = '';
+$lang['search_max_guest'] = '';
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+$lang['search_average_price_of_night'] = '';
+$lang['search_description'] = '';
+$lang['search_cleaning_fee'] = '';
+$lang['search_fee_for_each_additional_guest'] = '';
+$lang['search_no_fee'] = '';
+$lang['search_place'] = '';
+$lang['search_regulation'] = '';
+$lang['search_other_detail'] = '';
+$lang['search_Booking information'] = '';
+$lang['search_Customer name'] = '';
+$lang['search_phone number'] = '';
+$lang['search_Email address'] = '';
+$lang['search_save_info'] = '';
+$lang['search_close'] = '';
+$lang['search_info_customer_false'] = '';
+$lang['search_info_phone_number_false'] = '';
+$lang['search_info_email_false'] = '';
+$lang['search_checkin_bigger_checkout'] = '';
+$lang['search_book'] = '';
+$lang['search_We encrypt your payment information to the security processor'] = '';
+$lang['search_Payment methods'] = '';
+$lang['search_Choose a payment method'] = '';
+$lang['search_info_customer'] = '';
+$lang['search_phone_number_default'] = '';
+$lang['search_share_info_vs_doitac'] = '';
+$lang['search_click_payment'] = '';
+$lang['search_rules'] = '';
+$lang['search_cancellation_policies'] = '';
+$lang['search_'] = '';
+$lang['search_'] = '';
 

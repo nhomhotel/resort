@@ -123,8 +123,8 @@
                                                                 <div id="slider-range"></div>
                                                                 <div class="clearfix">
                                                                     <!-- <label for="amount">Price range:</label> -->
-                                                                    <input  class="tclick" type="text" id="min-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:left">
-                                                                    <input  class="tclick" type="text" id="max-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:right">
+                                                                    <input  class="tclick" type="text" id="min-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:left; float: left; width: 49%">
+                                                                    <input  class="tclick" type="text" id="max-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:right; float: right; width: 49%">
                                                                 </div> 
                                                             </div>
 							</div>

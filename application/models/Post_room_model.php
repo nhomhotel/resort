@@ -61,14 +61,6 @@
                 $this->db->join('room_type','room_type.room_type_id=post_room.room_type');
                 $this->db->join('house_type','house_type.house_type_id=post_room.house_type');
                 $this->db->join('order','order.post_room_id=post_room.post_room_id','left');
-                
-//                $this->db->join('post_room_amenities as pr_amenities','pr_amenities.post_room_id=post_room.post_room_id');
-//                $this->db->join('amenities ','amenities.amenities_id = pr_amenities.amenities_id');
-//                post_room_amenities\
-//                $this->db->join('post_room_experience as pr_experience','pr_experience.post_room_id=post_room.post_room_id');
-//                $this->db->join('experience','pr_experience.experience_id=experience.experience_id');
-//                post_room_experience
-                
                 $this->db->join('user c', 'post_room.user_id = c.user_id', 'left');
                 $this->db->join('role f', 'c.role_id = f.role_id', 'left');
                 if(isset($search_input)&&count($search_input)>0){
@@ -86,13 +78,15 @@
                             $this->db->where('lower(address_street_ascii) like \'%'.$query[0].'%\' or '.'lower(district_ascii) like \'%'.$query[0].'%\'  or '.'lower(provincial_ascii) like \'%'.$query[0].'%\' or '.'lower(country_ascii) like \'%'.$query[0].'%\'');
                             
                         }
-//                        $this->db->or_like('lower(address_street_ascii)', $query); 
-//                        $this->db->or_like('lower(district_ascii)', $query); 
-//                        $this->db->or_like('lower(provincial_ascii)', $query); 
-//                        $this->db->or_like('lower(country_ascii)', $query);
                     }
                     if(isset($search_input['guest'])&&trim($search_input['guest'])!=''){
                         $this->db->where('post_room.num_guest>=',trim($search_input['guest']));
+                    }
+                    if(isset($search_input['bedroom'])&&trim($search_input['bedroom'])!=''){
+                        $this->db->where('post_room.num_bedroom',trim($search_input['bedroom']));
+                    }
+                    if(isset($search_input['beds'])&&trim($search_input['beds'])!=''){
+                        $this->db->where('post_room.num_bed',trim($search_input['beds']));
                     }
                 }
                 $this->db->group_by('post_room.post_room_id');
