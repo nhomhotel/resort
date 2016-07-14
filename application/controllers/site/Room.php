@@ -279,6 +279,9 @@ class Room extends MY_Controller {
             if (!empty($data['guests'])) {
                 $data['guest'] = $data['guests'];
             }
+            if (isset($data['amenities_ids'])) {
+                $data['amenities_ids'] = explode(',', $data['amenities_ids']);
+            }
         }
 
         /* Step 2. Generate query by filter parameters */
@@ -385,7 +388,7 @@ class Room extends MY_Controller {
                 $data['experience'] = !isset($data['experience'])?explode(',', $room->experience):array_merge($data['experience'],array_diff(explode(',', $room->experience),$data['experience']));
                 $data['price_range'][$line] = $room->price_night_vn;
             }
-            $data['table_amenities']= get_checkbox_manage_table('amenities','Tiện nghi',  $this, 120,$this->Amenities_model->getListAll());
+            $data['amenities']= $this->Amenities_model->getListAll()->result();
             $data['table_experiences'] = get_checkbox_manage_table('experiences','Trải nghiệm',  $this, 120,$this->Experience_model->getListAll());
             $data['list_room'] = $list_room;
             sort($data['price_range']);

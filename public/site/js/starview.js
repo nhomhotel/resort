@@ -187,6 +187,12 @@ $(document).ready(function() {
                 if (max >= 0) {
                     url += "&max=" + max;
                 }
+                var amenities_ids = $(".chk-amenities:checked").map(function(){
+                    return $(this).val();
+                }).get();
+                if (amenities_ids.length > 0) {
+                    url += "&amenities_ids=" + amenities_ids.join(",");
+                }
                 window.location.href = url;
                 return false;
             }

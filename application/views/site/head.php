@@ -31,6 +31,7 @@
 <script type="text/javascript" src="<?php echo base_url();?>public/site/js/owl.carousel.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>public/site/js/fotorama.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>public/site/js/starview.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>public/site/js/jquery.sticky.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>public/site/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>public/site/js/bootstrap-datepicker.min.js"></script>
 <!--<script type="text/javascript" src="<?php echo base_url();?>public/site/js/jquery.query-object.js"></script>-->

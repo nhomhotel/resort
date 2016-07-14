@@ -1,3 +1,12 @@
+#search-sticky-wrapper * {
+    z-index: 99999 !important;
+}
+#search-sticky-wrapper #search {
+    padding-bottom: 5px;
+}
+#search-sticky-wrapper #search .block.search {
+    box-shadow: 0 0px 4px #bbb;
+}
 #navigation{
 	background: #fff;
 	min-height: 50px;

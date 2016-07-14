@@ -14,7 +14,7 @@ function get_checkbox_manage_table($id_first, $title,$controller,$sum,$data_elem
         $div .='<div class="panel-body">';
         $div.='<div class="row">';
         $div.=get_checkbox_manage_table_data_rows($id_first, $data_elements, $sum, $controller);
-        
+
         $div.=' </div>';
         $div.='</div>';
         $div.='</div>';
@@ -32,7 +32,7 @@ function get_checkbox_manage_table_data_rows($id_first, $data_elements, $sum,$co
 	foreach($data_elements->result() as $data_element)
 	{
             if($i%2==0){
-                $div_data_row_left .=get_checkbox_data_row($id_first, $data_element, $sum, $controller);  
+                $div_data_row_left .=get_checkbox_data_row($id_first, $data_element, $sum, $controller);
             }else{
                 $div_data_rows_right.=get_checkbox_data_row($id_first, $data_element, $sum, $controller);
             }
@@ -44,12 +44,12 @@ function get_checkbox_manage_table_data_rows($id_first, $data_elements, $sum,$co
 	{
 		$div_data_rows.="<tr><td colspan='10'><span class='col-md-12 text-center text-warning' >".lang('common_no_persons_to_display')."</span></tr>";
 	}
-	
+
 	return $div_data_rows;
 }
 
 function get_checkbox_data_row($id_first, $data_element,$sum, $controller)
-{	
+{
     $name_element = trim(strtolower($data_element->name_en));
     $name_element = str_replace(' ', '_', $name_element);
 	$CI =& get_instance();
@@ -83,9 +83,9 @@ function get_result_search_manage_table_data_rows($id, $data, $controller){
     $div_data_rows .=$id.'-item clearfix';
     $div_data_rows .=$id.'-item clearfix';
     $div_data_rows .=$id.'-item clearfix';
-    
-    
+
+
 }
 function get_result_search_data_row(){
-    
+
 }

@@ -111,8 +111,33 @@
                                 </div>
                             </div>
                         </div>
-                        <!--amenities-->
-                        <?php if (isset($table_amenities) && $table_amenities != '') echo $table_amenities ?>
+
+                        <!-- Amenities -->
+                        <?php if (isset($amenities)) :?>
+                        <?php $columns = array_chunk($amenities, 2); ?>
+                        <div id="amenities-container" class="panel panel-default panel-accordion panel-checkbox panel-more">
+                            <div class="panel-heading"><h3 class="panel-title">Tiện nghi</h3><span class="toggle chevron"></span></div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <?php foreach ($columns as $rows) :?>
+                                    <div class="col-xs-6">
+                                        <?php foreach ($rows as $entity) :?>
+                                        <div class="checkbox">
+                                            <label <?php if (!empty($amenities_ids) && in_array($entity->amenities_id, $amenities_ids)) :?>class="checked"<?php endif; ?>>
+                                                <span class="checked"></span>
+                                                <input class="chk-amenities" <?php if (!empty($amenities_ids) && in_array($entity->amenities_id, $amenities_ids)) :?>checked="checked"<?php endif; ?> name="amenities[]" value="<?php echo $entity->amenities_id; ?>" type="checkbox" /> <span style="position: relative; top: -2px;"><?php echo $entity->name; ?> &nbsp;</span>
+                                            </label>
+                                        </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <div class="cl"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <!-- Amenities -->
+
                         <!-- price-range -->
                         <div id="price_range" class="panel panel-default fill-item price-range">
                             <div class="panel-heading price-range-heading clearfix" data-toggle="collapse"
@@ -261,5 +286,6 @@
         });
         $("#min-amount").val("$" + $("#slider-range").slider("values", 0));
         $("#max-amount").val("$" + $("#slider-range").slider("values", 1));
+        $("#search").sticky({topSpacing: -12});
     });
 </script>
