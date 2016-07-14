@@ -278,11 +278,15 @@ class Room extends MY_Controller
         $data['encode'] = $this->config->item('encode_id');
 
         /* Step 1. Get Parameters */
+        $filters = array();
 
         if (!empty($_GET)) {
             $params = $_GET;
             foreach ($params as $key => $value) {
                 $data[$key] = $value;
+                if ($key != 'page') {
+                    $filters[] = $key . '=' . $value;
+                }
             }
             if (!empty($data['guests'])) {
                 $data['guest'] = $data['guests'];
@@ -305,6 +309,8 @@ class Room extends MY_Controller
         $this->db->join('order', 'order.post_room_id = post_room.post_room_id', 'left');
         $this->db->join('user c', 'post_room.user_id = c.user_id', 'left');
         $this->db->join('role f', 'c.role_id = f.role_id', 'left');
+        $this->db->join('post_room_amenities pa', 'post_room.post_room_id = pa.post_room_id', 'left');
+        $this->db->join('post_room_experience pe', 'post_room.post_room_id = pe.post_room_id', 'left');
 
         if (!empty($params)) {
 
@@ -358,6 +364,18 @@ class Room extends MY_Controller
                 } else {
                     $this->db->where('post_room.num_bed >= ', intval($params['beds']));
                 }
+            }
+
+            /* Filter By Amenities */
+
+            if (!empty($data['amenities_ids'])) {
+                $this->db->where_in('pa.amenities_id', $data['amenities_ids']);
+            }
+
+            /* Filter By Experiences */
+
+            if (!empty($data['experiences_ids'])) {
+                $this->db->where_in('pe.experience_id', $data['experiences_ids']);
             }
 
             /* Filter By Checkin, Checkout day */
@@ -416,6 +434,7 @@ class Room extends MY_Controller
         }
 
         $data['temp'] = ('site/room/list_room');
+        $config['base_url'] = rtrim(base_url() . 'room/search?'. implode('&', $filters));
         $config['total_rows'] = $data['total'];
         $config['per_page'] = 4;
         $config['use_page_numbers'] = TRUE;
