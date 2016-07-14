@@ -193,6 +193,12 @@ $(document).ready(function() {
                 if (amenities_ids.length > 0) {
                     url += "&amenities_ids=" + amenities_ids.join(",");
                 }
+                var experiences_ids = $(".chk-experiences:checked").map(function(){
+                    return $(this).val();
+                }).get();
+                if (experiences_ids.length > 0) {
+                    url += "&experiences_ids=" + experiences_ids.join(",");
+                }
                 window.location.href = url;
                 return false;
             }

@@ -161,7 +161,32 @@
                             </div>
                         </div>
                         <!-- experience -->
-                        <?php if (isset($table_experiences) && $table_experiences != '') echo $table_experiences?>
+
+                        <!-- Experiences -->
+                        <?php if (isset($experiences)) :?>
+                        <?php $columns = array_chunk($experiences, 2); ?>
+                        <div id="experiences-container" class="panel panel-default panel-accordion panel-checkbox panel-more">
+                            <div class="panel-heading"><h3 class="panel-title">Trải nghiệm</h3><span class="toggle chevron"></span></div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <?php foreach ($columns as $rows) :?>
+                                    <div class="col-xs-6">
+                                        <?php foreach ($rows as $entity) :?>
+                                        <div class="checkbox">
+                                            <label <?php if (!empty($experiences_ids) && in_array($entity->experience_id, $experiences_ids)) :?>class="checked"<?php endif; ?>>
+                                                <span class="checked"></span>
+                                                <input class="chk-experiences" <?php if (!empty($experiences_ids) && in_array($entity->experience_id, $experiences_ids)) :?>checked="checked"<?php endif; ?> name="experiences[]" value="<?php echo $entity->experience_id; ?>" type="checkbox" /> <span style="position: relative; top: -2px;"><?php echo $entity->name; ?> &nbsp;</span>
+                                            </label>
+                                        </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php endforeach; ?>
+                                    <div class="cl"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <!-- Experiences -->
                     </form>
                 </div>
             </div>
@@ -281,7 +306,7 @@
                 $("#max-amount").val("$" + ui.values[ 1 ]);
             },
             change: function (ev, ui) {
-                $("#search-button").trigger("click");
+
             }
         });
         $("#min-amount").val("$" + $("#slider-range").slider("values", 0));
