@@ -120,6 +120,7 @@ class Post_room extends AdminHome
 
             if ($this->form_validation->run()) {
 
+                $parent_id = $this->input->post('parent_id');
                 $address_detail = $this->input->post('address_detail');
                 $lat = $this->input->post('lat');
                 $lng = $this->input->post('lng');
@@ -168,6 +169,7 @@ class Post_room extends AdminHome
                         'country' => $country,
                         'country_ascii' => $country_ascii,
                     ),
+                    'parent_id' => $parent_id,
                     'post_room_name' => $post_room_name,
                     'description' => $description,
                     'house_type' => $house_type,
@@ -558,6 +560,11 @@ class Post_room extends AdminHome
         }
         if ($id > 0) {
             $data_post_room = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            /* Load Parent */
+            if (!empty($data_post_room->parent_id)) {
+                $data_post_room->parent = $this->post_room_model->get_row(array('where' => array('post_room_id' => $data_post_room->parent_id)));
+            }
+
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
 
             $this->load->model("house_type_model");

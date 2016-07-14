@@ -288,11 +288,12 @@
 								<!--end room type -->
                                 <!-- room by house -->
                                 <div class="formRow">
-                                    <label class="formLeft">Phòng theo căn [#<span id="label-post-room-id"><?php if (isset($post_info['parent_id'])) :?><?php echo $post_info['parent_id']; ?><?php else :?>0<?php endif; ?></span>] </label>
+                                    <label class="formLeft">Phòng theo căn [#<span id="label-post-room-id"><?php echo (isset($data_post_room->parent_id)) ? $data_post_room->parent_id : 0; ?></span>] </label>
                                     <div class="formRight">
                                         <div class="ui-widget">
-                                            <input type="text" id="auto-complete-parent-id" autocomplete="off"/>
-                                            <input type="hidden" value="<?php if (isset($post_info['parent_id'])) :?><?php echo $post_info['parent_id']; ?><?php else :?>0<?php endif; ?>" id="post-room-parent-id" name="parent_id" />
+                                            <input type="text" id="auto-complete-parent-id" autocomplete="off" value="<?php echo (!empty($data_post_room->parent)) ? $data_post_room->parent->post_room_name : 'Là căn gốc'; ?>" />
+                                            <input type="hidden" value="<?php echo (isset($data_post_room->parent_id)) ? $data_post_room->parent_id : 0; ?>" id="post-room-parent-id" name="parent_id" />
+                                            <p>(*) Gõ để tìm kiếm phòng theo căn</p>
                                         </div>
                                         <div name="image_error" class="clear error"></div>
                                     </div>
