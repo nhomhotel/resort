@@ -1,7 +1,11 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Room extends MY_Controller
 {
+    const ITEM_PER_PAGE = 10;
+
     function __construct()
     {
         parent:: __construct();
@@ -278,6 +282,7 @@ class Room extends MY_Controller
         $data['encode'] = $this->config->item('encode_id');
 
         /* Step 1. Get Parameters */
+
         $filters = array();
 
         if (!empty($_GET)) {
@@ -299,14 +304,34 @@ class Room extends MY_Controller
             }
         }
 
-        /* Step 2. Generate query by filter parameters */
+        /* Step 2. Select Room Ordered In Range Day */
+
+        if (!empty($params['checkin']) && !empty($params['checkout'])) {
+            $date_parts = explode('/', $params['checkin']);
+            if (count($date_parts) === 3) {
+                $checkin_day = $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
+            }
+            $date_parts = explode('/', $params['checkin']);
+            if (count($date_parts) === 3) {
+                $checkout_day = $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
+            }
+        }
+
+        $this->db->select('post_room_id');
+        $this->db->from('order');
+        $this->db->where('checkin >= "'.$checkin_day.'" AND checkin <= "'.$checkout_day.'"');
+        $result = $this->db->get()->result();
+        echo $this->db->last_query();
+        print_r ($result);
+
+        /* Step 3. Generate query by filter parameters */
 
         $this->db->select('post_room.*,house_type.house_type_name,house_type.house_type_id,address.address_detail,room_type.room_type_name');
         $this->db->from('post_room');
         $this->db->join('address', 'address.address_id = post_room.address_id');
         $this->db->join('room_type', 'room_type.room_type_id = post_room.room_type');
         $this->db->join('house_type', 'house_type.house_type_id = post_room.house_type');
-        $this->db->join('order', 'order.post_room_id = post_room.post_room_id', 'left');
+        $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
         $this->db->join('user c', 'post_room.user_id = c.user_id', 'left');
         $this->db->join('role f', 'c.role_id = f.role_id', 'left');
         $this->db->join('post_room_amenities pa', 'post_room.post_room_id = pa.post_room_id', 'left');
@@ -356,6 +381,45 @@ class Room extends MY_Controller
                 }
             }
 
+            $current_language = $this->session->userdata('language');
+            if (empty($current_language)) {
+                $current_language = 'vietnamese';
+            }
+            $dollar_value = 22000;
+
+            /* Filter By Min / Max value */
+
+            if (!empty($params['min'])) {
+                switch ($current_language) {
+                    case 'vietnamese':
+                        $this->db->where('post_room.price_night_vn >= ' . intval($params['min']));
+                        break;
+                    case 'english':
+                        $params['min'] = intval($params['min']) * $dollar_value;
+                        $this->db->where('post_room.price_night_en >= ' . intval($params['min']));
+                        break;
+                    default:
+                        $params['min'] = intval($params['min']) * $dollar_value;
+                        $this->db->where('post_room.price_night_vn >= ' . $params['min']);
+                        break;
+                }
+            }
+
+            if (!empty($params['max'])) {
+                switch ($current_language) {
+                    case 'vietnamese':
+                        $this->db->where('post_room.price_night_vn <= ' . intval($params['max']));
+                        break;
+                    case 'english':
+                        $params['max'] = intval($params['max']) * $dollar_value;
+                        $this->db->where('post_room.price_night_en <= ' . intval($params['max']));
+                        break;
+                    default:
+                        $this->db->where('post_room.price_night_vn <= ' . intval($params['max']));
+                        break;
+                }
+            }
+
             /* Filter By Num Beds */
 
             if (!empty($params['beds'])) {
@@ -378,31 +442,23 @@ class Room extends MY_Controller
                 $this->db->where_in('pe.experience_id', $data['experiences_ids']);
             }
 
-            /* Filter By Checkin, Checkout day */
+            /* Filter By Check-in, Check-out day */
 
-            if (!empty($params['checkin']) && !empty($params['checkout'])) {
-                $date_parts = explode('/', $params['checkin']);
-                if (count($date_parts) === 3) {
-                    $checkin_day = $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
-                }
-                $date_parts = explode('/', $params['checkin']);
-                if (count($date_parts) === 3) {
-                    $checkout_day = $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
-                }
-                if (isset($checkin_day) && isset($checkout_day)) {
-                    $this->db->where('(order.checkin >= "' . $checkin_day . '" OR order.checkout <= "' . $checkout_day . '")');
-                }
+            if (isset($checkin_day) && isset($checkout_day)) {
+                $this->db->where('(order.checkin <= "' . $checkin_day . '" OR order.checkout > "' . $checkout_day . '")');
             }
         }
+
+        $start = isset($_GET['page']) && trim($_GET['page']) != '' ? ($_GET['page'] - 1) * $data['per_page'] : 0;
         $this->db->group_by('post_room.post_room_id');
-        $this->db->limit(100);
-        $this->db->offset(0);
+        $this->db->limit(self::ITEM_PER_PAGE);
+        $this->db->offset($start);
         $result = $this->db->get();
         $query = $this->db->last_query();
 
         $show_query = $this->input->get('show_query');
         if (!empty($show_query)) {
-            echo $query;
+            $data['mysql_query'] = $query;
         }
 
         $data['total'] = $result->num_rows();
@@ -434,7 +490,7 @@ class Room extends MY_Controller
         }
 
         $data['temp'] = ('site/room/list_room');
-        $config['base_url'] = rtrim(base_url() . 'room/search?'. implode('&', $filters));
+        $config['base_url'] = rtrim(base_url() . 'room/search?' . implode('&', $filters));
         $config['total_rows'] = $data['total'];
         $config['per_page'] = 4;
         $config['use_page_numbers'] = TRUE;

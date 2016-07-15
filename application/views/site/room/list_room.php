@@ -37,6 +37,18 @@
 </section>
 <section id="main-list">
     <div class="container">
+
+        <?php if (!empty($mysql_query)) :?>
+            <div class="row">
+                <div class="panel col-md-12">
+                    <div class="panel-heading"><strong>Truy vấn</strong></div>
+                    <div class="panel-body">
+                        <?php echo $mysql_query; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="row">
             <!-- <div  style="max-width: 1170px;margin: 0 auto;"> -->
             <div id="sidebar" class="col-md-4  visible-lg visible-md">
@@ -207,7 +219,7 @@
                             </label>
                         </div>
                     </div>
-                    <div id="pager" class="col-sm-6">
+                    <div id="pager" class="col-sm-6 hidden">
                         <span> 1 - 4 trong số 4 Bài đăng</span>
                     </div>
                     <div id="filter-active">
@@ -276,7 +288,7 @@
                     ?>
                 </div>
                 <nav id="pagination">
-                    <?php echo $pagination_link;?>
+                    <?php echo $pagination_link; ?>
                 </nav>
             </div>
         </div>

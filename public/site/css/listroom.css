@@ -1,6 +1,7 @@
 #search-sticky-wrapper * {
-    z-index: 99999 !important;
+    z-index: 9 !important;
 }
+
 #search-sticky-wrapper #search {
     padding-bottom: 5px;
 }
