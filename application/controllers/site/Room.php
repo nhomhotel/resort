@@ -290,6 +290,7 @@ class Room extends MY_Controller
         $data = array();
         $data['encode'] = $this->config->item('encode_id');
         $data['per_page'] = self::ITEM_PER_PAGE;
+        $data['sort_by'] = 'popular';
 
         /* Step 1. Get Parameters */
 
