@@ -50,13 +50,29 @@
             <div class="block">
                 <h3><?php echo lang('home_popular_destination');?></h3>
                 <ul>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/singapore.jpg" class="img-responsive">
+                    <?php $i=0;foreach ($popular->result() as $key => $value):
+                        $i++;
+                            $image[] = json_decode($value->image_list)[0];
+                            $post_room_name[] = $value->post_room_name;
+                            $href[] = base_url().urlencode($value->post_room_name);?>
+                            <li class="location-item <?php if($i==4||$i==5) echo 'col-xs-6';
+                            else echo 'col-xs-6';?>">
+                                <a href="<?php echo base_url().'room/search?location='.urlencode($value->post_room_name);?>">
+                                    <img style=" width: 741px; height: 395px"src="<?php if(count(json_decode($value->image_list))>0)
+                                    echo base_url().json_decode($value->image_list)[0];?>" class="img-responsive">
+                                    <p><?php echo $value->post_room_name;?></p>
+                                </a>
+                            <?php endforeach;
+                        ?>
+                    
+                    
+                        
+<!--                        <a href="listroom.html">
+                            <img src="<?php // echo base_url().$image[0];?>" class="img-responsive">
                             <p>Singapore</p>
-                        </a>
+                        </a>-->
                     </li>
-                    <li class="location-item col-sm-4 col-xs-6">
+<!--                    <li class="location-item col-sm-4 col-xs-6">
                         <a href="listroom.html">
                             <img src="<?php echo base_url();?>public/site/images/hong-kong.jpg" class="img-responsive">
                             <p>Hong Kong</p>
@@ -97,7 +113,7 @@
                             <img src="<?php echo base_url();?>public/site/images/seoul.jpg" class="img-responsive">
                             <p>Seoul</p>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>

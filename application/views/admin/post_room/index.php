@@ -72,6 +72,7 @@
                         <td>Giá phòng</td>
                         <td>Người đăng</td>
                         <td>trạng thái</td>
+                        <td>Hiện thị trang home</td>
                         <td>Created</td>
                         <td>Hành động</td>
                         <td>ID</td>
@@ -141,6 +142,20 @@
                             <?php
                             } ?>
                         </td>
+                        <td class="textC" id="show_home">
+                            <?php
+                            if($row->show_home == 1){ ?>
+                                <a href="javascript:void(0)" onclick="show_home(<?php echo $row->post_room_id;?>)" class="lightbox" title="block">
+                                    <img src="<?php echo base_url();?>public/admin/images/icons/color/tick.png" />
+                                </a>
+                            <?php
+                            }else{ ?>
+                                <a href="javascript:void(0)" onclick="show_home(<?php echo $row->post_room_id;?>)" class="lightbox" title="active">
+                                    <img src="<?php echo base_url();?>public/admin/images/icons/color/block.png" />
+                                </a>
+                            <?php
+                            } ?>
+                        </td>
                         <td class="textC"><?php echo date('d-m-Y - H:i:s',strtotime($row->created));?></td>
                         <td class="textC">
                             <a href="javascript:void(0)" class="lightbox" title="delete" onclick="del(<?php echo $row->post_room_id;?>)">
@@ -191,6 +206,19 @@
         });
     }
 
+    function show_home(id){
+        var url = '<?php echo admin_url('post_room/show_home');?>';
+        var urlCurrent = window.location.href;
+        $.ajax({
+            url: url, 
+            type: "POST",
+            data : { 'id'  :id },
+            dataType: 'text',
+            success: function(result){
+                $(".myTable").load(urlCurrent + " .myTable");
+            }
+        });
+    }
     function del(id){
         var url = '<?php echo admin_url();?>';
         var urlDel = url+'/post_room/delete/'+id;

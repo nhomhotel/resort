@@ -1,20 +1,20 @@
 <?php
-$lang['search_sort_by'] = '';
-$lang['search_popular'] = '';
-$lang['search_price'] = '';
-$lang['search_in_number'] = '';
-$lang['search_post'] = '';
-$lang['search_room_type'] = '';
-$lang['search_size_type'] = '';
-$lang['search_bedroom'] = '';
-$lang['search_bathroom'] = '';
-$lang['search_beds'] = '';
-$lang['search_amenitie'] = '';
-$lang['search_experience'] = '';
-$lang['search_read_more'] = '';
-$lang['search_max_guest'] = '';
+$lang['search_sort_by'] = 'Sắp xếp theo:';
+$lang['search_popular'] = 'Phổ biến';
+$lang['search_price'] = 'Giá';
+$lang['search_in_number'] = 'trong số ';
+$lang['search_post'] = 'Bài đăng';
+$lang['search_room_type'] = 'Loại phòng';
+$lang['search_size_type'] = 'Diện tích';
+$lang['search_bedroom'] = 'Phòng ngủ';
+$lang['search_bathroom'] = 'phòng tắm';
+$lang['search_beds'] = 'Giường';
+$lang['search_amenitie'] = 'Tiện nghi';
+$lang['search_experience'] = 'Trải nghiệm';
+$lang['search_read_more'] = 'Hiện thị thêm';
+$lang['search_max_guest'] = 'Số khách tối đa';
 
-$lang['search_average_price_of_night'] = '';
+$lang['search_average_price_of_night'] = 'Giá trung bình theo đêm';
 $lang['search_description'] = '';
 $lang['search_cleaning_fee'] = '';
 $lang['search_fee_for_each_additional_guest'] = '';
@@ -41,7 +41,7 @@ $lang['search_phone_number_default'] = '';
 $lang['search_share_info_vs_doitac'] = '';
 $lang['search_click_payment'] = '';
 $lang['search_rules'] = '';
-$lang['search_cancellation_policies'] = '';
+$lang['search_cancellation_policies'] = 'Chính sách hủy phòng';
 $lang['search_'] = '';
 $lang['search_'] = '';
 

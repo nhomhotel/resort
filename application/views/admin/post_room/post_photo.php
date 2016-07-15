@@ -72,6 +72,10 @@
 								</div>	
 						  	</div>
 						</div>
+                                        <div class="checkbox">
+                                                <label><input type="checkbox" name="show_home" id="show_home" value="1">show ảnh ra trang home</label>
+                                        </div>
+                                                
 						<div class="formRow hide"></div>
 					</div> 
         		</div><!-- End tab_container-->

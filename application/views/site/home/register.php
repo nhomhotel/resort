@@ -6,7 +6,7 @@
             <div class="modal-content">
                 <div class="modal-header">
 
-                    <h4 class="modal-title">Đăng ký</h4>
+                    <h4 class="modal-title"><?php echo lang('home_register')?></h4>
                 </div>
                 <div class="modal-body">
                     <form accept-charset="UTF-8" action="<?php echo base_url()?>site/user/create" method="post" name="signup">
@@ -16,11 +16,11 @@
                                 value="OqrtQgtHo5HUCnGv0mUTtoB4KKQ26LmXC+AVh5kdpcU="/></div>
                         <div id="signup-name">
                             <div id="signup-first-name" class="form-group">
-                                <input class="form-control" name="first_name" placeholder="Tên" size="30"
+                                <input class="form-control" name="first_name" placeholder="<?php echo lang('first_name');?>" size="30"
                                        type="text" value=""/>
                             </div>
                             <div id="signup-last-name" class="form-group">
-                                <input class="form-control" name="last_name" placeholder="Họ" size="30"
+                                <input class="form-control" name="last_name" placeholder="<?php echo lang('comm_last_name')?>" size="30"
                                        type="text" value=""/>
                             </div>
                         </div>
@@ -30,12 +30,12 @@
                         </div>
                         <div class="form-group">
                             <div  class="form-group">
-                                <input class="form-control" name="user_name" placeholder="Tên đăng nhập" size="30"
+                                <input class="form-control" name="user_name" placeholder="<?php echo lang('comm_user_name')?>" size="30"
                                        type="text" value=""/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name="password" placeholder="Mật khẩu" size="30"
+                            <input class="form-control" name="password" placeholder="<?php echo lang('comm_password')?>" size="30"
                                    type="password"/>
 
                             <div class="password-meter">
@@ -45,17 +45,13 @@
                                 <div class="password-meter-message"></div>
                             </div>
                         </div>
-                        <p class="tip">Với việc nhấn vào Đăng Ký, bạn đồng ý với <a href="#"
-                                                                                    target="_blank">Điều kiện và
-                                điều khoản</a> và <a href="#"_blank>Chính sách bảo mật</a> của
-                            trang web.</p>
+                        <p class="tip"><?php echo lang('comm_info_register')?></p>
                         <input class="btn btn-primary btn-lg btn-block tclick" data-tkey="Sign Up"
-                               data-tloc="Sign-Up Page" name="commit" type="submit" value="Đăng ký"/>
+                               data-tloc="Sign-Up Page" name="commit" type="submit" value="<?php echo lang('home_register')?>"/>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <p class="tip">Đã là thành viên? <a href="#" id="signup-signin">Đăng nhập tại
-                            đây</a></p>
+                    <p class="tip"><?php echo lang('comm_is_member')?> <a href="#" id="signup-signin"><?php echo lang('home_login')?></a></p>
                 </div>
                 <style type="text/css">
                     .btn-lg.btn-social {

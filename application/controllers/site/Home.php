@@ -5,12 +5,16 @@ class Home extends MY_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('Address_model');
+        $this->load->model('Post_room_model');
         $this->load->library('form_validation');
     }
     public function index()
     {
+        $this->load->model('Post_room_model');
         $data['meta_title'] = 'STAR VIEW Home page';
         $data['temp'] = ('site/home/index');
+        $data['popular'] = $this->Post_room_model->get_popular(8);
+//        pre($data['popular']->result());return;
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
     public function bookroom()

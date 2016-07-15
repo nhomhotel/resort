@@ -43,9 +43,63 @@ $(document).ready(function(){
                 $( "#max-amount" ).val( "$" + ui.values[ 1 ] );
             },
             change:function(ev, ui){
-                console.log(ui.values[0]);
-                console.log(ui.values[1]);
-                console.log(ev);
+                $('#list-room').html('');
+                var data = {};
+                var location = $('#location');
+                var checkin = $('#checkin');
+                var checkout=$('#checkout');
+                var guest=$('#guest');
+                var amenities = '';
+                var experiences = '';
+                var bedroom = $('#bedroom');
+                var bathroom =$('#bathroom');
+                var beds =$('#beds');
+                var popular_sort = $('#popular-sort');
+                var price_sort = $('#price-sort');
+                
+                if(typeof location !==undefined && location.val() !='')data['location'] = location.val();
+                if(typeof checkin !==undefined && checkin.val() !='')data['checkin'] = checkin.val();
+                if(typeof checkout !==undefined && checkout.val() !='')data['checkout'] = checkout.val();
+                if(typeof guest !==undefined && guest.val() !='')data['guest'] = guest.val();
+                
+                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+                if(typeof experiences !==undefined && experiences !='')data['experiences'] = experiences;
+                if(typeof bedroom !==undefined && $.isNumeric(bedroom.val()))data['bedroom'] = bedroom.val();
+                if(typeof bathroom !==undefined && $.isNumeric(bathroom.val()))data['bathroom'] = bathroom.val();
+                if(typeof beds !==undefined && $.isNumeric(beds.val()))data['beds'] = beds.val();
+                var t = $(this);
+                if(typeof popular_sort !==undefined && popular_sort.val()!=''){
+                    if(t.hasClass('active')&&t.hasClass('popular')){
+                        data['sort'] = 0;
+                    }
+                }
+                if(typeof price_sort !==undefined && t.hasClass('sort')){
+                    if(t.hasClass('active')){
+                        if(t.hasClass('sort-reverse'))data['sort']=1;
+                        else data['sort'] = 2;
+                    }
+                }
+                if(ui.values[0] >0){
+                    data['min_amount'] = ui.values[0];
+                }
+                if(ui.values[1]<1000 ){
+                    data['max_amount'] = ui.values[1];
+                };
+                var xhr = $.ajax({
+                    url:url+'room/ajax_search',
+                    data:data,
+                    type:'GET',
+                    success:function(data){
+                        if(typeof data['error']!==undefined){
+                            $('#list-room').html('');
+                        }
+                        if(typeof data['pages'] !==undefined){
+                            $('#list-room').html(data['pages']);
+                        }
+                    },
+                    error:'',
+                    dataType: 'json',
+                })
             }
         });
         $( "#min-amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ));
@@ -59,10 +113,35 @@ $(document).ready(function(){
     });
 
     $(function(){
-        $("#price-sort").on("click",function(){
-            $("#price-sort").toggleClass("sort-reverse");
-        });
+//        $("#price-sort").on("click",function(){
+//            $("#price-sort").toggleClass("sort-reverse");
+//        });
     });
+    $(function () {
+    $(document).on("click.bs.button.data-api", ".btn-group .btn", function () {
+        var t = $(this);
+        if (t.hasClass("sort") && !t.hasClass("active")) {
+        }else if (t.hasClass("sort") && t.hasClass("active")) {
+            var e = $(this).find("input");
+            if (t.hasClass("sort-reverse")) {
+                t.removeClass("sort-reverse");
+                var i = e.attr("data-value");
+                i && e.val(i);
+            } else {
+                t.addClass("sort-reverse");
+                var i = e.attr("data-value-reverse");
+                i && e.val(i);
+            }
+            e.change();
+        }
+        
+        if(t.hasClass('popular')&&!t.hasClass('active')){
+            console.log('search: popular '+$(this).find('input').val());
+        }
+    }).on("click.bs.button.data-api", ".btn.disabled", function (t) {
+        t.stopPropagation();
+    })
+})
     $(function(){
         $('.checkbox input[type="checkbox"]', '.checkbox-inline input[type="checkbox"]').each(function () {
         $(this).prop("checked") && $(this).parent("label").addClass("checked"), $(this).prop("disabled") && $(this).parent("label").addClass("disabled")
@@ -71,12 +150,20 @@ $(document).ready(function(){
         })
     });
     $(function(){
-        var room_type = [];
+        var room_type = '';
         var amenities = '';
         var experiences = '';
         var bedroom = $('#bedroom');
         var bathroom =$('#bathroom');
         var beds =$('#beds');
+        var min_amount =$('#min-amount');
+        var max_amount =$('#max-amount');
+        var popular_sort = $('#popular-sort');
+        var price_sort = $('#price-sort');
+        var location = $('#location');
+        var checkin = $('#checkin');
+        var checkout=$('#checkout');
+        var guest=$('#guest');
         $('.tclick').click(function(){
             var currentclick = $(this);
             if(currentclick.parent().hasClass('book-action')){
@@ -104,7 +191,9 @@ $(document).ready(function(){
                 window.location.href = url+'room/order_room/'+id+'?checkin='+checkin.val()+"&checkout="+checkout.val()+"&guests="+guest.val();
             }
             else{
-//                if(typeof )
+                var checkin = $('#checkin');
+                var checkout=$('#checkout');
+                var guest=$('#guest');
                 var amenities = '';
                 var experiences = '';      
                 $('[name="amenities"]:checked').each(function(){
@@ -113,56 +202,56 @@ $(document).ready(function(){
                 $('[name="experiences"]:checked').each(function(){
                     experiences +=$(this).data('tloc')+',';
                 })
-
-                $("#room_type label.tclick ").each(function(index){
-                    var cur = $(this);
-                    data_tloc = cur.data('tloc');
-        //            if(room_type.length==0){room_type.push(data_tloc);}
-        //            else{
-                        var index = room_type.indexOf(data_tloc);
-                        if(index==-1){
-                            room_type.push(data_tloc);
-                        }else{
-                            room_type.splice(index,1);
-                        }
-        //            }
-                })
-//                console.log(amenities);
-//                console.log(experiences);
-//                console.log(bedroom);
-//                console.log(bathroom);
-//                console.log(beds);
-//                console.log($('input#location,input#checkin,input#checkout,input#guest,input#option1,input#price-sort,input#entry-home'));
                 var currentthis = $(this);
                 var room_types = '';
-//                $('#room_type .tclick').each(function(){
-//                    if(currentthis.data('tloc')==$(this).data('tloc')){
-//                         var xxx = $(this).attr("class").split(' ');
-//                         $.each(xxx, function(a,v){
-//                             if(v==='active'){
-//                                 console.log('da active truoc day');
-//                             }
-//                         })
-//                         
-//                    }
-//                    console.log(currentthis.data('tloc'));
-//                    console.log($(this).data('tloc'));
-//                });
-//                return false;
                 var data = {};
+                if(typeof location !==undefined && location.val() !='')data['location'] = location.val();
+                if(typeof checkin !==undefined && checkin.val() !='')data['checkin'] = checkin.val();
+                if(typeof checkout !==undefined && checkout.val() !='')data['checkout'] = checkout.val();
+                if(typeof guest !==undefined && guest.val() !='')data['guest'] = guest.val();
+                
                 if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
                 if(typeof experiences !==undefined && experiences !='')data['experiences'] = experiences;
                 if(typeof bedroom !==undefined && $.isNumeric(bedroom.val()))data['bedroom'] = bedroom.val();
                 if(typeof bathroom !==undefined && $.isNumeric(bathroom.val()))data['bathroom'] = bathroom.val();
                 if(typeof beds !==undefined && $.isNumeric(beds.val()))data['beds'] = beds.val();
-//                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
-//                if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
+                if(typeof min_amount !==undefined ){
+                    var min_value = min_amount.val().split('$')[1];
+                    if(parseInt(min_value)>0) data['min_amount'] = min_value;
+                }
+                if(typeof max_amount !==undefined ){
+                    var max_value = max_amount.val().split('$')[1];
+                    if(parseInt(max_value)<1000) data['max_amount'] = max_value;
+                }
+                var t = $(this);
+                if(typeof popular_sort !==undefined && popular_sort.val()!=''){
+                    if(!t.hasClass('active')&&t.hasClass('popular')){
+                        data['sort'] = 0;
+                    }
+                }
+                if(typeof price_sort !==undefined && t.hasClass('sort')){
+                    if(!t.hasClass('active')){
+                        if(t.hasClass('sort-reverse'))data['sort'] = 2;
+                        else data['sort'] = 1;
+                    }else{
+                        if(t.hasClass('sort-reverse'))data['sort']=1;
+                        else data['sort'] = 2;
+                    }
+                }
+//                if(!t.hasClass('active')&&t.attr('data-tloc')=='entire_home_or_apt'){
+//                    console.log('nguyen can');
+//                };
                 var xhr = $.ajax({
-                    url:url+'room/search',
+                    url:url+'room/ajax_search',
                     data:data,
                     type:'GET',
                     success:function(data){
-                        console.log(data);
+                        if(typeof data['error']!==undefined){
+                            $('#list-room').html('');
+                        }
+                        if(typeof data['pages'] !==undefined){
+                            $('#list-room').html(data['pages']);
+                        }
                     },
                     error:'',
                     dataType: 'json',

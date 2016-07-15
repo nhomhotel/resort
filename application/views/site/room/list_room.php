@@ -123,8 +123,8 @@
                                                                 <div id="slider-range"></div>
                                                                 <div class="clearfix">
                                                                     <!-- <label for="amount">Price range:</label> -->
-                                                                    <input  class="tclick" type="text" id="min-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:left; float: left; width: 49%">
-                                                                    <input  class="tclick" type="text" id="max-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:right; float: right; width: 49%">
+                                                                    <input  class="tclick" type="text" id="min-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:left">
+                                                                    <input  class="tclick" type="text" id="max-amount" class="w50 pull-left" readonly style="border:0; color:#398fd1; font-weight:bold;text-align:right">
                                                                 </div> 
                                                             </div>
 							</div>
@@ -139,12 +139,12 @@
 					<div id="sort" class="col-sm-6 form-group">
 						<label>Sắp xếp theo:</label>
 						<div class="btn-group" data-toggle="buttons">
-							<label class="btn btn-default active">
-							    <input  class="tclick" type="radio" name="options" id="option1" autocomplete="off" checked> 
+							<label class="btn btn-default popular active tclick">
+							    <input  class="" type="radio" name="popular-value" id="popular-value" value='0' autocomplete="off" checked> 
 							    Phổ biến
 							</label>
-							<label class="btn btn-default" id="price-sort">
-							    <input  class="tclick" type="radio" name="options" id="option2" autocomplete="off"> 
+							<label class="btn btn-default sort tclick" id="price-sort">
+							    <input  class="" type="radio" name="options" data-value-reverse="2" data-value="1" id="option2" autocomplete="off"> 
 							    Giá
 							    <span class="glyphicon glyphicon-sort-by-attributes up"></span>
 							    <span class="glyphicon glyphicon-sort-by-attributes-alt down"></span>

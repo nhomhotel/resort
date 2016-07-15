@@ -388,11 +388,13 @@ class Post_room extends AdminHome
 
         if ($this->input->post('submit')) {
 
-            $upload_path = '/uploads/room';
+            $upload_path = './uploads/room';
             $this->load->library('upload_library');
             $imageList = array();
             $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
-            // pre($imageList);die;
+            foreach ($imageList as $key =>$value){
+                $imageList[$key] = str_replace('./uploads', '/uploads', $value);
+            }
             $image_list = json_encode($imageList);
 
             $created = date('Y-m-d : H-i-s');
@@ -454,21 +456,32 @@ class Post_room extends AdminHome
         $this->load->model('address_model');
 
         if ($this->input->post('submit')) {
-
-            $upload_path = '/uploads/room';
+            if($this->input->post('show_home'))$show_home = 1;
+            else $show_home=0;
+            $upload_path = './uploads/room';
             $this->load->library('upload_library');
             $imageList = array();
             $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
-            if(count($imageList)<=0) $imageList = $data['data_post_room']->image_list;
-            // pre($imageList);die;
+            $imageShowHome = $this->upload_library->upload_files($upload_path, 'image');
+            if(count($imageList)<=0) $imageList = json_decode ($data['data_post_room']->image_list);
+            else{
+                foreach (json_decode($data['data_post_room']->image_list) as $key =>$value){
+                   if(unlink($value)) echo 'da xoa';
+                }   
+            }
+            foreach ($imageList as $key =>$value){
+                $imageList[$key] = str_replace('./uploads', '/uploads', $value);
+            }
+            $imageShowHome = str_replace('./uploads', '/uploads', $imageShowHome);
             $image_list = json_encode($imageList);
-
+            
             $created = date('Y-m-d : H-i-s');
             $updated = $created;
             $sess = array(
                 'image_list' => $image_list,
                 'created' => $created,
-                'updated' => $updated
+                'updated' => $updated,
+                'show_home'=>$show_home
             );
 
             $data_sess['post_photo'] = $sess;
@@ -485,7 +498,6 @@ class Post_room extends AdminHome
             $post_info['address_id'] = $address_id;
 
             $post = array_merge($post_info, $post_price, $post_photo);
-
             if ($this->post_room_model->update($id,$post)) {
                 $this->session->unset_userdata('post_info');
                 $this->session->unset_userdata('post_price');
@@ -517,6 +529,31 @@ class Post_room extends AdminHome
             } else {
                 $data = array(
                     'status' => 1,
+                );
+            }
+        }
+        if ($this->post_room_model->update($id, $data)) {
+
+        }
+    }
+    
+    function show_home(){
+        $id = $this->input->post('id');
+        $id = (int)$id;
+
+        $show_home = $this->post_room_model->get_info($id, 'show_home');
+        if (!$show_home) {
+
+            $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+            redirect(admin_url('post_room/index'));
+        } else {
+            if ($show_home->show_home == 1) {
+                $data = array(
+                    'show_home' => 0,
+                );
+            } else {
+                $data = array(
+                    'show_home' => 1,
                 );
             }
         }

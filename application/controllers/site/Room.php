@@ -250,16 +250,78 @@ class Room extends MY_Controller {
         $this->load->view('site/layout', isset($data) ? ($data) : null);
     }
     
-    function list_room(){
+     function ajax_search(){
+         $data['encode'] = $this->config->item('encode_id');
         $amenities = $this->input->get('amenities')?$this->input->get('amenities'):'';
         $experiences = $this->input->get('experiences')?$this->input->get('experiences'):'';
         $bedroom = $this->input->get('bedroom')?$this->input->get('bedroom'):'';
         $bathroom = $this->input->get('bathroom')?$this->input->get('bathroom'):'';
         $beds = $this->input->get('beds')?$this->input->get('beds'):'';
-        $amenities = $this->input->get('amenities')?$this->input->get('amenities'):'';
-        $amenities = $this->input->get('amenities')?$this->input->get('amenities'):'';
+        $min_amount = $this->input->get('min_amount')?$this->input->get('min_amount'):'';
+        $max_amount = $this->input->get('max_amount')?$this->input->get('max_amount'):'';
+        $sort = $this->input->get('sort')?$this->input->get('sort'):0;
+        $location = $this->input->get('location')?strtolower (vn_str_filter ($this->input->get('location'))):'';
+        $checkin = $this->input->get('checkin')?$this->input->get('checkin'):'';
+        $checkout = $this->input->get('checkout')?$this->input->get('checkout'):'';
+        $guest = $this->input->get('guest')?$this->input->get('guest'):'';
+        if($location==''){echo json_encode(array('error'=>'localtion is emplty'));exit();}
+        $search_input = array(
+            'location'=>$location,
+            'checkin'=>  str_replace('/', '-', $checkin),
+            'checkout'=>  str_replace('/', '-', $checkout),
+            'guest'=>$guest,
+            'amenities'=>  $amenities!=''?explode(',', $amenities):null,
+            'experiences'=>  $experiences!=''?explode(',', $experiences):null,
+            'bedroom'=>$bedroom!=''?$bedroom:NULL,
+            'bathroom'=>$bathroom!=''?$bathroom:NULL,
+            'beds'=>$beds!=''?$beds:NULL,
+            'min_amount'=>$min_amount!=''?$min_amount*22000:NULL,
+            'max_amount'=>$max_amount!=''?$max_amount*22000:NULL,
+            'sort'=>$sort,
+        );
+//                    pre($search_input);
+        $total = $this->post_room_model->search($search_input)->num_rows();
+        $data['total'] = $total;
+//                    if($query=='?')$query='';
+        $config['total_rows'] = $data['total'];
+//                    $config['base_url'] = rtrim(base_url()."room/search?location=".$query);
+        $config['per_page'] = 4;
+        $config['use_page_numbers'] = TRUE;
+        $config['page_query_string'] = TRUE;
+        $config['query_string_segment'] = 'page';
+        $config['uri_segment'] = 4;
+        // config pagintion với bootraps
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = false;
+        $config['last_link'] = false;
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo';
+        $config['prev_tag_open'] = '<li class="prev">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+        $data['pagination_link'] = $this->pagination->create_links();
+        $data['per_page'] = $config['per_page'];
+        $data['table_content'] = $this->post_room_model->search($search_input)->result();
         
-        
+        $data['pages'] = $this->load->view('site/ajax_search',$data,TRUE);
+        echo json_encode($data);
+//                    echo $this->db->last_query();die;
+//        echo json_encode($data);
+        exit();
+
+        //còn thiếu room_type
     }
 }
 ?>
