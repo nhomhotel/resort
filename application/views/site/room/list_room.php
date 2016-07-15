@@ -51,7 +51,7 @@
 
         <div class="row">
             <!-- <div  style="max-width: 1170px;margin: 0 auto;"> -->
-            <div id="sidebar" class="col-md-4  visible-lg visible-md">
+            <div id="sidebar" class="col-md-4 visible-lg visible-md">
                 <div class="map">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119175.98717794055!2d105.83696370000004!3d21.02269665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9bd9861ca1%3A0xe7887f7b72ca17a9!2zSGFub2ksIEhvw6BuIEtp4bq_bSwgSGFub2ksIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1461656965356"
                             width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
@@ -66,16 +66,15 @@
                                 <span class="glyphicon glyphicon-chevron-down"></span>
                             </div>
                             <div class="panel-body collapse in" id="room-type-body" role="group" aria-label="...">
+                                <input type="hidden" id="rent-type" value="" />
                                 <div class="wrap-fill btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default tclick" data-tloc="entire_home_or_apt"
-                                           data-tkey="Room Type">
+                                    <label data-filter="house" class="btn btn-default btn-filter-rent-type <?php if (isset($rent_type) && $rent_type == 'house') :?>active<?php endif; ?>" data-tloc="entire_home_or_apt" data-tkey="Room Type">
                                         <input type="checkbox" name="room_types" id="entry-home" autocomplete="off">
                                         <span class="icon icon-house"></span>
                                         <span class="icon-active icon-house-active"></span>
                                         Nguyên căn
                                     </label>
-                                    <label class="btn btn-default tclick" data-tloc="private_room"
-                                           data-tkey="Room Type">
+                                    <label data-filter="room" class="btn btn-default btn-filter-rent-type <?php if (isset($rent_type) && $rent_type == 'room') :?>active<?php endif; ?>" data-tloc="private_room" data-tkey="Room Type">
                                         <input type="checkbox" name="room_types" id="private-room" autocomplete="off">
                                         <span class="icon icon-room"></span>
                                         <span class="icon-active icon-room-active"></span>

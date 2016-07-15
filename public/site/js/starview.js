@@ -38,6 +38,16 @@ if (typeof(max_value) == "undefined") {
 }
 $(document).ready(function() {
     $(function () {
+        if ($("#rent-type").size() > 0 && $("#search-button").size() > 0) {
+            $(".btn-filter-rent-type").click(function() {
+                var type = $(this).attr("data-filter");
+                $("#rent-type").val(type);
+                $("#search-button").trigger("click");
+            });
+        }
+    });
+
+    $(function () {
         $("#filter-control").on("click", function () {
             $("#sidebar").toggleClass("show");
         });
@@ -96,76 +106,13 @@ $(document).ready(function() {
                 }
                 window.location.href = url;
             } else {
-                /*
-                 var amenities = '';
-                 var experiences = '';
-                 $('[name="amenities"]:checked').each(function(){
-                 amenities +=$(this).data('tloc')+',';
-                 })
-                 $('[name="experiences"]:checked').each(function(){
-                 experiences +=$(this).data('tloc')+',';
-                 })
-
-                 $("#room_type label.tclick ").each(function(index){
-                 var cur = $(this);
-                 data_tloc = cur.data('tloc');
-                 if(room_type.length==0){room_type.push(data_tloc);}
-                 else{
-                 var index = room_type.indexOf(data_tloc);
-                 if(index==-1){
-                 room_type.push(data_tloc);
-                 }else{
-                 room_type.splice(index,1);
-                 }
-                 }
-                 })
-                 console.log(amenities);
-                 console.log(experiences);
-                 console.log(bedroom);
-                 console.log(bathroom);
-                 console.log(beds);
-                 console.log($('input#location,input#checkin,input#checkout,input#guest,input#option1,input#price-sort,input#entry-home'));
-                 var currentthis = $(this);
-                 var room_types = '';
-                 $('#room_type .tclick').each(function(){
-                 if(currentthis.data('tloc')==$(this).data('tloc')){
-                 var xxx = $(this).attr("class").split(' ');
-                 $.each(xxx, function(a,v){
-                 if(v==='active'){
-                 console.log('da active truoc day');
-                 }
-                 })
-
-                 }
-                 console.log(currentthis.data('tloc'));
-                 console.log($(this).data('tloc'));
-                 });
-                 return false;
-                 var data = {};
-                 if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
-                 if(typeof experiences !==undefined && experiences !='')data['experiences'] = experiences;
-                 if(typeof bedroom !==undefined && $.isNumeric(bedroom.val()))data['bedroom'] = bedroom.val();
-                 if(typeof bathroom !==undefined && $.isNumeric(bathroom.val()))data['bathroom'] = bathroom.val();
-                 if(typeof beds !==undefined && $.isNumeric(beds.val()))data['beds'] = beds.val();
-                 if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
-                 if(typeof amenities !==undefined && amenities !='')data['amenities'] = amenities;
-                 var xhr = $.ajax({
-                 url:url+'room/search',
-                 data:data,
-                 type:'GET',
-                 success:function(data){
-                 console.log(data);
-                 },
-                 error:'',
-                 dataType: 'json',
-                 })
-                 */
                 var bathrooms = $('#bathrooms');
                 var bedrooms = $('#bedrooms');
                 var guest = $('#guest');
                 var checkin = $('#checkin');
                 var checkout = $('#checkout');
                 var location = $('#location');
+                var rent_type = $('#rent-type');
                 var url = 'room/search?location=' + encodeURIComponent(location.val()) + '&checkin=' + checkin.val() + "&checkout=" + checkout.val();
                 if (parseInt(guest.val()) > 0) {
                     url += "&guests=" + guest.val();
@@ -198,6 +145,9 @@ $(document).ready(function() {
                 }).get();
                 if (experiences_ids.length > 0) {
                     url += "&experiences_ids=" + experiences_ids.join(",");
+                }
+                if (rent_type.val().toString().trim().length > 0) {
+                    url += "&rent_type=" + rent_type.val();
                 }
                 window.location.href = url;
                 return false;

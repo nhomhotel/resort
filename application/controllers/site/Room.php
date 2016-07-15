@@ -302,36 +302,44 @@ class Room extends MY_Controller
             if (isset($data['experiences_ids'])) {
                 $data['experiences_ids'] = explode(',', $data['experiences_ids']);
             }
+            if (!isset($data['per_page'])) {
+                $data['per_page'] = self::ITEM_PER_PAGE;
+            }
         }
 
-        /* Step 2. Select Room Ordered In Range Day */
+        /* Step 2. Select Room Ordered In Filter Range Day */
 
         if (!empty($params['checkin']) && !empty($params['checkout'])) {
             $date_parts = explode('/', $params['checkin']);
             if (count($date_parts) === 3) {
                 $checkin_day = $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
             }
-            $date_parts = explode('/', $params['checkin']);
+            $date_parts = explode('/', $params['checkout']);
             if (count($date_parts) === 3) {
                 $checkout_day = $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
             }
         }
 
-        $this->db->select('post_room_id');
-        $this->db->from('order');
-        $this->db->where('checkin >= "'.$checkin_day.'" AND checkin <= "'.$checkout_day.'"');
-        $result = $this->db->get()->result();
-        echo $this->db->last_query();
-        print_r ($result);
+        if (isset($checkin_day) && isset($checkout_day)) {
+            $this->db->select('DISTINCT `post_room_id`', false);
+            $this->db->from('order');
+            $this->db->where('(checkin >= "'.$checkin_day.'" AND checkin <= "'.$checkout_day.'")');
+            $this->db->or_where('(checkout >= "'.$checkin_day.'" AND checkout <= "'.$checkout_day.'")');
+            $result = $this->db->get()->result();
+            $exclude_post_room_ids = array();
+            foreach ($result as $row) {
+                $exclude_post_room_ids[$row->post_room_id] = $row->post_room_id;
+            }
+        }
 
         /* Step 3. Generate query by filter parameters */
 
+        $this->db->select('SQL_CALC_FOUND_ROWS null as rows', false);
         $this->db->select('post_room.*,house_type.house_type_name,house_type.house_type_id,address.address_detail,room_type.room_type_name');
         $this->db->from('post_room');
         $this->db->join('address', 'address.address_id = post_room.address_id');
         $this->db->join('room_type', 'room_type.room_type_id = post_room.room_type');
         $this->db->join('house_type', 'house_type.house_type_id = post_room.house_type');
-        $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
         $this->db->join('user c', 'post_room.user_id = c.user_id', 'left');
         $this->db->join('role f', 'c.role_id = f.role_id', 'left');
         $this->db->join('post_room_amenities pa', 'post_room.post_room_id = pa.post_room_id', 'left');
@@ -342,17 +350,27 @@ class Room extends MY_Controller
             /* Filter Locations */
 
             if (!empty($params['location'])) {
+                $this->load->helper('text');
                 $location_parts = explode(',', $params['location']);
-                if (count($location_parts) >= 3) {
-                    $this->db->where('lower(address_street_ascii) like \'%' . $location_parts[0] . '%\' or ' . 'lower(district_ascii) like \'%' . $location_parts[0] . '%\'');
-                    $this->db->where('lower(provincial_ascii) like \'%' . $location_parts[1] . '%\'');
-                    $this->db->where('lower(country_ascii) like \'%' . $location_parts[2] . '%\'');
-                } elseif (count($location_parts) == 2) {
-                    $this->db->where('lower(address_street_ascii) like \'%' . $location_parts[0] . '%\' or ' . 'lower(provincial_ascii) like \'%' . $location_parts[0] . '%\'');
-                    $this->db->where('lower(country_ascii) like \'%' . $location_parts[1] . '%\'');
-                } else {
-                    $this->db->where('lower(address_street_ascii) like \'%' . $location_parts[0] . '%\' or ' . 'lower(district_ascii) like \'%' . $location_parts[0] . '%\'  or ' . 'lower(provincial_ascii) like \'%' . $location_parts[0] . '%\' or ' . 'lower(country_ascii) like \'%' . $location_parts[0] . '%\'');
+                foreach ($location_parts as $index => $location) {
+                    $location_parts[$index] = str_replace(' ', '', strtolower(trim(convert_accented_characters($location_parts[$index]))));
                 }
+                if (count($location_parts) >= 3) {
+                    $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[1] . '%\'');
+                    $this->db->where('replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[2] . '%\'');
+                } elseif (count($location_parts) == 2) {
+                    $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[1] . '%\'');
+                } else {
+                    $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[0] . '%\')');
+                }
+            }
+
+            /* Filter Checkin, Checkout Day */
+
+            if (!empty($exclude_post_room_ids)) {
+                $this->db->where_not_in('post_room.post_room_id', $exclude_post_room_ids);
             }
 
             /* Filter By Num Guests */
@@ -392,10 +410,10 @@ class Room extends MY_Controller
             if (!empty($params['min'])) {
                 switch ($current_language) {
                     case 'vietnamese':
+                        $params['min'] = intval($params['min']) * $dollar_value;
                         $this->db->where('post_room.price_night_vn >= ' . intval($params['min']));
                         break;
                     case 'english':
-                        $params['min'] = intval($params['min']) * $dollar_value;
                         $this->db->where('post_room.price_night_en >= ' . intval($params['min']));
                         break;
                     default:
@@ -408,13 +426,14 @@ class Room extends MY_Controller
             if (!empty($params['max'])) {
                 switch ($current_language) {
                     case 'vietnamese':
+                        $params['max'] = intval($params['max']) * $dollar_value;
                         $this->db->where('post_room.price_night_vn <= ' . intval($params['max']));
                         break;
                     case 'english':
-                        $params['max'] = intval($params['max']) * $dollar_value;
                         $this->db->where('post_room.price_night_en <= ' . intval($params['max']));
                         break;
                     default:
+                        $params['max'] = intval($params['max']) * $dollar_value;
                         $this->db->where('post_room.price_night_vn <= ' . intval($params['max']));
                         break;
                 }
@@ -442,10 +461,14 @@ class Room extends MY_Controller
                 $this->db->where_in('pe.experience_id', $data['experiences_ids']);
             }
 
-            /* Filter By Check-in, Check-out day */
+            /* Filter By Rent Type */
 
-            if (isset($checkin_day) && isset($checkout_day)) {
-                $this->db->where('(order.checkin <= "' . $checkin_day . '" OR order.checkout > "' . $checkout_day . '")');
+            if (!empty($params['rent_type'])) {
+                if ($params['rent_type'] == 'house') {
+                    $this->db->where('post_room.parent_id = 0');
+                } elseif ($params['rent_type'] == 'room') {
+                    $this->db->where('post_room.parent_id <> 0');
+                }
             }
         }
 
@@ -454,14 +477,15 @@ class Room extends MY_Controller
         $this->db->limit(self::ITEM_PER_PAGE);
         $this->db->offset($start);
         $result = $this->db->get();
+        $data['total'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
         $query = $this->db->last_query();
 
         $show_query = $this->input->get('show_query');
         if (!empty($show_query)) {
+            $this->output->enable_profiler(TRUE);
             $data['mysql_query'] = $query;
         }
 
-        $data['total'] = $result->num_rows();
         $list_room = $result->result();
         $result->free_result();
 
@@ -482,17 +506,13 @@ class Room extends MY_Controller
             $data['price_range_min'] = min($data['price_range']);
             $data['price_range_max'] = $data['price_range_min'] * 100;
             unset($data['price_range']);
-            if ($list_room) {
-                $data['list_room'] = $list_room;
-            } else {
-                $data['list_room'] = NULL;
-            }
+            $data['list_room'] = $list_room;
         }
 
         $data['temp'] = ('site/room/list_room');
         $config['base_url'] = rtrim(base_url() . 'room/search?' . implode('&', $filters));
         $config['total_rows'] = $data['total'];
-        $config['per_page'] = 4;
+        $config['per_page'] = $data['per_page'];
         $config['use_page_numbers'] = TRUE;
         $config['page_query_string'] = TRUE;
         $config['query_string_segment'] = 'page';
