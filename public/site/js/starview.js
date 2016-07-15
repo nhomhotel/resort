@@ -38,6 +38,22 @@ if (typeof(max_value) == "undefined") {
 }
 $(document).ready(function() {
     $(function () {
+        if ($(".sort-by").size() > 0 && $("#search-button").size() > 0) {
+            $(".sort-by").each(function() {
+                $(this).click(function() {
+                    var sort_by = $(this).attr("data-sort");
+                    if (sort_by == "price_up") {
+                        sort_by == "price_down";
+                    } else {
+                        sort_by == "price_up";
+                    }
+                    $("#sort-by").val(sort_by);
+                    $("#search-button").trigger("click");
+                });
+            });
+        }
+    });
+    $(function () {
         if ($("#rent-type").size() > 0 && $("#search-button").size() > 0) {
             $(".btn-filter-rent-type").click(function() {
                 var type = $(this).attr("data-filter");
@@ -113,6 +129,7 @@ $(document).ready(function() {
                 var checkout = $('#checkout');
                 var location = $('#location');
                 var rent_type = $('#rent-type');
+                var sort_by = $('#sort-by');
                 var url = 'room/search?location=' + encodeURIComponent(location.val()) + '&checkin=' + checkin.val() + "&checkout=" + checkout.val();
                 if (parseInt(guest.val()) > 0) {
                     url += "&guests=" + guest.val();
@@ -148,6 +165,9 @@ $(document).ready(function() {
                 }
                 if (rent_type.val().toString().trim().length > 0) {
                     url += "&rent_type=" + rent_type.val();
+                }
+                if (sort_by.val().toString().trim().length > 0) {
+                    url += "&sort_by=" + sort_by.val();
                 }
                 window.location.href = url;
                 return false;

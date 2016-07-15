@@ -13,6 +13,11 @@ class Room extends MY_Controller
         $this->load->model('Address_model');
         $this->load->model('Amenities_model');
         $this->load->model('Experience_model');
+        $current_language = $this->session->userdata('language');
+        if (empty($current_language)) {
+            $current_language = 'vietnamese';
+        }
+        $this->lang->load('room_search_lang', $current_language);
     }
 
     public function index()
@@ -277,9 +282,14 @@ class Room extends MY_Controller
 
     public function search()
     {
+        $show_query = $this->input->get('show_query');
+        if (!empty($show_query)) {
+            $this->output->enable_profiler(TRUE);
+        }
 
         $data = array();
         $data['encode'] = $this->config->item('encode_id');
+        $data['per_page'] = self::ITEM_PER_PAGE;
 
         /* Step 1. Get Parameters */
 
@@ -403,6 +413,7 @@ class Room extends MY_Controller
             if (empty($current_language)) {
                 $current_language = 'vietnamese';
             }
+            $data['current_language'] = $current_language;
             $dollar_value = 22000;
 
             /* Filter By Min / Max value */
@@ -470,6 +481,31 @@ class Room extends MY_Controller
                     $this->db->where('post_room.parent_id <> 0');
                 }
             }
+
+            /* Sort By */
+            if (!empty($params['sort_by']) && in_array($params['sort_by'], array('price_up', 'price_down'))) {
+                switch ($params['sort_by']) {
+                    case 'price_up':
+                        $direction = 'ASC';
+                        break;
+                    case 'price_down':
+                        $direction = 'DESC';
+                        break;
+                    default:
+                        break;
+                }
+                switch ($current_language) {
+                    case 'vietnamese':
+                        $this->db->order_by('post_room.price_night_vn', $direction);
+                        break;
+                    case 'english':
+                        $this->db->order_by('post_room.price_night_en', $direction);
+                        break;
+                    default:
+                        $this->db->order_by('post_room.price_night_vn', $direction);
+                        break;
+                }
+            }
         }
 
         $start = isset($_GET['page']) && trim($_GET['page']) != '' ? ($_GET['page'] - 1) * $data['per_page'] : 0;
@@ -478,14 +514,6 @@ class Room extends MY_Controller
         $this->db->offset($start);
         $result = $this->db->get();
         $data['total'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;
-        $query = $this->db->last_query();
-
-        $show_query = $this->input->get('show_query');
-        if (!empty($show_query)) {
-            $this->output->enable_profiler(TRUE);
-            $data['mysql_query'] = $query;
-        }
-
         $list_room = $result->result();
         $result->free_result();
 
@@ -510,6 +538,7 @@ class Room extends MY_Controller
         }
 
         $data['temp'] = ('site/room/list_room');
+
         $config['base_url'] = rtrim(base_url() . 'room/search?' . implode('&', $filters));
         $config['total_rows'] = $data['total'];
         $config['per_page'] = $data['per_page'];
@@ -538,7 +567,6 @@ class Room extends MY_Controller
 
         $this->pagination->initialize($config);
         $data['pagination_link'] = $this->pagination->create_links();
-        $data['per_page'] = $config['per_page'];
         $this->load->view('site/layout', isset($data) ? ($data) : null);
     }
 }
