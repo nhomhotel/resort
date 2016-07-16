@@ -4,13 +4,13 @@
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
             <h5>Quản lý email</h5>
-            <span><?php echo isset($title)?$title:''; ?></span>
+            <span><?php echo isset($title) ? $title : ''; ?></span>
         </div>
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo admin_url('post_room/post');?>">
-                        <img src="<?php echo base_url();?>public/admin/images/icons/control/16/add.png"/>
+                    <a href="<?php echo admin_url('post_room/post'); ?>">
+                        <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png"/>
                         <span>Thêm email</span>
                     </a>
                 </li>
@@ -22,42 +22,44 @@
 <!-- Message -->
 <!-- Main content wrapper -->
 <div class="wrapper col-md-12  clearfix content">
-    <?php if(isset($message) && $message){$this->load->view('admin/message',$message);} ?>
+    <?php if (isset($message) && $message) {
+        $this->load->view('admin/message', $message);
+    } ?>
     <div class="widget">
         <div class="title">
-            <span class="titleIcon"><img src="<?php echo base_url();?>public/admin/images/icons/tableArrows.png"/></span>
-            <h6><?php echo isset($title)?$title:'';?></h6>
+            <span class="titleIcon"><img src="<?php echo base_url(); ?>public/admin/images/icons/tableArrows.png"/></span>
+            <h6><?php echo isset($title) ? $title : ''; ?></h6>
 
-            <div class="num f12">Tổng số: <b><?php echo isset($total)?$total:0;?></b></div>
+            <div class="num f12">Tổng số: <b><?php echo isset($total) ? $total : 0; ?></b></div>
         </div>
         <div class="table-responsive">
             <table class="table sTable mTable myTable" id="checkAll">
                 <thead class="filter">
-                <tr>
-                    <td colspan="17">
-                        <form class="form-inline form_filter form" method="get">
+                    <tr>
+                        <td colspan="17">
+                            <form class="form-inline form_filter form" method="get">
 
-                            <table class="table-filter" cellpadding="0" cellspacing="0">
-                                <tbody>
-                                <tr>
-                                    <td class="label-tit">
-                                        <label for="post_room_name">Tên email</label>
-                                    </td>
-                                    <td class="item">
-                                        <input name="post_room_name" value="<?php echo $this->input->get('post_room_name');?>" type="text"/>
-                                    </td>
-                                    
-                                    <td colspan='2'>
-                                        <input type="submit" class="button blueB" value="Lọc"/>
-                                        <input type="reset" class="basic" value="Reset"
-                                               onclick="window.location.href = '<?php echo admin_url('emails');?>'; ">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </td>
-                </tr>
+                                <table class="table-filter" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="label-tit">
+                                                <label for="post_room_name">Tên email</label>
+                                            </td>
+                                            <td class="item">
+                                                <input name="post_room_name" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+                                            </td>
+
+                                            <td colspan='2'>
+                                                <input type="submit" class="button blueB" value="Lọc"/>
+                                                <input type="reset" class="basic" value="Reset"
+                                                       onclick="window.location.href = '<?php echo admin_url('emails'); ?>';">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
                 </thead>
                 <thead>
                     <tr>
@@ -75,42 +77,42 @@
                     <tr>
                         <td colspan="17">
                             <div class='pagination'>
-                                <?php echo isset($pagination_link)?$pagination_link:'';?>
+<?php echo isset($pagination_link) ? $pagination_link : ''; ?>
                             </div>
                         </td>
                     </tr>
                 </tfoot>
                 <tbody class="list_item">
                     <?php
-                        if(isset($list)){
-                            $i = 0;
-                            foreach ($list->result() as $row) {
-                                $i++;
-                    ?>
-                    <tr class='row_20'>
-                        <td class="textC"><?php echo $i;?></td>
-                        <td class="textC img_room" >
-                        	<?php echo $row->email_title?>
-                        </td>
-                        <td class="textC img_room" >
-                        	<?php echo $row->description?>
-                        </td>
-                        <td class="textC">
-                            <?php echo 'Người';?>
-                        </td>
-                        <td class="textC">
-                            <a href="<?php echo base_url().'admin/emails/edit/'.$row->email_id?>" class="lightbox" title="edit">
-                                <img src="<?php echo base_url();?>public/admin/images/icons/color/pencil.png">
-                            </a>
-                            &nbsp;
-                            <a href="<?php echo base_url().'admin/emails/delete/'.$row->email_id;?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
-                                <img src="<?php echo base_url()?>public/admin/images/icons/color/uninstall.png">
-                            </a>
-                        </td>
-                    </tr>
-                    <?php
-                            }
+                    if (isset($list)) {
+                        $i = 0;
+                        foreach ($list->result() as $row) {
+                            $i++;
+                            ?>
+                            <tr class='row_20'>
+                                <td class="textC"><?php echo $i; ?></td>
+                                <td class="textC img_room" >
+                                    <?php echo $row->email_title ?>
+                                </td>
+                                <td class="textC img_room" >
+                                    <?php echo $row->description ?>
+                                </td>
+                                <td class="textC">
+        <?php echo 'Người'; ?>
+                                </td>
+                                <td class="textC">
+                                    <a href="<?php echo base_url() . 'admin/emails/edit/' . $row->email_id ?>" class="lightbox" title="edit">
+                                        <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png">
+                                    </a>
+                                    &nbsp;
+                                    <a href="<?php echo base_url() . 'admin/emails/delete/' . $row->email_id; ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
+                                        <img src="<?php echo base_url() ?>public/admin/images/icons/color/uninstall.png">
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php
                         }
+                    }
                     ?>
                 </tbody>
             </table>
@@ -126,7 +128,7 @@
                 <h4 class="modal-title">Xóa</h4>
             </div>
             <div class="modal-body">
-            <p style="color:red;font-size: 14px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
+                <p style="color:red;font-size: 14px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">hủy</button>
@@ -137,23 +139,23 @@
 </div>
 
 <script type="text/javascript">
-    function status(id){
-        var url = '<?php echo admin_url('post_room/status');?>';
+    function status(id) {
+        var url = '<?php echo admin_url('post_room/status'); ?>';
         var urlCurrent = window.location.href;
         $.ajax({
-            url: url, 
+            url: url,
             type: "POST",
-            data : { 'id'  :id },
+            data: {'id': id},
             dataType: 'text',
-            success: function(result){
+            success: function (result) {
                 $(".myTable").load(urlCurrent + " .myTable");
             }
         });
     }
 
-    function del(id){
-        var url = '<?php echo admin_url();?>';
-        var urlDel = url+'/post_room/delete/'+id;
+    function del(id) {
+        var url = '<?php echo admin_url(); ?>';
+        var urlDel = url + '/post_room/delete/' + id;
         $('#allow-Del').attr('href', urlDel);
         $("#modal_del").modal("show");
     }

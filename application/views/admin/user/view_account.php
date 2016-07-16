@@ -2,25 +2,25 @@
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
             <h5>User</h5>
-            <span><?php echo isset($title)?$title:''; ?></span>
+            <span><?php echo isset($title) ? $title : ''; ?></span>
         </div>
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo admin_url('user/create');?>">
-                        <img src="<?php echo base_url();?>/public/admin/images/icons/control/16/add.png"/>
+                    <a href="<?php echo admin_url('user/create'); ?>">
+                        <img src="<?php echo base_url(); ?>/public/admin/images/icons/control/16/add.png"/>
                         <span>Thêm tài khoản</span>
                     </a>
                 </li>
                 <li>
                     <a href="product/?feature=1.html">
-                        <img src="<?php echo base_url();?>/public/admin/images/icons/control/16/feature.png" />
+                        <img src="<?php echo base_url(); ?>/public/admin/images/icons/control/16/feature.png" />
                         <span>Chỉnh sửa tài khoản</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?php echo admin_url('user/index');?>">
-                        <img src="<?php echo base_url();?>/public/admin/images/icons/control/16/list.png" />
+                    <a href="<?php echo admin_url('user/index'); ?>">
+                        <img src="<?php echo base_url(); ?>/public/admin/images/icons/control/16/list.png" />
                         <span>Danh sách</span>
                     </a>
                 </li>
@@ -34,8 +34,8 @@
 <div class="wrapper col-md-12  clearfix content">
     <div class="widget">
         <div class="title clearfix">
-            <span class="titleIcon"><img src="<?php echo base_url();?>public/admin/images/icons/tableArrows.png"/></span>
-            <h6><?php echo isset($title)?$title:'';?></h6>
+            <span class="titleIcon"><img src="<?php echo base_url(); ?>public/admin/images/icons/tableArrows.png"/></span>
+            <h6><?php echo isset($title) ? $title : ''; ?></h6>
         </div>
         <div class="tab_container">
             <div id='view-account' class="tab_content">
@@ -53,19 +53,19 @@
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat error, hic itaque distinctio autem voluptatibus provident tempora suscipit non vero sed molestias totam! Temporibus nam quae dignissimos laudantium optio. Soluta.
                     </div>
                     <div class="edit-acc">
-                        <a href="<?php echo admin_url("");?>" class="btn btn-default">Chỉnh sửa trang cá nhân</a>
+                        <a href="<?php echo admin_url(""); ?>" class="btn btn-default">Chỉnh sửa trang cá nhân</a>
                     </div>
                 </div>
                 <div class="formRow clearfix">
                     <div class="title">
-                        <span class="titleIcon"><img src="<?php echo base_url();?>public/admin/images/icons/tableArrows.png"/></span>
+                        <span class="titleIcon"><img src="<?php echo base_url(); ?>public/admin/images/icons/tableArrows.png"/></span>
                         <h6>Bài đăng của tôi</h6>
 
-                        <div class="num f12">Tổng số: <b><?php echo isset($total)?$total:0;?></b></div>
+                        <div class="num f12">Tổng số: <b><?php echo isset($total) ? $total : 0; ?></b></div>
                     </div>
                     <div class="table-responsive">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

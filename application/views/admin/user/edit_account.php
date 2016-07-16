@@ -2,25 +2,25 @@
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
             <h5>User</h5>
-            <span><?php echo isset($title)?$title:''; ?></span>
+            <span><?php echo isset($title) ? $title : ''; ?></span>
         </div>
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo admin_url('user/create');?>">
-                        <img src="<?php echo base_url();?>/public/admin/images/icons/control/16/add.png"/>
+                    <a href="<?php echo admin_url('user/create'); ?>">
+                        <img src="<?php echo base_url(); ?>/public/admin/images/icons/control/16/add.png"/>
                         <span>Thêm tài khoản</span>
                     </a>
                 </li>
                 <li>
                     <a href="product/?feature=1.html">
-                        <img src="<?php echo base_url();?>/public/admin/images/icons/control/16/feature.png" />
+                        <img src="<?php echo base_url(); ?>/public/admin/images/icons/control/16/feature.png" />
                         <span>Tiêu biểu</span>
                     </a>
                 </li>
                 <li>
                     <a href="product.html">
-                        <img src="<?php echo base_url();?>/public/admin/images/icons/control/16/list.png" />
+                        <img src="<?php echo base_url(); ?>/public/admin/images/icons/control/16/list.png" />
                         <span>Danh sách</span>
                     </a>
                 </li>
@@ -34,8 +34,8 @@
 <div class="wrapper col-md-12  clearfix content">
     <div class="widget">
         <div class="title">
-            <span class="titleIcon"><img src="<?php echo base_url();?>public/admin/images/icons/tableArrows.png"/></span>
-            <h6><?php echo isset($title)?$title:'';?></h6>
+            <span class="titleIcon"><img src="<?php echo base_url(); ?>public/admin/images/icons/tableArrows.png"/></span>
+            <h6><?php echo isset($title) ? $title : ''; ?></h6>
         </div>
         <div class="tab_container tab-content">
             <div id='tab1' class="tab_content pd0 tab-pane active" role="tabpanel">
@@ -44,13 +44,13 @@
                         <label class="formLeft" for="param_name">Ảnh đại diện:</label>
                         <div class="formRight">
                             <span class="oneTwo">
-                                <img src="<?php echo base_url()?>/public/admin/images/no_avatar.jpg" width = "100px" height = "100px">
+                                <img src="<?php echo base_url() ?>/public/admin/images/no_avatar.jpg" width = "100px" height = "100px">
                             </span>
                             <p class="oneTwo">
                                 <input type="file" name="avata" id="avata" _autocheck="true" />
                             </p>
                             <span name="name_autocheck" class="autocheck"></span>
-                            <div name="name_error" class="clear error"><?php echo form_error('last_name');?></div>
+                            <div name="name_error" class="clear error"><?php echo form_error('last_name'); ?></div>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -61,7 +61,7 @@
                                 <input type="text" name="last_name" id="last_name" value="" class="mw200" />
                             </span>
                             <span name="name_autocheck" class="autocheck"></span>
-                            <div name="name_error" class="clear error"><?php echo form_error('last_name');?></div>
+                            <div name="name_error" class="clear error"><?php echo form_error('last_name'); ?></div>
                         </div>
                         <div class="clear"></div>
                     </div>

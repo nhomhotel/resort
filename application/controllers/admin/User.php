@@ -1,19 +1,19 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once 'AdminHome.php';
-class User extends AdminHome
-{
-    public function __construct()
-    {
+
+class User extends AdminHome {
+
+    public function __construct() {
         parent::__construct(get_class());
         $this->load->model('user_model');
     }
 
-    public function index()
-    {
+    public function index() {
         $this->load->model("role_model");
         $input = array();
-        $input['order'] = array('role_id','ASC');
+        $input['order'] = array('role_id', 'ASC');
         $list_role = $this->role_model->get_list($input);
         $data['list_role'] = $list_role;
 
@@ -29,14 +29,14 @@ class User extends AdminHome
         $config['prev_link'] = 'Trang trước';
         $config['use_page_numbers'] = TRUE;
         $this->pagination->initialize($config);
-        if($this->uri->segment('4') && $this->uri->segment('4') > 1){
+        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
             $segment = $this->uri->segment('4');
-        }else{
+        } else {
             $segment = 1;
         }
 
-        $segment = (int)$segment;
-        $start = ($segment - 1)*$config['per_page'];
+        $segment = (int) $segment;
+        $start = ($segment - 1) * $config['per_page'];
         $pagination_link = $this->pagination->create_links();
         $data['pagination_link'] = $pagination_link;
 
@@ -45,29 +45,29 @@ class User extends AdminHome
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
-        $input['order'] = array('user_id','DESC');
+        $input['order'] = array('user_id', 'DESC');
 
-      
-        /*-- Lọc user_name--*/
+
+        /* -- Lọc user_name-- */
         $user_name = $this->input->get('user_name');
-        if($user_name){
+        if ($user_name) {
             $input['like'] = array('user_name', $user_name);
         }
-          /*-- Lọc ozganzation--*/
+        /* -- Lọc ozganzation-- */
         $ozganzation = $this->input->get('ozganzation');
 
-        if($ozganzation){
+        if ($ozganzation) {
             $input['or_like'] = array('ozganzation', $ozganzation);
         }
-        /*-- Lọc role--*/
+        /* -- Lọc role-- */
         $role_id = $this->input->get('role');
-        $role_id = (int)$role_id;
-        if($role_id){
-             $input['where']['user.role_id'] = $role_id;
+        $role_id = (int) $role_id;
+        if ($role_id) {
+            $input['where']['user.role_id'] = $role_id;
         }
 
         //Lay session userLogin de list user != userLogin
-        if(!is_NULL($this->session->userdata('userLogin'))){
+        if (!is_NULL($this->session->userdata('userLogin'))) {
             $userLogin = $this->session->userdata('userLogin');
             $input['where']['user_id !='] = $userLogin['user_id'];
         }
@@ -78,66 +78,66 @@ class User extends AdminHome
         $data['title'] = 'Danh sách tài khoản';
         $data['temp'] = 'admin/user/index';
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
-
-
     }
 
-    function checkUserName($user_name){
+    function checkUserName($user_name) {
 
         $where = array();
-        $where = array('user_name'=>$user_name);
+        $where = array('user_name' => $user_name);
         $check = $this->user_model->check_exists($where);
-        if($check > 0){
-            $this->form_validation->set_message('checkUserName','{field} đã tồn tại.');
+        if ($check > 0) {
+            $this->form_validation->set_message('checkUserName', '{field} đã tồn tại.');
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    function checkEmail($email){
-        
+
+    function checkEmail($email) {
+
         $where = array();
-        $where = array('email'=>$email);
+        $where = array('email' => $email);
         $check = $this->user_model->check_exists($where);
-        if($check > 0){
-            $this->form_validation->set_message('checkEmail','{field} đã tồn tại.');
+        if ($check > 0) {
+            $this->form_validation->set_message('checkEmail', '{field} đã tồn tại.');
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    public function create(){
+
+    public function create() {
 
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');
 
         $input = array();
-        $input['order'] = array('role_id','ASC');
+        $input['order'] = array('role_id', 'ASC');
         $list_role = $this->role_model->get_list($input);
         $data['list_role'] = $list_role;
 
-        if($this->input->post()){
+        if ($this->input->post()) {
 
 
             $this->form_validation->set_rules('last_name', 'Họ', 'trim|required');
 
-            $this->form_validation->set_rules('first_name','Tên', 'trim|required');
-            $this->form_validation->set_rules('user_name','Tên đăng nhập', 'trim|required|min_length[5]|max_length[12]|callback_checkUserName');
-            $this->form_validation->set_rules('password','Mật khẩu', 'trim|required|min_length[6]|max_length[12]');
-            $this->form_validation->set_rules('password_comfirm','Mật khẩu xác nhận', 'trim|required|min_length[6]|max_length[12]|matches[password]');
-            $this->form_validation->set_rules('email','Email', 'trim|required|valid_email|callback_checkEmail');
+            $this->form_validation->set_rules('first_name', 'Tên', 'trim|required');
+            $this->form_validation->set_rules('user_name', 'Tên đăng nhập', 'trim|required|min_length[5]|max_length[12]|callback_checkUserName');
+            $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[6]|max_length[12]');
+            $this->form_validation->set_rules('password_comfirm', 'Mật khẩu xác nhận', 'trim|required|min_length[6]|max_length[12]|matches[password]');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
 
-            if($this->form_validation->run()){
+            if ($this->form_validation->run()) {
 
-                $last_name  = $this->input->post('last_name');
+                $last_name = $this->input->post('last_name');
                 $first_name = $this->input->post('first_name');
-                $ozganzation= $this->input->post('ozganzation'); //tên cơ quan, tổ chức
-                $user_name  = $this->input->post('user_name');
-                $password   = md5($this->input->post('password'));
-                $email      = $this->input->post('email');
-                $role_id    = $this->input->post('role_id');
-                $created    = date('Y:m:d H:i:s');
+                $ozganzation = $this->input->post('ozganzation'); //tên cơ quan, tổ chức
+                $user_name = $this->input->post('user_name');
+                $password = md5($this->input->post('password'));
+                $email = $this->input->post('email');
+                $role_id = $this->input->post('role_id');
+                $created = date('Y:m:d H:i:s');
 
                 $data = array(
                     'last_name' => $last_name,
@@ -146,14 +146,14 @@ class User extends AdminHome
                     'user_name' => $user_name,
                     'password' => $password,
                     'email' => $email,
-                    'role_id' => $role_id,    
-                    'created'=>$created 
+                    'role_id' => $role_id,
+                    'created' => $created
                 );
 
-                if($this->user_model->create($data)){
+                if ($this->user_model->create($data)) {
 
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
-                }else{
+                } else {
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
                 }
                 redirect(admin_url('user/index'));
@@ -164,63 +164,45 @@ class User extends AdminHome
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
-    function edit(){
+    function edit() {
         $this->load->model("role_model");
-
         $this->load->library('form_validation');
         $this->load->helper('form');
-
         $id = $this->uri->rsegment('3');
-        $id = (int)$id;
-
+        $id = (int) $id;
         $input = array();
-        $input['order'] = array('role_id','ASC');
+        $input['order'] = array('role_id', 'ASC');
         $list_role = $this->role_model->get_list($input);
         $data['list_role'] = $list_role;
-
         $info = $this->user_model->get_info($id);
-
-        if(!$info){
-
+        if (!$info) {
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
             redirect(admin_url('user'));
-        }else{
-
+        } else {
             $data['info'] = $info;
         }
-
-        if($this->input->post()){
-
+        if ($this->input->post()) {
             $this->form_validation->set_rules('last_name', 'Họ', 'trim|required');
-
-            $this->form_validation->set_rules('first_name','Tên', 'trim|required');
-            
-
-            if($this->form_validation->run()){
-
-                $last_name  = $this->input->post('last_name');
+            $this->form_validation->set_rules('first_name', 'Tên', 'trim|required');
+            if ($this->form_validation->run()) {
+                $last_name = $this->input->post('last_name');
                 $first_name = $this->input->post('first_name');
-                $ozganzation= $this->input->post('ozganzation');
-                $role_id    = $this->input->post('role_id');
-                $updated    = date('Y:m:d H:i:s');
-
+                $ozganzation = $this->input->post('ozganzation');
+                $role_id = $this->input->post('role_id');
+                $updated = date('Y:m:d H:i:s');
                 $data = array(
                     'last_name' => $last_name,
                     'first_name' => $first_name,
                     'ozganzation' => $ozganzation,
-                    'role_id' => $role_id,  
-                    'updated'=>$updated 
+                    'role_id' => $role_id,
+                    'updated' => $updated
                 );
-
-                if($this->user_model->update($id,$data)){
-
+                if ($this->user_model->update($id, $data)) {
                     $this->session->set_flashdata('message', 'Cập nhật dữ liệu thành công!');
-                }else{
+                } else {
                     $this->session->set_flashdata('message', 'Cập nhật dữ liệu thất bại!');
                 }
-
                 redirect(admin_url('user/index'));
-
             }
         }
 
@@ -229,8 +211,8 @@ class User extends AdminHome
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
-    function view_account(){
-        if(!is_null($this->session->userdata('userLogin'))){
+    function view_account() {
+        if (!is_null($this->session->userdata('userLogin'))) {
             $userLogin = $this->session->userdata('userLogin');
             // pre($userLogin);
         }
@@ -240,60 +222,59 @@ class User extends AdminHome
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
-    function edit_account(){
+    function edit_account() {
 
         $data['title'] = 'Chỉnh sửa tài khoản';
         $data['temp'] = ('admin/user/edit_account');
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
-    function status(){
+    function status() {
 
         $id = $this->input->post('id');
-        $id = (int)$id;
+        $id = (int) $id;
 
-        $statusInfo = $this->user_model->get_info($id,'status');
-        if(!$statusInfo){
+        $statusInfo = $this->user_model->get_info($id, 'status');
+        if (!$statusInfo) {
 
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
             redirect(admin_url('user/index'));
-        }else{
-            if($statusInfo->status == 1){
+        } else {
+            if ($statusInfo->status == 1) {
                 $data = array(
-                    'status'=>0,
+                    'status' => 0,
                 );
-            }else{
+            } else {
                 $data = array(
-                    'status'=>1,
+                    'status' => 1,
                 );
             }
         }
-        if($this->user_model->update($id, $data)){
+        if ($this->user_model->update($id, $data)) {
             
         }
     }
 
-    function delete(){
+    function delete() {
 
         $id = $this->uri->rsegment(3);
-        $id = (int)$id;
+        $id = (int) $id;
         $info = $this->user_model->get_info($id);
-        if(!$info){
+        if (!$info) {
             $this->session->set_flashdata("message", 'Không tồn tại bản ghi');
             redirect(admin_url('user'));
         }
-        if($this->user_model->delete($id)){
+        if ($this->user_model->delete($id)) {
             $this->session->set_flashdata("message", 'Đã xóa dữ liệu');
             redirect(admin_url('user'));
         }
     }
 
-    function logout(){
-        if($this->session->userdata('userLogin')){
+    function logout() {
+        if ($this->session->userdata('userLogin')) {
             $this->session->sess_destroy();
         }
         redirect(admin_url('login'));
     }
-
 
 }

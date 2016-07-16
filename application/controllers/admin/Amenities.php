@@ -1,237 +1,215 @@
 <?php
-	defined('BASEPATH') OR exit('No direct script access allowed');
-        require_once 'AdminHome.php';
-	class Amenities extends AdminHome
-	{
-		
-		function __construct()
-		{
-			parent::__construct(get_class());
-			$this->load->model('amenities_model');
-			// $this->load->helper('cookie');
-			
-		}
 
-		function index(){
+defined('BASEPATH') OR exit('No direct script access allowed');
+require_once 'AdminHome.php';
 
-			$this->load->library('pagination');
-			$total = $this->amenities_model->get_total();
+class Amenities extends AdminHome {
 
-			$config = array();
-			$config["total_rows"] = $total;
-			$config['base_url'] = base_url('admin/amenities/index');
-			$config['per_page'] = 15;
-			$config['uri_segment'] = 4;
-			$config['next_link'] = 'Trang kế tiếp';
-			$config['prev_link'] = 'Trang trước';
-			$config['use_page_numbers'] = TRUE;
-			$this->pagination->initialize($config);
-			if($this->uri->segment('4') && $this->uri->segment('4') > 1){
-				$segment = $this->uri->segment('4');
-			}else{
-				$segment = 1;
-			}
-			$segment = (int)$segment;
-			$start = ($segment - 1)*$config['per_page'];
-			$pagination_link = $this->pagination->create_links();
-			$data['pagination_link'] = $pagination_link;
+    function __construct() {
+        parent::__construct(get_class());
+        $this->load->model('amenities_model');
+        // $this->load->helper('cookie');
+    }
 
-			$message = $this->session->flashdata();
-			$data['message'] = $message;
+    function index() {
 
-			$input = array();
-			$input['limit'] = array($config['per_page'], $start);
-			$input['order'] = array('amenities_id','ASC');
-			
-			$list = $this->amenities_model->get_list($input);
-			$data['total'] = $total;
-			$data['list'] = $list;
+        $this->load->library('pagination');
+        $total = $this->amenities_model->get_total();
 
-			$data['title'] = 'Danh sách tiện nghi';
-                        $data['temp'] = 'admin/amenities/index';
-                        $this->load->view('admin/layout',isset($data)? ($data) : NULL);
-		}
+        $config = array();
+        $config["total_rows"] = $total;
+        $config['base_url'] = base_url('admin/amenities/index');
+        $config['per_page'] = 15;
+        $config['uri_segment'] = 4;
+        $config['next_link'] = 'Trang kế tiếp';
+        $config['prev_link'] = 'Trang trước';
+        $config['use_page_numbers'] = TRUE;
+        $this->pagination->initialize($config);
+        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
+            $segment = $this->uri->segment('4');
+        } else {
+            $segment = 1;
+        }
+        $segment = (int) $segment;
+        $start = ($segment - 1) * $config['per_page'];
+        $pagination_link = $this->pagination->create_links();
+        $data['pagination_link'] = $pagination_link;
 
-		function create(){
+        $message = $this->session->flashdata();
+        $data['message'] = $message;
 
-			$this->load->library('form_validation');
-			$this->load->helper('form');
+        $input = array();
+        $input['limit'] = array($config['per_page'], $start);
+        $input['order'] = array('amenities_id', 'ASC');
 
-			if($this->input->post()){
+        $list = $this->amenities_model->get_list($input);
+        $data['total'] = $total;
+        $data['list'] = $list;
 
-				$this->form_validation->set_rules('amenities_name', 'Amenities', 'trim|required|min_length[2]');
+        $data['title'] = 'Danh sách tiện nghi';
+        $data['temp'] = 'admin/amenities/index';
+        $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
+    }
 
-				$this->form_validation->set_rules('amenities_name_en','Amenities_EN', 'trim|required|min_length[2]');
+    function create() {
 
-				if($this->form_validation->run()){
+        $this->load->library('form_validation');
+        $this->load->helper('form');
 
-					$amenities_name = $this->input->post('amenities_name');
-					$amenities_name_en = $this->input->post('amenities_name_en');
-					$description = $this->input->post('description');
-					$description_en = $this->input->post('description_en');
-					if($this->input->post('status') =='on'){
+        if ($this->input->post()) {
+            $this->form_validation->set_rules('amenities_name', 'Amenities', 'trim|required|min_length[2]');
+            $this->form_validation->set_rules('amenities_name_en', 'Amenities_EN', 'trim|required|min_length[2]');
+            if ($this->form_validation->run()) {
+                $amenities_name = $this->input->post('amenities_name');
+                $amenities_name_en = $this->input->post('amenities_name_en');
+                $description = $this->input->post('description');
+                $description_en = $this->input->post('description_en');
+                if ($this->input->post('status') == 'on') {
 
-						$status = 1;
-					}else{
-						$status = 0;
-					}
-					$created = date('Y:m:d H:i:s');
+                    $status = 1;
+                } else {
+                    $status = 0;
+                }
+                $created = date('Y:m:d H:i:s');
 
-					$data = array(
-						'name' => $amenities_name,
-						'name_en' => $amenities_name_en,
-						'description' => $description,
-						'description_en' => $description_en,
-						'status' => $status,
-						'created'=>$created 
-					);
+                $data = array(
+                    'name' => $amenities_name,
+                    'name_en' => $amenities_name_en,
+                    'description' => $description,
+                    'description_en' => $description_en,
+                    'status' => $status,
+                    'created' => $created
+                );
 
-					if($this->amenities_model->create($data)){
+                if ($this->amenities_model->create($data)) {
+                    $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
+                } else {
+                    $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
+                }
+                redirect(base_url('admin/amenities'));
+            }
+        }
 
-						$this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
-					}else{
-						$this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
-					}
+        $data['title'] = 'Thêm mới tiện nghi';
+        $data['temp'] = 'admin/amenities/create';
+        $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
+    }
 
-					redirect(base_url('admin/amenities'));
+    function edit() {
+        $this->load->library('form_validation');
+        $this->load->helper('form');
+        $id = $this->uri->rsegment('3');
+        $id = (int) $id;
+        $info = $this->amenities_model->get_info($id);
 
-				}
-			}
+        if (!$info) {
 
-			$data['title'] = 'Thêm mới tiện nghi';
-	        $data['temp'] = 'admin/amenities/create';
-	        $this->load->view('admin/layout',isset($data)? ($data) : NULL);
-		}
+            $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+            redirect(base_url('admin/amenities'));
+        }
 
-		function edit(){
-			$this->load->library('form_validation');
-			$this->load->helper('form');
+        $data['info'] = $info;
 
-			$id = $this->uri->rsegment('3');
-			$id = (int)$id;
+        if ($this->input->post('submit')) {
+            // echo "<pre>";
+            // print_r($this->input->post());
+            $this->form_validation->set_rules('amenities_name', 'Amenities', 'trim|required|min_length[2]');
+            $this->form_validation->set_rules('amenities_name_en', 'Amenities_EN', 'trim|required|min_length[2]');
+            if ($this->form_validation->run()) {
 
-			$info = $this->amenities_model->get_info($id);
+                $amenities_name = $this->input->post('amenities_name');
+                $amenities_name_en = $this->input->post('amenities_name_en');
+                $description = $this->input->post('description');
+                $description_en = $this->input->post('description_en');
+                if ($this->input->post('status') == 'on')$status = 1;
+                else $status = 0;
+                $created = date('Y:m:d H:i:s');
+                $data = array(
+                    'name' => $amenities_name,
+                    'name_en' => $amenities_name_en,
+                    'description' => $description,
+                    'description_en' => $description_en,
+                    'status' => $status,
+                    'created' => $created
+                );
 
-			if(!$info){
+                if ($this->amenities_model->update($id, $data)) {
+                    $this->session->set_flashdata('message', 'Cập nhật dữ liệu thành công!');
+                } else {
+                    $this->session->set_flashdata('message', 'Cập nhật dữ liệu thất bại!');
+                }
+                redirect(base_url('admin/amenities'));
+            }
+        }
 
-				$this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-				redirect(base_url('admin/amenities'));
-			}
+        $data['title'] = 'Cập nhật tiện nghi';
+        $data['temp'] = 'admin/amenities/edit';
+        $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
+    }
 
-			$data['info'] = $info;
+    function delete() {
+        $id = $this->uri->rsegment('3');
+        $id = (int) $id;
 
-			if($this->input->post('submit')){
-				// echo "<pre>";
-				// print_r($this->input->post());
-				$this->form_validation->set_rules('amenities_name', 'Amenities', 'trim|required|min_length[2]');
+        $data['info'] = $this->amenities_model->get_info($id);
 
-				$this->form_validation->set_rules('amenities_name_en','Amenities_EN', 'trim|required|min_length[2]');
+        if (!$data['info']) {
 
-				if($this->form_validation->run()){
+            $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+            redirect(base_url('admin/amenities'));
+        }
 
-					$amenities_name = $this->input->post('amenities_name');
-					$amenities_name_en = $this->input->post('amenities_name_en');
-					$description = $this->input->post('description');
-					$description_en = $this->input->post('description_en');
-					if($this->input->post('status') =='on'){
+        if ($this->amenities_model->delete($id)) {
 
-						$status = 1;
-					}else{
+            $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
+        }
 
-						$status = 0;
-					}
+        redirect(base_url('admin/amenities'));
+    }
 
-					$created = date('Y:m:d H:i:s');
+    function status() {
 
-					$data = array(
-						'name' => $amenities_name,
-						'name_en' => $amenities_name_en,
-						'description' => $description,
-						'description_en' => $description_en,
-						'status' => $status,
-						'created'=>$created
-					);
+        $id = $this->input->post('id');
+        $field = 'status';
 
-					if($this->amenities_model->update($id,$data)){
+        $statusInfo = $this->amenities_model->get_info($id, $field);
+        if (!$statusInfo) {
 
-						$this->session->set_flashdata('message', 'Cập nhật dữ liệu thành công!');
-					}else{
-						$this->session->set_flashdata('message', 'Cập nhật dữ liệu thất bại!');
-					}
+            $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+            redirect(admin_url('amenities/index'));
+        } else {
 
-					redirect(base_url('admin/amenities'));
+            if ($statusInfo->status == 1) {
+                $data = array(
+                    'status' => 0,
+                );
+            } else {
+                $data = array(
+                    'status' => 1,
+                );
+            }
+        }
 
-				}
-			}
+        if ($this->amenities_model->update($id, $data)) {
+            
+        }
+    }
 
-			$data['title'] = 'Cập nhật tiện nghi';
-	        $data['temp'] = 'admin/amenities/edit';
-	        $this->load->view('admin/layout',isset($data)? ($data) : NULL);
-		}
+    function deleteAll() {
+        if ($this->input->post('arrId')) {
+            $arrId = $this->input->post('arrId');
+            foreach ($arrId as $id) {
+                $this->amenities_model->delete($id);
+            }
+        }
+    }
 
-		function delete(){
-			$id = $this->uri->rsegment('3');
-			$id = (int)$id;
-			
-			$data['info'] = $this->amenities_model->get_info($id);
+    function lang($lang = '') {
+        setcookie('php_lang', $lang, NULL, "/");
+        $redirect = $this->input->get('redirect');
+        $redirect = !empty($redirect) ? (base_url($redirect)) : '.';
+        redirect($redirect);
+    }
 
-			if(!$data['info']){
-
-				$this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-				redirect(base_url('admin/amenities'));
-			}
-
-			if($this->amenities_model->delete($id)){
-
-				$this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
-			}
-			
-			redirect(base_url('admin/amenities'));
-		}
-
-		function status(){
-				
-			$id = $this->input->post('id');
-			$field = 'status';
-
-			$statusInfo = $this->amenities_model->get_info($id ,$field);
-			if(!$statusInfo){
-
-				$this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-				redirect(admin_url('amenities/index'));
-
-			}else{
-
-				if($statusInfo->status == 1){
-					$data = array(
-						'status'=>0,
-					);
-				}else{
-					$data = array(
-						'status'=>1,
-					);
-				}
-			}
-
-			if($this->amenities_model->update($id, $data)){
-				
-			}
-		}
-
-		function deleteAll(){
-			if($this->input->post('arrId')){
-				$arrId = $this->input->post('arrId');
-				foreach ($arrId as $id) {
-					$this->amenities_model->delete($id);
-				}
-			}
-		}
-
-		function lang($lang = ''){
-			setcookie('php_lang', $lang, NULL, "/");
-			$redirect = $this->input->get('redirect');
-			$redirect = !empty($redirect)?(base_url($redirect)):'.';
-			redirect($redirect);
-		}
-	}
+}
 ?>

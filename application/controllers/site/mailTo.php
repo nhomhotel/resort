@@ -1,19 +1,19 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MailTo extends CI_Controller
-{
-    public function __construct()
-    {
+class MailTo extends CI_Controller {
+
+    public function __construct() {
         parent::__construct();
         $this->load->model('mail_template_model');
         $this->load->model('mail_history_model');
     }
 
-    public function index($data= array()){
+    public function index($data = array()) {
         $this->load->model("role_model");
         $input = array();
-        $input['order'] = array('role_id','ASC');
+        $input['order'] = array('role_id', 'ASC');
         $list_role = $this->role_model->get_list($input);
         $data['list_role'] = $list_role;
 
@@ -29,14 +29,14 @@ class MailTo extends CI_Controller
         $config['prev_link'] = 'Trang trước';
         $config['use_page_numbers'] = TRUE;
         $this->pagination->initialize($config);
-        if($this->uri->segment('4') && $this->uri->segment('4') > 1){
+        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
             $segment = $this->uri->segment('4');
-        }else{
+        } else {
             $segment = 1;
         }
 
-        $segment = (int)$segment;
-        $start = ($segment - 1)*$config['per_page'];
+        $segment = (int) $segment;
+        $start = ($segment - 1) * $config['per_page'];
         $pagination_link = $this->pagination->create_links();
         $data['pagination_link'] = $pagination_link;
 
@@ -45,29 +45,29 @@ class MailTo extends CI_Controller
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
-        $input['order'] = array('user_id','DESC');
+        $input['order'] = array('user_id', 'DESC');
 
-      
-        /*-- Lọc user_name--*/
+
+        /* -- Lọc user_name-- */
         $user_name = $this->input->get('user_name');
-        if($user_name){
+        if ($user_name) {
             $input['like'] = array('user_name', $user_name);
         }
-          /*-- Lọc ozganzation--*/
+        /* -- Lọc ozganzation-- */
         $ozganzation = $this->input->get('ozganzation');
 
-        if($ozganzation){
+        if ($ozganzation) {
             $input['or_like'] = array('ozganzation', $ozganzation);
         }
-        /*-- Lọc role--*/
+        /* -- Lọc role-- */
         $role_id = $this->input->get('role');
-        $role_id = (int)$role_id;
-        if($role_id){
-             $input['where']['tbl_user.role_id'] = $role_id;
+        $role_id = (int) $role_id;
+        if ($role_id) {
+            $input['where']['tbl_user.role_id'] = $role_id;
         }
 
         //Lay session userLogin de list user != userLogin
-        if(!is_NULL($this->session->userdata('userLogin'))){
+        if (!is_NULL($this->session->userdata('userLogin'))) {
             $userLogin = $this->session->userdata('userLogin');
             $input['where']['user_id !='] = $userLogin['user_id'];
         }
@@ -78,7 +78,6 @@ class MailTo extends CI_Controller
         $data['title'] = 'Danh sách tài khoản';
         $data['temp'] = 'admin/user/index';
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
-
-
     }
+
 }
