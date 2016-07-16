@@ -272,7 +272,7 @@ $(document).ready(function(){
                     dataType: 'json',
                     data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
                     success: function (data) {
-                      if(typeof  data.error!= undefined){$('.fees').html(data.error);}
+                      if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
                       if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
                 })
@@ -296,7 +296,7 @@ $(document).ready(function(){
                   dataType: 'json',
                   data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
                   success: function (data) {
-                    if(typeof  data.error!= undefined){$('.fees').html(data.error);}
+                    if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
                     if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
                 })
@@ -312,7 +312,7 @@ $(document).ready(function(){
                   dataType: 'json',
                   data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
                   success: function (data) {
-                        if(typeof  data.error!= undefined){$('.fees').html(data.error);}
+                        if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
                         if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
                 })
@@ -334,7 +334,7 @@ $(document).ready(function(){
                 success :  function(data){
                     console.log(data);
                 },
-                dataType:'JSON',
+                dataType:'json',
             })
             ev.preventDefault();
         });
@@ -357,24 +357,23 @@ $(document).ready(function(){
                 return false;
             }
             var urlCurl = window.location.href;
-            <?php $urlCurrent = url_origin($_SERVER);?>
             urlCurl = urlCurl.split('#')[0];
-            var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email,urlCurl:urlCurl};
+            var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
             $.ajax({
                 type : 'POST',
                 url  : "<?php echo base_url().'user/createFast'?>",
                 data : data,
                 success :  function(data){
-                    if(typeof data.error != undefined){
-                        alert(data.error);
+                    if(typeof data["error"] !== undefined){
+                        window.location.href = urlCurl;
                         return;
                     }
-                    if(typeof data.success !=undefined){
+                    if(typeof data["success"] !==undefined){
                         location.reload();
                     }
-                    window.location.href = '<?php echo $urlCurrent;?>';
+                    window.location.href = urlCurl;
                 },
-                dataType:'JSON',
+                dataType:'json',
             })
         })
 })

@@ -187,11 +187,15 @@ class User extends MY_Controller
                     'phone'=>$phoneNumber,
                     'role_id' => $role_id,  
                 );
-                if($this->user_model->check_exists($data)){
+                
+                $dataCheck = $this->user_model->check_exits_user($data);
+                if(count($dataCheck)>0){
                     echo json_encode(array(
                         'success'=>true,
                         'action'=>'Ton tai',
                     ));
+                    $data['user_name'] = $dataCheck->user_name;
+                    $data['user_id'] = $dataCheck->user_id;
                     $this->session->set_userdata($data);
                     exit();
                 }else{

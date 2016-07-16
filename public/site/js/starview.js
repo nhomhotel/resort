@@ -91,12 +91,13 @@ $(document).ready(function() {
         var min = $('#min-amount');
         var max = $('#max-amount');
         var guest = $('#guests');
+        var baseurl = url;
         $('.tclick').click(function () {
             var currentclick = $(this);
             if (currentclick.parent().hasClass('book-action')) {
                 var checkin = $('#bookin-dpk');
                 var checkout = $('#bookout-dpk');
-                console.log(typeof $('#name_customer'));
+                var guest = $('#guests');
                 if (typeof $('#name_customer') == undefined || $('#name_customer').val() == '' || typeof $('#phone_number') == undefined || $('#phone_number').val() == '' || typeof $('#email') == undefined || $('#email').val() == '') {
                     $('#myModal').modal('show');
                     return;
@@ -113,13 +114,8 @@ $(document).ready(function() {
                     $('.info-book').html('nhập số khách');
                     return;
                 }
-                var url = url + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
-                if (parseInt(min.val().toString().replace("$", "")) > 0) {
-                    url += "&min=" + min;
-                }
-                if (parseInt(max.val().toString().replace("$", "")) > 0) {
-                    url += "&max=" + max;
-                }
+                var url = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
+                
                 window.location.href = url;
             } else {
                 var bathrooms = $('#bathrooms');

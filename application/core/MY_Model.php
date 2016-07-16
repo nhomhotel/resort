@@ -24,7 +24,7 @@ class MY_Model extends CI_Model {
 //        $id = $this->db->insert($this->table, $data);
         if($this->db->insert($this->table, $data))
         {
-            return true;
+            return $this->db->insert_id();
         }else{
             return FALSE;
         }

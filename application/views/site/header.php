@@ -14,7 +14,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                 <li id="language" style="padding-top: 19px;">
+                 <li id="language" style="padding-top: 19px; padding-right: 10px;">
                     <div class="dropdown dropdown-flat selected ready">
                       <button class="dropdown-toggle form-control form-control-icon icon-language" type="button" data-toggle="dropdown"><span class="display"><?php if($this->session->userdata('language')=='vietnamese') echo 'Tiếng việt';else echo 'English';?></span></button>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="language" style="margin-right: -80px;">
@@ -26,7 +26,17 @@
                     </div>
                 </li>
                 <?php if(isset($_SESSION['user_name'])&&$_SESSION['role_id']==3){?>
-                <li><a href="<?php echo base_url()?>"><?php echo lang('hello');?> <?php echo $_SESSION['user_name']?></a></li>
+                <li class="account"  style="padding-top: 19px; padding-right: 10px;">
+                    <div class="dropdown dropdown-flat ready">
+                        <button class="dropdown-toggle form-control" type="button" data-toggle="dropdown"><span class="hi">Xin chào, Hai</span></button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="currency">
+                          <li role="presentation"><a href="/reservations" data-href="follow" role="menuitem" tabindex="-1">Yêu cầu đặt chỗ</a></li>
+                          <li role="presentation"><a href="/users/edit" data-href="follow" role="menuitem" tabindex="-1">Tài khoản của tôi</a></li>
+                          <li role="presentation"><a href="/logout" data-href="follow" role="menuitem" tabindex="-1">Đăng xuất</a></li>
+                        </ul>
+                        <div class="dropdown-menu-chevron"></div>
+                      </div>
+                </li>
             <?php }else{?>
                 <li><a href="<?php echo base_url();?>home/register"><?php echo lang('home_register');?></a></li>
                     <li><a href="<?php echo base_url();?>home/login"><?php echo lang('home_login');?></a></li>
