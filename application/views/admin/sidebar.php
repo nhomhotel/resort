@@ -68,6 +68,7 @@
             </a>
             <ul class="sub collapse" id="collapse5" aria-expanded="false" style="height: 1px;">
                 <li>
+                    <a href="<?php echo  admin_url('calendar');?>">Lịch làm việc</a>
                     <a href="<?php echo  admin_url('post_room');?>">Danh sách phòng đăng</a>
                     <a href="<?php echo  admin_url('order_room');?>">Danh sách phòng đăng ký</a>
                 </li>
