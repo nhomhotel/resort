@@ -192,7 +192,7 @@
                     <input type="radio" name="options" id="sort-popular" autocomplete="off" checked />
                     <?php echo lang('search_popular'); ?>
                 </label>
-                <label data-sort="<?php if (isset($sort_by) && in_array($sort_by, array('price_up', 'price_down')) && $sort_by == 'price_up') :?>price_down<?php else :?>price_up<?php endif; ?>" class="btn btn-default sort-by <?php if (isset($sort_by) && in_array($sort_by, array('price_up', 'price_down'))) :?>active<?php endif; ?> <?php if ($sort_by == 'price_down') :?>sort-reverse<?php endif; ?>" id="price-sort">
+                <label data-sort="<?php if (isset($sort_by) && in_array($sort_by, array('price_up', 'price_down')) && $sort_by == 'price_up') :?>price_down<?php else :?>price_up<?php endif; ?>" class="btn btn-default sort-by <?php if (isset($sort_by) && in_array($sort_by, array('price_up', 'price_down'))) :?>active<?php endif; ?> <?php if ($sort_by == 'price_down' || $sort_by == 'popular') :?>sort-reverse<?php endif; ?>" id="price-sort">
                     <input type="radio" name="options" autocomplete="off">
                     <?php echo lang('search_price'); ?>
                     <span id="sort-price-up" class="glyphicon glyphicon-sort-by-attributes up"></span>
