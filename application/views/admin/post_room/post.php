@@ -18,6 +18,15 @@ if ($this->session->userdata('post_info') !== NULL) {
                     </a>
                 </li>
 
+                <?php if (!empty($post_room_id)) :?>
+                <li>
+                    <a href="<?php echo site_url('admin/post_room/calendar/' . $post_room_id); ?>">
+                        <img src="<?php echo base_url();?>public/admin/images/icons/control/16/order.png" />
+                        <span>Lịch làm việc</span>
+                    </a>
+                </li>
+                <?php endif; ?>
+
                 <li>
                     <a href="product/?feature=1.html">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/feature.png" />

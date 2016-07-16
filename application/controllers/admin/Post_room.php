@@ -570,6 +570,7 @@ class Post_room extends AdminHome {
             $data["list_amenities"] = $list_amenities;
             $data["list_experience"] = $list_experience;
             $data['data_post_room'] = $data_post_room;
+            $data['post_room_id'] = $id;
 //            pre($data['data_post_room']);return;
 
             if ($this->input->post()) {
@@ -676,6 +677,61 @@ class Post_room extends AdminHome {
         $result = $this->post_room_model->db->get()->result();
         echo json_encode($result);
         return;
+    }
+
+
+
+    /* Get available day */
+
+    public function calendar($post_room_id = null) {
+
+        if (empty($post_room_id)) {
+            return site_url('admin/home');
+        }
+
+        $data['post_room'] = $this->post_room_model->get_row(array('where' => array('post_room_id' => $post_room_id)));
+
+        if (empty($data['post_room'])) {
+            return site_url('admin/home');
+        }
+
+        /* Prepared times */
+
+        $time = time();
+        $begin_day = date('d/m/Y', strtotime('first day of this month'));
+        $end_day = date('d/m/Y', strtotime(date('Y', $time) . '-' . date('m', $time) . '-' . cal_days_in_month(CAL_GREGORIAN, date('m', $time), date('Y', $time))));
+
+        /* Find Ordered Room In Range Day */
+
+        $this->db->select('post_room.post_room_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests AS num_guests');
+        $this->db->from('post_room');
+        $this->db->join('order', 'order.post_room_id=post_room.post_room_id', 'left');
+        $this->db->where('checkin >= "' . $begin_day . '" AND checkout <= "' . $end_day . '"');
+        $this->db->where('post_room.post_room_id = ' . $post_room_id);
+        $result = $this->db->get()->result();
+
+        /* Register Events In Calendar */
+
+        $events = array();
+
+        foreach ($result as $row) {
+            $item = array(
+                'title' => '(' . $row->num_guests . ' KH) thuê phòng ' . htmlspecialchars($row->post_room_name),
+                'start' => $row->checkin,
+                'end' => date('Y-m-d', strtotime($row->checkout) + (24 * 60 * 60)),
+                'url' => site_url('admin/post_room/edit/' . $row->post_room_id)
+            );
+            $events[] = $item;
+        }
+
+        /* Render Layout */
+
+        $data['events'] = json_encode($events);
+        $data['title'] = 'Lịch đăng ký phòng ' . htmlspecialchars($data['post_room']->post_room_name);
+        $data['link'] = site_url('admin/post_room/edit/' . $post_room_id);
+        $data['description'] = 'Danh sách các ngày đã đặt theo lịch trong tháng/tuần/ngày';
+        $data['temp'] = 'admin/calendar/index';
+        $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
 
 }

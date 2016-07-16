@@ -116,6 +116,7 @@
                                         <span class="num_bed">Số khách tối đa: <?php echo $row->num_guest; ?></span>
                                     </p>
                                     </p>
+                                    <p><a class="btn btn-default lowercase" href="<?php echo base_url('admin/post_room/calendar/'.$row->post_room_id); ?>"><strong>Lịch đặt phòng trong tháng</strong></a></p>
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">

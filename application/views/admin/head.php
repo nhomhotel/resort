@@ -12,11 +12,16 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/admin/css/css.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/admin/css/index.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/admin/css/font-awesome.min.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/admin/plugins/fc/fullcalendar.min.css" media="screen" />
+<link href='<?php echo base_url();?>public/admin/plugins/fc/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/jquery/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/site/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/starview.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/localization/messages_vi.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>public/admin/plugins/fc/lib/moment.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>public/admin/plugins/fc/fullcalendar.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>public/admin/plugins/fc/lang-all.js"></script>
 
 
