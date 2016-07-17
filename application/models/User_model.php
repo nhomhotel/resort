@@ -94,12 +94,13 @@ class User_model extends MY_Model {
         return $query->num_rows() == 1;
     }
 
-//    function get_role($user_id){
-//        $this->db->from('user');
-//        $this->db->join('role','role.id=user.role_id');
-//        $this->db->where('user_id',$user_id);
-//        return $this->db->get_row();
-//    }
+    function get_role($user_id=-1){
+        if($user_id<=0||$user_id>=3)return false;
+        $this->db->from('user');
+        $this->db->join('role','role.role_id=user.role_id');
+        $this->db->where('user_id',$user_id);
+        return $this->db->get()->row()->role_id;
+    }
 
     function check_exits_user($input = array()) {
         $this->db->where('email', $input['email']);

@@ -147,7 +147,7 @@ body{
 }
 #location-to ul .location-item a{
 	display: table-cell;
-        height: 30vw !important;
+        /*height: 30vw !important;*/
         border-radius: 4px;
         text-align: center;
         vertical-align: middle;
