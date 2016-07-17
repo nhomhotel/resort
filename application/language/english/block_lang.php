@@ -6,5 +6,4 @@
 	$lang['block_logout'] = 'Logout';
 	$lang['block_login'] = 'Login';
 	$lang['block_post_news'] = 'Post News';
-        $lang['block_test'] = 'test';
 ?>

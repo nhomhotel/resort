@@ -14,7 +14,6 @@ class payments extends MY_Controller {
         $this->load->library('email');
         $this->load->model('order_room_model');
         $this->load->model('post_room_model');
-//         $this->load->model('mail_history_model');
     }
 
     public function index() {
@@ -101,7 +100,7 @@ class payments extends MY_Controller {
             'checkout' => $data['checkout']->format('Y-m-d'),
             'guests' => $data['guests'],
         );
-        $this->order_room_model->create($data_insert);
+//        $this->order_room_model->create($data_insert);
         //gửi email
         $input = array();
         $input = array(
@@ -120,9 +119,9 @@ class payments extends MY_Controller {
         $content_gui_doi_tac = $email_contact[1]->description;
         $content_gui_quan_tri = $email_contact[0]->description;
         
-        echo $this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title, $this->replaceContenEmail($content_gui_dat_phong), $config);
-        echo $this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail($content_gui_doi_tac), $config);
-        echo $this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title, $this->replaceContenEmail($content_gui_quan_tri), $config);
+        if($this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title,                $this->replaceContenEmail($content_gui_dat_phong,$data), $config))echo 'Đã gửi mail thành công';;
+        if($this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail($content_gui_doi_tac,$data['doitac']), $config))echo 'Đã gửi mail thành công';;
+        if($this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title,              $this->replaceContenEmail($content_gui_quan_tri,$data['doitac']), $config))echo 'Đã gửi mail thành công';;
         echo 'Đã gửi mail thành công';
     }
 
@@ -132,24 +131,23 @@ class payments extends MY_Controller {
         $mail_object->email->to($mailTo);
         $mail_object->email->set_mailtype("html");
         $mail_object->email->subject($mailSubject);
-//         $body = $this->load->view('email_config_order.php',$data,TRUE);
-        $mail_object->email->message($content);
+        $mail_object->email->message(nl2br($content));
         return $mail_object->email->send();
     }
     
-    function replaceContenEmail($data){
-        $data = str_replace('__user_name__', $data['user']->first_name, $data);
-        $data = str_replace('__user_name__', $data['user']->first_name, $data);
-        $data = str_replace('__customer_name__', $data['user']->last_name, $data);
-        $data = str_replace('__phone_number__', $data['user']->phone, $data);
+    function replaceContenEmail($data_content, $data){
+        $data_content = str_replace('__user_name__', $data['user']->first_name, $data_content);
+        $data_content = str_replace('__user_name__', $data['user']->first_name, $data_content);
+        $data_content = str_replace('__customer_name__', $data['user']->last_name, $data_content);
+        $data_content = str_replace('__phone_number__', $data['user']->phone, $data_content);
 
-        $data = str_replace('__room_name__', $data['name_room'], $data);
-        $data = str_replace('__email_address__', $data['user']->email, $data);
-        $data = str_replace('__check_in__', $data['checkin']->format('d-m-Y'), $data);
-        $data = str_replace('__check_out__', $data['checkout']->format('d-m-Y'), $data);
-        $data = str_replace('__prices__', $data['price_all_night_add_fee'], $data); //$data['guests']
-        $data = str_replace('__guest__', $data['guests'], $data);
-        return $data;
+        $data_content = str_replace('__room_name__', $data['name_room'], $data_content);
+        $data_content = str_replace('__email_address__', $data['user']->email, $data_content);
+        $data_content = str_replace('__check_in__', $data['checkin']->format('d-m-Y'), $data_content);
+        $data_content = str_replace('__check_out__', $data['checkout']->format('d-m-Y'), $data_content);
+        $data_content = str_replace('__prices__', $data['price_all_night_add_fee'], $data_content); //$data_content['guests']
+        $data_content = str_replace('__guest__', $data['guests'], $data_content);
+        return $data_content;
     }
 
 }

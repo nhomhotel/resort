@@ -13,9 +13,6 @@ class Home extends AdminHome {
     }
 
     function index() {
-//                    $this->lang->load('block_lang');
-        echo lang('block_test');
-        echo $this->config->item('language');
         $userLogin = ($this->session->userdata('userLogin')) ? $this->session->userdata('userLogin') : '';
 
         if ($userLogin) {

@@ -31,8 +31,8 @@
                         <button class="dropdown-toggle form-control" type="button" data-toggle="dropdown"><span class="hi">Xin chào, Hai</span></button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="currency">
                           <li role="presentation"><a href="/reservations" data-href="follow" role="menuitem" tabindex="-1">Yêu cầu đặt chỗ</a></li>
-                          <li role="presentation"><a href="/users/edit" data-href="follow" role="menuitem" tabindex="-1">Tài khoản của tôi</a></li>
-                          <li role="presentation"><a href="/logout" data-href="follow" role="menuitem" tabindex="-1">Đăng xuất</a></li>
+                          <li role="presentation"><a href="/user/edit" data-href="follow" role="menuitem" tabindex="-1">Tài khoản của tôi</a></li>
+                          <li role="presentation"><a href="/user/logout" data-href="follow" role="menuitem" tabindex="-1">Đăng xuất</a></li>
                         </ul>
                         <div class="dropdown-menu-chevron"></div>
                       </div>

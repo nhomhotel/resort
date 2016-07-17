@@ -12,8 +12,6 @@ if ($this->session->userdata('userLogin')) {
     </div>
     <div class="welcome hidden-xs">
         <span><?php echo lang('hello'); ?>: <b><?php echo (isset($userLogin)) ? $userLogin['user_name'] : ''; ?></b></span>
-        <span><a href="<?php echo base_url('admin/amenities/lang/english') . '?redirect=' . $_SERVER['PATH_INFO']; ?>"><b>EN</b></a></span>
-        <span><a href="<?php echo base_url('admin/amenities/lang/vietnamese') . '?redirect=' . $_SERVER['PATH_INFO']; ?>"><b>VN</b></a></span>
     </div>
     <div class="userNav">
         <ul>

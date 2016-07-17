@@ -12,6 +12,8 @@ class Home extends MY_Controller {
 
     public function index() {
 //        $this->output->enable_profiler(TRUE);
+        pre($this->session->usedata);
+        pre($_SESSION);
         $this->load->model('area_model');
         $data['meta_title'] = 'STAR VIEW Home page';
         $data['temp'] = ('site/home/index');

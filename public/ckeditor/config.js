@@ -9,6 +9,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.uiColor = '#AADC6E';
 	config.language = 'vi';
 	// config.uiColor = '#AADC6E';
+        config.enterMode = CKEDITOR.ENTER_BR;
 	var path = 'http://hotel.git-dev.new/public/ckfinder/';
 	config.filebrowserBrowseUrl = path+'ckfinder.html';
  

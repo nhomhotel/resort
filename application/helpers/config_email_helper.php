@@ -9,7 +9,7 @@
         $config['charset']    = $charset;
         $config['newline']    = "\r\n";
         $config['crlf']    = "\r\n";
-        $config['mailtype'] = 'html'; 
+        $config['mailtype'] = "html"; 
         $config['validation'] = TRUE;  
         return $config;
     }

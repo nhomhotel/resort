@@ -188,6 +188,7 @@ class User extends MY_Controller {
             );
 
             $dataCheck = $this->user_model->check_exits_user($data);
+//            pre(count($dataCheck));exit;
             if (count($dataCheck) > 0) {
                 echo json_encode(array(
                     'success' => true,
@@ -365,10 +366,13 @@ class User extends MY_Controller {
     }
 
     function logout() {
-        if ($this->session->userdata('userLogin')) {
+//        if ($this->session->userdata('userLogin')) {
+        pre($_SESSION);
+        pre($this->session->userdata);
             $this->session->sess_destroy();
-        }
-        redirect(admin_url('login'));
+            pre($_SESSION);
+//        }
+        redirect('/');
     }
 
 }
