@@ -5,7 +5,7 @@
     $lang['side_bar_manage_room'] = 'Quản lý phòng';
     $lang['side_bar_manage_email'] = 'Quản lý email';
     $lang['side_bar_config_system'] = 'Cấu hình hệ thống';
-    $lang['side_bar_'] = '';
+    $lang['side_bar_report'] = 'Báo cáo';
     $lang['side_bar_'] = '';
     $lang['side_bar_'] = '';
 ?>

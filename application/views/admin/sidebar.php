@@ -72,14 +72,23 @@ if ($this->session->userdata('userLogin')) {
             </a>
             <ul class="sub collapse" id="collapse5" aria-expanded="false" style="height: 1px;">
                 <li>
-                    <a href="<?php echo admin_url('calendar'); ?>">Lịch làm việc</a>
+                    <a href="<?php echo admin_url('calendar'); ?>">Lịch đặt phòng</a>
                     <?php if($role==1):?>
                     <a href="<?php echo admin_url('area'); ?>">Danh sách khu vực</a>
                     <?php endif;?>
                     <a href="<?php echo admin_url('post_room'); ?>">Danh sách phòng đăng</a>
                     <a href="<?php echo admin_url('order_room'); ?>">Danh sách phòng đăng ký</a>
                 </li>
-
+            </ul>
+        </li>
+        <li class="product">
+            <a href="#collapse6" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
+                <span><?php echo lang('side_bar_report'); ?></span>
+            </a>
+            <ul class="sub collapse" id="collapse6" aria-expanded="false" style="height: 1px;">
+                <li>
+                    <a href="<?php echo admin_url('report'); ?>">Báo cáo</a>
+                </li>
             </ul>
         </li>
         <li class="email">
@@ -87,7 +96,7 @@ if ($this->session->userdata('userLogin')) {
                 <span><?php echo lang('side_bar_manage_email'); ?></span>
                 <strong>3</strong>
             </a>
-            <ul class="sub collapse" id="collapse6" aria-expanded="false" style="height: 1px;">
+            <ul class="sub collapse" id="collapse7" aria-expanded="false" style="height: 1px;">
                 <li>
                     <a href="<?php echo admin_url('emails'); ?>">Danh sách loại email</a>
                     <a href="<?php echo admin_url('emails/history'); ?>">Lịch sử gửi email</a>

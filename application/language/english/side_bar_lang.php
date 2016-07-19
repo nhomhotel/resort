@@ -5,7 +5,7 @@
     $lang['side_bar_manage_room'] = 'Manage room';
     $lang['side_bar_manage_email'] = 'Manage email';
     $lang['side_bar_config_system'] = 'Config system';
-    $lang['side_bar_'] = '';
+    $lang['side_bar_report'] = 'Reports';
     $lang['side_bar_'] = '';
     $lang['side_bar_'] = '';
 ?>
