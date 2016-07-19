@@ -9,8 +9,8 @@ function getSile($data = array()){
     $i=0;
     foreach ($data as $key => $value){
         $result .='<li class="location-item '.$config[$number][$i].'">';
-        $result .='<a href="'.  base_url().'room/search?location='.urlencode($value->name).'" style="background-image: url(\''.base_url().substr($value->image,1).'\')">
-                    <p>'.$value->name.'</p>
+        $result .='<a href="'.  base_url().'room/search?location='.urlencode($value->name).'">
+                    <img src="'.base_url().substr($value->image,1).'"/><p>'.$value->name.'</p>
                 </a>';
         $result .='</li>';
         $i++;

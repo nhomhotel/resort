@@ -610,7 +610,7 @@ class Post_room extends AdminHome {
                     $zip_code = $this->input->post('zip_code');
                     $country = $this->input->post('country');
                     $country_ascii = stripUnicode($country);
-                    $area_id = $this->input->post('area');
+                    $area_id = $this->input->post('area_name');
 
                     $post_room_name = $this->input->post('post_room_name');
                     $description = $this->input->post('description');

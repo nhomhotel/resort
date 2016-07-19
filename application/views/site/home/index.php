@@ -50,7 +50,7 @@
             <div class="block">
                 <h3><?php echo lang('home_popular_destination');?></h3>
                 <ul>
-<!--                    <li class="location-item col-sm-4 col-xs-6">
+                    <li class="location-item col-sm-4 col-xs-6">
                         <a href="listroom.html">
                             <img src="<?php echo base_url();?>public/site/images/singapore.jpg" class="img-responsive">
                             <p>Singapore</p>
@@ -97,8 +97,8 @@
                             <img src="<?php echo base_url();?>public/site/images/seoul.jpg" class="img-responsive">
                             <p>Seoul</p>
                         </a>
-                    </li>-->
-<?php if(isset($popular)) echo $popular;?>
+                    </li>
+<?php // if(isset($popular)) echo $popular;?>
                 </ul>
             </div>
         </div>

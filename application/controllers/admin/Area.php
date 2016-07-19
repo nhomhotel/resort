@@ -8,6 +8,7 @@ class Area extends AdminHome {
     function __construct() {
         parent::__construct(get_class());
         $this->load->model('area_model');
+//        $this->load->library('simple_image_library');
     }
 
     function index() {

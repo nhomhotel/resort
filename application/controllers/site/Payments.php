@@ -100,7 +100,7 @@ class payments extends MY_Controller {
             'checkout' => $data['checkout']->format('Y-m-d'),
             'guests' => $data['guests'],
         );
-//        $this->order_room_model->create($data_insert);
+        $this->order_room_model->create($data_insert);
         //gửi email
         $input = array();
         $input = array(
@@ -120,8 +120,8 @@ class payments extends MY_Controller {
         $content_gui_quan_tri = $email_contact[0]->description;
         
         if($this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title,                $this->replaceContenEmail($content_gui_dat_phong,$data), $config))echo 'Đã gửi mail thành công';;
-        if($this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail($content_gui_doi_tac,$data['doitac']), $config))echo 'Đã gửi mail thành công';;
-        if($this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title,              $this->replaceContenEmail($content_gui_quan_tri,$data['doitac']), $config))echo 'Đã gửi mail thành công';;
+        if($this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail_dt($content_gui_doi_tac,$data), $config))echo 'Đã gửi mail thành công';;
+        if($this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title,              $this->replaceContenEmail($content_gui_quan_tri,$data), $config))echo 'Đã gửi mail thành công';;
         echo 'Đã gửi mail thành công';
     }
 
@@ -140,6 +140,20 @@ class payments extends MY_Controller {
         $data_content = str_replace('__user_name__', $data['user']->first_name, $data_content);
         $data_content = str_replace('__customer_name__', $data['user']->last_name, $data_content);
         $data_content = str_replace('__phone_number__', $data['user']->phone, $data_content);
+
+        $data_content = str_replace('__room_name__', $data['name_room'], $data_content);
+        $data_content = str_replace('__email_address__', $data['user']->email, $data_content);
+        $data_content = str_replace('__check_in__', $data['checkin']->format('d-m-Y'), $data_content);
+        $data_content = str_replace('__check_out__', $data['checkout']->format('d-m-Y'), $data_content);
+        $data_content = str_replace('__prices__', $data['price_all_night_add_fee'], $data_content); //$data_content['guests']
+        $data_content = str_replace('__guest__', $data['guests'], $data_content);
+        return $data_content;
+    }
+    function replaceContenEmail_dt($data_content, $data){
+        $data_content = str_replace('__user_name__', $data['doitac']->first_name, $data_content);
+        $data_content = str_replace('__user_name__', $data['doitac']->first_name, $data_content);
+        $data_content = str_replace('__customer_name__', $data['doitac']->last_name, $data_content);
+        $data_content = str_replace('__phone_number__', $data['doitac']->phone, $data_content);
 
         $data_content = str_replace('__room_name__', $data['name_room'], $data_content);
         $data_content = str_replace('__email_address__', $data['user']->email, $data_content);

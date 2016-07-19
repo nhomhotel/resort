@@ -18,6 +18,10 @@ class Home extends MY_Controller {
             'where' => array('sort>' => 0),
             'limit'=>array('9'=>'0')
         )));
+        pre($this->area_model->get_list(array(
+            'where' => array('sort>' => 0),
+            'limit'=>array('9'=>'0')
+        )));
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 
@@ -137,6 +141,12 @@ class Home extends MY_Controller {
                 'result' => '',
             ));
         exit();
+    }
+    
+    function Test(){
+        $this->load->model('Post_room_model');
+        $this->load->library('book_library');
+        pre($this->book_library->getMoney(array('checkin'=>'2016-7-19','checkout'=>'2016-7-26'),5, 1));
     }
 
 }

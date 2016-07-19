@@ -12,31 +12,13 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/site/home/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/site/User.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/site/Room.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/area/create.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Area.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/site/Payments.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Amenities.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/helpers/mystring_helper.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/post_room/post.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/post_room/post_price.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/post_room/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/helpers/table_helper.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Post_room.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/area/edit.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/config/routes.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/libraries/upload_library.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/public/site/css/styles.css</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/public/site/js/starview.js</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/site/room/room_detail.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/site/Home.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/config/autoload.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/area/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Order_room.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/core/MY_Model.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/helpers/slide_show_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/room/room_detail.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/header_index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/core/MY_Model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/User.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/Payments.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/header.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/public/site/css/styles.css</file>
         </group>
     </open-files>
 </project-private>

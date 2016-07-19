@@ -225,6 +225,7 @@ class User extends MY_Controller {
                                 'success' => true,
                                 'action' => 'Tao thanh cong user',
                             ));
+                            $data['user_id'] = $id;
                             $this->session->set_userdata($data);
                             exit;
                         } else {
