@@ -76,7 +76,7 @@ class Report extends AdminHome
                 break;
             case 'month':
                 $data['filters']['from_day'] = date('d/m/Y', strtotime('first day of this month'));
-                $data['filters']['to_day'] = date('d/m/Y', $time);
+                $data['filters']['to_day'] = date('d/m/Y', strtotime(date('Y', $time) . '-' . date('m', $time) . '-' . cal_days_in_month(CAL_GREGORIAN, date('m', $time), date('Y', $time))));
                 break;
             case 'previous_week':
                 $data['filters']['from_day'] = date('d/m/Y', strtotime('last monday - 7 day'));
@@ -109,7 +109,7 @@ class Report extends AdminHome
         $data['days'] = array();
         for ($index = 0; $index <= $days; $index++) {
             $time = strtotime(sprintf('%s + %d day', $this->_format_date($data['filters']['from_day']), $index));
-            $data['days'][md5(date('Y-m-d', $time))] = date('d/m', $time);
+            $data['days'][date('Y-m-d', $time)] = date('d/m', $time);
         }
 
         $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests');
@@ -117,6 +117,10 @@ class Report extends AdminHome
         $this->db->join('order', 'order.post_room_id=post_room.post_room_id');
         $this->db->where('checkin >= "' . $this->_format_date($data['filters']['from_day']) . '" AND checkin <= "' . $this->_format_date($data['filters']['to_day']) . '"');
         $data['result'] = $this->db->get()->result();
+
+        foreach ($data['result'] as $key => $row) {
+
+        }
 
         $data['query'] = $this->db->last_query();
 

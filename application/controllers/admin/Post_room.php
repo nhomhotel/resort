@@ -693,10 +693,6 @@ class Post_room extends AdminHome {
         return;
     }
 
-
-
-    /* Get available day */
-
     public function calendar($post_room_id = null) {
 
         if (empty($post_room_id)) {
@@ -719,7 +715,7 @@ class Post_room extends AdminHome {
 
         $this->db->select('post_room.post_room_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests AS num_guests');
         $this->db->from('post_room');
-        $this->db->join('order', 'order.post_room_id=post_room.post_room_id', 'left');
+        $this->db->join('order', 'order.post_room_id=post_room.post_room_id');
         $this->db->where('checkin >= "' . $begin_day . '" AND checkout <= "' . $end_day . '"');
         $this->db->where('post_room.post_room_id = ' . $post_room_id);
         $result = $this->db->get()->result();

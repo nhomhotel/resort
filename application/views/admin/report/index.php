@@ -72,9 +72,9 @@
                 <td rowspan=""><?php if ($row->parent_id == 0): ?><?php echo $row->post_room_name; ?><?php endif; ?></td>
                 <td><?php if ($row->parent_id > 0): ?><?php echo $row->post_room_name; ?><?php else: ?>Nguyên căn<?php endif; ?></td>
                 <?php foreach ($days as $key => $day): ?>
-                <?php if ($key == md5($row->checkin)): ?>
+                <?php if ($key >= $row->checkin && strtotime($key) <= strtotime($row->checkout)): ?>
                 <td class="selected">
-                    1
+                    <?php echo $row->guests; ?>
                 </td>
                 <?php else: ?>
                 <td></td>
