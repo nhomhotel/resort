@@ -34,12 +34,36 @@ class Report extends AdminHome
         return $range;
     }
 
+    /*
+     * @var $date string
+     * @return $date string
+     */
     protected function _format_date($date) {
         $date_parts = explode('/', $date);
         if (count($date_parts) === 3) {
             $date = sprintf('%s-%s-%s', $date_parts[2], $date_parts[1], $date_parts[0]);
         }
         return $date;
+    }
+
+    /*
+     * Maximum at level 2
+     * @var $column string
+     * @return $column string
+     */
+    protected function _get_next_column($column) {
+        if (strlen($column) == 1) {
+            if ($column != 'Z') {
+                $column = chr(ord($column) + 1);
+            } else {
+                $column = 'AA';
+            }
+        } elseif (strlen($column) == 2) {
+            if ($column[1] != 'Z') {
+                $column[1] = $this->_get_next_column($column[1]);
+            }
+        }
+        return $column;
     }
 
     /**
@@ -99,7 +123,7 @@ class Report extends AdminHome
                 /* Do nothing to hold date filters */
                 break;
             default:
-                $data['filters']['from_day'] = date('d/m/Y', strtotime('- 3 years'));
+                $data['filters']['from_day'] = date('d/m/Y', strtotime('- 1 years'));
                 $data['filters']['to_day'] = date('d/m/Y', $time);
                 break;
         }
@@ -124,7 +148,7 @@ class Report extends AdminHome
         $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests, order.refer_id');
         $this->db->from('post_room');
         $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
-        $this->db->where('checkin >= "' . $this->_format_date($data['filters']['from_day']) . '" OR checkout <= "' . $this->_format_date($data['filters']['to_day']) . '"');
+        $this->db->where('checkin >= "' . $this->_format_date($data['filters']['from_day']) . '" AND checkout <= "' . $this->_format_date($data['filters']['to_day']) . '"');
         $this->db->order_by('checkin', 'ASC');
         $data['result'] = $this->db->get()->result();
 
@@ -152,7 +176,81 @@ class Report extends AdminHome
             $data['collection'][$row->post_room_id] = $row;
         }
 
-        $data['query'] = $this->db->last_query();
+        $export_excel = $this->input->post('export_excel');
+        if (!empty($export_excel)) {
+
+            /* Require Excel Lib */
+            require_once (APPPATH . 'libraries/PHPExcel/Classes/PHPExcel.php');
+            $this->load->helper('download');
+
+            $obj_excel = new PHPExcel();
+            $obj_excel->getProperties()->setCreator('saddsas')
+                ->setLastModifiedBy('adsaas')
+                ->setTitle('Lịch đặt phòng theo tháng')
+                ->setSubject('')
+                ->setDescription('Danh sách lịch đặt phòng theo tháng')
+                ->setKeywords('Booking')
+                ->setCategory('Booking Report');
+
+            $sheet = 0;
+            $row_index = 1;
+            $obj_excel->setActiveSheetIndex($sheet);
+            $obj_excel->getActiveSheet()->mergeCells("A$row_index:Z$row_index")->setCellValue("A$row_index", 'LỊCH ĐẶT PHÒNG TỪ NGÀY ('.$data['filters']['from_day'].' - '.$data['filters']['to_day'].')');
+            $obj_excel->getActiveSheet()->getStyle("A$row_index")->getAlignment()->setWrapText(true);
+            $obj_excel->getActiveSheet()->getStyle("A$row_index")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+            $row_index++;
+            $obj_excel->getActiveSheet()->setCellValue("A$row_index", 'STT');
+            $obj_excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $obj_excel->getActiveSheet()->setCellValue("B$row_index", 'Căn hộ');
+            $obj_excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $obj_excel->getActiveSheet()->setCellValue("C$row_index", 'Phòng');
+            $obj_excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $column_index = 'C';
+
+            foreach($data['days'] as $key => $day) {
+                $obj_excel->getActiveSheet()->setCellValue($this->_get_next_column($column_index) . $row_index, $day['date']);
+                $column_index = $this->_get_next_column($column_index);
+            }
+
+            $row_index++;
+            $num_house = 1;
+            foreach ($data['collection'] as $row) {
+                if (empty($row->parent_id)) {
+                    $obj_excel->getActiveSheet()->setCellValue("A$row_index", $num_house);
+                    $obj_excel->getActiveSheet()->setCellValue("B$row_index", $row->post_room_name);
+                }
+                if (!empty($row->parent_id)) {
+                    $obj_excel->getActiveSheet()->setCellValue("C$row_index", $row->post_room_name);
+                } else {
+                    $obj_excel->getActiveSheet()->setCellValue("C$row_index", 'Nguyên căn');
+                }
+                $column_index = 'C';
+                foreach($data['days'] as $day) {
+                    if (isset($day['rooms'][$row->post_room_id])) {
+                        $obj_excel->getActiveSheet()->setCellValue($this->_get_next_column($column_index) . $row_index, $day['rooms'][$row->post_room_id]);
+                    } else {
+                        $obj_excel->getActiveSheet()->setCellValue($this->_get_next_column($column_index) . $row_index, 0);
+                    }
+                    $column_index = $this->_get_next_column($column_index);
+                }
+                $row_index++;
+            }
+
+            $obj_excel->getActiveSheet()->mergeCells("A$row_index:C$row_index")->setCellValue("A$row_index", 'Tổng số khách theo ngày');
+            $obj_excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $column_index = 'C';
+            foreach($data['days'] as $day) {
+                $obj_excel->getActiveSheet()->setCellValue($this->_get_next_column($column_index) . $row_index, $day['guests']);
+                $column_index = $this->_get_next_column($column_index);
+            }
+
+            $obj_writer = PHPExcel_IOFactory::createWriter($obj_excel, 'Excel2007');
+            $file_name = './resources/report-booking.xlsx';
+            $obj_writer->save($file_name);
+            force_download('report-booking.xlsx', file_get_contents($file_name));
+
+        }
 
         /* Render Layout */
         /* Load Predefined Filter Days */

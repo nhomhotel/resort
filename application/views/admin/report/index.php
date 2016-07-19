@@ -15,13 +15,14 @@
         </div>
         <div class="clear"></div>
         <form id="frm-report" method="POST" action="<?php echo site_url('admin/report/result'); ?>">
+            <input type="hidden" id="export-excel" name="export_excel" value="0" />
             <div class="filter-block">
                 <div class="row">
                     <?php if (!empty($range)): ?>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="label-control" for="filter-select-range">Chọn thời điểm</label>
-                            <select name="filters[range]" id="filter-select-range" onchange="select_range(this.value)" type="text" class="form-control">
+                            <select name="filters[range]" id="filter-select-range" onchange="module_report.select_range(this.value)" type="text" class="form-control">
                                 <?php foreach ($range as $value => $label): ?>
                                 <option <?php if (!empty($filters['range']) && $filters['range'] == $value): ?>selected="selected"<?php endif; ?> value="<?php echo $value; ?>"><?php echo $label; ?></option>
                                 <?php endforeach; ?>
@@ -44,8 +45,11 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary btn-square"><i class="fa fa-search"></i> Xem kết quả</button>
+                    <div class="col-md-12">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary btn-square"><i class="fa fa-search"></i> Xem kết quả</button>
+                            <button type="button" onclick="module_report.export_excel()" class="btn btn-success btn-square">Xuất báo cáo</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,7 +81,7 @@
                 </td>
                 <?php if (!isset($visible_room[$row->post_room_id])): ?>
                 <td>
-                    <?php if ($row->parent_id == 0): ?>
+                    <?php if (empty($row->parent_id)): ?>
                         <a target="_blank" href="<?php echo site_url('admin/post_room/edit/' . $row->post_room_id); ?>"><strong><?php echo $row->post_room_name; ?></strong></a>
                     <?php endif; ?>
                 </td>
@@ -120,53 +124,4 @@
     <?php endif; ?>
     <?php endif; ?>
 </div>
-<script>
-
-    function select_range(value) {
-        if (value == 'custom') {
-            $('#filter-from-day').focus();
-        } else {
-            if (value.length > 0) {
-                $('#frm-report').submit();
-            }
-        }
-    };
-
-    $(function () {
-        var time = new Date();
-        var now = new Date(time.getFullYear(), time.getMonth(), time.getDate(), 0, 0, 0, 0);
-        var filter_from_day = $('#filter-from-day');
-        var filter_to_day = $('#filter-to-day');
-
-        filter_from_day.datepicker({
-            onRender: function (date) {
-                return true;
-            },
-            endDate: now,
-            format: 'dd/mm/yyyy',
-            locale: 'vi'
-        }).on('changeDate',function (ev) {
-            var date;
-            if (ev.date.valueOf() > filter_to_day.val()) {
-                date = new Date(ev.date)
-                date.setDate(date.getDate());
-            }
-            filter_to_day.datepicker('setStartDate', date);
-            filter_from_day.datepicker('hide');
-            $('#filter_to_day')[0].focus();
-        }).data('datepicker');
-
-        filter_to_day.datepicker({
-            onRender:function (date) {
-                return date.valueOf() <= filter_from_day.val() ? 'disabled' : '';
-            },
-            format: 'dd/mm/yyyy',
-            endDate: now,
-            locale: 'vi'
-        }).on('changeDate',function (ev) {
-            filter_to_day.datepicker('hide');
-            var date = new Date(ev.date)
-            date.setDate(date.getDate());
-        }).data('datepicker');
-    });
-</script>
+<script type="text/javascript" src="<?php echo site_url('public/admin/js/module/export.js'); ?>"></script>
