@@ -33,7 +33,6 @@ $(function () {
         onRender: function (date) {
             return true;
         },
-        endDate: now,
         format: 'dd/mm/yyyy',
         locale: 'vi'
     }).on('changeDate',function (ev) {
@@ -52,7 +51,6 @@ $(function () {
             return date.valueOf() <= filter_from_day.val() ? 'disabled' : '';
         },
         format: 'dd/mm/yyyy',
-        endDate: now,
         locale: 'vi'
     }).on('changeDate',function (ev) {
         filter_to_day.datepicker('hide');
