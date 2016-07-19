@@ -22,6 +22,7 @@ class Report extends AdminHome
      */
     protected function _get_range() {
         $range = array(
+            '' => '-- Chọn thời điểm --',
             'custom' => 'Chọn khoảng thời gian',
             'previous_month' => 'Tháng trước',
             'month' => 'Tháng này',
@@ -94,6 +95,8 @@ class Report extends AdminHome
                 $data['filters']['from_day'] = date('d/m/Y', $time);
                 $data['filters']['to_day'] = date('d/m/Y', $time);
                 break;
+            case 'custom':
+                break;
             default:
                 $data['filters']['from_day'] = date('d/m/Y', strtotime('- 3 years'));
                 $data['filters']['to_day'] = date('d/m/Y', $time);
@@ -109,17 +112,40 @@ class Report extends AdminHome
         $data['days'] = array();
         for ($index = 0; $index <= $days; $index++) {
             $time = strtotime(sprintf('%s + %d day', $this->_format_date($data['filters']['from_day']), $index));
-            $data['days'][date('Y-m-d', $time)] = date('d/m', $time);
+            $data['days'][date('Y-m-d', $time)] = array(
+                'date' => date('d/m', $time),
+                'guests' => 0,
+                'rooms' => array()
+            );
         }
 
-        $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests');
+        $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests, order.refer_id');
         $this->db->from('post_room');
-        $this->db->join('order', 'order.post_room_id=post_room.post_room_id');
+        $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
         $this->db->where('checkin >= "' . $this->_format_date($data['filters']['from_day']) . '" AND checkin <= "' . $this->_format_date($data['filters']['to_day']) . '"');
+        $this->db->order_by('checkin', 'ASC');
         $data['result'] = $this->db->get()->result();
 
+        $data['collection'] = array();
         foreach ($data['result'] as $key => $row) {
+            foreach ($data['result'] as $inner_row) {
+                if ($inner_row->parent_id == $row->post_room_id || $inner_row->post_room_id == $row->post_room_id) {
+                    $data['result'][$key]->visible += 1;
+                    $data['result'][$key]->children[] = $inner_row;
+                }
+            }
+            foreach($data['days'] as $key => $day) {
+                if (strtotime($key) >= strtotime($row->checkin) && strtotime($key) <= strtotime($row->checkout)) {
+                    if (empty($row->refer_id)) {
+                        $data['days'][$key]['guests'] += intval($row->guests);
+                        @$data['days'][$key]['rooms'][$row->post_room_id] += intval($row->guests);
+                    }
+                }
+            }
+        }
 
+        foreach ($data['result'] as $row) {
+            $data['collection'][$row->post_room_id] = $row;
         }
 
         $data['query'] = $this->db->last_query();
