@@ -713,11 +713,11 @@ class Post_room extends AdminHome {
 
         /* Find Ordered Room In Range Day */
 
-        $this->db->select('post_room.post_room_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests AS num_guests');
+        $this->db->select('post_room.post_room_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.refer_id, order.guests AS num_guests');
         $this->db->from('post_room');
-        $this->db->join('order', 'order.post_room_id=post_room.post_room_id');
-        $this->db->where('checkin >= "' . $begin_day . '" AND checkout <= "' . $end_day . '"');
-        $this->db->where('post_room.post_room_id = ' . $post_room_id);
+        $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
+        $this->db->where('checkin >= "' . $begin_day . '" OR checkout <= "' . $end_day . '"');
+        $this->db->where('post_room.post_room_id = ' . $post_room_id . ' OR post_room.parent_id = ' . $post_room_id);
         $result = $this->db->get()->result();
 
         /* Register Events In Calendar */
@@ -725,13 +725,15 @@ class Post_room extends AdminHome {
         $events = array();
 
         foreach ($result as $row) {
-            $item = array(
-                'title' => '(' . $row->num_guests . ' KH) thuê phòng ' . htmlspecialchars($row->post_room_name),
-                'start' => $row->checkin,
-                'end' => date('Y-m-d', strtotime($row->checkout) + (24 * 60 * 60)),
-                'url' => site_url('admin/post_room/edit/' . $row->post_room_id)
-            );
-            $events[] = $item;
+            if (empty($row->refer_id)) {
+                $item = array(
+                    'title' => '(' . $row->num_guests . ' KH) thuê phòng ' . htmlspecialchars($row->post_room_name),
+                    'start' => $row->checkin,
+                    'end' => date('Y-m-d', strtotime($row->checkout) + (24 * 60 * 60)),
+                    'url' => site_url('admin/post_room/edit/' . $row->post_room_id)
+                );
+                $events[] = $item;
+            }
         }
 
         /* Render Layout */

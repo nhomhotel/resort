@@ -104,9 +104,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="3" align="right"><strong>Tổng số khách theo ngày</strong></td>
                 <?php foreach ($days as $key => $day): ?>
                 <td <?php if ($day['guests'] > 0): ?>class="selected"<?php endif; ?>><?php echo $day['guests']; ?></td>
                 <?php endforeach; ?>

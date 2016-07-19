@@ -96,6 +96,7 @@ class Report extends AdminHome
                 $data['filters']['to_day'] = date('d/m/Y', $time);
                 break;
             case 'custom':
+                /* Do nothing to hold date filters */
                 break;
             default:
                 $data['filters']['from_day'] = date('d/m/Y', strtotime('- 3 years'));
@@ -119,13 +120,15 @@ class Report extends AdminHome
             );
         }
 
+        /* Get Query Result */
         $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests, order.refer_id');
         $this->db->from('post_room');
         $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
-        $this->db->where('checkin >= "' . $this->_format_date($data['filters']['from_day']) . '" AND checkin <= "' . $this->_format_date($data['filters']['to_day']) . '"');
+        $this->db->where('checkin >= "' . $this->_format_date($data['filters']['from_day']) . '" OR checkout <= "' . $this->_format_date($data['filters']['to_day']) . '"');
         $this->db->order_by('checkin', 'ASC');
         $data['result'] = $this->db->get()->result();
 
+        /* Sum Guests When Needed */
         $data['collection'] = array();
         foreach ($data['result'] as $key => $row) {
             foreach ($data['result'] as $inner_row) {
@@ -144,6 +147,7 @@ class Report extends AdminHome
             }
         }
 
+        /* Render Collection */
         foreach ($data['result'] as $row) {
             $data['collection'][$row->post_room_id] = $row;
         }
