@@ -23,10 +23,10 @@ function get_config_slide(){
         1=>'col-xs-12 col-sm-12',
         2=>array('col-xs-6 col-sm-6','col-xs-6 col-sm-6'),
         3=>array('col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-12 col-sm-4'),
-        4=>array('col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-12'),
+        4=>array('col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6'),
         5=>array('col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-12','col-xs-6 col-sm-6','col-xs-12 col-sm-6'),
         6=>array('col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-12','col-xs-6 col-sm-6','col-xs-6 col-sm-6'),
-        7=>array('col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-12','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-12 col-sm-4'),
+        7=>array('col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-6','col-xs-12 col-sm-6'),
         8=>array('col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-4','col-xs-6 col-sm-4','col-xs-6 col-sm-4'),
         9=>array('col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-6 col-sm-6','col-xs-12 col-sm-6'),
         

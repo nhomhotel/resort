@@ -49,57 +49,7 @@
         <div class="row">
             <div class="block">
                 <h3><?php echo lang('home_popular_destination');?></h3>
-                <ul>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/singapore.jpg" class="img-responsive">
-                            <p>Singapore</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/hong-kong.jpg" class="img-responsive">
-                            <p>Hong Kong</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/sydney.jpg" class="img-responsive">
-                            <p>Sydney</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/tokyo.jpg" class="img-responsive">
-                            <p>Tokyo</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/taipei.jpg" class="img-responsive">
-                            <p>Đài Bắc</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/phuket.jpg" class="img-responsive">
-                            <p>Phuket</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/bali.jpg" class="img-responsive">
-                            <p>Bali</p>
-                        </a>
-                    </li>
-                    <li class="location-item col-sm-4 col-xs-6">
-                        <a href="listroom.html">
-                            <img src="<?php echo base_url();?>public/site/images/seoul.jpg" class="img-responsive">
-                            <p>Seoul</p>
-                        </a>
-                    </li>
-<?php // if(isset($popular)) echo $popular;?>
-                </ul>
+                    <?php if(isset($popular)) echo $popular;?>
             </div>
         </div>
     </div>

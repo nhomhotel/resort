@@ -14,14 +14,11 @@ class Home extends MY_Controller {
         $this->load->model('area_model');
         $data['meta_title'] = 'STAR VIEW Home page';
         $data['temp'] = ('site/home/index');
-        $data['popular'] = getSile($this->area_model->get_list(array(
+        $data['sliders'] = $this->area_model->get_list(array(
             'where' => array('sort>' => 0),
             'limit'=>array('9'=>'0')
-        )));
-        pre($this->area_model->get_list(array(
-            'where' => array('sort>' => 0),
-            'limit'=>array('9'=>'0')
-        )));
+        ));
+        $data['popular'] = $this->load->view('site/slidehome',$data,TRUE);
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 
@@ -146,7 +143,7 @@ class Home extends MY_Controller {
     function Test(){
         $this->load->model('Post_room_model');
         $this->load->library('book_library');
-        pre($this->book_library->getMoney(array('checkin'=>'2016-7-19','checkout'=>'2016-7-26'),5, 1));
+        pre($this->book_library->getMoney(array('checkin'=>'2016-8-1','checkout'=>'2016-8-20'),5, 1));
     }
 
 }
