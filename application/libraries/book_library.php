@@ -43,25 +43,22 @@ class Book_library {
             }
         }
         $data['money'] = ($dayDistance - $numberWeekend)*$moneyNormarDay + $numberWeekend * $moneyWeekend + $dayDistance * $moneyGuestExcess * $guestExcess;
+        $data['numberNormarDay'] = $dayDistance - $numberWeekend;
+        $data['numberWeekend'] = $numberWeekend;
         return $data;
     }
 
-    function getMoney($day, $guest, $room_id,$tax='') {
+    function getMoney($day, $guest, $dataPostRoom, $room_id=-1 ,$tax='') {
         $data = array();
-        if ($room_id <= 0) {
-            $data['error'] = array(
-                'success' => FALSE,
-                'message' => lang('unknown_room'),
-            );
-            return $data;
-        }
-        $dataPostRoom = $this->CI->Post_room_model->get_row(array('where' => array('post_room_id' => $room_id)));
-        if (count($dataPostRoom) <= 0) {
-            $data['error'] = array(
-                'success' => FALSE,
-                'message' => lang('unknown_order_room'),
-            );
-            return $data;
+        if ($room_id >= 0) {
+            $dataPostRoom = $this->CI->Post_room_model->get_row(array('where' => array('post_room_id' => $room_id)));
+            if (count($dataPostRoom) <= 0) {
+                $data['error'] = array(
+                    'success' => FALSE,
+                    'message' => lang('unknown_order_room'),
+                );
+                return $data;
+            }
         }
         if (!is_array($day) ||
                 (!isset($day['checkin']) && !$this->CheckFormatDay($day['checkin'])) ||
@@ -113,8 +110,17 @@ class Book_library {
                 );
             if(isset($result_calculator['error'])){
                 return $result_calculator['error'];
-            }else
+            }else{
+                $data['type'] = 'Tiền tính theo ngày';
+                $data['numberNormarDay'] = $result_calculator['numberNormarDay'];
+                $data['moneyNormarDay'] = $dataCaculatorMoney['moneyNormarDay'];
+                $data['numberWeekend'] = $result_calculator['numberWeekend'];
+                $data['moneyWeekend'] = $dataCaculatorMoney['moneyWeekend'];
+                $data['guestExcess'] = $dataCaculatorMoney['guestExcess'];
+                $data['moneyGuestExcess'] = $dataCaculatorMoney['moneyGuestExcess'];
                 $data['money'] = $result_calculator['money'];
+            }
+                
         }
         elseif ($numberDay->days < 19 && $numberDay->days >= 6){
 //            echo 'truong hop 2';
@@ -134,7 +140,14 @@ class Book_library {
                 $dataCaculatorMoney['moneyNormarDay']/7, 
                 $dataCaculatorMoney['moneyWeekend']
             );
+            $data['type'] = 'Tiền tính theo tuần';
             $data['money'] = $numberWeek*$result_calculator['money']+$resultCalculatorExcess['money'] + $dataCaculatorMoney['guestExcess']*$dataCaculatorMoney['moneyGuestExcess']*($numberDay->days+1);
+            $data['numberNormarDay'] = $numberWeek*$result_calculator['numberNormarDay']+$resultCalculatorExcess['numberNormarDay'];
+            $data['moneyNormarDay'] = $dataCaculatorMoney['moneyNormarDay'];
+            $data['numberWeekend'] = $numberWeek*$result_calculator['numberWeekend']+$resultCalculatorExcess['numberWeekend'];
+            $data['moneyWeekend'] = $dataCaculatorMoney['moneyWeekend'];
+            $data['guestExcess'] = $dataCaculatorMoney['guestExcess'];
+            $data['moneyGuestExcess'] = $dataCaculatorMoney['moneyGuestExcess'];
         }
         else{
 //            echo 'TH 3';
@@ -154,13 +167,24 @@ class Book_library {
                 $dataCaculatorMoney['moneyNormarDay']/30, 
                 $dataCaculatorMoney['moneyWeekend'] 
             );
+            $data['type'] = 'Tiền tính theo tháng';
             $data['money'] = $numberWeek*$result_calculator['money']+$resultCalculatorExcess['money'] + $dataCaculatorMoney['guestExcess']*$dataCaculatorMoney['moneyGuestExcess']*($numberDay->days+1);;
+            $data['numberNormarDay'] = $numberWeek*$result_calculator['numberNormarDay']+$resultCalculatorExcess['numberNormarDay'];
+            $data['moneyNormarDay'] = $dataCaculatorMoney['moneyNormarDay'];
+            $data['numberWeekend'] = $numberWeek*$result_calculator['numberWeekend']+$resultCalculatorExcess['numberWeekend'];
+            $data['moneyWeekend'] = $dataCaculatorMoney['moneyWeekend'];
+            $data['guestExcess'] = $dataCaculatorMoney['guestExcess'];
+            $data['moneyGuestExcess'] = $dataCaculatorMoney['moneyGuestExcess'];
         }
         $data['money']+=$dataPostRoom->clearning_fee_vn;
-        if ($tax!=''&& is_array($tax))
+        $data['clearning_fee'] = $dataPostRoom->clearning_fee_vn;
+        if ($tax!=''&& is_array($tax)){
+            $data['tax'] = 0;
             foreach ($tax as $key => $value) {
                 $data['money'] += ($data['money'] * $value / 100);
+                $data['tax'] +=($data['money'] * $value / 100); 
             }
+        }
         return $data;
     }
 

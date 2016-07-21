@@ -162,8 +162,18 @@ class User extends MY_Controller {
         $nameCustomer = $this->input->post('nameCustomer') ? trim($this->input->post('nameCustomer')) : '';
         $phoneNumber = $this->input->post('phoneNumber') ? trim($this->input->post('phoneNumber')) : '';
         $email = $this->input->post('email') ? trim($this->input->post('email')) : '';
-        if ($email == '' || $phoneNumber == '') {
-            $data['error'] = 'Lỗi tạo tài khoản';
+        if ($nameCustomer == ''||strlen($nameCustomer)<5||!preg_match("/^[a-zA-Z ]+$/",$nameCustomer)) {
+            $data['name_error'] = 'Lỗi Tên';
+            echo json_encode($data);
+            exit;
+        }
+        if ($phoneNumber == ''|| !preg_match('/[0-9]{8,11}/', $phoneNumber)) {
+            $data['email_error'] = 'Lỗi số điện thoại';
+            echo json_encode($data);
+            exit;
+        }
+        if ($email == ''||  strlen($email)<8||!filter_var($email,FILTER_VALIDATE_EMAIL)) {
+            $data['email_error'] = 'Lỗi email';
             echo json_encode($data);
             exit;
         }
@@ -188,7 +198,6 @@ class User extends MY_Controller {
             );
 
             $dataCheck = $this->user_model->check_exits_user($data);
-//            pre(count($dataCheck));exit;
             if (count($dataCheck) > 0) {
                 echo json_encode(array(
                     'success' => true,
@@ -198,7 +207,11 @@ class User extends MY_Controller {
                 $data['user_id'] = $dataCheck->user_id;
                 $this->session->set_userdata($data);
                 exit();
-            } else {
+            } elseif($this->user_model->check_exists(array('email'=>$email))) {
+                echo json_encode(array('email_error'=>'email đã tồn tại trên hệ thống. bạn có thể lấy email khác để đăng ký hoặc nhấn vào quên mật khẩu để cấp lại mật khẩu và tên đăng nhập'));
+                exit;
+            }
+            else{
                 $data['last_name'] = $nameCustomer;
                 $data['first_name'] = '1';
                 $user_name = vn_str_filter($nameCustomer);
@@ -238,7 +251,6 @@ class User extends MY_Controller {
                     }
                 }
             }
-//            }
         }
         exit;
     }

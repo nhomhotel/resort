@@ -152,6 +152,40 @@ class Room extends MY_Controller {
         if (isset($_GET['guest']) && trim($_GET['guest']) != '') {
             $data['guest'] = trim($_GET['guest']);
         }
+        
+//        $checkin = $this->input->get('checkin') ? $this->input->get('checkin') : '';
+//        $checkout = $this->input->get('checkout') ? $this->input->get('checkout') : '';
+//        $guests = $this->input->get('guests') ? $this->input->get('guests') : '';
+//        if ($checkin == '' || $checkout == '' || $guests == '') {
+//            redirect(base_url() . 'room/room_detail/' . $id_encode);
+//        }
+//        // thanh toán online
+//        // thêm vào db
+//        $input = array(
+//            'where' => array(
+//                'post_room_id' => $id_decode[0],
+//            )
+//        );
+//        $date1 = new DateTime();
+//        $date2 = new DateTime();
+//        $dateNow = new DateTime();
+//        $data['checkin'] = $date1->setDate(
+//                date('Y', strtotime(str_replace('/', '-', $checkin))), date('m', strtotime(str_replace('/', '-', $checkin))), date('d', strtotime(str_replace('/', '-', $checkin)))
+//        );
+//        $data['guests'] = $guests;
+//        $data['checkout'] = $date2->setDate(
+//                date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
+//        );
+//        if ($data['checkin'] > $data['checkout']) {
+//            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+//        }
+//        if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
+//            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+//        }
+        
+        
+        
+        
         $this->load->model('amenities_model');
         $id_decode = (int) $encode[0];
         $data_room = array(

@@ -1,7 +1,5 @@
 <section>
     <div id="view">
-
-
         <div class="modal-auth modal-inline modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -9,7 +7,7 @@
                     <h4 class="modal-title">Đăng ký</h4>
                 </div>
                 <div class="modal-body">
-                    <form accept-charset="UTF-8" action="<?php echo base_url()?>site/user/create" method="post" name="signup">
+                    <form accept-charset="UTF-8"  method="post" name="signup">
                         <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden"
                                                                               value="&#x2713;"/><input
                                 name="authenticity_token" type="hidden"
@@ -18,25 +16,30 @@
                             <div id="signup-first-name" class="form-group">
                                 <input class="form-control" name="first_name" placeholder="Tên" size="30"
                                        type="text" value=""/>
+                                <div name="first_name" class="clear error"><?php echo form_error('first_name'); ?></div>
                             </div>
                             <div id="signup-last-name" class="form-group">
                                 <input class="form-control" name="last_name" placeholder="Họ" size="30"
                                        type="text" value=""/>
+                                <div name="last_name" class="clear error"><?php echo form_error('last_name'); ?></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <input autocapitalize="none" class="form-control" name="email" placeholder="Email"
                                    size="30" type="email"/>
+                            <div name="email_error" class="clear error"><?php echo form_error('email'); ?></div>
                         </div>
                         <div class="form-group">
                             <div  class="form-group">
                                 <input class="form-control" name="user_name" placeholder="Tên đăng nhập" size="30"
                                        type="text" value=""/>
+                                <div name="user_name" class="clear error"><?php echo form_error('user_name'); ?></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <input class="form-control" name="password" placeholder="Mật khẩu" size="30"
                                    type="password"/>
+                            <div name="password" class="clear error"><?php echo form_error('password'); ?></div>
 
                             <div class="password-meter">
                                 <div class="password-meter-bg">

@@ -106,9 +106,15 @@ class User_model extends MY_Model {
         $this->db->where('email', $input['email']);
         $this->db->where('phone', $input['phone']);
         $this->db->where('role_id', $input['role_id']);
-        $this->db->where("`last_name` like '" . $input['last_name'] . "' or CONCAT(`last_name`,' ',`first_name`) like '" . $input['last_name'] . "' or `user_name` like '" . $input['last_name'] . "'");
+        $this->db->where("(`last_name` like '" . $input['last_name'] . "' or CONCAT(`last_name`,' ',`first_name`) like '" . $input['last_name'] . "' or `user_name` like '" . $input['last_name'] . "')");
         return $this->db->get($this->table)->row();
 //        return $this->db->last_query();
+    }
+    
+    function check_exits_email_or_user_name($email,$user_name){
+        $this->db->where('email', $email);
+        $this->db->where('user_name', $user_name);
+        return ($this->db->get($this->table)->num_rows()>=1);
     }
 
 }

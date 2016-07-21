@@ -7,6 +7,7 @@ class Spaces extends MY_Controller {
     function __construct() {
         parent:: __construct();
         $this->load->model('post_room_model');
+        $this->load->model('order_room_model');
     }
 
     public function index() {
@@ -45,15 +46,6 @@ class Spaces extends MY_Controller {
         $data['checkout'] = $date2->setDate(
                 date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
         );
-//                    $date_checkin = date('d',  strtotime(str_replace('/', '-', $checkin)));
-//                    $date_checkout = date('d',  strtotime(str_replace('/', '-', $checkout)));
-//                    $data['checkin'] = $date_checkin;
-//                    $data['checkout'] = $date_checkout;
-//                    
-//                    $data['ngay'] = $date->setTime($hour, $minute, $second);
-//                    $data['checkin']    = new DateTime((str_replace('/', '-', $checkin).' 0:0:0 0'));
-//                    $data['checkin']    = date('d/m/Y',strtotime(''.$checkin));
-//                    $data['checkout']   = new DateTime((str_replace('/', '-', $checkout).' 0:0:0 0'));
         if ($data['checkin'] > $data['checkout']) {
             $data['error'] = 'Ngày trả phòng phải lớn hơn ngày nhận phòng';
             echo json_encode($data);
@@ -64,7 +56,11 @@ class Spaces extends MY_Controller {
             echo json_encode($data);
             exit();
         }
-//                    giá
+        if($this->order_room_model->check_exists_room($decode_id[0],$data['checkin'],$data['checkout'])){
+            $data['error'] = 'Phòng đã được đặt trước.';
+            echo json_encode($data);
+            exit();
+        };
         //giá 1 đêm
         $price_night_vn = $prices->price_night_vn;
         $max_guest = $prices->num_guest;

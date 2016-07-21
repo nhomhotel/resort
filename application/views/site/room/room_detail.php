@@ -352,7 +352,7 @@ $(document).ready(function(){
                 $('.error_submit').html('Thông tin số điện thoại sai');
                 return false;
             }
-            if(typeof  email ==undefined || email.length <9 || email.trim()==''){
+            if(typeof  email ==undefined || email.length <8 || email.trim()==''){
                 $('.error_submit').html('Thông tin email sai');
                 return false;
             }
@@ -362,22 +362,22 @@ $(document).ready(function(){
 var ch_in = $('#bookin-dpk');
 var ch_out = $('#bookout-dpk');
 if(typeof ch_in !== undefined && ch_in.val().trim()!='')alert(ch_in.val());
-console.log(ch_in.val());
-return;
             var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
             $.ajax({
                 type : 'POST',
                 url  : "<?php echo base_url().'user/createFast'?>",
                 data : data,
                 success :  function(data){
+                    console.log(data);
+                    return false;
                     if(typeof data["error"] !== undefined){
-                        window.location.href = urlCurl;
-                        return;
+//                        window.location.href = urlCurl;
+//                        return;
                     }
                     if(typeof data["success"] !==undefined){
-                        location.reload();
+//                        location.reload();
                     }
-                    window.location.href = urlCurl;
+//                    window.location.href = urlCurl;
                 },
                 dataType:'json',
             })
