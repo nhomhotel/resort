@@ -10,9 +10,6 @@ if ($this->session->userdata('userLogin')) {
             <span class="glyphicon glyphicon-menu-hamburger"></span>
         </button>
     </div>
-    <div class="welcome hidden-xs">
-        <span><?php echo lang('hello'); ?>: <b><?php echo (isset($userLogin)) ? $userLogin['user_name'] : ''; ?></b></span>
-    </div>
     <div class="userNav">
         <ul>
             <li>

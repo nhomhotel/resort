@@ -2,6 +2,7 @@
     // Lay du lieu tu userLogin
     if($this->session->userdata('userLogin')){
         $userLogin = $this->session->userdata('userLogin');
+        $role = $this->User_model->get_role($userLogin['user_id']);
     }
 ?>
 <div class="sideProfile">
@@ -23,7 +24,7 @@
                 <strong></strong>
             </a>
         </li>
-       
+       <?php if($role==1):?>
         <li class="product">
             <a href="#collapse2" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo 'Danh mục'; ?></span><strong>4</strong>
@@ -44,6 +45,7 @@
                 
             </ul>
         </li>
+        <?php endif;?>
         <li class="account">
             <a href="#collapse3" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo 'Tài khoản';?></span>
@@ -68,14 +70,17 @@
             </a>
             <ul class="sub collapse" id="collapse5" aria-expanded="false" style="height: 1px;">
                 <li>
+                    <?php if($role==1):?>
                     <a href="<?php echo  admin_url('calendar');?>">Lịch đặt phòng</a>
                     <a href="<?php echo  admin_url('area');?>">Danh sách khu vực</a>
+                    <?php endif;?>
                     <a href="<?php echo  admin_url('post_room');?>">Danh sách phòng đăng</a>
                     <a href="<?php echo  admin_url('order_room');?>">Danh sách phòng đăng ký</a>
                 </li>
                 
             </ul>
         </li>
+        <?php if($role==1):?>
         <li class="email">
             <a href="#collapse6" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo "Quản lý email";?></span>
@@ -88,11 +93,11 @@
                 </li>
             </ul>
         </li>
-        
         <li class="config">
             <a href="<?php echo  admin_url('config');?>" >
                 <span><?php echo 'Cấu hình hệ thống';?></span>
             </a>
         </li>
+        <?php endif;?>
     </ul>
 </div>

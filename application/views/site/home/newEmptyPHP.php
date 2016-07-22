@@ -209,8 +209,8 @@
         <?php
         if (isset($list_room) && count($list_room) > 0) {
             $query = "?";
-            if (isset ($checkin)) $query .= '&ch_in=' . $checkin;
-            if (isset ($checkout)) $query .= '&ch_out=' . $checkout;
+            if (isset ($checkin)) $query .= '&checkin=' . $checkin;
+            if (isset ($checkout)) $query .= '&checkout=' . $checkout;
             if (isset ($guest)) $query .= '&guest=' . $guest;
             if ($query == '?') $query = '';
             foreach ($list_room as $key => $room) {

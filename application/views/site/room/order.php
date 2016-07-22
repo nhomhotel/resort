@@ -123,7 +123,7 @@ var id = '<?php echo $id_encode;?>';
             <div class="dropdown selected ready">
               <button class="dropdown-toggle form-control" type="button" id="country-code" data-toggle="dropdown"><span class="value">+84</span></button>
               <ul class="dropdown-menu dropdown-menu-items-8" role="menu" aria-labelledby="country-code">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url()?>payments/book/fOgPD6I8iZB?utf8=%E2%9C%93&amp;ch_in=06%2F21%2F2016&amp;ch_out=06%2F30%2F2016&amp;people=10&amp;_stk=151b806bd4c301c48baa80388fb57bca#" class="wref" data-references="{&quot;iso&quot;:&quot;SA&quot;}" data-value="+966">Việt nam (+84)</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url()?>payments/book/fOgPD6I8iZB?utf8=%E2%9C%93&amp;checkin=06%2F21%2F2016&amp;checkout=06%2F30%2F2016&amp;people=10&amp;_stk=151b806bd4c301c48baa80388fb57bca#" class="wref" data-references="{&quot;iso&quot;:&quot;SA&quot;}" data-value="+966">Việt nam (+84)</a></li>
               </ul>
               <div class="dropdown-menu-chevron"></div>
               <input name="country_code" class="validate" data-references="{&quot;iso&quot;:&quot;&quot;}" data-current="+84" value="+84" type="hidden">

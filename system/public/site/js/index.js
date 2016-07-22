@@ -2326,7 +2326,7 @@ PriceMarker.prototype = new google.maps.OverlayView, PriceMarker.prototype.onAdd
     }
 
     function w(t) {
-        return gon.filters.accommodates && (t.people = gon.filters.accommodates), gon.filters.date_range && (t.ch_in = gon.filters.date_range[0], t.ch_out = gon.filters.date_range[1]), gon.query && (t.query = gon.query.normalized), t
+        return gon.filters.accommodates && (t.people = gon.filters.accommodates), gon.filters.date_range && (t.ch_in = gon.filters.date_range[0], t.checkout = gon.filters.date_range[1]), gon.query && (t.query = gon.query.normalized), t
     }
 
     function x() {

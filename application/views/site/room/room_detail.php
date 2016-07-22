@@ -147,8 +147,8 @@ var id='<?php echo $id_encode;?>';
                                 <div class="dates-guests hidden-xs">
                                     <div class="prices"></div>
                                     <?php $query = "";
-                                        if(isset($ch_in))$query.='&ch_in='.$ch_in;
-                                        if(isset($ch_out))$query.='&ch_out='.$ch_out;
+                                        if(isset($checkin))$query.='&checkin='.$checkin;
+                                        if(isset($checkout))$query.='&checkout='.$checkout;
                                         if(isset($guest))$query.='&guest='.$guest;
 
                                     ?>
@@ -156,11 +156,11 @@ var id='<?php echo $id_encode;?>';
                                         <form  id="frm-book" class="clearfix" method="POST" action="<?php echo base_url().'payments/book/'.$id_encode?>">
                                                 <div class="form-group w30 pull-left book-wrap">
                                                     <label for="">Nhận phòng</label>
-                                                    <input type="text" class="form-control bookin" id ="bookin-dpk" value="<?php echo isset($ch_in)?$ch_in:'';?>" placeholder="dd/mm/yyyy">
+                                                    <input type="text" class="form-control bookin" id ="bookin-dpk" value="<?php echo isset($checkin)?$checkin:'';?>" placeholder="dd/mm/yyyy">
                                                 </div>
                                                 <div class="form-group w30 pull-left book-wrap middle">
                                                     <label for="">Trả phòng</label>
-                                                    <input type="text" class="form-control bookout" id ="bookout-dpk" value="<?php echo isset($ch_out)?$ch_out:'';?>" placeholder="dd/mm/yyyy">
+                                                    <input type="text" class="form-control bookout" id ="bookout-dpk" value="<?php echo isset($checkout)?$checkout:'';?>" placeholder="dd/mm/yyyy">
                                                 </div>
                                                 <div class="form-group w30 pull-left book-wrap">
                                                     <label for="">Khách</label>
@@ -358,10 +358,10 @@ $(document).ready(function(){
             }
             var urlCurl = window.location.href;
             urlCurl = urlCurl.split('#')[0];
-//            ch_in=17/07/2016&ch_out=20/07/2016&guest
-var ch_in = $('#bookin-dpk');
-var ch_out = $('#bookout-dpk');
-if(typeof ch_in !== undefined && ch_in.val().trim()!='')alert(ch_in.val());
+//            checkin=17/07/2016&checkout=20/07/2016&guest
+var checkin = $('#bookin-dpk');
+var checkout = $('#bookout-dpk');
+if(typeof checkin !== undefined && checkin.val().trim()!='')alert(checkin.val());
             var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
             $.ajax({
                 type : 'POST',

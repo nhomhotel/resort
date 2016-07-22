@@ -178,6 +178,7 @@ class Book_library {
         }
         $data['money']+=$dataPostRoom->clearning_fee_vn;
         $data['clearning_fee'] = $dataPostRoom->clearning_fee_vn;
+        $data['guest'] = $guest;
         if ($tax!=''&& is_array($tax)){
             $data['tax'] = 0;
             foreach ($tax as $key => $value) {

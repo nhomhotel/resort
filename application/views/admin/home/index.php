@@ -8,12 +8,14 @@
         </div>
         <div class="horControlB menu_action">
             <ul>
+                <?php if(isset($role)&&$role==1):?>
                 <li>
                     <a href="<?php echo admin_url('user/create'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png"/>
                         <span>Thêm tài khoản</span>
                     </a>
                 </li>
+                <?php endif;?>
             </ul>
         </div>
     </div>

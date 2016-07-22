@@ -21,13 +21,13 @@ class AdminHome extends MY_Controller {
                     break;
                 }
         }
-        if (!$this->user_model->has_module_permission($this->module_id, $this->user_model->get_logged_in_employee_info()->user_id)) {
+        if (!$this->User_model->has_module_permission($this->module_id, $this->User_model->get_logged_in_employee_info()->role_id)) {
             redirect('site/no_access/' . $this->module_id);
         }
     }
 
     function _checkLogin() {
-        $userLogin = $this->user_model->is_logged_in();
+        $userLogin = $this->User_model->is_logged_in();
         if (!$userLogin) {
             redirect(admin_url('login'));
         }

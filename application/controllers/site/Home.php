@@ -16,9 +16,9 @@ class Home extends MY_Controller {
         $data['temp'] = ('site/home/index');
         $data['sliders'] = $this->area_model->get_list(array(
             'where' => array('sort>' => 0),
-            'limit'=>array('9'=>'0')
+            'limit' => array('9' => '0')
         ));
-        $data['popular'] = $this->load->view('site/slidehome',$data,TRUE);
+        $data['popular'] = $this->load->view('site/slidehome', $data, TRUE);
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 
@@ -102,42 +102,42 @@ class Home extends MY_Controller {
 
         if ($this->session->userdata('user_name')) {
             redirect(base_url());
-        }else{
-            if($this->input->post()){
-            $this->load->library('form_validation');
-            $this->load->helper('form');
-            $this->form_validation->set_rules('user_name','Tên đăng nhập', 'trim|required|min_length[5]|max_length[12]|callback_checkUserName');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
-            $this->form_validation->set_rules('last_name', 'Họ ', 'trim|required|min_length[6]');
-            $this->form_validation->set_rules('first_name', 'Têm', 'trim|required|min_length[4]');
-            $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[7]|numeric');
-            
-            //chạy và kiểm tra các tập luật
-            if($this->form_validation->run()){
-                $last_name = $this->input->post('last_name');
-                $first_name = $this->input->post('first_name');
-                $user_name = $this->input->post('user_name');
-                $password = md5($this->input->post('password'));
-                $email = $this->input->post('email');
-                $role_id = $role_id;
-                $created = date('Y:m:d H:i:s');
+        } else {
+            if ($this->input->post()) {
+                $this->load->library('form_validation');
+                $this->load->helper('form');
+                $this->form_validation->set_rules('user_name', 'Tên đăng nhập', 'trim|required|min_length[5]|max_length[12]|callback_checkUserName');
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
+                $this->form_validation->set_rules('last_name', 'Họ ', 'trim|required|min_length[6]');
+                $this->form_validation->set_rules('first_name', 'Têm', 'trim|required|min_length[4]');
+                $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[7]|numeric');
 
-                $data = array(
-                    'last_name' => $last_name,
-                    'first_name' => $first_name,
-                    'user_name' => $user_name,
-                    'password' => $password,
-                    'email' => $email,
-                    'role_id' => $role_id,
-                );
-                if ($this->user_model->create($data)) {
-                    $this->session->set_userdata($data);
-                    $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
-                } else {
-                    $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
+                //chạy và kiểm tra các tập luật
+                if ($this->form_validation->run()) {
+                    $last_name = $this->input->post('last_name');
+                    $first_name = $this->input->post('first_name');
+                    $user_name = $this->input->post('user_name');
+                    $password = md5($this->input->post('password'));
+                    $email = $this->input->post('email');
+                    $role_id = $role_id;
+                    $created = date('Y:m:d H:i:s');
+
+                    $data = array(
+                        'last_name' => $last_name,
+                        'first_name' => $first_name,
+                        'user_name' => $user_name,
+                        'password' => $password,
+                        'email' => $email,
+                        'role_id' => $role_id,
+                    );
+                    if ($this->user_model->create($data)) {
+                        $this->session->set_userdata($data);
+                        $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
+                    } else {
+                        $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
+                    }
+                    redirect(base_url('home'));
                 }
-                redirect(base_url('home'));
-             }
             }
         }
         $this->load->view('site/layout', isset($data) ? ($data) : null);
@@ -176,13 +176,13 @@ class Home extends MY_Controller {
             ));
         exit();
     }
-    
-    function Test(){
+
+    function Test() {
         $this->load->model('Post_room_model');
         $this->load->library('book_library');
-        pre($this->book_library->getMoney(array('checkin'=>'2016-8-1','checkout'=>'2016-8-20'),5, '',1,array('vat'=>10)));
+        pre($this->book_library->getMoney(array('checkin' => '2016-8-1', 'checkout' => '2016-8-20'), 5, '', 1, array('vat' => 10)));
     }
-    
+
     function checkUserName($user_name) {
 
         $where = array();

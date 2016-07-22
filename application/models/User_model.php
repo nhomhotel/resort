@@ -74,31 +74,44 @@ class User_model extends MY_Model {
         return $this->session->userdata('userLogin') != false;
     }
 
-    function has_module_permission($module_id, $user_id) {
+    function has_module_permission($module_id, $role_id) {
         //if no module_id is null, allow access
         if ($module_id == null) {
             return true;
         }
-
-        $query = $this->db->get_where('permissions', array('user_id' => $user_id, 'module_id' => $module_id), 1);
-        return $query->num_rows() == 1;
+        $this->db->distinct();
+        $this->db->from('permissions');
+        $this->db->select('module_id');
+        $this->db->join('user','user.role_id = permissions.role_id');
+        $this->db->where('status',1);
+        $this->db->where('module_id',$module_id);
+        $this->db->where('permissions.role_id',$role_id);
+        $query = $this->db->get();
+        return $query->num_rows();
     }
 
-    function has_module_action_permission($module_id, $action_id, $user_id) {
+    function has_module_action_permission($module_id, $action_id, $role_id) {
         //if no module_id is null, allow access
         if ($module_id == null) {
             return true;
         }
-
-        $query = $this->db->get_where('permissions_actions', array('user_id' => $user_id, 'module_id' => $module_id, 'action_id' => $action_id), 1);
+        $this->db->distinct();
+        $this->db->select('module_id');
+        $this->db->from('permissions_actions');
+        $this->db->join('user','user.role_id=permissions_actions.role_id');
+        $this->db->where('user.status',1);
+        $this->db->where('module_id',$module_id);
+        $this->db->where('action_id',$action_id);
+        $this->db->where('permissions_actions.role_id',$role_id);
+        $query = $this->db->get();
         return $query->num_rows() == 1;
     }
 
     function get_role($user_id=-1){
-        if($user_id<=0||$user_id>=3)return false;
         $this->db->from('user');
         $this->db->join('role','role.role_id=user.role_id');
         $this->db->where('user_id',$user_id);
+        $this->db->where('user.status',1);
         return $this->db->get()->row()->role_id;
     }
 

@@ -9,9 +9,11 @@ class Room extends MY_Controller {
     function __construct() {
         parent:: __construct();
         $this->load->model('post_room_model');
+        $this->load->model('Order_room_model');
         $this->load->model('Address_model');
         $this->load->model('Amenities_model');
         $this->load->model('Experience_model');
+        $this->load->library('book_library');
         $current_language = $this->session->userdata('language');
         if (empty($current_language)) {
             $current_language = 'vietnamese';
@@ -132,6 +134,8 @@ class Room extends MY_Controller {
      */
 
     function room_detail($id) {
+        $this->load->model('Order_room_model');
+        $this->load->library('book_library');
         if ($id == null) {
             redirect(base_url());
         }
@@ -142,50 +146,40 @@ class Room extends MY_Controller {
         } else {
             $data['id_encode'] = $id;
         }
-
-        if (isset($_GET['ch_in']) && trim($_GET['ch_in']) != '') {
-            $data['ch_in'] = trim($_GET['ch_in']);
+        
+        $checkin = $this->input->get('checkin') &&  validateDate(urldecode($this->input->get('checkin')))? urldecode($this->input->get('checkin')) : '';
+        $checkout = $this->input->get('checkout') &&  validateDate(urldecode($this->input->get('checkout')))? urldecode($this->input->get('checkout')) : '';
+        $guests = $this->input->get('guests') ? $this->input->get('guests') : 1;
+        if($checkin!='')$data['checkin'] = $checkin;
+        if($checkout!='')$data['checkout'] = $checkout;
+        if($guests!='')$data['guests'] = $guests;
+        if($checkin!=''&&$checkout!=''&&$guests!=''){
+            if($this->Order_room_model->check_exists_room($encode[0], $data['checkin'], $data['checkout'])){
+                $data['checkin'] = '';
+                $data['checkout'] = '';
+            }else{
+                $date1 = new DateTime();
+                $date2 = new DateTime();
+                $dateNow = new DateTime();
+                $data['checkinObj'] = $date1->setDate(
+                        date('Y', strtotime(str_replace('/', '-', $checkin))), date('m', strtotime(str_replace('/', '-', $checkin))), date('d', strtotime(str_replace('/', '-', $checkin)))
+                );
+                $data['guests'] = $guests;
+                $data['checkoutObj'] = $date2->setDate(
+                        date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
+                );
+                if ($data['checkinObj'] > $data['checkoutObj']) {
+                    redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+                }
+                if ($data['checkinObj'] < $dateNow || $data['checkoutObj'] < $dateNow) {
+                    redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+                }
+                $price = $this->book_library->getMoney(array('checkin'=>$data['checkinObj']->format('d-m-Y'),'checkout'=>$data['checkoutObj']->format('d-m-Y')),$guests,'',$encode[0]);
+                if(isset($price['money'])){
+                    $data['price']=$this->load->view('site/room/caculatorPrices',array('price'=>$price),true);
+                }
+            }
         }
-        if (isset($_GET['ch_out']) && trim($_GET['ch_out']) != '') {
-            $data['ch_out'] = trim($_GET['ch_out']);
-        }
-        if (isset($_GET['guest']) && trim($_GET['guest']) != '') {
-            $data['guest'] = trim($_GET['guest']);
-        }
-        
-//        $checkin = $this->input->get('checkin') ? $this->input->get('checkin') : '';
-//        $checkout = $this->input->get('checkout') ? $this->input->get('checkout') : '';
-//        $guests = $this->input->get('guests') ? $this->input->get('guests') : '';
-//        if ($checkin == '' || $checkout == '' || $guests == '') {
-//            redirect(base_url() . 'room/room_detail/' . $id_encode);
-//        }
-//        // thanh toán online
-//        // thêm vào db
-//        $input = array(
-//            'where' => array(
-//                'post_room_id' => $id_decode[0],
-//            )
-//        );
-//        $date1 = new DateTime();
-//        $date2 = new DateTime();
-//        $dateNow = new DateTime();
-//        $data['checkin'] = $date1->setDate(
-//                date('Y', strtotime(str_replace('/', '-', $checkin))), date('m', strtotime(str_replace('/', '-', $checkin))), date('d', strtotime(str_replace('/', '-', $checkin)))
-//        );
-//        $data['guests'] = $guests;
-//        $data['checkout'] = $date2->setDate(
-//                date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
-//        );
-//        if ($data['checkin'] > $data['checkout']) {
-//            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
-//        }
-//        if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
-//            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
-//        }
-        
-        
-        
-        
         $this->load->model('amenities_model');
         $id_decode = (int) $encode[0];
         $data_room = array(
@@ -386,15 +380,15 @@ class Room extends MY_Controller {
                 $this->load->helper('text');
                 $location_parts = explode(',', $params['location']);
                 foreach ($location_parts as $index => $location) {
-                    $location_parts[$index] = str_replace(' ', '', strtolower(trim(convert_accented_characters($location_parts[$index]))));
+                    $location_parts[$index] = str_replace(' ', '', strtolower(trim(convert_accented_characters(vn_str_filter($location_parts[$index])))));
                 }
                 if (count($location_parts) >= 3) {
                     $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
-                    $this->db->where('replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[1] . '%\'');
-                    $this->db->where('replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[2] . '%\'');
+                    $this->db->where('(replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[1] . '%\')');
+                    $this->db->where('(replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[2] . '%\')');
                 } elseif (count($location_parts) == 2) {
                     $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
-                    $this->db->where('replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[1] . '%\'');
+                    $this->db->where('(replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[1] . '%\')');
                 } else {
                     $this->db->where('(replace(lower(tbl_area.name), " ", "") like \'%'.$location_parts[0].'%\' or replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[0] . '%\')');
                 }
