@@ -13,18 +13,11 @@ class Home extends AdminHome {
     }
 
     function index() {
-        $userLogin = ($this->session->userdata('userLogin')) ? $this->session->userdata('userLogin') : '';
-
-        if ($userLogin) {
-            $admin_id = $userLogin['user_id'];
-            $admin_info = $this->User_model->getInfoLogin($admin_id);
-            $data['role'] = $this->User_model->get_role($admin_id);
-            $data['permison_add'] = $this->User_model->has_module_action_permission(get_class(),'add', $data['role']);
-            if(!$data['permison_add']){
-                redirect('site/No_access/'.  get_class());
-            }
-            $data['admin_info'] = $admin_info;
+        if(!$this->check_action_permisson('add', get_class())) {
+            redirect('site/No_access/'.  get_class());
         }
+        $infoUser = $this->User_model->get_logged_in_employee_info();
+        if($infoUser)$data['admin_info'] = $infoUser;
         $data['is_active'] = 'home';
         $data['title'] = lang('dashboard');
         $data['temp'] = ('admin/home/index');

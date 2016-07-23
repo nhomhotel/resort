@@ -2,7 +2,7 @@
     // Lay du lieu tu userLogin
     if($this->session->userdata('userLogin')){
         $userLogin = $this->session->userdata('userLogin');
-        $role = $this->User_model->get_role($userLogin['user_id']);
+        $role = $this->User_model->get_role();
     }
 ?>
 <div class="sideProfile">
@@ -25,7 +25,7 @@
             </a>
         </li>
        <?php if($role==1):?>
-        <li class="product">
+        <li class="category">
             <a href="#collapse2" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo 'Danh mục'; ?></span><strong>4</strong>
             </a>
@@ -52,9 +52,11 @@
                 <strong>3</strong>
             </a>
             <ul class="sub collapse" id="collapse3" aria-expanded="false" style="height: 1px;">
+                <?php if($role==1):?>
                 <li>
                     <a href="<?php echo admin_url('user/index');?>"><?php echo 'Danh sách';?></a>
                 </li>
+                <?php endif;?>
                 <li>
                     <a href="<?php echo admin_url('user/view_account');?>">Tài khoản của tôi</a>
                 </li>
@@ -63,18 +65,24 @@
                 </li>
             </ul>
         </li>
-        <li class="product">
+        <li class="room">
             <a href="#collapse5" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo 'Quản lý phòng';?></span>
                 <strong>4</strong>
             </a>
             <ul class="sub collapse" id="collapse5" aria-expanded="false" style="height: 1px;">
+                <?php if($role==1):?>
                 <li>
-                    <?php if($role==1):?>
                     <a href="<?php echo  admin_url('calendar');?>">Lịch đặt phòng</a>
+                </li>
+                <li>
                     <a href="<?php echo  admin_url('area');?>">Danh sách khu vực</a>
-                    <?php endif;?>
+                </li>
+                <?php endif;?>
+                <li>
                     <a href="<?php echo  admin_url('post_room');?>">Danh sách phòng đăng</a>
+                </li>
+                <li>
                     <a href="<?php echo  admin_url('order_room');?>">Danh sách phòng đăng ký</a>
                 </li>
                 
@@ -89,6 +97,8 @@
             <ul class="sub collapse" id="collapse6" aria-expanded="false" style="height: 1px;">
                 <li>
                     <a href="<?php echo  admin_url('emails');?>">Danh sách loại email</a>
+                </li>
+                <li>
                     <a href="<?php echo  admin_url('emails/history');?>">Lịch sử gửi email</a>
                 </li>
             </ul>
@@ -101,3 +111,10 @@
         <?php endif;?>
     </ul>
 </div>
+<script>
+$('.category').find('strong').html($('.category').find('ul li').length);
+$('.account').find('strong').html($('.account').find('ul li').length);
+$('.room').find('strong').html($('.room').find('ul li').length);
+$('.email').find('strong').html($('.email').find('ul li').length);
+
+</script>

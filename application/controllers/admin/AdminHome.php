@@ -10,6 +10,7 @@ class AdminHome extends MY_Controller {
 
     function __construct($module_id = NULL) {
         parent::__construct();
+//        echo 1;die;
         $this->module_id = $module_id;
         $module_admin = $this->uri->segment(1);
         switch ($module_admin) {
@@ -21,7 +22,7 @@ class AdminHome extends MY_Controller {
                     break;
                 }
         }
-        if (!$this->User_model->has_module_permission($this->module_id, $this->User_model->get_logged_in_employee_info()->role_id)) {
+        if (!$this->check_permisson($this->module_id)) {
             redirect('site/no_access/' . $this->module_id);
         }
     }
@@ -33,12 +34,34 @@ class AdminHome extends MY_Controller {
         }
     }
 
-    function check_action_permission($action_id, $module_id) {
-        if ($module_id = null)
+//    function check_action_permission($action_id, $module_id) {
+//        if ($module_id = null)
+//            return true;
+//        else {
+//            $this->db->get_where();
+//        }
+//    }
+
+    function check_action_permisson($action_id, $module_id) {
+        $userLogin = $this->User_model->get_logged_in_employee_info();
+        if ($userLogin) {
+            $data['permison'] = $this->User_model->has_module_action_permission($module_id, $action_id, $userLogin->user_id, $userLogin->role_id);
+            if (!$data['permison'])
+                return FALSE;
             return true;
-        else {
-            $this->db->get_where();
         }
+        return false;
+    }
+
+    function check_permisson($module_id) {
+        $userLogin = $this->User_model->get_logged_in_employee_info();
+        if ($userLogin) {
+            if (!$this->User_model->has_module_permission($module_id, $userLogin->user_id, $userLogin->role_id))
+                return false;
+            else
+                return true;
+        }
+        return false;
     }
 
 }

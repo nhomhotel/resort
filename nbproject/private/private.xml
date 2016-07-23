@@ -14,20 +14,37 @@
         <group>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Login.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/Home.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/User_model.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/room/room_detail.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/Errors.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/amenities/create.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/No_access.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/libraries/payment_library.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/AdminHome.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/home/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/config/autoload.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Room_type.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/area/create.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/core/MY_Model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/header.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/User.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/Payments.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/Room.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/room/caculatorPrices.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/room/order.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/system/database/DB_query_builder.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Area.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort/application/libraries/book_library.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/sidebar.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/User_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Amenities.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/room/room_detail.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/Errors.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/hooks/load_config.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Home.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/Order_room_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/User.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/helpers/mystring_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/errors/no_access.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/home/block_search.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/system/helpers/text_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/core/MY_Model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/site/Room.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/site/room/list_room.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/user/index.php</file>
         </group>
     </open-files>
 </project-private>

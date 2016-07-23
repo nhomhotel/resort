@@ -54,7 +54,10 @@ class User_model extends MY_Model {
     }
 
     function get_info_id($id) {
-        $query = $this->db->get_where($this->table, array($this->key => $id), 1);
+        $this->db->select('user.*,role.role_name');
+        $this->db->join('role','role.role_id=user.role_id');
+        $this->db->where('user.user_id',$id);
+        $query = $this->db->get($this->table, 1);
         if ($query->num_rows() == 1) {
             return $query->row();
         } else {
@@ -74,7 +77,7 @@ class User_model extends MY_Model {
         return $this->session->userdata('userLogin') != false;
     }
 
-    function has_module_permission($module_id, $role_id) {
+    function has_module_permission($module_id, $user_id, $role_id) {
         //if no module_id is null, allow access
         if ($module_id == null) {
             return true;
@@ -85,12 +88,13 @@ class User_model extends MY_Model {
         $this->db->join('user','user.role_id = permissions.role_id');
         $this->db->where('status',1);
         $this->db->where('module_id',$module_id);
+        $this->db->where('user_id',$user_id);
         $this->db->where('permissions.role_id',$role_id);
         $query = $this->db->get();
-        return $query->num_rows();
+        return $query->num_rows()==1;
     }
 
-    function has_module_action_permission($module_id, $action_id, $role_id) {
+    function has_module_action_permission($module_id, $action_id, $user_id, $role_id) {
         //if no module_id is null, allow access
         if ($module_id == null) {
             return true;
@@ -101,16 +105,22 @@ class User_model extends MY_Model {
         $this->db->join('user','user.role_id=permissions_actions.role_id');
         $this->db->where('user.status',1);
         $this->db->where('module_id',$module_id);
-        $this->db->where('action_id',$action_id);
+        if(is_array($action_id)){
+            foreach ($action_id as $key => $value) {
+                $this->db->where('action_id',$value);
+            }
+        }
+        $this->db->where('user_id',$user_id);
         $this->db->where('permissions_actions.role_id',$role_id);
         $query = $this->db->get();
         return $query->num_rows() == 1;
     }
 
-    function get_role($user_id=-1){
+    function get_role(){
+        $userInfo = $this->get_logged_in_employee_info();
         $this->db->from('user');
         $this->db->join('role','role.role_id=user.role_id');
-        $this->db->where('user_id',$user_id);
+        $this->db->where('user_id',$userInfo->user_id);
         $this->db->where('user.status',1);
         return $this->db->get()->row()->role_id;
     }

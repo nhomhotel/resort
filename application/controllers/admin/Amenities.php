@@ -8,7 +8,6 @@ class Amenities extends AdminHome {
     function __construct() {
         parent::__construct(get_class());
         $this->load->model('amenities_model');
-        // $this->load->helper('cookie');
     }
 
     function index() {
@@ -121,8 +120,10 @@ class Amenities extends AdminHome {
                 $amenities_name_en = $this->input->post('amenities_name_en');
                 $description = $this->input->post('description');
                 $description_en = $this->input->post('description_en');
-                if ($this->input->post('status') == 'on')$status = 1;
-                else $status = 0;
+                if ($this->input->post('status') == 'on')
+                    $status = 1;
+                else
+                    $status = 0;
                 $created = date('Y:m:d H:i:s');
                 $data = array(
                     'name' => $amenities_name,
@@ -212,4 +213,5 @@ class Amenities extends AdminHome {
     }
 
 }
+
 ?>

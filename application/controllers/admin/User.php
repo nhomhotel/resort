@@ -11,6 +11,7 @@ class User extends AdminHome {
     }
 
     public function index() {
+        if(!$this->check_action_permisson(array('edit','view','delete','create'), get_class()))redirect('site/No_access/'.  get_class());
         $this->load->model("role_model");
         $input = array();
         $input['order'] = array('role_id', 'ASC');
@@ -107,7 +108,7 @@ class User extends AdminHome {
     }
 
     public function create() {
-
+        if(!$this->check_action_permisson('create', get_class()))redirect('site/No_access/'.  get_class());
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -165,6 +166,7 @@ class User extends AdminHome {
     }
 
     function edit() {
+//        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -188,15 +190,19 @@ class User extends AdminHome {
                 $last_name = $this->input->post('last_name');
                 $first_name = $this->input->post('first_name');
                 $ozganzation = $this->input->post('ozganzation');
-                $role_id = $this->input->post('role_id');
                 $updated = date('Y:m:d H:i:s');
                 $data = array(
                     'last_name' => $last_name,
                     'first_name' => $first_name,
                     'ozganzation' => $ozganzation,
-                    'role_id' => $role_id,
                     'updated' => $updated
                 );
+                $role = $this->user_model->get_role();
+                if($role==1) {
+                    $role_id = $this->input->post('role_id');
+                    $data['role_id'] = $role_id;
+                }
+                
                 if ($this->user_model->update($id, $data)) {
                     $this->session->set_flashdata('message', 'Cập nhật dữ liệu thành công!');
                 } else {
@@ -212,25 +218,21 @@ class User extends AdminHome {
     }
 
     function view_account() {
-        if (!is_null($this->session->userdata('userLogin'))) {
-            $userLogin = $this->session->userdata('userLogin');
-            // pre($userLogin);
-        }
-
+//        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
         $data['title'] = 'Thông tin tài khoản';
         $data['temp'] = ('admin/user/view_account');
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
     function edit_account() {
-
+//        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
         $data['title'] = 'Chỉnh sửa tài khoản';
         $data['temp'] = ('admin/user/edit_account');
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
     function status() {
-
+        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
         $id = $this->input->post('id');
         $id = (int) $id;
 
@@ -256,7 +258,7 @@ class User extends AdminHome {
     }
 
     function delete() {
-
+        if(!$this->check_action_permisson('delete', get_class()))redirect('site/No_access/'.  get_class());
         $id = $this->uri->rsegment(3);
         $id = (int) $id;
         $info = $this->user_model->get_info($id);
