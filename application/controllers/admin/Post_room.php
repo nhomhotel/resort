@@ -61,6 +61,7 @@ class Post_room extends AdminHome {
         if ($user_name) {
             $input['or_like'] = array('user_name', $user_name);
         }
+        if($this->User_model->get_role()==2)$input['where'] = array('tbl_post_room.user_id'=> $this->User_model->get_logged_in_employee_info()->user_id);
 
         $list_room = $this->post_room_model->getListInfo_where($input);
         if ($list_room) {
