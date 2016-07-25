@@ -154,13 +154,20 @@
     </div>
 <script>
 jQuery(function ($) {
+    $.validator.addMethod(
+        "NameCheck", 
+        function(value, element) {
+            return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
+}, "Tên chỉ có thể chứa ký tự và dấu cách")
     $("#form").validate({
     rules: {
         first_name: {
-            required:true
+            required:true,
+            NameCheck:true
         },
         last_name: {
-            required:true
+            required:true,
+            NameCheck:true
         },
         email: {
             required: true,
@@ -168,10 +175,15 @@ jQuery(function ($) {
         },
         user_name:{
             required: true,
-        }
+            minlength: 6
+        },
         password: {
             required: true,
             minlength: 6
+        },
+        repassword: {
+            required: true,
+            equalTo: '#password'
         }
     },
     messages: {
@@ -181,16 +193,25 @@ jQuery(function ($) {
         last_name: {
             required:"Họ không được để trống"
         },
-        password: {
-            required: "Please provide a password",
-            minlength: "Your password must be at least 5 characters long"
+        user_name:{
+            required: "Tên đăng nhập không được để trống",
+            minlength: "Tên đăng nhập dài tối thiếu 6 ký tự"
         },
-        email: "Please enter a valid email address",
-        agree: "Please accept our policy"
+        password: {
+            required: "Mật khẩu không được để trống",
+            minlength: "Mật khẩu dài ít nhất 6 ký tự"
+        },
+        repassword: {
+            required: "Mật khẩu không được để trống",
+            equalTo: "Mât khẩu nhập lại không khớp"
+        },
+        email: {
+            required:"email không được để trống",
+            email:"Email không đúng"
+        },
     },
 
     submitHandler: function(form) {
-        alert('form submit');
         form.submit();
     }
 });

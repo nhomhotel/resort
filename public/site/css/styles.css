@@ -131,7 +131,7 @@ body{
 }
 
 .error{
-    color: red;
+    color: red !important;
 }
 
 #location-to{

@@ -48,7 +48,7 @@ class Home extends MY_Controller {
                         'password' => md5($this->input->post('password')),
                     )
                 );
-                $dataUser = $this->user_model->get_row($data);
+                $dataUser = $this->User_model->get_row($data);
                 if ($dataUser != NULL && count($dataUser)) {
                     $this->session->set_userdata(array(
                         'user_id' => $dataUser->user_id,
@@ -106,11 +106,11 @@ class Home extends MY_Controller {
             if ($this->input->post()) {
                 $this->load->library('form_validation');
                 $this->load->helper('form');
-                $this->form_validation->set_rules('user_name', 'Tên đăng nhập', 'trim|required|min_length[5]|max_length[12]|callback_checkUserName');
+                $this->form_validation->set_rules('user_name', 'Tên đăng nhập', 'trim|required|min_length[6]|max_length[12]|callback_checkUserName');
                 $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
-                $this->form_validation->set_rules('last_name', 'Họ ', 'trim|required|min_length[6]');
-                $this->form_validation->set_rules('first_name', 'Têm', 'trim|required|min_length[4]');
-                $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[7]|numeric');
+                $this->form_validation->set_rules('last_name', 'Họ ', 'trim|required');
+                $this->form_validation->set_rules('first_name', 'Têm', 'trim|required');
+                $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[6]|numeric');
 
                 //chạy và kiểm tra các tập luật
                 if ($this->form_validation->run()) {
@@ -119,7 +119,7 @@ class Home extends MY_Controller {
                     $user_name = $this->input->post('user_name');
                     $password = md5($this->input->post('password'));
                     $email = $this->input->post('email');
-                    $role_id = $role_id;
+                    $role_id = 3;
                     $created = date('Y:m:d H:i:s');
 
                     $data = array(
@@ -130,7 +130,7 @@ class Home extends MY_Controller {
                         'email' => $email,
                         'role_id' => $role_id,
                     );
-                    if ($this->user_model->create($data)) {
+                    if ($this->User_model->create($data)) {
                         $this->session->set_userdata($data);
                         $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
                     } else {
@@ -187,7 +187,7 @@ class Home extends MY_Controller {
 
         $where = array();
         $where = array('user_name' => $user_name);
-        $check = $this->user_model->check_exists($where);
+        $check = $this->User_model->check_exists($where);
         if ($check > 0) {
             $this->form_validation->set_message('checkUserName', '{field} đã tồn tại.');
             return false;
@@ -200,7 +200,7 @@ class Home extends MY_Controller {
 
         $where = array();
         $where = array('email' => $email);
-        $check = $this->user_model->check_exists($where);
+        $check = $this->User_model->check_exists($where);
         if ($check > 0) {
             $this->form_validation->set_message('checkEmail', '{field} đã tồn tại.');
             return false;
