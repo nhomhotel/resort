@@ -157,7 +157,11 @@ class Report extends AdminHome
         foreach ($data['result'] as $key => $row) {
             foreach ($data['result'] as $inner_row) {
                 if ($inner_row->parent_id == $row->post_room_id || $inner_row->post_room_id == $row->post_room_id) {
-                    $data['result'][$key]->visible += 1;
+                    if (isset($data['result'][$key]->visible)) {
+                        $data['result'][$key]->visible += 1;
+                    } else {
+                        $data['result'][$key]->visible = 0;
+                    }
                     $data['result'][$key]->children[] = $inner_row;
                 }
             }
