@@ -17,7 +17,7 @@ var id='<?php echo $id_encode;?>';
 <section id="book-main">
     <div class="container">
         <div class="row">
-            <div class="block clearfix">
+            <div class="block clearfix" style="margin-top: 47px;">
                 <div id="book-left" class="col-sm-8 col-xs-12">
                     <div class="tit-room">
                         <h1><?php echo (isset($info))? $info->post_room_name : '';?></h1>

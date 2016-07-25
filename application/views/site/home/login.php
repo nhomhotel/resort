@@ -5,9 +5,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Đăng nhập</h4>
+                    <p class="error info_result"><?php echo $this->session->flashdata("login_message"); ?></p>
                 </div>
                 <div class="modal-body">
                     <form accept-charset="UTF-8" action="<?php echo base_url().'home/login'?>" method="post" name="signin" id="signin-form"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="OqrtQgtHo5HUCnGv0mUTtoB4KKQ26LmXC+AVh5kdpcU=" /></div>
+                        
                         <div class="form-group">
                             <input autocapitalize="none" autofocus="autofocus" class="form-control" id="email" name="email" placeholder="Email hoặc tài khoản đăng ký" type="email" required/>
                                 <?php echo form_error('email');?>
@@ -61,5 +63,8 @@ jQuery(function ($) {
         form.submit();
     }
 });
+    $('input').keyup(function(){
+        $('.error.info_result').html('');
+    })
 })
 </script>

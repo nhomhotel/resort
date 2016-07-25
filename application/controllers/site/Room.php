@@ -363,6 +363,7 @@ class Room extends MY_Controller {
         $this->db->select('SQL_CALC_FOUND_ROWS null as rows', false);
         $this->db->select('post_room.*,house_type.house_type_name,house_type.house_type_id,address.address_detail,room_type.room_type_name');
         $this->db->from('post_room');
+        $this->db->where('post_room.status',1);
         $this->db->join('address', 'address.address_id = post_room.address_id');
         $this->db->join('area', 'area.area_id = address.area_id','left');
         $this->db->join('room_type', 'room_type.room_type_id = post_room.room_type');

@@ -76,6 +76,9 @@
                     <a href="<?php echo  admin_url('calendar');?>">Lịch đặt phòng</a>
                 </li>
                 <li>
+                    <a href="<?php echo  admin_url('Report');?>">Báo cáo</a>
+                </li>
+                <li>
                     <a href="<?php echo  admin_url('area');?>">Danh sách khu vực</a>
                 </li>
                 <?php endif;?>

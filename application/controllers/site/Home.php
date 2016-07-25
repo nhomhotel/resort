@@ -62,6 +62,7 @@ class Home extends MY_Controller {
                     ));
                     redirect($redirect);
                 } else {
+                    $this->session->set_flashdata('login_message', 'Tài khoản hoặc mật khẩu không đúng!');
                     redirect('home/login');
                 }
                 exit;
@@ -132,11 +133,11 @@ class Home extends MY_Controller {
                     );
                     if ($this->User_model->create($data)) {
                         $this->session->set_userdata($data);
-                        $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
+                        $this->session->set_flashdata('message', 'Đăng ký tài khoản thành công!');
                     } else {
-                        $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
+                        $this->session->set_flashdata('message', 'Đăng ký thất bại!');
                     }
-                    redirect(base_url('home'));
+                    redirect(base_url('/'));
                 }
             }
         }
