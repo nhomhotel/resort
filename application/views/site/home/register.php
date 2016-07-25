@@ -1,3 +1,5 @@
+
+<script type="text/javascript" src="<?php echo base_url()?>public/site/js/jquery.validate.js"></script>
 <section>
     <div id="view">
         <div class="modal-auth modal-inline modal-dialog" role="document">
@@ -7,57 +9,52 @@
                     <h4 class="modal-title">Đăng ký</h4>
                 </div>
                 <div class="modal-body">
-                    <form accept-charset="UTF-8"  method="post" name="signup">
-                        <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden"
-                                                                              value="&#x2713;"/><input
-                                name="authenticity_token" type="hidden"
-                                value="OqrtQgtHo5HUCnGv0mUTtoB4KKQ26LmXC+AVh5kdpcU="/></div>
+                    <form accept-charset="UTF-8"  method="post" name="signup" id="form"  >
+                        <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;"/>
+                            <input name="authenticity_token" type="hidden" value="OqrtQgtHo5HUCnGv0mUTtoB4KKQ26LmXC+AVh5kdpcU="/></div>
                         <div id="signup-name">
                             <div id="signup-first-name" class="form-group">
-                                <input class="form-control" name="first_name" placeholder="Tên" size="30"
-                                       type="text" value=""/>
-                                <div name="first_name" class="clear error"><?php echo form_error('first_name'); ?></div>
+                                <input class="form-control" name="first_name" id="first_name" placeholder="Tên" size="30"
+                                       type="text" required/>
+                                <div name="first_name_error" class="clear error"><?php echo form_error('first_name'); ?></div>
                             </div>
                             <div id="signup-last-name" class="form-group">
                                 <input class="form-control" name="last_name" placeholder="Họ" size="30"
-                                       type="text" value=""/>
-                                <div name="last_name" class="clear error"><?php echo form_error('last_name'); ?></div>
+                                       type="text" required/>
+                                <div name="last_name_error" class="clear error"><?php echo form_error('last_name'); ?></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <input autocapitalize="none" class="form-control" name="email" placeholder="Email"
-                                   size="30" type="email"/>
+                                   size="30" type="email"  required/>
                             <div name="email_error" class="clear error"><?php echo form_error('email'); ?></div>
                         </div>
                         <div class="form-group">
                             <div  class="form-group">
                                 <input class="form-control" name="user_name" placeholder="Tên đăng nhập" size="30"
-                                       type="text" value=""/>
-                                <div name="user_name" class="clear error"><?php echo form_error('user_name'); ?></div>
+                                       type="text" required/>
+                                <div name="user_name_error" class="clear error"><?php echo form_error('user_name'); ?></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name="password" placeholder="Mật khẩu" size="30"
-                                   type="password"/>
-                            <div name="password" class="clear error"><?php echo form_error('password'); ?></div>
-
-                            <div class="password-meter">
-                                <div class="password-meter-bg">
-                                    <div class="password-meter-bar"></div>
-                                </div>
-                                <div class="password-meter-message"></div>
-                            </div>
+                            <input class="form-control" name="password" id="password" placeholder="Mật khẩu" size="30"
+                                   type="password"  required/>
+                            <div name="password_error" class="clear error"><?php echo form_error('password'); ?></div>
                         </div>
-                        <p class="tip">Với việc nhấn vào Đăng Ký, bạn đồng ý với <a href="#"
-                                                                                    target="_blank">Điều kiện và
+                        <div class="form-group">
+                            <input class="form-control" name="repassword" placeholder="Nhập lại mật khẩu" size="30"
+                                   type="password"  required/>
+                            <div name="repassword_error" class="clear error"><?php echo form_error('rePassword'); ?></div>
+                        </div>
+                        <p class="tip">Với việc nhấn vào Đăng Ký, bạn đồng ý với <a href="#" target="_blank">Điều kiện và
                                 điều khoản</a> và <a href="#"_blank>Chính sách bảo mật</a> của
                             trang web.</p>
-                        <input class="btn btn-primary btn-lg btn-block tclick" data-tkey="Sign Up"
+                        <input class="btn btn-primary btn-lg btn-block" data-tkey="Sign Up"
                                data-tloc="Sign-Up Page" name="commit" type="submit" value="Đăng ký"/>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <p class="tip">Đã là thành viên? <a href="#" id="signup-signin">Đăng nhập tại
+                    <p class="tip">Đã là thành viên? <a href="<?php echo base_url() . 'home/login' ?>" id="signup-signin">Đăng nhập tại
                             đây</a></p>
                 </div>
                 <style type="text/css">
@@ -155,4 +152,48 @@
             </div>
         </div>
     </div>
+<script>
+jQuery(function ($) {
+    $("#form").validate({
+    rules: {
+        first_name: {
+            required:true
+        },
+        last_name: {
+            required:true
+        },
+        email: {
+            required: true,
+            email: true
+        },
+        user_name:{
+            required: true,
+        }
+        password: {
+            required: true,
+            minlength: 6
+        }
+    },
+    messages: {
+        first_name: {
+            required:"Tên không được để trống"
+        },
+        last_name: {
+            required:"Họ không được để trống"
+        },
+        password: {
+            required: "Please provide a password",
+            minlength: "Your password must be at least 5 characters long"
+        },
+        email: "Please enter a valid email address",
+        agree: "Please accept our policy"
+    },
+
+    submitHandler: function(form) {
+        alert('form submit');
+        form.submit();
+    }
+});
+})
+</script>
 </section>
