@@ -36,12 +36,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="input_name_company" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo lang('config_name_company'); ?></label>
-                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <input type="text" class="form-control" name = "name_company" id="name_company" value="<?php echo $this->config->item('nameCompany') ?>"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label for="input_name_website" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo lang('config_name_website'); ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <input type="text" class="form-control" name="name_website" id="name_website" value="<?php echo $this->config->item('name_website'); ?>"/>

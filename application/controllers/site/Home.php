@@ -12,7 +12,7 @@ class Home extends MY_Controller {
 
     public function index() {
         $this->load->model('area_model');
-        $data['meta_title'] = 'STAR VIEW Home page';
+        $data['meta_title'] = $this->config->item('name_website');
         $data['temp'] = ('site/home/index');
         $data['sliders'] = $this->area_model->get_list(array(
             'where' => array('sort>' => 0),
