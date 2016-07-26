@@ -7,12 +7,12 @@ class Order_room extends AdminHome {
 
     function __construct() {
         parent::__construct(get_class());
-        $this->load->model('order_room_model');
+        $this->load->model('Order_room_model');
     }
 
     function index() {
         $this->load->library('pagination');
-        $total = $this->order_room_model->get_total();
+        $total = $this->Order_room_model->get_total();
         $userLogin = $this->session->userdata('userLogin');
         if ($userLogin == NULL || $userLogin == '')
             redirect('admin/login');
@@ -41,7 +41,7 @@ class Order_room extends AdminHome {
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
         $input['order'] = array('order_id', 'ASC');
-        $user = $this->user_model->get_row(array('where' => array('user_id' => $userLogin['user_id'])));
+        $user = $this->User_model->get_row(array('where' => array('user_id' => $userLogin['user_id'])));
         $role_id = $user->role_id;
         if ($role_id == 3) {
             $this->session->destroy();
@@ -49,8 +49,7 @@ class Order_room extends AdminHome {
 
             $input['where'] = array('user_id', $userLogin['user_id']);
         }
-        $input['join'] = array('user' => 'user_id::user_id');
-        $list = $this->order_room_model->get_list_room()->result();
+        $list = $this->Order_room_model->get_list_room($input)->result();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['title'] = 'Danh sách phòng đã đặt';

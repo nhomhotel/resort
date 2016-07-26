@@ -108,18 +108,18 @@
                             </div>
                             <div class="clear"></div>
                         </div>  
-
                         <div class="formRow">
                             <label class="formLeft" for="param_des">Vai trò:</label>
                             <div class="formRight">
                                 <span class="oneTwo">
                                     <label>
                                         <select class="w150" name="role_id">
-                                            <?php
+                                            <?php 
                                             if (isset($list_role)) {
                                                 foreach ($list_role as $role) {
-
-                                                    echo '<option value = "' . $role->role_id . '" ' . set_select('role_id', $role->role_id) . '>' . $role->role_name . '</option>';
+                                                    if(isset($role_id)&&$role_id==$role->role_id)
+                                                    echo '<option select value = "' . $role->role_id . '" ' . set_select('role_id', $role->role_id) . '>' . $role->role_name . '</option>';
+                                                    else echo '<option select value = "' . $role->role_id . '" ' . set_select('role_id', $role->role_id) . '>' . $role->role_name . '</option>';
                                                 }
                                             }
                                             ?>
@@ -131,7 +131,17 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-
+                        <div class="formRow profit" style="visibility: <?php echo isset($profit_show)?$profit_show:'hidden'?>">
+                            <label class="formLeft" for="param_name">Lợi nhuận (% ):<span class="req">*</span></label>
+                            <div class="formRight">
+                                <span class="oneTwo">
+                                    <input type="text" name="profit" id="param_name" _autocheck="true" value="<?php echo isset($profit_value)?$profit_value:'5'; ?>" />
+                                </span>
+                                <span name="name_autocheck" class="autocheck"></span>
+                                <div name="name_error" class="clear error"><?php echo form_error('profit'); ?></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->
@@ -144,3 +154,16 @@
         </fieldset>
     </form>
 </div>
+<script>
+    $(document).ready(function(){
+        var profit = $('select[name="role_id"]');
+        profit.on('change',function(){
+            if($(this).val()==2)
+                $('.profit').css('visibility','visible');
+            else 
+                $('.profit').css('visibility','hidden');  
+            })
+                
+        })
+        
+</script>

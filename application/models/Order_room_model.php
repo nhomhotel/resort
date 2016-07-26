@@ -7,12 +7,12 @@ class Order_room_model extends MY_Model {
     var $table = 'order';
     var $key = 'order_id';
 
-    function get_list_room($role) {
+    function get_list_room($input =array()) {
         $this->db->from('order');
-//        $this->db->join('user', 'user.user_id=order.user_id');
+        $this->db->join('user', 'user.user_id=order.user_id');
         $this->db->join('post_room', 'post_room.post_room_id = order.post_room_id');
-        if($role==2)
-            $this->db->where('post_room.user_id', 4);
+        if($input)
+            $this->get_list_set_input($input);
         return $this->db->get();
     }
 

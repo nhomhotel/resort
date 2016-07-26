@@ -12,11 +12,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/public/site/css/styles.css</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/site/home/login.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/public/site/js/starview.js</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/site/Home.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/site/home/register.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Order_room.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/user/edit.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/Post_room_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/Order_room_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/Post_room.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/controllers/admin/User.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/language/vietnamese/form_validation_lang.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/order_room/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/user/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/views/admin/user/create.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/Icon_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort/application/models/Profit_model.php</file>
         </group>
     </open-files>
 </project-private>

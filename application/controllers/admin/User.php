@@ -11,7 +11,22 @@ class User extends AdminHome {
     }
 
     public function index() {
-        if(!$this->check_action_permisson(array('edit','view','delete','create'), get_class()))redirect('site/No_access/'.  get_class());
+        if(!$this->check_action_permisson('edit', get_class())){
+            return;
+//            redirect('site/No_access/'.  get_class());
+        }
+        if(!$this->check_action_permisson('view', get_class())){
+            return;
+//            redirect('site/No_access/'.  get_class());
+        }
+        if(!$this->check_action_permisson('delete', get_class())){
+            return;
+//            redirect('site/No_access/'.  get_class());
+        }
+        if(!$this->check_action_permisson('create', get_class())){
+            return;
+//            redirect('site/No_access/'.  get_class());
+        }
         $this->load->model("role_model");
         $input = array();
         $input['order'] = array('role_id', 'ASC');
@@ -119,15 +134,13 @@ class User extends AdminHome {
         $data['list_role'] = $list_role;
 
         if ($this->input->post()) {
-
-
             $this->form_validation->set_rules('last_name', 'Họ', 'trim|required');
-
             $this->form_validation->set_rules('first_name', 'Tên', 'trim|required');
             $this->form_validation->set_rules('user_name', 'Tên đăng nhập', 'trim|required|min_length[5]|max_length[12]|callback_checkUserName');
             $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[6]|max_length[12]');
             $this->form_validation->set_rules('password_comfirm', 'Mật khẩu xác nhận', 'trim|required|min_length[6]|max_length[12]|matches[password]');
             $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
+            if($this->input->post('role_id')==2)$this->form_validation->set_rules('profit', 'Lợi nhuân', 'trim|required|numeric');
 
             if ($this->form_validation->run()) {
 
@@ -150,7 +163,9 @@ class User extends AdminHome {
                     'role_id' => $role_id,
                     'created' => $created
                 );
-
+                if($this->input->post('role_id')==2){
+                    $data['profit_rate'] = $this->input->post('profit')?$this->input->post('profit'):'5';
+                }
                 if ($this->user_model->create($data)) {
 
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
@@ -158,6 +173,12 @@ class User extends AdminHome {
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
                 }
                 redirect(admin_url('user/index'));
+            }{
+                if($this->input->post('role_id')){
+                    $data['role_id'] = intval($this->input->post('role_id'));
+                    $data['profit_show'] = 'visible';
+                    $data['profit_value'] = $this->input->post('profit')?$this->input->post('profit'):'5';
+                }
             }
         }
         $data['title'] = 'Đăng kí tài khoản';
@@ -177,6 +198,8 @@ class User extends AdminHome {
         $list_role = $this->role_model->get_list($input);
         $data['list_role'] = $list_role;
         $info = $this->user_model->get_info($id);
+        if($info->role_id==2)$data['profit_show'] = 'visible';
+        else $data['profit_show'] = 'hidden';
         if (!$info) {
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
             redirect(admin_url('user'));
@@ -186,6 +209,8 @@ class User extends AdminHome {
         if ($this->input->post()) {
             $this->form_validation->set_rules('last_name', 'Họ', 'trim|required');
             $this->form_validation->set_rules('first_name', 'Tên', 'trim|required');
+            if($this->input->post('role_id')==2)
+                $this->form_validation->set_rules('profit', 'Lợi nhuận', 'trim|required|numeric');
             if ($this->form_validation->run()) {
                 $last_name = $this->input->post('last_name');
                 $first_name = $this->input->post('first_name');
@@ -201,6 +226,7 @@ class User extends AdminHome {
                 if($role==1) {
                     $role_id = $this->input->post('role_id');
                     $data['role_id'] = $role_id;
+                    $data['profit_rate'] = $this->input->post('profit')?$this->input->post('profit'):'5';
                 }
                 
                 if ($this->user_model->update($id, $data)) {
@@ -209,6 +235,10 @@ class User extends AdminHome {
                     $this->session->set_flashdata('message', 'Cập nhật dữ liệu thất bại!');
                 }
                 redirect(admin_url('user/index'));
+            }else{
+                if($info->role_id==2)$data['profit_show'] = 'visible';
+                else $data['profit_show'] = 'hidden';
+                $data['profit_value'] = $this->input->post('profit');
             }
         }
 

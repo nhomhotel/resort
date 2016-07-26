@@ -105,11 +105,7 @@ class User_model extends MY_Model {
         $this->db->join('user','user.role_id=permissions_actions.role_id');
         $this->db->where('user.status',1);
         $this->db->where('module_id',$module_id);
-        if(is_array($action_id)){
-            foreach ($action_id as $key => $value) {
-                $this->db->where('action_id',$value);
-            }
-        }
+        $this->db->where('action_id',$action_id);
         $this->db->where('user_id',$user_id);
         $this->db->where('permissions_actions.role_id',$role_id);
         $query = $this->db->get();

@@ -6,7 +6,7 @@
             <h5>User</h5>
             <span><?php echo isset($title) ? $title : ''; ?></span>
         </div>
-        <?php $role = $this->User_model->get_role();if($role==1):?>
+        <?php $role_permisson = $this->User_model->get_role();if($role_permisson==1):?>
         <div class="horControlB menu_action">
             <ul>
                 <li>
@@ -95,6 +95,7 @@
                         <td>Tổ chức</td>
                         <td>Vai trò</td>
                         <td>Trạng thái</td>
+                        <td>Lợi nhuận</td>
                         <td>Created</td>
                         <td>Hành động</td>
                     </tr>
@@ -115,7 +116,7 @@
                         foreach ($list as $row) {
                             $i++;
                             ?>
-                            <tr class='row_20 <?php echo $class; ?>'>
+                            <tr class='row_20 <?php echo 'class'; ?>'>
                                 <td class="textC"><?php echo $i; ?></td>
                                 <td class="textC" >
                                     <a href="#" title="<?php echo $row->last_name . ' ' . $row->first_name; ?>">
@@ -124,9 +125,9 @@
                                 </td>
                                 <td class="textC"><?php echo $row->email; ?></td>
                                 <td class="textC"><?php echo $row->phone; ?></td>
-                                <td class="textC"><?php echo $row->ozganzation; ?></td>
+                                <td class="textC" style="border-right: 3px solid #ddd !important;"><?php echo $row->ozganzation!=''?$row->ozganzation:'----'; ?></td>
                                 <td class="textC"><?php echo $row->role_name ?></td>
-                                <?php if($role ==1):?>
+                                <?php if($role_permisson ==1):?>
                                 <td class="textC" id="status">
                                     <?php
                                     if ($row->status == 1) {
@@ -144,9 +145,10 @@
                                     }
                                     ?>
                                 </td>
+                                <td class="textC" id="profit"><?php echo $row->profit_rate >0?$row->profit_rate:'----';?></td>
                                 <?php endif;?>
                                 <td class="textC"><?php echo date('d-m-Y - H:i:s', strtotime($row->created)); ?></td>
-                                <?php if($role==1):?>
+                                <?php if($role_permisson==1):?>
                                 <td class="textC">
                                     <a href="<?php echo admin_url('user/edit/' . $row->user_id); ?>" class="lightbox" title="edit">
                                         <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />

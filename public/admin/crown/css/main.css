@@ -70,7 +70,7 @@ p { padding-top: 12px; }
 
 .textL { text-align: left; }
 .textR { text-align: right; }
-.textC { text-align: center; }
+.textC { text-align: center; border: 1px solid #ddd;}
 
 .red { color: #A73939; }
 .green { color: #599414; }

@@ -72,11 +72,11 @@
                         <td>STT</td>
                         <td colspan="2">Bài đăng</td>
                         <td>Giá phòng</td>
+                        <td>Lợi nhuận</td>
                         <td>Người thuê phòng</td>
                         <td>Ngày nhận phòng</td>
                         <td>Ngày trả phòng</td>
                         <td>Số người ở</td>
-                        <td>ID</td>
                     </tr>
                 </thead>
                 <tfoot class="auto_check_pages">
@@ -89,8 +89,7 @@
                     </tr>
                 </tfoot>
                 <tbody class="list_item">
-                    <?php
-                    if (isset($list)) {
+                    <?php if (isset($list)) {
                         $i = 0;
                         foreach ($list as $row) {
                             $i++;
@@ -118,6 +117,14 @@
                                         <label>USD: <span><?php echo number_format($row->price_night_en, 0, ",", "."); ?></span></label>
                                     </p>
                                 </td>
+                                <td class="textC price">
+                                    <p class="price_vn price-item">
+                                        <label>VND: <span><?php echo '('.$row->profit_rate.'%) '.number_format($row->payment_type*$row->profit_rate, 0, ",", "."); ?></span></label>
+                                    </p>
+                                    <p class="price_en price-item">
+                                        <label>USD: <span><?php echo '('.$row->profit_rate.'%) '.number_format($row->price_night_en*$row->profit_rate, 0, ",", "."); ?></span></label>
+                                    </p>
+                                </td>
                                 <td class="textC">
                                     <p style="font-size: 14px;font-weight: 600"><?php echo $row->user_name; ?></p>
                                 </td>
@@ -130,7 +137,6 @@
                                 <td class="textC" id="status">
                                     <p style="font-size: 14px;font-weight: 600"><?php echo $row->guests; ?></p>
                                 </td>
-                                <td class="textC"><?php echo $row->post_room_id; ?></td>
                             </tr>
                             <?php
                         }

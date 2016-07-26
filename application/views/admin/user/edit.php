@@ -90,7 +90,17 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-
+                        <div class="formRow profit" style="visibility: <?php echo isset($profit_show)?$profit_show:'hidden'?>">
+                            <label class="formLeft" for="param_name">Lợi nhuận (% ):<span class="req">*</span></label>
+                            <div class="formRight">
+                                <span class="oneTwo">
+                                    <input type="text" name="profit" id="param_name" _autocheck="true" value="<?php echo isset($profit_value)?$profit_value:$info->profit_rate; ?>" />
+                                </span>
+                                <span name="name_autocheck" class="autocheck"></span>
+                                <div name="name_error" class="clear error"><?php echo form_error('profit'); ?></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->
@@ -105,3 +115,16 @@
         </fieldset>
     </form>
 </div>
+<script>
+    $(document).ready(function(){
+        var profit = $('select[name="role_id"]');
+        profit.on('change',function(){
+            if($(this).val()==2)
+                $('.profit').css('visibility','visible');
+            else 
+                $('.profit').css('visibility','hidden');  
+            })
+                
+        })
+        
+</script>
