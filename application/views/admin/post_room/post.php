@@ -18,13 +18,13 @@ if ($this->session->userdata('post_info') !== NULL) {
                     </a>
                 </li>
 
-                <?php if (!empty($post_room_id)) :?>
-                <li>
-                    <a href="<?php echo site_url('admin/post_room/calendar/' . $post_room_id); ?>">
-                        <img src="<?php echo base_url();?>public/admin/images/icons/control/16/order.png" />
-                        <span>Lịch làm việc</span>
-                    </a>
-                </li>
+                <?php if (!empty($post_room_id)) : ?>
+                    <li>
+                        <a href="<?php echo site_url('admin/post_room/calendar/' . $post_room_id); ?>">
+                            <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/order.png" />
+                            <span>Lịch làm việc</span>
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <li>
@@ -213,7 +213,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                     <label for="area" class="col-sm-4 control-label">Thuộc khu vực:</label>
                                     <div class="col-sm-8">
                                         <select name="area_name">
-                                    <?php
+                                            <?php
                                             $selected = '';
                                             foreach ($list_area as $area) {
                                                 if (isset($post_info)) {
@@ -228,12 +228,13 @@ if ($this->session->userdata('post_info') !== NULL) {
                                                     } else {
                                                         $selected = '';
                                                     }
-                                                }?>
-                                                        <option value="<?php echo $area->area_id; ?>" <?php echo $selected; ?>><?php echo $area->name; ?></option>
-                                                        <?php
-                                                    }?>
-                                    </select>
-                                </div>
+                                                }
+                                                ?>
+                                                <option value="<?php echo $area->area_id; ?>" <?php echo $selected; ?>><?php echo $area->name; ?></option>
+                                                <?php }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>	
                         </div><!-- End Address  -->
@@ -246,14 +247,14 @@ if ($this->session->userdata('post_info') !== NULL) {
                                     <div class="formRight">
                                         <div class="left">
                                             <input type="text" class="required" minlength="20" maxlength="50"  id="post_room_name" name="post_room_name" value="<?php
-                                                if (isset($post_info))
-                                                    echo $post_info['post_room_name'];
-                                                elseif (isset($data_post_room))
-                                                    echo $data_post_room->post_room_name;
-                                                else
-                                                    echo set_value('post_room_name');
+                                            if (isset($post_info))
+                                                echo $post_info['post_room_name'];
+                                            elseif (isset($data_post_room))
+                                                echo $data_post_room->post_room_name;
+                                            else
+                                                echo set_value('post_room_name');
 //                                                                                    echo (isset($post_info))? $post_info['post_room_name'] : isset($data_post_room)?$data_post_room->post_room_name:set_value('post_room_name');
-                                        ?>" >
+                                            ?>" >
                                         </div>
                                         <div name="image_error" class="clear error"><?php echo form_error('post_room_name'); ?></div>
                                     </div>
@@ -285,34 +286,35 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         <div class="formRight">
                                             <div class="left">
                                                 <select class="w150" name="house_type">
-    <?php
-    $selected = '';
-    foreach ($list_house_type as $house) {
-        if (isset($post_info)) {
-            if ($post_info['house_type'] == $house->house_type_id) {
-                $selected = 'selected';
-            } else {
-                $selected = '';
-            }
-        } elseif (isset($data_post_room)) {
-            if ($data_post_room->house_type == $house->house_type_id) {
-                $selected = 'selected';
-            } else {
-                $selected = '';
-            }
-        }?>
+                                                    <?php
+                                                    $selected = '';
+                                                    foreach ($list_house_type as $house) {
+                                                        if (isset($post_info)) {
+                                                            if ($post_info['house_type'] == $house->house_type_id) {
+                                                                $selected = 'selected';
+                                                            } else {
+                                                                $selected = '';
+                                                            }
+                                                        } elseif (isset($data_post_room)) {
+                                                            if ($data_post_room->house_type == $house->house_type_id) {
+                                                                $selected = 'selected';
+                                                            } else {
+                                                                $selected = '';
+                                                            }
+                                                        }
+                                                        ?>
                                                         <option value="<?php echo $house->house_type_id; ?>" <?php echo $selected; ?>><?php echo $house->house_type_name; ?></option>
-                                                        <?php
-                                                    }?>
+        <?php }
+    ?>
                                                 </select>
                                             </div>
                                             <div name="image_error" class="clear error"></div>
                                         </div>
                                         <div class="clear"></div>
                                     </div>
-    <?php
-}
-?>
+                                    <?php
+                                }
+                                ?>
                                 <!-- room type -->
                                 <?php
                                 if (isset($list_room_type) && is_array($list_room_type) && !empty($list_room_type)) {
@@ -322,36 +324,36 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         <div class="formRight">
                                             <div class="left">
                                                 <select  class="w150" name="room_type">
-    <?php
-    $selected = '';
-    foreach ($list_room_type as $room) {
-        if (isset($post_info)) {
-            if ($post_info['room_type'] == $room->room_type_id) {
-                $selected = 'selected';
-            } else {
-                $selected = '';
-            }
-        } elseif (isset($data_post_room)) {
-            if ($data_post_room->room_type == $room->room_type_id) {
-                $selected = 'selected';
-            } else {
-                $selected = '';
-            }
-        }
-        ?>
+                                                    <?php
+                                                    $selected = '';
+                                                    foreach ($list_room_type as $room) {
+                                                        if (isset($post_info)) {
+                                                            if ($post_info['room_type'] == $room->room_type_id) {
+                                                                $selected = 'selected';
+                                                            } else {
+                                                                $selected = '';
+                                                            }
+                                                        } elseif (isset($data_post_room)) {
+                                                            if ($data_post_room->room_type == $room->room_type_id) {
+                                                                $selected = 'selected';
+                                                            } else {
+                                                                $selected = '';
+                                                            }
+                                                        }
+                                                        ?>
                                                         <option value="<?php echo $room->room_type_id; ?>" <?php echo $selected ?>><?php echo $room->room_type_name; ?></option>
-        <?php
-    }
-    ?>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                 </select>
                                             </div>
                                             <div name="image_error" class="clear error"></div>
                                         </div>
                                         <div class="clear"></div>
                                     </div>
-    <?php
-}
-?>
+                                    <?php
+                                }
+                                ?>
                                 <!--end room type -->
                                 <!-- room by house -->
                                 <div class="formRow">
@@ -470,19 +472,19 @@ if ($this->session->userdata('post_info') !== NULL) {
                                     <div class="formRight">
                                         <div class="left">
                                             <select  class="w150" name="num_bathroom">
-<?php
-$more = '';
-$selected = '';
-for ($i = 1; $i <= 10; $i++) {
-    if (isset($post_info)) {
-        $selected = ($post_info['num_bathroom'] == $i) ? 'selected' : '';
-    } elseif (isset($data_post_room)) {
-        $selected = ($data_post_room->num_bathroom == $i) ? 'selected' : '';
-    }
-    $more = ($i == 10) ? '+' : '';
-    echo '<option value="' . $i . '" ' . $selected . '>' . $i . $more . ' phòng tắm</option>';
-}
-?>
+                                                <?php
+                                                $more = '';
+                                                $selected = '';
+                                                for ($i = 1; $i <= 10; $i++) {
+                                                    if (isset($post_info)) {
+                                                        $selected = ($post_info['num_bathroom'] == $i) ? 'selected' : '';
+                                                    } elseif (isset($data_post_room)) {
+                                                        $selected = ($data_post_room->num_bathroom == $i) ? 'selected' : '';
+                                                    }
+                                                    $more = ($i == 10) ? '+' : '';
+                                                    echo '<option value="' . $i . '" ' . $selected . '>' . $i . $more . ' phòng tắm</option>';
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                         <div name="image_error" class="clear error"></div>
@@ -495,14 +497,14 @@ for ($i = 1; $i <= 10; $i++) {
                                     <div class="formRight">
                                         <div class="left">
                                             <input type="text" name="acreage" class="mw160 number" value="<?php
-                                    if (isset($post_info))
-                                        echo $post_info['acreage'];
-                                    elseif (isset($data_post_room))
-                                        echo $data_post_room->acreage;
-                                    else
-                                        echo set_value('acreage');
+                                            if (isset($post_info))
+                                                echo $post_info['acreage'];
+                                            elseif (isset($data_post_room))
+                                                echo $data_post_room->acreage;
+                                            else
+                                                echo set_value('acreage');
 //                                                                                        echo (isset($post_info))?$post_info['acreage']:isset($data_post_room)?$data_post_room->acreage:set_value('acreage');
-                                    ?>"> <strong>m<sup>2</sup></strong>
+                                            ?>"> <strong>m<sup>2</sup></strong>
                                         </div>
                                         <div for="acreage" generated="true" class="error"></div>
                                         <div name="image_error" class="clear error"></div>
@@ -513,53 +515,52 @@ for ($i = 1; $i <= 10; $i++) {
                         </div><!-- end info room -->
 
                         <!-- amenities -->
-<?php
-if (isset($list_amenities) && $list_amenities) {?>
+<?php if (isset($list_amenities) && $list_amenities) { ?>
                             <div class="panel panel-default info-post clearfix">
                                 <div class="panel-heading">Tiện nghi</div>
                                 <div class="panel-body">
                                     <div class="formRow">
 
-    <?php
-    if (isset($post_info)) {
-        $amenitiesArr = explode(',', $post_info['amenities']);
-    } elseif (isset($data_post_room)) {
-        $amenitiesArr = explode(',', $data_post_room->amenities);
-    }
-    $checked = '';
-    foreach ($list_amenities as $amenities) {
-        if (isset($amenitiesArr)) {
-            $checked = '';
-            foreach ($amenitiesArr as $value) {
-                if ($value == $amenities->amenities_id) {
-                    $checked = 'checked';
-                }
-            }
-        }
-        ?>
+                                        <?php
+                                        if (isset($post_info)) {
+                                            $amenitiesArr = explode(',', $post_info['amenities']);
+                                        } elseif (isset($data_post_room)) {
+                                            $amenitiesArr = explode(',', $data_post_room->amenities);
+                                        }
+                                        $checked = '';
+                                        foreach ($list_amenities as $amenities) {
+                                            if (isset($amenitiesArr)) {
+                                                $checked = '';
+                                                foreach ($amenitiesArr as $value) {
+                                                    if ($value == $amenities->amenities_id) {
+                                                        $checked = 'checked';
+                                                    }
+                                                }
+                                            }
+                                            ?>
                                             <fieldset class="inline w30">
                                                 <label>
                                                     <input type="checkbox" name="amenities[]" value="<?php echo $amenities->amenities_id; ?>"  <?php echo ($checked) ? $checked : set_checkbox('amenities[]', $amenities->amenities_id); ?> > 
                                                     &nbsp;<?php echo $amenities->name; ?>
                                                 </label>
                                             </fieldset >
-                                                <?php
-                                            }
-                                            ?>
+                                            <?php
+                                        }
+                                        ?>
                                         <div class="clear"></div>
                                         <div for="amenities[]" generated="true" class="error"></div>
                                     </div>
 
                                 </div>
                             </div>
-                                            <?php
-                                        }
-                                        ?>
+                            <?php
+                        }
+                        ?>
                         <!-- end amenities -->
                         <!-- Experience -->	
-<?php
-if (isset($list_experience) && is_array($list_experience) && $list_experience) {
-    ?>
+                        <?php
+                        if (isset($list_experience) && is_array($list_experience) && $list_experience) {
+                            ?>
                             <div class="panel panel-default info-post clearfix" id="post-exp">
                                 <div class="panel-heading">Trải nghiệm</div>
                                 <div class="panel-body">
@@ -594,45 +595,18 @@ if (isset($list_experience) && is_array($list_experience) && $list_experience) {
                                                         <div class="tooltip exp-tooltip"><?php echo $exp->description; ?></div>	
                                                     </div>					
                                                 </li>
-        <?php
-    }
-    ?>
+                                                <?php
+                                            }
+                                            ?>
                                         </ul>
                                         <div for="experience[]" generated="true" class="error"></div>
                                     </div>
                                 </div>
 
                             </div>	
-    <?php
-}
-?>
-                        <!-- End Experience -->	
-                        <!-- <div class="panel panel-default info-post clearfix">
-                                <div class="panel-heading">Thông tin bảo mật <span class="glyphicon glyphicon-lock"></span></div>
-                                <div class="panel-body">
-                                        <div class="formRow">
-                                                <label class="formLeft">Email:<span class="req">*</span></label>
-                                                <div class="formRight">
-                                                        <div class="left">
-                                                                <input type="email" name="email" class="mw200">
-                                                        </div>
-                                                        <div name="image_error" class="clear error"></div>
-                                                </div>
-                                                <div class="clear"></div>
-                                        </div>	
-                                        <div class="formRow">
-                                                <label class="formLeft">Số điện thoại:<span class="req">*</span></label>
-                                                <div class="formRight">
-                                                        <div class="left">
-                                                                <input type="text" name="phone" class="mw200">
-                                                        </div>
-                                                        <div name="image_error" class="clear error"></div>
-                                                </div>
-                                                <div class="clear"></div>
-                                        </div>	
-                                </div>
-                                
-                        </div>	 -->         
+                            <?php
+                        }
+                        ?>        
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->
@@ -841,7 +815,3 @@ if (isset($list_experience) && is_array($list_experience) && $list_experience) {
     });
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwl-pYart0L9n0XPX_V5AuFFPmk-o-rlM&libraries=places&callback=initMap"></script>
-
-
-
-

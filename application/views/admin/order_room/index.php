@@ -91,7 +91,7 @@
                 <tbody class="list_item">
                     <?php if (isset($list)) {
                         $i = 0;
-                        foreach ($list as $row) {
+                        foreach ($list as $line=>$row) {
                             $i++;
                             ?>
                             <tr class='row_20'>
@@ -111,18 +111,18 @@
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">
-                                        <label>VND: <span><?php echo number_format($row->payment_type, 0, ",", "."); ?></span></label>
+                                        <label>VND: <span><?php echo number_format($row->payment_type, 3); ?></span></label>
                                     </p>
                                     <p class="price_en price-item">
-                                        <label>USD: <span><?php echo number_format($row->price_night_en, 0, ",", "."); ?></span></label>
+                                        <label>USD: <span><?php echo number_format($row->price_night_en, 3); ?></span></label>
                                     </p>
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">
-                                        <label>VND: <span><?php echo '('.$row->profit_rate.'%) '.number_format($row->payment_type*$row->profit_rate, 0, ",", "."); ?></span></label>
+                                        <label>VND: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.number_format($row->payment_type*$profit[$line]->profit_rate/100, 3); ?></span></label>
                                     </p>
                                     <p class="price_en price-item">
-                                        <label>USD: <span><?php echo '('.$row->profit_rate.'%) '.number_format($row->price_night_en*$row->profit_rate, 0, ",", "."); ?></span></label>
+                                        <label>USD: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.number_format($row->price_night_en*$profit[$line]->profit_rate/100, 3); ?></span></label>
                                     </p>
                                 </td>
                                 <td class="textC">

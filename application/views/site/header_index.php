@@ -28,7 +28,7 @@
                 <?php if(isset($_SESSION['user_name'])&&$_SESSION['role_id']==3){?>
                     <li class="account"  style="padding-top: 19px; padding-right: 10px;">
                     <div class="dropdown dropdown-flat ready">
-                        <button class="dropdown-toggle form-control" type="button" data-toggle="dropdown"><span class="hi">Xin chào, <?php echo $this->session->userdata('user_name')?></span></button>
+                        <button class="dropdown-toggle form-control" type="button" data-toggle="dropdown"><span class="hi"><?php echo lang('block_hello').'[ '; echo $this->session->userdata('user_name').' ]'?></span></button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="currency">
                           <li role="presentation"><a href="/reservations" data-href="follow" role="menuitem" tabindex="-1">Yêu cầu đặt chỗ</a></li>
                           <li role="presentation"><a href="/user/edit" data-href="follow" role="menuitem" tabindex="-1">Tài khoản của tôi</a></li>

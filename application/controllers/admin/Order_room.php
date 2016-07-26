@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once 'AdminHome.php';
 
 class Order_room extends AdminHome {
-
+    var $itemPerPage = 15;
     function __construct() {
         parent::__construct(get_class());
         $this->load->model('Order_room_model');
@@ -19,7 +19,7 @@ class Order_room extends AdminHome {
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/order_room/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->itemPerPage;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -47,9 +47,13 @@ class Order_room extends AdminHome {
             $this->session->destroy();
         } elseif ($role_id == 2) {
 
-            $input['where'] = array('user_id', $userLogin['user_id']);
+            $input['where'] = array('post_room.user_id'=> $userLogin['user_id']);
         }
         $list = $this->Order_room_model->get_list_room($input)->result();
+//        pre($this->db->last_query());
+//        return;
+        $data['profit'] = $this->Order_room_model->get_profit($input)->result();
+//        pre($this->db->last_query());
         $data['total'] = $total;
         $data['list'] = $list;
         $data['title'] = 'Danh sách phòng đã đặt';

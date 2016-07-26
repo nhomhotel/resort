@@ -15,6 +15,14 @@ class Order_room_model extends MY_Model {
             $this->get_list_set_input($input);
         return $this->db->get();
     }
+    function get_profit($input =array()) {
+        $this->db->from('order');
+        $this->db->join('post_room', 'post_room.post_room_id = order.post_room_id');
+        $this->db->join('user', 'user.user_id=post_room.user_id');
+        if($input)
+            $this->get_list_set_input($input);
+        return $this->db->get();
+    }
 
     // kiểm tra xem phòng đã được đặt hay chưa
     // true: đã ton tai

@@ -1,5 +1,5 @@
 <?php
-        $lang['block_hello'] = 'xin chào';
+        $lang['block_hello'] = 'Chào';
 	$lang['block_the_option'] = 'Tùy chọn';
 	$lang['block_dashboard'] = 'Bảng điều khiển';
 	$lang['block_home'] = 'Home';

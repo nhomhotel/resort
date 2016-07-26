@@ -49,8 +49,8 @@ jQuery(function ($) {
     },
     messages: {
         password: {
-            required: "Please provide a password",
-            minlength: "Your password must be at least 5 characters long"
+            required: "Mật khẩu không được để trống",
+            minlength: "Mật khẩu phải từ 6 ký tự trở lên"
         },
         email: {
             required:"email không được để trống",
@@ -59,7 +59,6 @@ jQuery(function ($) {
     },
 
     submitHandler: function(form) {
-        alert('form submit');
         form.submit();
     }
 });

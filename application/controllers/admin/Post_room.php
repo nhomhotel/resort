@@ -685,9 +685,14 @@ class Post_room extends AdminHome {
             echo json_encode($result);
             return;
         }
+//        $this->db->where('user_id',$user->user_id);
+        $user = $this->User_model->get_logged_in_employee_info();
         /* Filters and return results */
         $this->post_room_model->db->select('post_room_id, post_room_name');
         $this->post_room_model->db->from('post_room');
+        if($user->role_id==2){
+            $this->post_room_model->db->where('user_id',$user->user_id);
+        }
         $this->post_room_model->db->where('post_room_name_ascii LIKE "%' . stripUnicode($keyword) . '%"');
         $result = $this->post_room_model->db->get()->result();
         echo json_encode($result);

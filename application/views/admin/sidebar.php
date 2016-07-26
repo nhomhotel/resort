@@ -83,10 +83,10 @@
                 </li>
                 <?php endif;?>
                 <li>
-                    <a href="<?php echo  admin_url('post_room');?>">Danh sách phòng đăng</a>
+                    <a href="<?php echo  admin_url('post_room');?>">Danh sách Căn/Phòng </a>
                 </li>
                 <li>
-                    <a href="<?php echo  admin_url('order_room');?>">Danh sách phòng đăng ký</a>
+                    <a href="<?php echo  admin_url('order_room');?>">Danh sách đơn đặt phòng</a>
                 </li>
                 
             </ul>
