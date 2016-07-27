@@ -96,7 +96,7 @@
                             $i++;
                             ?>
                             <tr class='row_20'>
-                                <td class="textC"><?php echo $i; ?></td>
+                                <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                                 <td class="textC img_room" >
                                     <a href="<?php echo base_url('admin/post_room/edit/' . $row->post_room_id); ?>" >
         <?php $img = json_decode($row->image_list); ?>

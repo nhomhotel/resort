@@ -14,11 +14,10 @@ class House_type extends AdminHome {
 
         $this->load->library('pagination');
         $total = $this->house_type_model->get_total();
-
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/house_type/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -41,7 +40,7 @@ class House_type extends AdminHome {
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
-
+        $data['start'] = $start;
         $list = $this->house_type_model->get_list($input);
         $data['list'] = $list;
         $data['total'] = $total;

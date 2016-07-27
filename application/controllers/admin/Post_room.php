@@ -27,7 +27,7 @@ class Post_room extends AdminHome {
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/post_room/index');
-        $config['per_page'] = 10;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -49,6 +49,7 @@ class Post_room extends AdminHome {
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
+        $data['start'] = $start;
 
         $post_room_name = $this->input->get('post_room_name');
 
@@ -175,6 +176,7 @@ class Post_room extends AdminHome {
                     ),
                     'parent_id' => $parent_id,
                     'post_room_name' => $post_room_name,
+                    'post_room_name_ascii'=> strtolower(vn_str_filter($post_room_name)),
                     'description' => $description,
                     'house_type' => $house_type,
                     'room_type' => $room_type,
@@ -452,24 +454,20 @@ class Post_room extends AdminHome {
         $this->load->model('address_model');
 
         if ($this->input->post('submit')) {
-
-            $upload_path = '/uploads/room';
+            $updated = date('Y-m-d : H-i-s');
+            $sess = array(
+                'updated' => $updated
+            );
+            $upload_path = './uploads/room';
             $this->load->library('upload_library');
             $imageList = array();
             $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
-            if (count($imageList) <= 0)
+            if ($_FILES['image_list']['error'][0] == 4)
                 $imageList = $data['data_post_room']->image_list;
-            // pre($imageList);die;
-            $image_list = json_encode($imageList);
-
-            $created = date('Y-m-d : H-i-s');
-            $updated = $created;
-            $sess = array(
-                'image_list' => $image_list,
-                'created' => $created,
-                'updated' => $updated
-            );
-
+            else{
+                $imageList = str_replace('./uploads', '/uploads', $imageList);
+                $sess['image_list'] = json_encode($imageList);
+            }
             $data_sess['post_photo'] = $sess;
             $this->session->set_userdata($data_sess);
             $post_photo = $this->session->userdata('post_photo');

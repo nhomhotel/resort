@@ -77,7 +77,7 @@ $lang = get_lang();
                             <td class="textC">
                                 <input type="checkbox" name="id[]" value="<?php echo $row->house_type_id; ?>" />
                             </td>
-                            <td class="textC"><?php echo $i; ?></td>
+                            <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
                                 <?php echo ($lang['lang'] == 'vietnamese') ? $row->house_type_name : $row->house_type_name_en; ?>
                             </td>

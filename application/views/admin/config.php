@@ -18,8 +18,6 @@
 <!--<div id="toaster"></div>-->
 <div class="wrapper col-md-12  clearfix content">
     <div class="row">
-
-
         <div class="col-md-12">
             <form id="form_save_config" class="form-horizontal" role="form" action="<?php echo base_url() . 'admin/config/save' ?>" method="post">
                 <div class="panel ">
@@ -69,6 +67,26 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="panel">
+                    <div class="panel-heading panel-piluku">
+                        <h3 class="panel-title"><?php echo 'Số đơn hàng hiển thị trên 1 trang'; ?></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="item_per_page_site" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Ngoài website'; ?></label>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <input type="text" name="item_per_page_site" class="form-control" value="<?php echo $this->config->item('item_per_page_site'); ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="item_per_page_system" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Trong hệ thống'; ?></label>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <input type="text" name="item_per_page_system" class="form-control" value="<?php echo $this->config->item('item_per_page_system'); ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="panel">
                     <div class="panel-heading panel-piluku">
@@ -98,9 +116,7 @@
                 </div>
             </form>
         </div>
-
     </div>
-
 </div>
 <script>
     $(document).ready(function () {

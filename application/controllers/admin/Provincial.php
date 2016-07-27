@@ -16,7 +16,7 @@ class Provincial extends AdminHome {
         $config = array();
         $config["total_rows"] = $total_rows;
         $config['base_url'] = base_url('admin/provincial/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -31,6 +31,7 @@ class Provincial extends AdminHome {
         $start = ($segment - 1) * $config['per_page'];
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
+        $data['start'] = $start;
         $input['order'] = array('provincial_name', 'ASC');
         $data['list'] = $this->provincial_model->get_list($input);
         $data['total'] = $total_rows;

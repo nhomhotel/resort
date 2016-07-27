@@ -111,7 +111,7 @@ class Home extends MY_Controller {
                 $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
                 $this->form_validation->set_rules('last_name', 'Họ ', 'trim|required');
                 $this->form_validation->set_rules('first_name', 'Têm', 'trim|required');
-                $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[6]|numeric');
+                $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[6]');
 
                 //chạy và kiểm tra các tập luật
                 if ($this->form_validation->run()) {
@@ -121,8 +121,7 @@ class Home extends MY_Controller {
                     $password = md5($this->input->post('password'));
                     $email = $this->input->post('email');
                     $role_id = 3;
-                    $created = date('Y:m:d H:i:s');
-
+                    $created = date('Y-m-d H:i:s');
                     $data = array(
                         'last_name' => $last_name,
                         'first_name' => $first_name,
@@ -130,12 +129,13 @@ class Home extends MY_Controller {
                         'password' => $password,
                         'email' => $email,
                         'role_id' => $role_id,
+                        'created'=>$created
                     );
                     if ($this->User_model->create($data)) {
-                        $this->session->set_userdata($data);
-                        $this->session->set_flashdata('message', 'Đăng ký tài khoản thành công!');
+//                        $this->session->set_userdata($data);
+                        $this->session->set_flashdata('message_register', 'Đăng ký tài khoản thành công!');
                     } else {
-                        $this->session->set_flashdata('message', 'Đăng ký thất bại!');
+                        $this->session->set_flashdata('message_register', 'Đăng ký thất bại!');
                     }
                     redirect(base_url('/'));
                 }

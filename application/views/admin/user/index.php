@@ -117,7 +117,7 @@
                             $i++;
                             ?>
                             <tr class='row_20 <?php echo 'class'; ?>'>
-                                <td class="textC"><?php echo $i; ?></td>
+                                <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                                 <td class="textC" >
                                     <a href="#" title="<?php echo $row->last_name . ' ' . $row->first_name; ?>">
         <?php echo $row->user_name; ?>

@@ -18,7 +18,7 @@ class Experience extends AdminHome {
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/experience/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -39,6 +39,7 @@ class Experience extends AdminHome {
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
+        $data['start'] = $start;
         $input['order'] = array('experience_id', 'ASC');
         $input['join'] = array('icon', 'icon_id');
 

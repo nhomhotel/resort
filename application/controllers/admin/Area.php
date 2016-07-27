@@ -19,7 +19,7 @@ class Area extends AdminHome {
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/area/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -45,6 +45,7 @@ class Area extends AdminHome {
         $list = $this->area_model->get_list($input);
         $data['total'] = $total;
         $data['list'] = $list;
+        $data['start'] = $start;
 
         $data['title'] = 'Danh sách khu vực';
         $data['temp'] = 'admin/area/index';

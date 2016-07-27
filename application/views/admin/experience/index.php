@@ -80,7 +80,7 @@ $lang = get_lang();
                                 <td class="textC">
                                     <input type="checkbox" name="id[]" value="<?php echo $row->experience_id; ?>" />
                                 </td>
-                                <td class="textC"><?php echo $i; ?></td>
+                                <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                                 <td class="textC">
                                     <?php echo $row->name; ?>
                                 </td>

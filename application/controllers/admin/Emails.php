@@ -18,7 +18,7 @@ class Emails extends AdminHome {
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = admin_url('emails/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -36,6 +36,7 @@ class Emails extends AdminHome {
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
+        $data['start'] = $start;
         $input['order'] = array('email_id', 'ASC');
 
         $message = $this->session->flashdata();

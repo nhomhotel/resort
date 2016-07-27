@@ -39,7 +39,7 @@ class User extends AdminHome {
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/user/index');
-        $config['per_page'] = 15;
+        $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
@@ -53,6 +53,7 @@ class User extends AdminHome {
 
         $segment = (int) $segment;
         $start = ($segment - 1) * $config['per_page'];
+        $data['start'] = $start;
         $pagination_link = $this->pagination->create_links();
         $data['pagination_link'] = $pagination_link;
 
@@ -151,7 +152,7 @@ class User extends AdminHome {
                 $password = md5($this->input->post('password'));
                 $email = $this->input->post('email');
                 $role_id = $this->input->post('role_id');
-                $created = date('Y:m:d H:i:s');
+                $created = date('Y-m-d H:i:s');
 
                 $data = array(
                     'last_name' => $last_name,
@@ -165,7 +166,8 @@ class User extends AdminHome {
                 );
                 if($this->input->post('role_id')==2){
                     $data['profit_rate'] = $this->input->post('profit')?$this->input->post('profit'):'5';
-                }
+                }else
+                    $data['profit_rate'] =0;
                 if ($this->user_model->create($data)) {
 
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
@@ -187,7 +189,7 @@ class User extends AdminHome {
     }
 
     function edit() {
-//        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
+        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -226,7 +228,10 @@ class User extends AdminHome {
                 if($role==1) {
                     $role_id = $this->input->post('role_id');
                     $data['role_id'] = $role_id;
-                    $data['profit_rate'] = $this->input->post('profit')?$this->input->post('profit'):'5';
+                    if($role_id==2)
+                        $data['profit_rate'] = $this->input->post('profit')?$this->input->post('profit'):'5';
+                    else
+                        $data['profit_rate'] = 0;
                 }
                 
                 if ($this->user_model->update($id, $data)) {
@@ -248,7 +253,7 @@ class User extends AdminHome {
     }
 
     function view_account() {
-//        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
+        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
         $data['title'] = 'Thông tin tài khoản';
         $data['temp'] = ('admin/user/view_account');
         $this->load->view('admin/layout', isset($data) ? ($data) : null);

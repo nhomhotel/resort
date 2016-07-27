@@ -304,7 +304,7 @@ class Room extends MY_Controller {
 
         $data = array();
         $data['encode'] = $this->config->item('encode_id');
-        $data['per_page'] = self::ITEM_PER_PAGE;
+        $data['per_page'] = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;;
         $data['sort_by'] = 'popular';
 
         /* Step 1. Get Parameters */

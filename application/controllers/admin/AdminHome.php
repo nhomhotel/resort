@@ -34,14 +34,6 @@ class AdminHome extends MY_Controller {
         }
     }
 
-//    function check_action_permission($action_id, $module_id) {
-//        if ($module_id = null)
-//            return true;
-//        else {
-//            $this->db->get_where();
-//        }
-//    }
-
     function check_action_permisson($action_id, $module_id) {
         $userLogin = $this->User_model->get_logged_in_employee_info();
         if ($userLogin) {

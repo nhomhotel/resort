@@ -21,8 +21,10 @@ class Config extends AdminHome {
             'language' => $this->input->post('language') ? trim($this->input->post('language')) : 'vietnamese',
             'address_email' => $this->input->post('address_email') ? trim($this->input->post('address_email')) : '',
             'pass_email' => $this->input->post('pass_email') ? trim($this->input->post('pass_email')) : '',
+            'item_per_page_site' => $this->input->post('item_per_page_site') ? trim($this->input->post('item_per_page_site')) : '',
+            'item_per_page_system' => $this->input->post('item_per_page_system') ? trim($this->input->post('item_per_page_system')) : '',
         );
-        if ($this->app_config_model->batch_save($data_save))
+        if ($this->App_config_model->batch_save($data_save))
             echo json_encode(array('title' => 'success', 'message' => lang('config_saved_successfully')));
         else {
             echo json_encode(array('title' => 'error', 'message' => lang('config_saved_error')));
