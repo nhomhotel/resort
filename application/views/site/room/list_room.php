@@ -254,7 +254,7 @@
                             <p class="type-sales">
                                 <!-- <span class="label label-default tag sales-text">Khuyến mãi phút cuối</span> -->
                             </p>
-                            <a href="<?php echo base_url('room/room_detail/' . $room->post_room_id);?>"
+                            <a href="<?php echo base_url('room/room_detail/' . $encode->encode($room->post_room_id) . $query);?>"
                                class="btn btn-default more-show"><?php echo lang('search_show_more'); ?></a>
                         </div>
                     </div>

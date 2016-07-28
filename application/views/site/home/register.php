@@ -154,11 +154,6 @@
     </div>
 <script>
 jQuery(function ($) {
-    $.validator.addMethod(
-        "NameCheck", 
-        function(value, element) {
-            return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
-}, "Tên chỉ có thể chứa ký tự và dấu cách")
     $("#form").validate({
     rules: {
         first_name: {

@@ -114,7 +114,6 @@ $(document).ready(function() {
                     $('.info-book').html('nhập số khách');
                     return;
                 }
-                alert(checkin);
                 var url = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
                 
                 window.location.href = url;

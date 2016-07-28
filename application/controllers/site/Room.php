@@ -8,7 +8,7 @@ class Room extends MY_Controller {
 
     function __construct() {
         parent:: __construct();
-        $this->load->model('post_room_model');
+        $this->load->model('Post_room_model');
         $this->load->model('Order_room_model');
         $this->load->model('Address_model');
         $this->load->model('Amenities_model');
@@ -190,7 +190,7 @@ class Room extends MY_Controller {
 
         $list_amenities = $this->amenities_model->get_list();
         $data['list_amenities'] = $list_amenities;
-        $info = $this->post_room_model->getInfoDetail($id_decode, $input);
+        $info = $this->Post_room_model->getInfoDetail($id_decode, $input);
 
         if ($info) {
             $data['info'] = $info;
@@ -244,7 +244,7 @@ class Room extends MY_Controller {
             if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
                 redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
             }
-            $prices = $this->post_room_model->get_row($input);
+            $prices = $this->Post_room_model->get_row($input);
             $data['name_room'] = $prices->post_room_name;
             //giá 1 đêm
             $data['price_night_vn'] = $prices->price_night_vn;
@@ -272,7 +272,7 @@ class Room extends MY_Controller {
                     'user_id' => $user_id,
                 )
             );
-            $data['user'] = $this->user_model->get_row($input);
+            $data['user'] = $this->User_model->get_row($input);
 //                        pre($data['user']);return;
             $data['meta_title'] = 'order room';
             $data['temp'] = ('site/room/order');

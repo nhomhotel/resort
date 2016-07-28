@@ -1,6 +1,7 @@
 <script type="text/javascript"> 
 var id='<?php echo $id_encode;?>';
 </script>
+<script type="text/javascript" src="<?php echo base_url()?>public/site/js/jquery.validate.js"></script>
 <section id="breadcrum-wrap">
     <div class="container">
         <div class="row">
@@ -184,45 +185,46 @@ var id='<?php echo $id_encode;?>';
                                         </button>
                                         <?php if(!$this->session->userdata('user_id')){?>
                                             <div class="modal fade" id="myModal" role="dialog">
-                                                <div class="modal-dialog">
-                                                  <!-- Modal content-->
-                                                  <div class="modal-content">
-                                                    <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                      <h4 class="modal-title">Thông tin đặt phòng</h4>
-                                                      <p class="error_submit"></p>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                  <label for="input_name_customer" class="control-label ">Tên khách hàng</label>
-                                                                  <div class="input-field">
-                                                                      <input type="text" class="form-control " name = "name_customer" id="name_customer" />
-                                                                  </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                  <label for="input_phone_number" class="control-label ">Số điện thoại</label>
-                                                                  <div class="input-field">
-                                                                      <input type="text" class="form-control" name="phone_number" id="phone_number"/>
-                                                                  </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="input_email" class="control-label ">Địa chỉ email</label>
-                                                                    <div class="input-field">
-                                                                        <input type="email" class="form-control" name="email" id="email"/>
+                                                <form method="post" name="form-save-info" id="form-save-info">
+                                                    <div class="modal-dialog">
+                                                      <!-- Modal content-->
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                          <h4 class="modal-title">Thông tin đặt phòng</h4>
+                                                          <p class="error_submit"></p>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                      <label for="input_name_customer" class="control-label ">Tên khách hàng</label>
+                                                                      <div class="input-field">
+                                                                          <input type="text" class="form-control " name = "name_customer" id="name_customer" required/>
+                                                                      </div>
                                                                     </div>
-                                                                  </div>
-
+                                                                    <div class="form-group">
+                                                                      <label for="input_phone_number" class="control-label ">Số điện thoại</label>
+                                                                      <div class="input-field">
+                                                                          <input type="text" class="form-control" name="phone_number" id="phone_number"/>
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="input_email" class="control-label ">Địa chỉ email</label>
+                                                                        <div class="input-field">
+                                                                            <input type="email" class="form-control" name="email" id="email"/>
+                                                                        </div>
+                                                                      </div>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" data-dismiss="modal" class="btn btn-default">Đóng</button>
+                                                            <button type="submit" class="btn btn-primary" id="save_info_customer">Lưu thông tin</button>
+                                                        </div>
+                                                      </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn btn-default">Đóng</button>
-                                                        <button type="button" class="btn btn-primary" id="save_info_customer">Lưu thông tin</button>
-                                                    </div>
-                                                  </div>
-                                                </div>
+                                                </form>
                                               </div>
                                         <?php }?>
                                     </div>
@@ -338,50 +340,78 @@ $(document).ready(function(){
             })
             ev.preventDefault();
         });
-        $('#save_info_customer').on('click',function(ev){
+        $("#form-save-info").validate({
+    rules: {
+        name_customer: {
+            required:true,
+            NameCheck:true
+        },
+        email: {
+            required: true,
+            email: true
+        }
+    },
+    messages: {
+        name_customer: {
+            required:"Tên không được để trống"
+        },
+        email: {
+            required:"email không được để trống",
+            email:"Email không đúng"
+        },
+    },
 
-            var name_customer = $('#name_customer').val();
-            var phone_number = $("#phone_number").val();
-            var email = $("#email").val();
-            //check info
-            if(typeof  name_customer ==undefined || name_customer.length <6 || name_customer.trim()==''){
-                $('.error_submit').html('Thông tin người dùng sai');
-                return false;
-            }
-            if(typeof  phone_number ==undefined || phone_number.length <9 || phone_number.trim()==''){
-                $('.error_submit').html('Thông tin số điện thoại sai');
-                return false;
-            }
-            if(typeof  email ==undefined || email.length <8 || email.trim()==''){
-                $('.error_submit').html('Thông tin email sai');
-                return false;
-            }
-            var urlCurl = window.location.href;
-            urlCurl = urlCurl.split('#')[0];
-//            checkin=17/07/2016&checkout=20/07/2016&guest
-var checkin = $('#bookin-dpk');
-var checkout = $('#bookout-dpk');
-if(typeof checkin !== undefined && checkin.val().trim()!='')alert(checkin.val());
-            var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
-            $.ajax({
-                type : 'POST',
-                url  : "<?php echo base_url().'user/createFast'?>",
-                data : data,
-                success :  function(data){
-                    console.log(data);
-                    return false;
-                    if(typeof data["error"] !== undefined){
-//                        window.location.href = urlCurl;
-//                        return;
-                    }
-                    if(typeof data["success"] !==undefined){
-//                        location.reload();
-                    }
-//                    window.location.href = urlCurl;
-                },
-                dataType:'json',
-            })
-        })
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+//        $('#save_info_customer').on('click',function(ev){
+//
+//            var name_customer = $('#name_customer').val();
+//            var phone_number = $("#phone_number").val();
+//            var email = $("#email").val();
+//            //check info
+////            if(typeof  name_customer ==undefined || name_customer.length <6 || name_customer.trim()==''){
+////                $('.error_submit').html('Thông tin người dùng sai');
+////                return false;
+////            }
+//            if(typeof  phone_number ==undefined || phone_number.length <9 || phone_number.trim()==''){
+//                $('.error_submit').html('Thông tin số điện thoại sai');
+//                return false;
+//            }
+//            if(typeof  email ==undefined || email.length <8 || email.trim()==''){
+//                $('.error_submit').html('Thông tin email sai');
+//                return false;
+//            }
+//            var urlCurl = window.location.href;
+//            urlCurl = urlCurl.split('#')[0];
+////            checkin=17/07/2016&checkout=20/07/2016&guest
+////var checkin = $('#bookin-dpk');
+////var checkout = $('#bookout-dpk');
+////if(typeof checkin !== undefined && checkin.val().trim()!='')alert(checkin.val());
+//            var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
+//            $.ajax({
+//                type : 'POST',
+//                url  : "<?php echo base_url().'user/createFast'?>",
+//                data : data,
+//                success :  function(data){
+//                    console.log(data["error"]);
+//                    console.log(data["success"]);
+////                    console.log(data["error"]);
+////                    console.log(data["error"]);
+//                    return false;
+//                    if(typeof data["error"] !== undefined){
+////                        window.location.href = urlCurl;
+////                        return;
+//                    }
+//                    if(typeof data["success"] !==undefined){
+////                        location.reload();
+//                    }
+////                    window.location.href = urlCurl;
+//                },
+//                dataType:'json',
+//            })
+//        })
 })
 </script>
 
