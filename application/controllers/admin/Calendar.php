@@ -19,12 +19,14 @@ class Calendar extends AdminHome
         $time = time();
         $begin_day = date('d/m/Y', strtotime('first day of this month'));
         $end_day = date('d/m/Y', strtotime(date('Y', $time) . '-' . date('m', $time) . '-' . cal_days_in_month(CAL_GREGORIAN, date('m', $time), date('Y', $time))));
-
+				$userLogin = $this->User_model->get_logged_in_employee_info();
         /* Find Ordered Room In Range Day */
 
         $this->db->select('post_room.post_room_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.refer_id, order.guests AS num_guests');
         $this->db->from('post_room');
         $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
+				if($userLogin->role_id==2)
+            $this->db->where('post_room.user_id', $userLogin->user_id);
         $this->db->where('checkin >= "' . $begin_day . '" OR checkout <= "' . $end_day . '"');
         $result = $this->db->get()->result();
 

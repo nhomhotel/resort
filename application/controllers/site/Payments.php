@@ -14,6 +14,7 @@ class payments extends MY_Controller {
         $this->load->library('email');
         $this->load->model('order_room_model');
         $this->load->model('post_room_model');
+        $this->load->library('Book_library');
     }
 
     public function index() {
@@ -68,39 +69,55 @@ class payments extends MY_Controller {
         //check room in database
         if ($this->order_room_model->check_exists_room($id_decode[0], $data['checkin'], $data['checkout'])) {
             echo 'Phòng này đã có người đặt trước đó.';
+            pre($this->db->last_query());
             return;
         }
         $prices = $this->post_room_model->get_row($input);
         $data['name_room'] = $prices->post_room_name;
-        //giá 1 đêm
-        $data['price_night_vn'] = $prices->price_night_vn;
-        $data['max_guest'] = $prices->num_guest;
-        // giá vượt quá số người
-        $data['price_guest_more_vn'] = $prices->price_guest_more_vn;
-        //phí dọn dẹp
-        $data['clearning_fee_vn'] = $prices->clearning_fee_vn;
-        $data['sub_day'] = $data['checkout']->diff($data['checkin']);
-        $data['distance_day'] = $data['sub_day']->days + 1;
-        $data['price_all_night'] = $data['distance_day'] * $data['price_night_vn'];
-        if ($guests <= $data['max_guest']) {
-            $data['guest_change'] = 0;
-        } else {
-            $data['guest_change'] = $guests - $data['max_guest'];
-        }
-        if ($data['guest_change'] <= 0) {
-            $data['price_all_night_add_fee'] = $data['price_all_night'] + $data['clearning_fee_vn'];
-        } else {
-            $data['price_all_night_add_fee'] = $data['price_all_night'] + $data['clearning_fee_vn'] + ($data['guest_change']) * $data['price_guest_more_vn'];
-        }
+//        //giá 1 đêm
+//        $data['price_night_vn'] = $prices->price_night_vn;
+//        $data['max_guest'] = $prices->num_guest;
+//        // giá vượt quá số người
+//        $data['price_guest_more_vn'] = $prices->price_guest_more_vn;
+//        //phí dọn dẹp
+//        $data['clearning_fee_vn'] = $prices->clearning_fee_vn;
+//        $data['sub_day'] = $data['checkout']->diff($data['checkin']);
+//        $data['distance_day'] = $data['sub_day']->days + 1;
+//        $data['price_all_night'] = $data['distance_day'] * $data['price_night_vn'];
+//        if ($guests <= $data['max_guest']) {
+//            $data['guest_change'] = 0;
+//        } else {
+//            $data['guest_change'] = $guests - $data['max_guest'];
+//        }
+//        if ($data['guest_change'] <= 0) {
+//            $data['price_all_night_add_fee'] = $data['price_all_night'] + $data['clearning_fee_vn'];
+//        } else {
+//            $data['price_all_night_add_fee'] = $data['price_all_night'] + $data['clearning_fee_vn'] + ($data['guest_change']) * $data['price_guest_more_vn'];
+//        }
+        $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
+        $data['price_all_night_add_fee'] = $priceCaculator['money'];
         $data_insert = array(
             'post_room_id' => $id_decode[0],
             'user_id' => $user_id,
-            'payment_type' => $data['price_all_night_add_fee'],
+            'payment_type' => $priceCaculator['money'],
             'checkin' => $data['checkin']->format('Y-m-d'),
             'checkout' => $data['checkout']->format('Y-m-d'),
             'guests' => $data['guests'],
+            'refer_id'=>$id_decode[0]
         );
+        if($prices->parent_id!=0){
+            $data_insert_parent = array(
+                'post_room_id' => $id_decode[0],
+                'user_id' => $user_id,
+                'payment_type' => $priceCaculator['money'],
+                'checkin' => $data['checkin']->format('Y-m-d'),
+                'checkout' => $data['checkout']->format('Y-m-d'),
+                'guests' => $data['guests'],
+                'post_room_id' => $prices->parent_id
+            );
+        }
         $this->order_room_model->create($data_insert);
+        if(isset($data_insert_parent))$this->order_room_model->create($data_insert_parent);
         //gửi email
         $input = array();
         $input = array(
@@ -108,8 +125,8 @@ class payments extends MY_Controller {
                 'user_id' => $user_id,
             )
         );
-        $data['doitac'] = $this->user_model->get_row(array('where' => array('user_id' => $prices->user_id)));
-        $data['user'] = $this->user_model->get_row($input);
+        $data['doitac'] = $this->User_model->get_row(array('where' => array('user_id' => $prices->user_id)));
+        $data['user'] = $this->User_model->get_row($input);
 
         $config = get_config_email($this->config->item('address_email'), $this->config->item('pass_email'));
         echo $this->email->print_debugger();

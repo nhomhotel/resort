@@ -106,7 +106,7 @@ class Experience extends AdminHome {
             }
         }
 
-        $data['title'] = 'Thêm mới tiện nghi';
+        $data['title'] = 'Thêm mới trải nghiệm';
         $data['temp'] = 'admin/experience/create';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
@@ -168,7 +168,7 @@ class Experience extends AdminHome {
             }
         }
 
-        $data['title'] = 'Cập nhật tiện nghi';
+        $data['title'] = 'Cập nhật trải nghiệm';
         $data['temp'] = 'admin/experience/edit';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }

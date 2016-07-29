@@ -8,6 +8,7 @@ class Spaces extends MY_Controller {
         parent:: __construct();
         $this->load->model('post_room_model');
         $this->load->model('order_room_model');
+        $this->load->library('Book_library');
     }
 
     public function index() {
@@ -15,6 +16,7 @@ class Spaces extends MY_Controller {
     }
 
     public function prices($id = '') {
+        $this->load->library('Book_library');
         $encode = $this->config->item('encode_id');
         $decode_id = $encode->decode($id);
         $data = array();
@@ -61,39 +63,41 @@ class Spaces extends MY_Controller {
             echo json_encode($data);
             exit();
         };
+        $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
         //giá 1 đêm
-        $price_night_vn = $prices->price_night_vn;
-        $max_guest = $prices->num_guest;
-        // giá vượt quá số người
-        $price_guest_more_vn = $prices->price_guest_more_vn;
-        //phí dọn dẹp
-        $clearning_fee_vn = $prices->clearning_fee_vn;
-        $sub_day = $data['checkout']->diff($data['checkin']);
-        $distance_day = $sub_day->days + 1;
-        $price_all_night = $distance_day * $price_night_vn;
-        if ($guests <= $max_guest) {
-            $guest_change = 0;
-        } else {
-            $guest_change = $guests - $max_guest;
-        }
-        if ($guest_change <= 0) {
-            $price_all_night_add_fee = $price_all_night + $clearning_fee_vn;
-        } else {
-            $price_all_night_add_fee = $price_all_night + $clearning_fee_vn + ($guest_change) * $price_guest_more_vn;
-        }
-        $data['prices'] = '<table class="price-details" style="width: 100%;"> '
-                . '<tbody> '
-                . '<tr> <th>VND <span class="nightly-price">' . $price_night_vn . '</span> × ' . $distance_day . ' Đêm</th> '
-                . '<td>VND <span>' . number_format($price_all_night) . '</span></td> '
-                . '</tr><tr><td><span>Số người: </span>' . $guests . '</td></tr> '
-                . '<tr><td>Số người Vượt quá giới hạn</td><td style="a">' . $guest_change . 'x' . $price_guest_more_vn . '</td></tr>'
-                . '<tr class="cleaning-fee"> '
-                . '<th>Phí dọn dẹp</th> '
-                . '<td>VND <span>' . number_format($clearning_fee_vn) . '</span></td> '
-                . '</tr> '
-                . '<tr class="total"> '
-                . '<th>Tổng (bao gồm tất cả phí)</th> <td>VND <span>' . number_format($price_all_night_add_fee) . '</span></td> </tr> '
-                . '</tbody> </table>';
+//        $price_night_vn = $prices->price_night_vn;
+//        $max_guest = $prices->num_guest;
+//        // giá vượt quá số người
+//        $price_guest_more_vn = $prices->price_guest_more_vn;
+//        //phí dọn dẹp
+//        $clearning_fee_vn = $prices->clearning_fee_vn;
+//        $sub_day = $data['checkout']->diff($data['checkin']);
+//        $distance_day = $sub_day->days + 1;
+//        $price_all_night = $distance_day * $price_night_vn;
+//        if ($guests <= $max_guest) {
+//            $guest_change = 0;
+//        } else {
+//            $guest_change = $guests - $max_guest;
+//        }
+//        if ($guest_change <= 0) {
+//            $price_all_night_add_fee = $price_all_night + $clearning_fee_vn;
+//        } else {
+//            $price_all_night_add_fee = $price_all_night + $clearning_fee_vn + ($guest_change) * $price_guest_more_vn;
+//        }
+        $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
+//        $data['prices'] = '<table class="price-details" style="width: 100%;"> '
+//                . '<tbody> '
+//                . '<tr> <th>VND <span class="nightly-price">' . $price_night_vn . '</span> × ' . $distance_day . ' Đêm</th> '
+//                . '<td>VND <span>' . number_format($price_all_night) . '</span></td> '
+//                . '</tr><tr><td><span>Số người: </span>' . $guests . '</td></tr> '
+//                . '<tr><td>Số người Vượt quá giới hạn</td><td style="a">' . $guest_change . 'x' . $price_guest_more_vn . '</td></tr>'
+//                . '<tr class="cleaning-fee"> '
+//                . '<th>Phí dọn dẹp</th> '
+//                . '<td>VND <span>' . number_format($clearning_fee_vn) . '</span></td> '
+//                . '</tr> '
+//                . '<tr class="total"> '
+//                . '<th>Tổng (bao gồm tất cả phí)</th> <td>VND <span>' . number_format($price_all_night_add_fee) . '</span></td> </tr> '
+//                . '</tbody> </table>';
         echo json_encode($data);
         exit;
     }

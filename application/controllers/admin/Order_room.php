@@ -49,6 +49,7 @@ class Order_room extends AdminHome {
 
             $input['where'] = array('post_room.user_id'=> $userLogin['user_id']);
         }
+        $input['where']['refer_id!='] =0; 
         $list = $this->Order_room_model->get_list_room($input)->result();
 //        pre($this->db->last_query());
 //        return;

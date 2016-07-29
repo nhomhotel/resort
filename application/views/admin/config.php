@@ -90,6 +90,45 @@
 
                 <div class="panel">
                     <div class="panel-heading panel-piluku">
+                        <h3 class="panel-title"><?php echo 'Thuế và ngoại tệ'; ?></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="item_per_page_site" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Giá đã bao gôm thuế'; ?></label>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <!--<input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('item_per_page_site'); ?>">-->
+                                <label><input type="checkbox" value="" style=""></label>
+                            </div>
+                        </div>
+<!--                        <div class="form-group">
+                            <label for="item_per_page_site" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php // echo 'Tên thuế'; ?></label>
+                            <div class="col-sm-4 col-md-4 col-lg-4 input-field">
+                                <input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('default_tax_1_name'); ?>">
+                            </div>
+                            <div class="col-sm-1 col-md-1 col-lg-2 input-field">
+                                <label> <==></label>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-lg-4 input-field">
+                                <input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('default_tax_1_name'); ?>">
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="item_per_page_system" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu phân cách đơn vị nghìn'; ?></label>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <input type="text" name="item_per_page_system" class="form-control" value="<?php echo $this->config->item('thousands_separator'); ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="item_per_page_system" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu thập phân'; ?></label>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <input type="text" name="item_per_page_system" class="form-control" value="<?php echo $this->config->item('decimal_point'); ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-heading panel-piluku">
                         <h3 class="panel-title"><?php echo lang('config_email_support'); ?></h3>
                     </div>
                     <div class="panel-body">
