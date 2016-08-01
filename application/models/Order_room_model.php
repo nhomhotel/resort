@@ -28,7 +28,7 @@ class Order_room_model extends MY_Model {
     // true: đã ton tai
     // false: chưa tồn tại
     function check_exists_room($id, $checkin, $checkout) {
-        if (!$this->check_exists(array('post_room_id', $id)))
+        if (!$this->check_exists(array('post_room_id'=> $id)))
             return FALSE;
         $this->db->from('order');
 //                $this->db->or_where('checkin<=',$checkout);

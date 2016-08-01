@@ -113,15 +113,15 @@
                             </div>
                         </div>-->
                         <div class="form-group">
-                            <label for="item_per_page_system" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu phân cách đơn vị nghìn'; ?></label>
+                            <label for="thousands_separator" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu phân cách đơn vị nghìn'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <input type="text" name="item_per_page_system" class="form-control" value="<?php echo $this->config->item('thousands_separator'); ?>">
+                                <input type="text" name="thousands_separator" class="form-control" value="<?php echo $this->config->item('thousands_separator'); ?>">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="item_per_page_system" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu thập phân'; ?></label>
+                            <label for="decimal_point" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu thập phân'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <input type="text" name="item_per_page_system" class="form-control" value="<?php echo $this->config->item('decimal_point'); ?>">
+                                <input type="text" name="decimal_point" class="form-control" value="<?php echo $this->config->item('decimal_point'); ?>">
                             </div>
                         </div>
                     </div>

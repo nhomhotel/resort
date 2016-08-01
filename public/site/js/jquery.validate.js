@@ -333,6 +333,11 @@ $.extend($.validator, {
                                 function(value, element) {
                                     return this.optional(element) || value == value.match(/[\`|\\]/)|| value == value.match(new RegExp("^["+NameVN.toString().replace(/[\||,]/g, "")+"]+$"));
                         }, "Tên chỉ có thể chứa ký tự và dấu cách")
+                        $.validator.addMethod(
+                                "PhoneCheck", 
+                                function(value, element) {
+                                    return this.optional(element) || value == value.match(new RegExp("[0-9]{9,12}"));
+                        }, "")
 			var groups = (this.groups = {});
 			$.each(this.settings.groups, function( key, value ) {
 				if ( typeof value === "string" ) {

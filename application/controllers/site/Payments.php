@@ -69,33 +69,12 @@ class payments extends MY_Controller {
         //check room in database
         if ($this->order_room_model->check_exists_room($id_decode[0], $data['checkin'], $data['checkout'])) {
             echo 'Phòng này đã có người đặt trước đó.';
-            pre($this->db->last_query());
             return;
         }
         $prices = $this->post_room_model->get_row($input);
         $data['name_room'] = $prices->post_room_name;
-//        //giá 1 đêm
-//        $data['price_night_vn'] = $prices->price_night_vn;
-//        $data['max_guest'] = $prices->num_guest;
-//        // giá vượt quá số người
-//        $data['price_guest_more_vn'] = $prices->price_guest_more_vn;
-//        //phí dọn dẹp
-//        $data['clearning_fee_vn'] = $prices->clearning_fee_vn;
-//        $data['sub_day'] = $data['checkout']->diff($data['checkin']);
-//        $data['distance_day'] = $data['sub_day']->days + 1;
-//        $data['price_all_night'] = $data['distance_day'] * $data['price_night_vn'];
-//        if ($guests <= $data['max_guest']) {
-//            $data['guest_change'] = 0;
-//        } else {
-//            $data['guest_change'] = $guests - $data['max_guest'];
-//        }
-//        if ($data['guest_change'] <= 0) {
-//            $data['price_all_night_add_fee'] = $data['price_all_night'] + $data['clearning_fee_vn'];
-//        } else {
-//            $data['price_all_night_add_fee'] = $data['price_all_night'] + $data['clearning_fee_vn'] + ($data['guest_change']) * $data['price_guest_more_vn'];
-//        }
         $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
-        $data['price_all_night_add_fee'] = $priceCaculator['money'];
+        $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
         $data_insert = array(
             'post_room_id' => $id_decode[0],
             'user_id' => $user_id,

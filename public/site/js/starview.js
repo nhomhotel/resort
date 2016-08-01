@@ -114,9 +114,24 @@ $(document).ready(function() {
                     $('.info-book').html('nhập số khách');
                     return;
                 }
-                var url = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
+                $.ajax({
+                    type : 'POST',
+                url  : baseurl+'/spaces/prices/'+id,
+                data : {checkin:checkin.val(),checkout:checkout.val(),guests:guest.val()},
+                success :  function(data){
+                    if((typeof data.error)!= 'undefined'){
+                            $('.fees').html(data.error);
+                            $('.prices').html('');
+                        }else if((typeof data.prices)!= 'undefined'){
+                            window.location.href = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
+                            return true;
+                        }                    
+                },
+                dataType:'json',
+                })
+//                var url = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
                 
-                window.location.href = url;
+//                window.location.href = url;
             } else {
                 var bathrooms = $('#bathrooms');
                 var bedrooms = $('#bedrooms');
@@ -187,6 +202,12 @@ $(document).ready(function() {
             });
         });
     });
+    $(function(){
+        $('.method_payment ul li').on('click',function(){
+            data = $(this).find('a').data('value');
+            $('.method_payment').find('button span').html($(this).find('a').html());
+        })
+    })
 })
 
 //----------------------------------------------------Index--------------------------------------------

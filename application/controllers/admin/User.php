@@ -34,7 +34,7 @@ class User extends AdminHome {
         $data['list_role'] = $list_role;
 
         $this->load->library('pagination');
-        $total = $this->user_model->get_total();
+        $total = $this->user_model->get_total()-1;
 
         $config = array();
         $config["total_rows"] = $total;

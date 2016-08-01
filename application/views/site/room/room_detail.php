@@ -267,15 +267,22 @@ $(document).ready(function(){
             checkout.datepicker('setStartDate',newDate);
             checkin.datepicker('hide');
             checkout[0].focus();
-            if(checkout.valueOf()!=''){
+            if(checkout.val()!=''){
                 $.ajax({
                     url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
                     type: 'POST',
                     dataType: 'json',
                     data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
                     success: function (data) {
-                      if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
-                      if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
+                        if((typeof data.error)!= 'undefined'){
+                            $('.fees').html(data.error);
+                            $('.prices').html('');
+                        }else if((typeof data.prices)!= 'undefined'){
+                            $('.fees').html('');
+                            $('.prices').html(data.prices);
+                        }
+//                      if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
+//                      if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
                 })
             }
@@ -291,15 +298,20 @@ $(document).ready(function(){
             checkout.datepicker('hide');
             var newDate = new Date(ev.date)
             newDate.setDate(newDate.getDate() );
-            if(checkin.valueOf()!=''){
+            if(checkin.val()!=''){
                 $.ajax({
                   url:'<?php echo base_url().'spaces/prices/'.$id_encode?>',
                   type: 'POST',
                   dataType: 'json',
                   data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
                   success: function (data) {
-                    if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
-                    if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
+                        if((typeof data.error)!= 'undefined'){
+                            $('.fees').html(data.error);
+                            $('.prices').html('');
+                        }else if((typeof data.prices)!= 'undefined'){
+                            $('.fees').html('');
+                            $('.prices').html(data.prices);
+                        }
                     }
                 })
             }
@@ -314,8 +326,13 @@ $(document).ready(function(){
                   dataType: 'json',
                   data: {checkin:$('#bookin-dpk').val(),checkout:$('#bookout-dpk').val(),guests:$('#guests').val()},
                   success: function (data) {
-                        if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
-                        if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
+                        if((typeof data.error)!= 'undefined'){
+                            $('.fees').html(data.error);
+                            $('.prices').html('');
+                        }else if((typeof data.prices)!= 'undefined'){
+                            $('.fees').html('');
+                            $('.prices').html(data.prices);
+                        }
                     }
                 })
             }    
@@ -349,6 +366,10 @@ $(document).ready(function(){
         email: {
             required: true,
             email: true
+        },
+        phone_number:{
+            required: true,
+            PhoneCheck:true,
         }
     },
     messages: {
@@ -359,59 +380,35 @@ $(document).ready(function(){
             required:"email không được để trống",
             email:"Email không đúng"
         },
+        phone_number:{
+            required: 'Số điện thoại không được để trống.',
+            PhoneCheck:'Số điện thoại không đúng định dạng đó'
+        }
+            
     },
-
     submitHandler: function(form) {
         form.submit();
+        $.ajax({
+                type : 'POST',
+                url  : "<?php echo base_url().'user/createFast'?>",
+                data : data,
+                success :  function(data){
+                    console.log(data["error"]);
+                    console.log(data["success"]);
+                    return false;
+                    if(typeof data["error"] !== undefined){
+                        window.location.href = urlCurl;
+                        return;
+                    }
+                    if(typeof data["success"] !==undefined){
+                        location.reload();
+                    }
+                    window.location.href = urlCurl;
+                },
+                dataType:'json',
+            })
     }
 });
-//        $('#save_info_customer').on('click',function(ev){
-//
-//            var name_customer = $('#name_customer').val();
-//            var phone_number = $("#phone_number").val();
-//            var email = $("#email").val();
-//            //check info
-////            if(typeof  name_customer ==undefined || name_customer.length <6 || name_customer.trim()==''){
-////                $('.error_submit').html('Thông tin người dùng sai');
-////                return false;
-////            }
-//            if(typeof  phone_number ==undefined || phone_number.length <9 || phone_number.trim()==''){
-//                $('.error_submit').html('Thông tin số điện thoại sai');
-//                return false;
-//            }
-//            if(typeof  email ==undefined || email.length <8 || email.trim()==''){
-//                $('.error_submit').html('Thông tin email sai');
-//                return false;
-//            }
-//            var urlCurl = window.location.href;
-//            urlCurl = urlCurl.split('#')[0];
-////            checkin=17/07/2016&checkout=20/07/2016&guest
-////var checkin = $('#bookin-dpk');
-////var checkout = $('#bookout-dpk');
-////if(typeof checkin !== undefined && checkin.val().trim()!='')alert(checkin.val());
-//            var data = {nameCustomer: name_customer, phoneNumber: phone_number,email:email};
-//            $.ajax({
-//                type : 'POST',
-//                url  : "<?php echo base_url().'user/createFast'?>",
-//                data : data,
-//                success :  function(data){
-//                    console.log(data["error"]);
-//                    console.log(data["success"]);
-////                    console.log(data["error"]);
-////                    console.log(data["error"]);
-//                    return false;
-//                    if(typeof data["error"] !== undefined){
-////                        window.location.href = urlCurl;
-////                        return;
-//                    }
-//                    if(typeof data["success"] !==undefined){
-////                        location.reload();
-//                    }
-////                    window.location.href = urlCurl;
-//                },
-//                dataType:'json',
-//            })
-//        })
 })
 </script>
 
@@ -419,19 +416,19 @@ $(document).ready(function(){
 	var lat = <?php echo (isset($info))? $info->lat : 0 ?>;
     var lng = <?php echo (isset($info))? $info->lng : 0 ?>;
 	function initMap(){
-		var mapOption = {
-	        zoom: 16, 
-	        center: {lat: lat, lng: lng},
-	    }
-	    var map = new google.maps.Map(document.getElementById('map-wrap'), mapOption);
-		setMarker(map);
+            var mapOption = {
+            zoom: 16, 
+            center: {lat: lat, lng: lng},
+        }
+            var map = new google.maps.Map(document.getElementById('map-wrap'), mapOption);
+            setMarker(map);
 	}
 
 	function setMarker(map){
-		 var marker = new google.maps.Marker({
-        	position: {lat: lat, lng: lng},
-        	animation: google.maps.Animation.DROP,
-        });
+            var marker = new google.maps.Marker({
+                position: {lat: lat, lng: lng},
+                animation: google.maps.Animation.DROP,
+            });
         marker.setMap(map);
 	}
 
