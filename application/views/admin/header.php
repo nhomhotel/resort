@@ -15,20 +15,20 @@ if ($this->session->userdata('userLogin')) {
             <li>
                 <a href="<?php echo admin_url('post_room/post'); ?>">
                     <img style="margin-top: 7px;" src="<?php echo base_url(); ?>public/admin/images/icons/light/create.png"/>
-                    <span><?php echo lang('post news'); ?></span>
+                    <span><?php echo 'Đăng phòng'; ?></span>
                 </a>
             </li>
             <li>
-                <a href="#" target="_blank">
+                <a href="<?php echo base_url().'admin/home'?>" target="_blank">
                     <img style="margin-top:7px;" src="<?php echo base_url(); ?>public/admin/images/icons/light/home.png"/>
-                    <span><?php echo lang('home'); ?></span>
+                    <span><?php echo 'Trang chủ'; ?></span>
                 </a>
             </li>
             <!-- Logout -->
             <li>
                 <a href="<?php echo admin_url('user/logout'); ?>">
                     <img src="<?php echo base_url(); ?>public/admin/images/icons/topnav/logout.png"/>
-                    <span><?php echo lang('logout'); ?></span>
+                    <span><?php echo 'Đăng xuất'; ?></span>
                 </a>
             </li>
         </ul>

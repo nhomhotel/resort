@@ -22,12 +22,13 @@ class Post_room extends AdminHome {
     function index() {
         $this->load->model('Post_room_model');
         $this->load->library('pagination');
+        $input = array();
         $user = $this->User_model->get_logged_in_employee_info();
         if($user==null || $user==''){
             redirect(admin_url('login'));
         }
-        if($user->role_id==2)$input['where'] = array('tbl_post_room.user_id'=> $user->user_id);
-        $total = $this->Post_room_model->get_total();
+        if($user->role_id==2)$input['where'] = array('post_room.user_id'=> $user->user_id);
+        $total = $this->Post_room_model->get_total($input);
         $data['total'] = $total;
         $config = array();
         $config["total_rows"] = $total;
@@ -51,8 +52,6 @@ class Post_room extends AdminHome {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-
-        $input = array();
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
 
@@ -67,7 +66,6 @@ class Post_room extends AdminHome {
         if ($user_name) {
             $input['or_like'] = array('user_name', $user_name);
         }
-//        if($this->User_model->get_role()==2)$input['where'] = array('tbl_post_room.user_id'=> $this->User_model->get_logged_in_employee_info()->user_id);
 
         $list_room = $this->Post_room_model->getListInfo_where($input);
         if ($list_room) {
@@ -114,7 +112,6 @@ class Post_room extends AdminHome {
         $data["list_amenities"] = $list_amenities;
         $data["list_experience"] = $list_experience;
         $data["list_area"] = $list_area;
-//        pre($id);return;
 
         if ($this->input->post()) {
 
@@ -703,7 +700,10 @@ class Post_room extends AdminHome {
     }
 
     public function calendar($post_room_id = null) {
-
+        $user = $this->User_model->get_logged_in_employee_info();
+        if($user==null || $user==''){
+            redirect(admin_url('login'));
+        }
         if (empty($post_room_id)) {
             return site_url('admin/home');
         }
@@ -725,10 +725,13 @@ class Post_room extends AdminHome {
         $this->db->select('post_room.post_room_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.refer_id, order.guests AS num_guests');
         $this->db->from('post_room');
         $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
-        $this->db->where('checkin >= "' . $begin_day . '" OR checkout <= "' . $end_day . '"');
+        $this->db->where('(checkin >= "' . $begin_day . '" OR checkout <= "' . $end_day . '")');
         $this->db->where('post_room.post_room_id = ' . $post_room_id . ' OR post_room.parent_id = ' . $post_room_id);
+        if($user->role_id==2){
+            $this->db->where('post_room.user_id',$user->user_id);
+        }
         $result = $this->db->get()->result();
-
+//        pre($this->db->last_query());return;
         /* Register Events In Calendar */
 
         $events = array();

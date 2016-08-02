@@ -281,8 +281,6 @@ $(document).ready(function(){
                             $('.fees').html('');
                             $('.prices').html(data.prices);
                         }
-//                      if(typeof  data["error"]!= undefined){$('.fees').html(data["error"]);}
-//                      if(typeof  data.prices!= undefined){ $('.prices').html(data.prices);}
                     }
                 })
             }
@@ -387,21 +385,21 @@ $(document).ready(function(){
             
     },
     submitHandler: function(form) {
-        form.submit();
+        var urlCurl = window.location.href;
+        var check_in = $('#bookin-dpk');
+        var check_out = $('#bookout-dpk');
+        var guest = $('#guests');
+        if(typeof check_in == 'undefined'&& check_in.val()==''){
+        }
+        urlCurl = urlCurl.split('#')[0];
         $.ajax({
                 type : 'POST',
                 url  : "<?php echo base_url().'user/createFast'?>",
-                data : data,
+                data : {nameCustomer:$('#name_customer').val(),phoneNumber:$('#phone_number').val(),email:$('#email').val()},
                 success :  function(data){
-                    console.log(data["error"]);
-                    console.log(data["success"]);
-                    return false;
-                    if(typeof data["error"] !== undefined){
-                        window.location.href = urlCurl;
-                        return;
-                    }
-                    if(typeof data["success"] !==undefined){
-                        location.reload();
+                    if(!data.success){
+                        $('.error_submit').html(data.message);
+                        return false;
                     }
                     window.location.href = urlCurl;
                 },

@@ -1,5 +1,29 @@
 <!-- Main content -->
 <!-- Title area -->
+<script>
+ function PrintElem(elem)
+    {
+//        console.log($(elem).html());return;
+        Popup($(elem).html());
+    }
+
+    function Popup(data) 
+    {
+        var mywindow = window.open('', 'my div', 'width=700px');
+        mywindow.document.write('<html><head><title>my div</title>');
+        /*optional stylesheet*/ 
+        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/crown/css/reset.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/css/bootstrap/bootstrap.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/crown/css/main.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/css/css.css" type="text/css" />');
+        mywindow.document.write('</head><body ><table>');
+        mywindow.document.write(data);
+        mywindow.document.write('</table></body></html>');
+        mywindow.print();
+        mywindow.close();
+        return true;
+    }
+</script>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
@@ -67,7 +91,7 @@
                         </td>
                     </tr>
                 </thead>
-                <thead>
+                <thead class="title_order_room">
                     <tr>
                         <td>STT</td>
                         <td colspan="2">Bài đăng</td>
@@ -84,7 +108,7 @@
                 </thead>
                 <tfoot class="auto_check_pages">
                     <tr>
-                        <td colspan="3"><button class="btn btn-primary print_order">In Danh sách</button></td>
+                        <td colspan="3"><button class="btn btn-primary print_order" onclick="PrintElem('#order_room_table');">In Danh sách</button></td>
                         <td colspan="14">
                             <div class='pagination'>
                                 <?php echo isset($pagination_link) ? $pagination_link : ''; ?>
@@ -105,7 +129,7 @@
                                         <?php
                                         $img = json_decode($row->image_list);
                                         ?>
-                                        <img src="<?php echo $img['0'] ?>" width = "120px" height = "90px"/>
+                                        <img src="<?php // echo $img['0'] ?>" width = "120px" height = "90px"/>
                                     </a>
                                 </td>
                                 <td class="textC" style="text-align: left;">
@@ -195,15 +219,35 @@
         $("#modal_del").modal("show");
     }
     $(function(){
-        $('.print_order').on('click',function(){
-            var conten_pdf = document.getElementById('order_room_table').outerHTML;
-            var css = '<?php echo '<link rel="stylesheet" type="text/css" href="/public/admin/crown/css/main.css" />'?>';
-            css += '<?php echo '<link rel="stylesheet" type="text/css" href="/public/admin/css/css.css" />'?>';
-            var html = css ;
-            html+=conten_pdf;
-            newWin = window.open("");
-            newWin.document.write(html);
-            newWin.print();
+        $('.print_order1').on('click',function(){
+            var printContents = document.getElementById('order_room_table').innerHTML;
+            var originalContents = document.body.innerHTML;
+//            document.body.innerHTML = printContents;
+
+//            document.body.innerHTML = originalContents;
+//            var html='';
+            var list_item = $('.list_item').html();
+            var title_order_room = $('.title_order_room').html();
+            html = '';
+//            
+//            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="http://hotel.git-dev.new.nhom/public/admin/crown/css/main.css" />'?>';
+//            css += '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="http://hotel.git-dev.new.nhom/public/admin/css/css.css" />'?>';
+//            html+='<html>';
+//            html+='<head>';
+//            html += css ;
+//            html+='</head>';
+//            html+='<body>';
+            html+='<table>';
+            html+=title_order_room;
+            html+=list_item
+            html+='</table>';
+            document.body.innerHTML =html;
+//            html+='</body>';
+//            html+='</html>';
+//            newWin = window.open("");
+//            newWin.document.write(html);
+//            newWin.print();
+//            console.log(newWin);
         })
     })
 </script>

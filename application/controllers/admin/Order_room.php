@@ -24,7 +24,7 @@ class Order_room extends AdminHome {
             $input['where'] = array('post_room.user_id'=> $user->user_id);
         }
         $input['where']['refer_id!='] =0; 
-        $total = $this->Order_room_model->get_total($input);
+        $total = $this->Order_room_model->get_total($input,array('post_room'=>"post_room_id::post_room_id"));
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/order_room/index');
@@ -46,8 +46,6 @@ class Order_room extends AdminHome {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-
-        $input = array();
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
         $input['order'] = array('order_id', 'ASC');

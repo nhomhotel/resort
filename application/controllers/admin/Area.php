@@ -87,7 +87,7 @@ class Area extends AdminHome {
             }
         }
 
-        $data['title'] = 'Thêm mới tiện nghi';
+        $data['title'] = 'Thêm mới khu vực';
         $data['temp'] = 'admin/area/create';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }

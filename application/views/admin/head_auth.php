@@ -1,5 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<base href="<?php echo base_url() ?>/hotel/">
+<base href="<?php echo base_url() ?>">
 <title><?php echo isset($meta_title) ? htmlspecialchars($meta_title) : ''; ?></title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="shortcut icon" href="public/admin/images/icon.png" type="image/x-icon"/>

@@ -95,11 +95,12 @@ $(document).ready(function() {
         $('.tclick').click(function () {
             var currentclick = $(this);
             if (currentclick.parent().hasClass('book-action')) {
+                alert(1111)
                 var checkin = $('#bookin-dpk');
                 var checkout = $('#bookout-dpk');
                 var guest = $('#guests');
                 if (typeof $('#name_customer') == undefined || $('#name_customer').val() == '' || typeof $('#phone_number') == undefined || $('#phone_number').val() == '' || typeof $('#email') == undefined || $('#email').val() == '') {
-                    $('#myModal').modal('show');
+//                    $('#myModal').modal('show');
                     return;
                 }
                 if (checkin.val() == '' || typeof checkin.val() == undefined) {

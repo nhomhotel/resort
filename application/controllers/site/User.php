@@ -163,18 +163,15 @@ class User extends MY_Controller {
         $phoneNumber = $this->input->post('phoneNumber') ? trim($this->input->post('phoneNumber')) : '';
         $email = $this->input->post('email') ? trim($this->input->post('email')) : '';
         if ($nameCustomer == '' || strlen($nameCustomer) < 5 || !preg_match("/^[a-zA-Z ]+$/", $nameCustomer)) {
-            $data['name_error'] = 'Lỗi Tên';
-            echo json_encode($data);
+            echo json_encode(array('success'=>FALSE,'message'=>'Lỗi Tên'));
             exit;
         }
         if ($phoneNumber == '' || !preg_match('/[0-9]{8,11}/', $phoneNumber)) {
-            $data['email_error'] = 'Lỗi số điện thoại';
-            echo json_encode($data);
+            echo json_encode(array('success'=>FALSE,'message'=>'Lỗi số điện thoại'));
             exit;
         }
         if ($email == '' || strlen($email) < 8 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $data['email_error'] = 'Lỗi email';
-            echo json_encode($data);
+            echo json_encode(array('success'=>FALSE,'message'=>'Lỗi email'));
             exit;
         }
         $data['email'] = $email;
@@ -182,7 +179,7 @@ class User extends MY_Controller {
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');
-        $role_id = 3;
+//        $role_id = 3;
 
         $input = array();
         $input['order'] = array('role_id', 'ASC');
@@ -194,21 +191,21 @@ class User extends MY_Controller {
                 'last_name' => $nameCustomer,
                 'email' => $email,
                 'phone' => $phoneNumber,
-                'role_id' => $role_id,
+//                'role_id' => $role_id,
             );
 
             $dataCheck = $this->user_model->check_exits_user($data);
             if (count($dataCheck) > 0) {
                 echo json_encode(array(
                     'success' => true,
-                    'action' => 'Ton tai',
+                    'message' => 'Ton tai',
                 ));
                 $data['user_name'] = $dataCheck->user_name;
                 $data['user_id'] = $dataCheck->user_id;
                 $this->session->set_userdata($data);
                 exit();
             } elseif ($this->user_model->check_exists(array('email' => $email))) {
-                echo json_encode(array('email_error' => 'email đã tồn tại trên hệ thống. bạn có thể lấy email khác để đăng ký hoặc nhấn vào quên mật khẩu để cấp lại mật khẩu và tên đăng nhập'));
+                echo json_encode(array('success'=>FALSE,'message' => 'email đã tồn tại trên hệ thống. bạn có thể lấy email khác để đăng ký hoặc nhấn vào quên mật khẩu để cấp lại mật khẩu và tên đăng nhập'));
                 exit;
             } else {
                 $data['last_name'] = $nameCustomer;
@@ -221,7 +218,7 @@ class User extends MY_Controller {
                     if ($index > 50) {
                         echo json_encode(array(
                             'success' => FALSE,
-                            'action' => 'Qua nhieu lan reload',
+                            'message' => 'Xin thử lại trong thời gian ngắn',
                         ));
                         break;
                     }
@@ -235,7 +232,7 @@ class User extends MY_Controller {
                         if ($id) {
                             echo json_encode(array(
                                 'success' => true,
-                                'action' => 'Tao thanh cong user',
+                                'message' => 'Tao thanh cong user',
                             ));
                             $data['user_id'] = $id;
                             $this->session->set_userdata($data);
@@ -243,7 +240,7 @@ class User extends MY_Controller {
                         } else {
                             echo json_encode(array(
                                 'success' => FALSE,
-                                'action' => 'Khong tao duoc ',
+                                'message' => 'Khong tao duoc ',
                             ));
                             exit;
                         }

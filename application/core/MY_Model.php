@@ -159,10 +159,15 @@ class MY_Model extends CI_Model {
     /**
      * Lay tong so
      */
-    function get_total($input = array())
+    function get_total($input = array(),$join=array())
     {
         $this->get_list_set_input($input);
-
+        if(count($join)>0){
+            foreach ($join as $key => $value){
+                $tmp = explode('::', $value);
+                if(count($tmp)==2)$this->db->join($key, $key.'.'.$tmp[0].'='.  $this->table.'.'.$tmp[1]);
+            }
+        }
         $query = $this->db->get($this->table);
 
         return $query->num_rows();
