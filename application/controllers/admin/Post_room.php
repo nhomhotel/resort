@@ -8,7 +8,7 @@ class Post_room extends AdminHome {
 
     function __construct() {
         parent::__construct(get_class());
-        $this->load->model("post_room_model");
+        $this->load->model("Post_room_model");
         $this->load->model("Address_model");
         $this->load->model("Area_model");
         $this->load->model("house_type_model");
@@ -20,9 +20,14 @@ class Post_room extends AdminHome {
     }
 
     function index() {
-        $this->load->model('post_room_model');
+        $this->load->model('Post_room_model');
         $this->load->library('pagination');
-        $total = $this->post_room_model->get_total();
+        $user = $this->User_model->get_logged_in_employee_info();
+        if($user==null || $user==''){
+            redirect(admin_url('login'));
+        }
+        if($user->role_id==2)$input['where'] = array('tbl_post_room.user_id'=> $user->user_id);
+        $total = $this->Post_room_model->get_total();
         $data['total'] = $total;
         $config = array();
         $config["total_rows"] = $total;
@@ -62,9 +67,9 @@ class Post_room extends AdminHome {
         if ($user_name) {
             $input['or_like'] = array('user_name', $user_name);
         }
-        if($this->User_model->get_role()==2)$input['where'] = array('tbl_post_room.user_id'=> $this->User_model->get_logged_in_employee_info()->user_id);
+//        if($this->User_model->get_role()==2)$input['where'] = array('tbl_post_room.user_id'=> $this->User_model->get_logged_in_employee_info()->user_id);
 
-        $list_room = $this->post_room_model->getListInfo_where($input);
+        $list_room = $this->Post_room_model->getListInfo_where($input);
         if ($list_room) {
             $data['list_room'] = $list_room;
         }
@@ -90,7 +95,7 @@ class Post_room extends AdminHome {
             $userLogin = $this->session->userdata('userLogin');
         }
         if ($id > 0) {
-            $data_post_room = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            $data_post_room = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $id)));
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
             $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
         }
@@ -296,7 +301,7 @@ class Post_room extends AdminHome {
         }
         if ($id > 0) {
             $data['id'] = $id;
-            $data['data_post_room'] = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            $data['data_post_room'] = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $id)));
         }
         if ($this->input->post()) {
             $this->form_validation->set_rules("price_night_vn", "Price night", "trim|required|integer");
@@ -420,7 +425,7 @@ class Post_room extends AdminHome {
 
             $post = array_merge($post_info, $post_price, $post_photo);
 
-            if ($this->post_room_model->create($post)) {
+            if ($this->Post_room_model->create($post)) {
                 $this->session->unset_userdata('post_info');
                 $this->session->unset_userdata('post_price');
                 $this->session->unset_userdata('post_photo');
@@ -448,7 +453,7 @@ class Post_room extends AdminHome {
             redirect(admin_url('post_room/edit_price'));
         }
         if ($id > 0) {
-            $data['data_post_room'] = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            $data['data_post_room'] = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $id)));
             $data['id'] = $id;
         }
         $this->load->model('address_model');
@@ -483,7 +488,7 @@ class Post_room extends AdminHome {
 
             $post = array_merge($post_info, $post_price, $post_photo);
 
-            if ($this->post_room_model->update($id, $post)) {
+            if ($this->Post_room_model->update($id, $post)) {
                 $this->session->unset_userdata('post_info');
                 $this->session->unset_userdata('post_price');
                 $this->session->unset_userdata('post_photo');
@@ -500,7 +505,7 @@ class Post_room extends AdminHome {
         $id = $this->input->post('id');
         $id = (int) $id;
 
-        $statusInfo = $this->post_room_model->get_info($id, 'status');
+        $statusInfo = $this->Post_room_model->get_info($id, 'status');
         if (!$statusInfo) {
 
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
@@ -516,7 +521,7 @@ class Post_room extends AdminHome {
                 );
             }
         }
-        if ($this->post_room_model->update($id, $data)) {
+        if ($this->Post_room_model->update($id, $data)) {
             
         }
     }
@@ -526,14 +531,14 @@ class Post_room extends AdminHome {
         $id = $this->uri->rsegment(3);
         $id = (int) $id;
 
-        $info = $this->post_room_model->get_info($id);
+        $info = $this->Post_room_model->get_info($id);
         if (!$info) {
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
             redirect(admin_url('post_room/index'));
         } else {
             $address_id = $info->address_id;
             $this->address_model->delete($address_id);
-            $this->post_room_model->delete($id);
+            $this->Post_room_model->delete($id);
             $image_link = json_decode($info->image_list);
             if (is_array($image_link)) {
                 foreach ($image_link as $img) {
@@ -552,10 +557,10 @@ class Post_room extends AdminHome {
             $userLogin = $this->session->userdata('userLogin');
         }
         if ($id > 0) {
-            $data_post_room = $this->post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            $data_post_room = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $id)));
             /* Load Parent */
             if (!empty($data_post_room->parent_id)) {
-                $data_post_room->parent = $this->post_room_model->get_row(array('where' => array('post_room_id' => $data_post_room->parent_id)));
+                $data_post_room->parent = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $data_post_room->parent_id)));
             }
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
             $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
@@ -686,13 +691,13 @@ class Post_room extends AdminHome {
 //        $this->db->where('user_id',$user->user_id);
         $user = $this->User_model->get_logged_in_employee_info();
         /* Filters and return results */
-        $this->post_room_model->db->select('post_room_id, post_room_name');
-        $this->post_room_model->db->from('post_room');
+        $this->Post_room_model->db->select('post_room_id, post_room_name');
+        $this->Post_room_model->db->from('post_room');
         if($user->role_id==2){
-            $this->post_room_model->db->where('user_id',$user->user_id);
+            $this->Post_room_model->db->where('user_id',$user->user_id);
         }
-        $this->post_room_model->db->where('post_room_name_ascii LIKE "%' . stripUnicode($keyword) . '%"');
-        $result = $this->post_room_model->db->get()->result();
+        $this->Post_room_model->db->where('post_room_name_ascii LIKE "%' . stripUnicode($keyword) . '%"');
+        $result = $this->Post_room_model->db->get()->result();
         echo json_encode($result);
         return;
     }
@@ -703,7 +708,7 @@ class Post_room extends AdminHome {
             return site_url('admin/home');
         }
 
-        $data['post_room'] = $this->post_room_model->get_row(array('where' => array('post_room_id' => $post_room_id)));
+        $data['post_room'] = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $post_room_id)));
 
         if (empty($data['post_room'])) {
             return site_url('admin/home');

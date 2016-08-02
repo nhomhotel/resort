@@ -11,10 +11,20 @@ class Order_room extends AdminHome {
 
     function index() {
         $this->load->library('pagination');
-        $total = $this->Order_room_model->get_total();
-        $userLogin = $this->session->userdata('userLogin');
-        if ($userLogin == NULL || $userLogin == '')
-            redirect('admin/login');
+        $user = $this->User_model->get_logged_in_employee_info();
+        if($user==null || $user==''){
+            redirect(admin_url('login'));
+        }
+        $role_id = $user->role_id;
+        if ($role_id == 3) {
+            $this->session->destroy();
+            redirect(admin_url('login'));
+        } elseif ($role_id == 2) {
+
+            $input['where'] = array('post_room.user_id'=> $user->user_id);
+        }
+        $input['where']['refer_id!='] =0; 
+        $total = $this->Order_room_model->get_total($input);
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = base_url('admin/order_room/index');
@@ -41,20 +51,11 @@ class Order_room extends AdminHome {
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
         $input['order'] = array('order_id', 'ASC');
-        $user = $this->User_model->get_row(array('where' => array('user_id' => $userLogin['user_id'])));
-        $role_id = $user->role_id;
-        if ($role_id == 3) {
-            $this->session->destroy();
-        } elseif ($role_id == 2) {
-
-            $input['where'] = array('post_room.user_id'=> $userLogin['user_id']);
-        }
-        $input['where']['refer_id!='] =0; 
         $list = $this->Order_room_model->get_list_room($input)->result();
         $data['profit'] = $this->Order_room_model->get_profit($input)->result();
-//        pre($this->db->last_query());
         $data['total'] = $total;
         $data['list'] = $list;
+        $data['user'] = $user;
         $data['title'] = 'Danh sách phòng đã đặt';
         $data['temp'] = 'admin/order_room/index';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);

@@ -33,7 +33,7 @@
             <div class="num f12">Tổng số: <b><?php echo isset($total) ? $total : 0; ?></b></div>
         </div>
         <div class="table-responsive">
-            <table class="table sTable mTable myTable" id="checkAll">
+            <table class="table sTable mTable myTable" id="order_room_table">
                 <thead class="filter">
                     <tr>
                         <td colspan="17">
@@ -74,6 +74,9 @@
                         <td>Giá phòng</td>
                         <td>Lợi nhuận</td>
                         <td>Người thuê phòng</td>
+                        <?php if($user->role_id==1):?>
+                        <td>Đối tác</td>
+                        <?php endif;?>
                         <td>Ngày nhận phòng</td>
                         <td>Ngày trả phòng</td>
                         <td>Số người ở</td>
@@ -81,9 +84,10 @@
                 </thead>
                 <tfoot class="auto_check_pages">
                     <tr>
-                        <td colspan="17">
+                        <td colspan="3"><button class="btn btn-primary print_order">In Danh sách</button></td>
+                        <td colspan="14">
                             <div class='pagination'>
-<?php echo isset($pagination_link) ? $pagination_link : ''; ?>
+                                <?php echo isset($pagination_link) ? $pagination_link : ''; ?>
                             </div>
                         </td>
                     </tr>
@@ -128,6 +132,9 @@
                                 <td class="textC">
                                     <p style="font-size: 14px;font-weight: 600"><?php echo $row->user_name; ?></p>
                                 </td>
+                                 <?php if($user->role_id==1):?>
+                                <td class="textC price"><p style="font-size: 14px;font-weight: 600"><?php echo $profit[$line]->user_name?></p></td>
+                                <?php endif;?>
                                 <td class="textC" id="status">
                                     <p style="font-size: 14px;font-weight: 600"><?php echo $row->checkin; ?></p>
                                 </td>
@@ -187,4 +194,16 @@
         $('#allow-Del').attr('href', urlDel);
         $("#modal_del").modal("show");
     }
+    $(function(){
+        $('.print_order').on('click',function(){
+            var conten_pdf = document.getElementById('order_room_table').outerHTML;
+            var css = '<?php echo '<link rel="stylesheet" type="text/css" href="/public/admin/crown/css/main.css" />'?>';
+            css += '<?php echo '<link rel="stylesheet" type="text/css" href="/public/admin/css/css.css" />'?>';
+            var html = css ;
+            html+=conten_pdf;
+            newWin = window.open("");
+            newWin.document.write(html);
+            newWin.print();
+        })
+    })
 </script>
