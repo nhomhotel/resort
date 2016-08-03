@@ -7,7 +7,7 @@ var id = '<?php echo $id_encode;?>';
         <div class="row">
           <div id="booking" class="col-sm-4 col-sm-push-8">
               <a href="<?php echo base_url().'room/room_detail/'.$id_encode;?>" target="_blank" class="space row">
-              <div class="photo col-xs-4 col-sm-5"><img alt="<?php echo $name_room;?>" src="<?php echo $image_room;?>"></div>
+                  <div class="photo col-xs-4 col-sm-5"><img alt="<?php echo $name_room;?>" src="<?php if(isset($image_room)) echo $image_room;?>"></div>
               <div class="data col-xs-8 col-sm-7">
                 <h3><?php echo $name_room;?></h3>
                 <p class="location">Hanoi, Hà Nội, Vietnam</p>

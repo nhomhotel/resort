@@ -111,7 +111,7 @@ class Book_library {
             if(isset($result_calculator['error'])){
                 return $result_calculator['error'];
             }else{
-                $data['type'] = 'Tiền tính theo ngày';
+                $data['type'] = 1;
                 $data['numberNormarDay'] = $result_calculator['numberNormarDay'];
                 $data['moneyNormarDay'] = $dataCaculatorMoney['moneyNormarDay'];
                 $data['numberWeekend'] = $result_calculator['numberWeekend'];
@@ -140,7 +140,7 @@ class Book_library {
                 $dataCaculatorMoney['moneyNormarDay']/7, 
                 $dataCaculatorMoney['moneyWeekend']
             );
-            $data['type'] = 'Tiền tính theo tuần';
+            $data['type'] = 2;
             $data['money'] = $numberWeek*$result_calculator['money']+$resultCalculatorExcess['money'] + $dataCaculatorMoney['guestExcess']*$dataCaculatorMoney['moneyGuestExcess']*($numberDay->days+1);
             $data['numberNormarDay'] = $numberWeek*$result_calculator['numberNormarDay']+$resultCalculatorExcess['numberNormarDay'];
             $data['moneyNormarDay'] = $dataCaculatorMoney['moneyNormarDay'];
@@ -167,7 +167,7 @@ class Book_library {
                 $dataCaculatorMoney['moneyNormarDay']/30, 
                 $dataCaculatorMoney['moneyWeekend'] 
             );
-            $data['type'] = 'Tiền tính theo tháng';
+            $data['type'] = 3;
             $data['money'] = $numberWeek*$result_calculator['money']+$resultCalculatorExcess['money'] + $dataCaculatorMoney['guestExcess']*$dataCaculatorMoney['moneyGuestExcess']*($numberDay->days+1);;
             $data['numberNormarDay'] = $numberWeek*$result_calculator['numberNormarDay']+$resultCalculatorExcess['numberNormarDay'];
             $data['moneyNormarDay'] = $dataCaculatorMoney['moneyNormarDay'];

@@ -97,7 +97,7 @@
                             <label for="item_per_page_site" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Giá đã bao gôm thuế'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <!--<input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('item_per_page_site'); ?>">-->
-                                <label><input type="checkbox" value="" style=""></label>
+                                <label><input type="checkbox" name="tax" value="1" style=""></label>
                             </div>
                         </div>
 <!--                        <div class="form-group">
@@ -115,13 +115,19 @@
                         <div class="form-group">
                             <label for="thousands_separator" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu phân cách đơn vị nghìn'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <input type="text" name="thousands_separator" class="form-control" value="<?php echo $this->config->item('thousands_separator'); ?>">
+                                <input type="text" name="thousands_separator" class="form-control" style="font-size: 25px !important;" value="<?php echo $this->config->item('thousands_separator'); ?>">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="decimal_point" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu thập phân'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
-                                <input type="text" name="decimal_point" class="form-control" value="<?php echo $this->config->item('decimal_point'); ?>">
+                                <input type="text" name="decimal_point" class="form-control" style="font-size: 25px !important;" value="<?php echo $this->config->item('decimal_point'); ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="decimal_point" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Làm tròn sau dấu phẩy'; ?></label>
+                            <div class="col-sm-9 col-md-9 col-lg-10 input-field">
+                                <input type="text" name="number_of_decimals" class="form-control" value="<?php echo $this->config->item('number_of_decimals'); ?>">
                             </div>
                         </div>
                     </div>

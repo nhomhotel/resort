@@ -123,6 +123,10 @@ class Post_room extends AdminHome {
             $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required|min_length[20]|max_length[50]');
             $this->form_validation->set_rules('description', 'description', 'trim|required|min_length[300]|max_length[1000]');
             $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
+            $room_type = $this->input->post('room_type')?$this->input->post('room_type'):1;
+            if($room_type!=1){
+                $this->form_validation->set_rules('parent_id', 'Căn gốc', 'trim|required');
+            }
             if ($this->form_validation->run()) {
 
                 $parent_id = $this->input->post('parent_id');

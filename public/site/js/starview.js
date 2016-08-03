@@ -36,6 +36,39 @@ if (typeof(min_value) == "undefined") {
 if (typeof(max_value) == "undefined") {
     var max_value = 1000;
 }
+$.extend({
+  getUrlVars: function(){
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  },
+  getUrlVar: function(name){
+    return $.getUrlVars()[name];
+  },
+  setUrlVar:function(para,value){
+    var vars = [], hash;
+    var url = window.location.href;
+    var urlNoPara = url.slice(0,url.indexOf('?'));
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++){
+        if(hashes[i].search(para)) {
+            console.log('trước');
+            console.log(url);
+            console.log('sau');
+            console.log(hashes[i]);
+            url = url.replace(hashes[i],para+"="+value)
+            return url;
+        };
+    }
+    return url;
+  }
+});
 $(document).ready(function() {
     $(function () {
         if ($(".sort-by").size() > 0 && $("#search-button").size() > 0) {
@@ -141,6 +174,8 @@ $(document).ready(function() {
                 var checkout = $('#checkout');
                 var location = $('#location');
                 var rent_type = $('#rent-type');
+                var min = $('#min-amount');
+                var max = $('#max-amount');
                 var sort_by = $('#sort-by');
                 var url = 'room/search?location=' + encodeURIComponent(location.val()) + '&checkin=' + checkin.val() + "&checkout=" + checkout.val();
                 if (parseInt(guest.val()) > 0) {
@@ -176,11 +211,14 @@ $(document).ready(function() {
                     url += "&experiences_ids=" + experiences_ids.join(",");
                 }
                 if (rent_type.val().toString().trim().length > 0) {
+                    alert('rent click'+rent_type.val());
                     url += "&rent_type=" + rent_type.val();
                 }
                 if (sort_by.val().toString().trim().length > 0) {
+                    alert('sort click'+sort_by.val());
                     url += "&sort_by=" + sort_by.val();
                 }
+                alert(1);
                 window.location.href = url;
                 return false;
             }

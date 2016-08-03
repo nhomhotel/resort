@@ -98,9 +98,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                     elseif (isset($address))
                                         echo $address->lng;
                                     else
-                                        echo set_value('lng');
-//                                                                        echo (isset($post_info))?$post_info['address']['lng']:isset($address)?$address->lng:set_value('lng');
-                                    ?>" type="hidden" />
+                                        echo set_value('lng');?>" type="hidden" />
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
                                 <div name="name_error" class="clear error"></div>
@@ -122,10 +120,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                             elseif (isset($address))
                                                 echo $address->address_street;
                                             else
-                                                echo set_value('address_street');
-
-//                                                                        echo (isset($post_info))?$post_info['address']['address_street']:isset($address)?$address->address_street:set_value('address_street'); 
-                                            ?></textarea>
+                                                echo set_value('address_street');?></textarea>
                                         <div name="image_error" class="clear error"><?php echo form_error('address_street'); ?></div>
                                     </div>
                                 </div>
@@ -138,9 +133,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                             elseif (isset($address))
                                                 echo $address->address_2;
                                             else
-                                                echo set_value('address_2');
-//                                                                        echo (isset($post_info))?$post_info['address']['address_2']:isset($address)?$address->address_2:set_value('address_2'); 
-                                            ?></textarea>
+                                                echo set_value('address_2');?></textarea>
                                     </div>
                                 </div>
                                 <div class="formRow clearfix">
@@ -153,9 +146,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         elseif (isset($address))
                                             echo $address->district;
                                         else
-                                            echo set_value('district');
-//                                                                        echo (isset($post_info))?$post_info['address']['district']:isset($address)?$address->district:set_value('district'); 
-                                        ?>">
+                                            echo set_value('district');?>">
 
                                         <div name="image_error" class="clear error"><?php echo form_error('district'); ?></div>
                                     </div>
@@ -169,9 +160,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         elseif (isset($address))
                                             echo $address->provincial;
                                         else
-                                            echo set_value('provincial');
-//                                                                        echo (isset($post_info))?$post_info['address']['provincial']:isset($address)?$address->provincial:set_value('provincial'); 
-                                        ?>">
+                                            echo set_value('provincial');?>">
                                         <div name="image_error" class="clear error"><?php echo form_error('provincial'); ?></div>
                                     </div>
                                 </div>
@@ -185,9 +174,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         elseif (isset($address))
                                             echo $address->zip_code;
                                         else
-                                            echo set_value('zip_code');
-//                                                                        echo (isset($post_info))?$post_info['address']['zip_code']:isset($address)?$address->zip_code:set_value('zip_code'); 
-                                        ?>">
+                                            echo set_value('zip_code');?>">
 
                                         <div name="image_error" class="clear error"><?php echo form_error('zip_code'); ?></div>
                                     </div>
@@ -202,9 +189,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         elseif (isset($address))
                                             echo $address->country;
                                         else
-                                            echo set_value('country');
-//                                                                        echo (isset($post_info))?$post_info['address']['country']:isset($address)?$address->country:set_value('country'); 
-                                        ?>">
+                                            echo set_value('country');?>">
 
                                         <div name="image_error" class="clear error"><?php echo form_error('country'); ?></div>
                                     </div>
@@ -252,9 +237,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                             elseif (isset($data_post_room))
                                                 echo $data_post_room->post_room_name;
                                             else
-                                                echo set_value('post_room_name');
-//                                                                                    echo (isset($post_info))? $post_info['post_room_name'] : isset($data_post_room)?$data_post_room->post_room_name:set_value('post_room_name');
-                                            ?>" >
+                                                echo set_value('post_room_name');?>" >
                                         </div>
                                         <div name="image_error" class="clear error"><?php echo form_error('post_room_name'); ?></div>
                                     </div>
@@ -270,9 +253,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                                 elseif (isset($data_post_room))
                                                     echo $data_post_room->description;
                                                 else
-                                                    echo set_value('description');
-//                                                                                        echo (isset($post_info))? $post_info['description'] : isset($data_post_room)?$data_post_room->description:set_value('description');
-                                                ?></textarea>
+                                                    echo set_value('description');?></textarea>
                                         </div>
                                         <div name="image_error" class="clear error"></div>
                                     </div>
@@ -323,7 +304,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                         <label class="formLeft">Loại phòng:</label>
                                         <div class="formRight">
                                             <div class="left">
-                                                <select  class="w150" name="room_type">
+                                                <select  class="w150" name="room_type" id="room_type">
                                                     <?php
                                                     $selected = '';
                                                     foreach ($list_room_type as $room) {
@@ -356,7 +337,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                 ?>
                                 <!--end room type -->
                                 <!-- room by house -->
-                                <div class="formRow">
+                                <div class="formRow" id="room_by_house">
                                     <label class="formLeft">Phòng theo căn [#<span id="label-post-room-id"><?php echo (isset($data_post_room->parent_id)) ? $data_post_room->parent_id : 0; ?></span>] </label>
                                     <div class="formRight">
                                         <div class="ui-widget">
@@ -364,7 +345,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                                             <input type="hidden" value="<?php // echo (isset($data_post_room->parent_id)) ? $data_post_room->parent_id : 0; ?>" id="post-room-parent-id" name="parent_id" />
                                             <p>(*) Gõ để tìm kiếm phòng theo căn</p>
                                         </div>
-                                        <div name="image_error" class="clear error"></div>
+                                        <div name="error" class="clear error"><?php echo form_error('parent_id'); ?></div>
                                     </div>
                                     <!-- Handle Js -->
                                     <script type="text/javascript">
@@ -502,9 +483,8 @@ if ($this->session->userdata('post_info') !== NULL) {
                                             elseif (isset($data_post_room))
                                                 echo $data_post_room->acreage;
                                             else
-                                                echo set_value('acreage');
-//                                                                                        echo (isset($post_info))?$post_info['acreage']:isset($data_post_room)?$data_post_room->acreage:set_value('acreage');
-                                            ?>"> <strong>m<sup>2</sup></strong>
+                                                echo set_value('acreage');?>"> 
+                                            <strong>m<sup>2</sup></strong>
                                         </div>
                                         <div for="acreage" generated="true" class="error"></div>
                                         <div name="image_error" class="clear error"></div>
@@ -813,5 +793,12 @@ if ($this->session->userdata('post_info') !== NULL) {
             event.preventDefault();
         }
     });
+    $('#room_type').on('change',function(){
+        if($(this).val()==5){
+          $('#room_by_house').css('visibility', 'visible')
+        }else{
+          $('#room_by_house').css('visibility', 'hidden')
+        }
+      })
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwl-pYart0L9n0XPX_V5AuFFPmk-o-rlM&libraries=places&callback=initMap"></script>

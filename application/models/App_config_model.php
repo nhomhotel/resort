@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class app_config_model extends MY_Model {
+class App_config_model extends MY_Model {
 
     var $table = 'app_config';
     var $key = 'key';

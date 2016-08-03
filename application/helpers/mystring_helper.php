@@ -122,10 +122,38 @@ function full_url($s, $use_forwarded_host = false) {
     return url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
 }
 
-function validateDate($date, $format = 'd-m-Y'){
+function validateDate($date, $format = 'd-m-Y') {
     $format = str_replace('/', '-', $format);
     $date = str_replace('/', '-', $date);
     $d = DateTime::createFromFormat($format, $date);
     return $d && $d->format($format) == $date;
+}
+
+if (!function_exists('numberFormatToCurrency')) {
+
+    function numberFormatToCurrency($number, $decimals = 2) {
+//        return $string;
+        $CI = & get_instance();
+        $decimals_system_decide = true;
+        if ($CI->config->item('number_of_decimals') !== NULL && $CI->config->item('number_of_decimals') != '') {
+            $decimals = (int) $CI->config->item('number_of_decimals');
+            $decimals_system_decide = false;
+        }
+
+        $thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : ',';
+        $decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
+        if ($number >= 0) {
+            $ret = number_format($number, $decimals, $decimal_point, $thousands_separator);
+        } else {
+            $ret = '<span style="white-space:nowrap;">-</span>' . number_format(abs($number), $decimals, $decimal_point, $thousands_separator) . ' ' . $currency_symbol;
+        }
+
+        if ($decimals_system_decide && $decimals >= 2) {
+            return preg_replace('/(?<=\d{2})0+$/', '', $ret);
+        } else {
+            return $ret;
+        }
+    }
+
 }
 ?>
