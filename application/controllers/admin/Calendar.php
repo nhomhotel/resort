@@ -35,7 +35,7 @@ class Calendar extends AdminHome
         $events = array();
 
         foreach ($result as $row) {
-            if (empty($row->refer_id)) {
+            if (empty($row->refer_id)||$row->refer_id!=0) {
                 $item = array(
                     'title' => '(' . $row->num_guests . ' KH) thuê phòng ' . htmlspecialchars($row->post_room_name),
                     'start' => $row->checkin,

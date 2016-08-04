@@ -74,6 +74,7 @@ class payments extends MY_Controller {
         $prices = $this->post_room_model->get_row($input);
         $data['name_room'] = $prices->post_room_name;
         $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
+        $data['price_all_night_add_fee'] = $priceCaculator['money'];
         $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
         $data_insert = array(
             'post_room_id' => $id_decode[0],

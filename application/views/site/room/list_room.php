@@ -211,7 +211,7 @@
             $query = "?";
             if (isset ($checkin)&&validateDate(urldecode($checkin))) $query .= '&checkin=' . $checkin;
             if (isset ($checkout)&&  validateDate(urldecode($checkout))) $query .= '&checkout=' . $checkout;
-            if (isset ($guest)) $query .= '&guest=' . $guest;
+            if (isset ($guest)) $query .= '&guests=' . $guest;
             if ($query == '?') $query = '';
             foreach ($list_room as $key => $room) {
                 ?>

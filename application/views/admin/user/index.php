@@ -96,7 +96,7 @@
                         <td>Vai trò</td>
                         <td>Trạng thái</td>
                         <td>Lợi nhuận</td>
-                        <td>Created</td>
+                        <td>Ngày tạo</td>
                         <td>Hành động</td>
                     </tr>
                 </thead>

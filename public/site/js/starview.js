@@ -128,7 +128,6 @@ $(document).ready(function() {
         $('.tclick').click(function () {
             var currentclick = $(this);
             if (currentclick.parent().hasClass('book-action')) {
-                alert(1111)
                 var checkin = $('#bookin-dpk');
                 var checkout = $('#bookout-dpk');
                 var guest = $('#guests');
@@ -211,14 +210,11 @@ $(document).ready(function() {
                     url += "&experiences_ids=" + experiences_ids.join(",");
                 }
                 if (rent_type.val().toString().trim().length > 0) {
-                    alert('rent click'+rent_type.val());
                     url += "&rent_type=" + rent_type.val();
                 }
                 if (sort_by.val().toString().trim().length > 0) {
-                    alert('sort click'+sort_by.val());
                     url += "&sort_by=" + sort_by.val();
                 }
-                alert(1);
                 window.location.href = url;
                 return false;
             }

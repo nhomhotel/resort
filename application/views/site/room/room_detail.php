@@ -150,7 +150,7 @@ var id='<?php echo $id_encode;?>';
                                     <?php $query = "";
                                         if(isset($checkin))$query.='&checkin='.$checkin;
                                         if(isset($checkout))$query.='&checkout='.$checkout;
-                                        if(isset($guest))$query.='&guest='.$guest;
+                                        if(isset($guests))$query.='&guests='.$guests;
 
                                     ?>
                                     <div class="dates-guests">
@@ -167,9 +167,9 @@ var id='<?php echo $id_encode;?>';
                                                     <label for="">Khách</label>
                                                     <select name="" id="guests" class="form-control">
                                                         <?php for($i=1;$i<10;$i++){?>
-                                                            <option <?php echo isset($guest)&&$guest==$i?'selected':'';?> ><?php echo $i?></option>
+                                                            <option <?php echo isset($guests)&&$guests==$i?'selected':'';?> ><?php echo $i?></option>
                                                         <?php }?>
-                                                            <option <?php echo isset($guest)&&$guest>$i?'selected':'';?> ><?php echo $i.'+'?></option>
+                                                            <option <?php echo isset($guests)&&$guests>$i?'selected':'';?> ><?php echo $i.'+'?></option>
                                                     </select>
                                                 </div>
                                                 <div class="clearfix"></div>
@@ -239,6 +239,11 @@ var id='<?php echo $id_encode;?>';
 </section>
 <script type="text/javascript">
 $(document).ready(function(){
+    function validateDateTime(date){
+        var date_regex = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/ ;
+        if(!(date_regex.test(date)))return false;
+        return true;
+    }
     $('.book-action .tclick').click(function(){
         <?php if(!$this->session->userdata('user_id')){?>
             $('#myModal').modal('show');
@@ -388,10 +393,20 @@ $(document).ready(function(){
         var urlCurl = window.location.href;
         var check_in = $('#bookin-dpk');
         var check_out = $('#bookout-dpk');
-        var guest = $('#guests');
-        if(typeof check_in == 'undefined'&& check_in.val()==''){
+        var guests = $('#guests');
+        urlCurl = urlCurl.split(id)[0]+id+"?";
+        if(typeof check_in != 'undefined'&& check_in.val()!=''&&validateDateTime(check_in.val())){
+            urlCurl+="&checkin="+check_in.val();
         }
-        urlCurl = urlCurl.split('#')[0];
+        if(typeof check_out != 'undefined'&& check_out.val()!=''&&validateDateTime(check_out.val())){
+            urlCurl+="&checkout="+check_out.val();
+        }
+        if(typeof guests != 'undefined'&& guests.val()!=''&&!isNaN(parseFloat(guests.val()))){
+            urlCurl+="&guests="+guests.val();
+        }
+        alert(urlCurl);
+        return false;
+        
         $.ajax({
                 type : 'POST',
                 url  : "<?php echo base_url().'user/createFast'?>",

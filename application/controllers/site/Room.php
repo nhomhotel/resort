@@ -282,7 +282,6 @@ class Room extends MY_Controller {
     }
 
     public function search() {
-        $this->output->enable_profiler(TRUE);
         $show_query = $this->input->get('show_query');
         if (!empty($show_query)) {
             $this->output->enable_profiler(TRUE);

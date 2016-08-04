@@ -186,7 +186,6 @@ class User extends MY_Controller {
         $list_role = $this->role_model->get_list($input);
         $data['list_role'] = $list_role;
         if (count($_POST) > 0) {
-            $role_id = $role_id;
             $data = array(
                 'last_name' => $nameCustomer,
                 'email' => $email,

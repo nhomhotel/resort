@@ -53,43 +53,6 @@
                         </div>
 
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Chọn icon:<span class="req">*</span></label>
-                            <div class="formRight">
-                                <span class="oneTwo">
-                                    <ul class="icon-group" data-toggle="buttons">
-                                        <?php
-                                        if (isset($list_icon) && is_array($list_icon)) {
-                                            $active = '';
-                                            $checked = '';
-                                            $set_value = set_value('icon');
-                                            foreach ($list_icon as $icon) {
-                                                if ($set_value && $set_value == $icon->icon_id) {
-                                                    $active = 'active';
-                                                    $checked = 'checked';
-                                                } else {
-                                                    $active = '';
-                                                    $checked = '';
-                                                }
-                                                ?>
-                                                <li class="btn icon-item <?php echo $active ?>">
-                                                    <input type="radio" autocomplete="off" name="icon" <?php echo $checked ?> value="<?php echo $icon->icon_id; ?>">
-                                                    <i class="fa <?php echo $icon->icon_value; ?>"></i>
-                                                    <div class="tooltip icon-tooltip"><?php echo $icon->description; ?></div>
-                                                </li>
-                                                <?php
-                                            }
-                                        }
-                                        ?>
-                                    </ul>
-                                    <p class="icon-info"><i class="fa fa-info-circle"></i> Chọn một icon thể hiện sự trải nghiệm này.</p>
-                                </span>
-                                <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('icon'); ?></div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-
-                        <div class="formRow">
                             <label class="formLeft" for="param_des">Mô tả:</label>
                             <div class="formRight">
                                 <span class="oneTwo">

@@ -610,6 +610,12 @@ if ($this->session->userdata('post_info') !== NULL) {
                 },
                 'amenities[]': {
                     required: true,
+                },
+                'parent_id':{
+                    RoomCheck:function(){
+//                        alert($('#room_type').val())
+                        return ($('#room_type').val());
+                    }
                 }
             },
             messages: {
@@ -618,7 +624,10 @@ if ($this->session->userdata('post_info') !== NULL) {
                 },
                 'amenities[]': {
                     required: "Bạn phải chọn ít nhất 1 lựa chọn",
-                }
+                },
+//                'parent_id':{
+//                    RoomCheck:"Không được để trống"
+//                }
             },
         });
 

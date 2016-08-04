@@ -338,6 +338,15 @@ $.extend($.validator, {
                                 function(value, element) {
                                     return this.optional(element) || value == value.match(new RegExp("[0-9]{9,12}"));
                         }, "")
+//                        $.validator.addMethod(
+//                                "RoomCheck", 
+//                                function(value, element,parent) {
+//                                    console.log(parent);
+//                                    return false;
+////                                    return this.optional(element) || value == value.match(new RegExp("[0-9]{9,12}"));
+////                                    if(parent==1) return false;
+////                                    else return true;
+//                        }, "Không được để trống")
 			var groups = (this.groups = {});
 			$.each(this.settings.groups, function( key, value ) {
 				if ( typeof value === "string" ) {

@@ -73,7 +73,7 @@ class Experience extends AdminHome {
         if ($this->input->post()) {
             $this->form_validation->set_rules('experience_name', 'Experience', 'trim|required|min_length[2]|max_length[35]');
             $this->form_validation->set_rules('experience_name_en', 'Experience (EN)', 'trim|required|min_length[2]|max_length[35]');
-            $this->form_validation->set_rules('icon', 'Icon', 'callback_messIconErr');
+//            $this->form_validation->set_rules('icon', 'Icon', 'callback_messIconErr');
             if ($this->form_validation->run()) {
                 $experience_name = $this->input->post('experience_name');
                 $experience_name_en = $this->input->post('experience_name_en');
@@ -84,16 +84,16 @@ class Experience extends AdminHome {
                     $status = 1;
                 else
                     $status = 0;
-                if ($this->input->post('icon')) {
-                    $icon = $this->input->post('icon');
-                }
+//                if ($this->input->post('icon')) {
+//                    $icon = $this->input->post('icon');
+//                }
                 $created = date('Y:m:d H:i:s');
                 $data = array(
-                    'experience_name' => $experience_name,
-                    'experience_name_en' => $experience_name_en,
+                    'name' => $experience_name,
+                    'name_en' => $experience_name_en,
                     'description' => $description,
                     'description_en' => $description_en,
-                    'icon' => $icon,
+//                    'icon' => $icon,
                     'status' => $status,
                     'created' => $created
                 );

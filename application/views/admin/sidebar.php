@@ -9,7 +9,7 @@
     <a href="#" title="" class="profileFace">
         <img width="40" src="<?php echo base_url();?>public/admin/images/user.png">
     </a>
-    <span><?php echo lang('hello');?>: <strong><?php echo (isset($userLogin)) ? $userLogin['user_name'] : '' ;?></strong></span>
+    <span><?php echo 'Xin chào';;?>: <strong><?php echo (isset($userLogin)) ? $userLogin['user_name'] : '' ;?></strong></span>
     <span><?php echo (isset($userLogin)) ? $userLogin['last_name'].' '.$userLogin['first_name'] : '' ;?> </span>
 
     <div class="clear"></div>
