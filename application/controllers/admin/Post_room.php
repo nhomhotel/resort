@@ -123,10 +123,7 @@ class Post_room extends AdminHome {
             $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required|min_length[20]|max_length[50]');
             $this->form_validation->set_rules('description', 'description', 'trim|required|min_length[300]|max_length[1000]');
             $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
-            $this->form_validation->set_rules('parent_id', 'Căn gốc', 'trim|required|numeric');
-            $this->form_validation->set_rules('parent_id_1', 'Căn gốc', 'trim|required|numeric');
             $room_type = $this->input->post('room_type')?$this->input->post('room_type'):1;
-            pre($room_type);return;
             if($room_type!=1){
                 $this->form_validation->set_rules('parent_id', 'Căn gốc', 'trim|required');
             }
@@ -201,6 +198,9 @@ class Post_room extends AdminHome {
                 $data_sess['post_info'] = $sess;
                 $this->session->set_userdata($data_sess);
                 redirect(admin_url('post_room/post_price/' . $id));
+            }
+            else{
+                $data['room_type'] = $this->input->post('room_type');
             }
         }
         $data['title'] = 'Đăng phòng cho thuê';

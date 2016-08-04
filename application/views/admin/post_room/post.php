@@ -320,7 +320,9 @@ if ($this->session->userdata('post_info') !== NULL) {
                                                             } else {
                                                                 $selected = '';
                                                             }
-                                                        }
+                                                        }elseif(isset ($room_type)&&$room_type==$room->room_type_id){
+                                                            $selected = 'selected';
+                                                        }else $selected = '';
                                                         ?>
                                                         <option value="<?php echo $room->room_type_id; ?>" <?php echo $selected ?>><?php echo $room->room_type_name; ?></option>
                                                         <?php
@@ -611,12 +613,6 @@ if ($this->session->userdata('post_info') !== NULL) {
                 'amenities[]': {
                     required: true,
                 },
-                'parent_id':{
-                    RoomCheck:function(){
-//                        alert($('#room_type').val())
-                        return ($('#room_type').val());
-                    }
-                }
             },
             messages: {
                 'experience[]': {
@@ -625,9 +621,6 @@ if ($this->session->userdata('post_info') !== NULL) {
                 'amenities[]': {
                     required: "Bạn phải chọn ít nhất 1 lựa chọn",
                 },
-//                'parent_id':{
-//                    RoomCheck:"Không được để trống"
-//                }
             },
         });
 

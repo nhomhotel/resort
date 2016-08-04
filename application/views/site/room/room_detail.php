@@ -174,13 +174,10 @@ var id='<?php echo $id_encode;?>';
                                                 </div>
                                                 <div class="clearfix"></div>
                                         </form>
-                                        <div class="fees">
-
-                                        </div>
-                                        <div class="alert alert-warning info-book"></div>
+                                        <div class="fees alert alert-warning info-book"></div>
                                     </div>
                                     <div class="book-action">
-                                        <button  class="btn btn-success tclick" data-toggle="modal" data-target="#myModal">
+                                        <button  class="btn btn-success order_room_btn tclick" data-toggle="modal" data-target="#myModal">
                                             <span class="glyphicon glyphicon-time"></span> Đặt phòng
                                         </button>
                                         <?php if(!$this->session->userdata('user_id')){?>
@@ -244,12 +241,20 @@ $(document).ready(function(){
         if(!(date_regex.test(date)))return false;
         return true;
     }
-    $('.book-action .tclick').click(function(){
-        <?php if(!$this->session->userdata('user_id')){?>
-            $('#myModal').modal('show');
+    $(".book-action .order_room_btn").on("click",function(){
+        if(typeof $('#bookin-dpk') == 'undefined'|| $('#bookin-dpk').val()==''||!validateDateTime($('#bookin-dpk').val())){
+            $(".fees").html('Ngày nhận phòng không đúng!');
             return false;
-        <?php }?>
-    });
+        }
+        if(typeof $('#bookout-dpk') == 'undefined'|| $('#bookout-dpk').val()==''||!validateDateTime($('#bookout-dpk').val())){
+            $(".fees").html('Ngày trả phòng không đúng!');
+            return false;
+        }
+        if(typeof $('#guests') == 'undefined'|| $('#guests').val()==''||isNaN(parseFloat($('#guests').val()))){
+            $(".fees").html('Số lượng khách không đúng!');
+            return false;
+        }
+    })
     $('#name_customer').keydown(function(){$('.error_submit').html('');});
     $('#phone_number').keydown(function(){$('.error_submit').html('');});
     $('#email').keydown(function(){$('.error_submit').html('');});
@@ -345,7 +350,7 @@ $(document).ready(function(){
             var checkout = $('#bookout-dpk');
             var guest = $('#guests');
             <?php if(!$this->session->userdata('user_id')){?>
-            $('#myModal').modal('show');
+//            $('#myModal').modal('show');
             return false;
             <?php }?>
             var data = {checkin:checkin.val(),checkout:checkout.val(),guest:guest.val()};
