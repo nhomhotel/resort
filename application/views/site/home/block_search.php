@@ -32,7 +32,7 @@
             <input type="text" name="checkout" value= '<?php echo isset($checkout)&&  validateDate($checkout)?$checkout:''?>' id="checkout" class="form-control input-lg form-control-icon icon-calendar hasDatepicker" placeholder="<?php echo lang('home_checkout')?>" />
         </div>
         <div class="col-md-2 col-sm-3 col-xs-6">
-            <input type="text" name="guest" id="guest" value = "<?php echo isset($guests)?$guests:''?>" class="form-control" placeholder="<?php echo lang('home_guest')?>"/>
+            <input type="text" name="guests" id="guest" value = "<?php echo isset($guests)?$guests:''?>" class="form-control" placeholder="<?php echo lang('home_guest')?>"/>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-6">
             <button data-tloc="Search" data-tkey="Search" class="btn btn-primary btn-lg btn-block tclick" id="search-button"><?php echo lang('home_search')?></button>
