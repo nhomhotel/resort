@@ -239,8 +239,10 @@ $(document).ready(function() {
     });
     $(function(){
         $('.method_payment ul li').on('click',function(){
-            data = $(this).find('a').data('value');
+            var data = $(this).find('a').data('value');
+            var key = $(this).find('a').data('key');
             $('.method_payment').find('button span').html($(this).find('a').html());
+            $('.method_payment').find('button input[name="method"]').val(key);
         })
     })
     $(function(){

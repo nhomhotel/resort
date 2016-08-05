@@ -4,10 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Room extends MY_Controller {
 
-    const ITEM_PER_PAGE = 10;
+    var $ITEM_PER_PAGE = 10;
 
     function __construct() {
         parent:: __construct();
+        $this->ITEM_PER_PAGE = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;
         $this->load->model('Post_room_model');
         $this->load->model('Order_room_model');
         $this->load->model('Address_model');
@@ -134,7 +135,6 @@ class Room extends MY_Controller {
      */
 
     function room_detail($id) {
-        pre($this->session->userdata);
         $this->load->model('Order_room_model');
         $this->load->library('book_library');
         if ($id == null) {
@@ -314,7 +314,7 @@ class Room extends MY_Controller {
                 $data['experiences_ids'] = explode(',', $data['experiences_ids']);
             }
             if (!isset($data['per_page'])) {
-                $data['per_page'] = self::ITEM_PER_PAGE;
+                $data['per_page'] = $this->ITEM_PER_PAGE;
             }
         }
 
@@ -513,7 +513,7 @@ class Room extends MY_Controller {
 
         $start = isset($_GET['page']) && trim($_GET['page']) != '' ? ($_GET['page'] - 1) * $data['per_page'] : 0;
         $this->db->group_by('post_room.post_room_id');
-        $this->db->limit(self::ITEM_PER_PAGE);
+        $this->db->limit($this->ITEM_PER_PAGE);
         $this->db->offset($start);
         $result = $this->db->get();
         $data['total'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;

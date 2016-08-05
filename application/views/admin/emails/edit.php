@@ -45,9 +45,12 @@
                 </div>
                 <div class="form-group">
                     <select name ="type_email" style="width: 97%" class="form-control">
-                        <?php foreach ($email_template as $key => $value) { ?>
-                            <option value="<?php echo $value->email_template_id ?>"><?php echo $value->name ?></option>
-<?php } ?>
+                        <?php foreach ($email_template as $key => $value):
+                            if($value->email_template_id==$email->email_type)$select = "selected";
+                            else $select="";
+                            ?>
+                            <option value="<?php echo $value->email_template_id ?>" <?php echo $select;?>><?php echo $value->name ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>

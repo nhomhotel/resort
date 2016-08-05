@@ -12,10 +12,10 @@
         var mywindow = window.open('', 'my div', 'width=700px');
         mywindow.document.write('<html><head><title>my div</title>');
         /*optional stylesheet*/ 
-        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/crown/css/reset.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/css/bootstrap/bootstrap.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/crown/css/main.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="http://hotel.git-dev.new.nhom/public/admin/css/css.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/crown/css/reset.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/css/bootstrap/bootstrap.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/crown/css/main.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/css/css.css" type="text/css" />');
         mywindow.document.write('</head><body ><table>');
         mywindow.document.write(data);
         mywindow.document.write('</table></body></html>');
@@ -139,18 +139,18 @@
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">
-                                        <label>VND: <span><?php echo number_format($row->payment_type, 3); ?></span></label>
+                                        <label>VND: <span><?php echo numberFormatToCurrency($row->payment_type); ?></span></label>
                                     </p>
                                     <p class="price_en price-item">
-                                        <label>USD: <span><?php echo number_format($row->price_night_en, 3); ?></span></label>
+                                        <label>USD: <span><?php echo numberFormatToCurrency($row->price_night_en); ?></span></label>
                                     </p>
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">
-                                        <label>VND: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.number_format($row->payment_type*$profit[$line]->profit_rate/100, 3); ?></span></label>
+                                        <label>VND: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.numberFormatToCurrency($row->payment_type*$profit[$line]->profit_rate/100); ?></span></label>
                                     </p>
                                     <p class="price_en price-item">
-                                        <label>USD: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.number_format($row->price_night_en*$profit[$line]->profit_rate/100, 3); ?></span></label>
+                                        <label>USD: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.numberFormatToCurrency($row->price_night_en*$profit[$line]->profit_rate/100); ?></span></label>
                                     </p>
                                 </td>
                                 <td class="textC">

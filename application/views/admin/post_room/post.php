@@ -343,8 +343,8 @@ if ($this->session->userdata('post_info') !== NULL) {
                                     <label class="formLeft">Phòng theo căn [#<span id="label-post-room-id"><?php echo (isset($data_post_room->parent_id)) ? $data_post_room->parent_id : 0; ?></span>] </label>
                                     <div class="formRight">
                                         <div class="ui-widget">
-                                            <input type="text" id="auto-complete-parent-id" autocomplete="off" value="<?php // echo (!empty($data_post_room->parent)) ? $data_post_room->parent->post_room_name : 'Là căn gốc'; ?>" />
-                                            <input type="hidden" value="<?php // echo (isset($data_post_room->parent_id)) ? $data_post_room->parent_id : 0; ?>" id="post-room-parent-id" name="parent_id" />
+                                            <input type="text" id="auto-complete-parent-id" autocomplete="off" value="<?php echo (!empty($post_room_parent)) ? $post_room_parent->post_room_name : 'Là căn gốc'; ?>" />
+                                            <input type="hidden" value="<?php echo (isset($post_room->parent_id)) ? $post_room->parent_id : 0; ?>" id="post-room-parent-id" name="parent_id" />
                                             <p>(*) Gõ để tìm kiếm phòng theo căn</p>
                                         </div>
                                         <div name="error" class="clear error"><?php echo form_error('parent_id'); ?></div>
@@ -646,6 +646,11 @@ if ($this->session->userdata('post_info') !== NULL) {
     })
 </script>	
 <script type="text/javascript">
+    if($('#room_type').val()==5){
+          $('#room_by_house').css('visibility', 'visible')
+        }else{
+          $('#room_by_house').css('visibility', 'hidden')
+        }
     var autocomplete;
     var componentForm = {
         street_number: 'short_name',

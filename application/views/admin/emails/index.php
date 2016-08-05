@@ -95,18 +95,12 @@
                                     <?php echo $row->email_title ?>
                                 </td>
                                 <td class="textC img_room" >
-                                    <?php echo $row->description ?>
+                                    <?php echo substr($row->description,0,200).'....' ?>
                                 </td>
-                                <td class="textC">
-        <?php echo 'Người'; ?>
-                                </td>
+                                <td class="textC"><?php echo 'Người'; ?></td>
                                 <td class="textC">
                                     <a href="<?php echo base_url() . 'admin/emails/edit/' . $row->email_id ?>" class="lightbox" title="edit">
                                         <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png">
-                                    </a>
-                                    &nbsp;
-                                    <a href="<?php echo base_url() . 'admin/emails/delete/' . $row->email_id; ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
-                                        <img src="<?php echo base_url() ?>public/admin/images/icons/color/uninstall.png">
                                     </a>
                                 </td>
                             </tr>
@@ -120,43 +114,3 @@
     </div>
     <div class="clear mt30"></div>
 </div>
-<div class="modal fade bs-example-modal-sm" id="modal_del" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Xóa</h4>
-            </div>
-            <div class="modal-body">
-                <p style="color:red;font-size: 14px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">hủy</button>
-                <a href="#" id="allow-Del" class="btn btn-primary">Xóa</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-    function status(id) {
-        var url = '<?php echo admin_url('post_room/status'); ?>';
-        var urlCurrent = window.location.href;
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: {'id': id},
-            dataType: 'text',
-            success: function (result) {
-                $(".myTable").load(urlCurrent + " .myTable");
-            }
-        });
-    }
-
-    function del(id) {
-        var url = '<?php echo admin_url(); ?>';
-        var urlDel = url + '/post_room/delete/' + id;
-        $('#allow-Del').attr('href', urlDel);
-        $("#modal_del").modal("show");
-    }
-</script>

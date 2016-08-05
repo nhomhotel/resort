@@ -58,9 +58,9 @@ var id = '<?php echo $id_encode;?>';
                       <input type="hidden" name="method" />
                   </button>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="method" style="margin-right: -60px; max-width: 1243px;">
-                    <li role="presentation"><a role="menuitem" tabindex="-1"  data-value="visa">Visa</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" data-value="mastercard">MasterCard</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" data-value="paypal">PayPal</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1"  data-value="visa" data-key="1" >Visa</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" data-value="mastercard" data-key="2" >MasterCard</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" data-value="paypal" data-key="3" >PayPal</a></li>
                   </ul>
                   <div class="dropdown-menu-chevron" style="left: 185px;"></div>
                   <input type="hidden" name="payment_type" id="payment-type" class="validate" value="" required="">
@@ -192,7 +192,7 @@ $(document).ready(function(){
 
         },
         submitHandler: function(form) {
-            if($("input[name='method']").val()!=="1"||$("input[name='method']").val()!=="2"||$("input[name='method']").val()!=="3"){
+            if($('.method_payment #method input[name="method"]').val()!="1"||$('.method_payment #method input[name="method"]').val()!="2"||$('.method_payment #method input[name="method"]').val()!="3"){
                 alert('chưa chọn hình thưc thanh toán');
                 return false;
             }

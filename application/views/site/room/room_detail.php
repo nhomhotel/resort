@@ -134,7 +134,7 @@ var id='<?php echo $id_encode;?>';
                 </div>
                 <div id="book-right" class="col-sm-4 col-xs-12">
                         <div id="book-now" class="">
-                                <div class="book-prices hidden-xs">
+                                <div class="book-prices">
                                         <div class="price-wrap clearfix">
                                                 <!-- <span class="label label-default pull-right">Khuyến mãi: Giảm 10% !</span> -->
                                                 <p class="price-num">
@@ -145,7 +145,7 @@ var id='<?php echo $id_encode;?>';
                                                 <p class="price-method">Giá trung bình theo đêm</p>
                                         </div>
                                 </div>
-                                <div class="dates-guests hidden-xs">
+                                <div class="dates-guests">
                                     <div class="prices"></div>
                                     <?php $query = "";
                                         if(isset($checkin))$query.='&checkin='.$checkin;
@@ -409,8 +409,6 @@ $(document).ready(function(){
         if(typeof guests != 'undefined'&& guests.val()!=''&&!isNaN(parseFloat(guests.val()))){
             urlCurl+="&guests="+guests.val();
         }
-        alert(urlCurl);
-        return false;
         
         $.ajax({
                 type : 'POST',

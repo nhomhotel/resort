@@ -41,6 +41,10 @@ function load_config(){
 
 function load_encode(){
     $CI = &get_instance();
-    $encode = new Hashids('this is my salt', 10, 'abcdefghijklmnopqrstxyz1234567890');
+    $encode = new Hashids('this is encode id', 10, 'abcdefghijklmnopqrstxyz1234567890');
+    $encode_validate_user = new Hashids('this is validate user pass email', 10, 'abcdefghijklmnopqrstxyz1234567890');
+    $encode_pass_user = new Hashids('this is password usser', 10, 'abcdefghijklmnopqrstxyz1234567890');
     $CI->config->set_item('encode_id',$encode);
+    $CI->config->set_item('encode_validate_user',$encode_validate_user);
+    $CI->config->set_item('encode_pass_user',$encode_pass_user);
 }

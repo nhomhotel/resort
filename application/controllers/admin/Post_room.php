@@ -125,15 +125,18 @@ class Post_room extends AdminHome {
             $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
             $room_type = $this->input->post('room_type')?$this->input->post('room_type'):1;
             if($room_type!=1){
-                $this->form_validation->set_rules('parent_id', 'Căn gốc', 'trim|required');
+                $this->form_validation->set_rules('parent_id', 'Căn gốc', 'trim|required|numeric|callback_checkRoomParent');
             }
             if ($this->form_validation->run()) {
 
                 $parent_id = $this->input->post('parent_id');
+                if($this->input->post('room_type')==1)$parent_id=0;
                 $address_detail = $this->input->post('address_detail');
                 $lat = $this->input->post('lat');
                 $lng = $this->input->post('lng');
                 $address_street = $this->input->post('address_street');
+                $address_street_ascii = strtolower(vn_str_filter($this->input->post('address_street_ascii')));
+                $address_detail_ascii = strtolower(vn_str_filter($this->input->post('address_detail')));
                 $address_2 = $this->input->post('address_2');
                 $district = $this->input->post('district');
                 $district_ascii = stripUnicode($district);
@@ -170,6 +173,8 @@ class Post_room extends AdminHome {
                         'lat' => $lat,
                         'lng' => $lng,
                         'address_street' => $address_street,
+                        'address_street_ascii'=>$address_street_ascii,
+                        'address_detail_ascii'=>$address_detail_ascii,
                         'address_2' => $address_2,
                         'district' => $district,
                         'district_ascii' => $district_ascii,
@@ -487,7 +492,9 @@ class Post_room extends AdminHome {
              * 	Thêm dữ liệu vào table address, get id_address
              * 	unset address trong array post_info
              */
-            $address_id = $this->address_model->insertGetId($post_info['address']);
+            pre($post_info);return;
+            $address_id = $post_info['address_id'];
+            $this->address_model->update($post_info['address_id'],$post_info['address']);
             unset($post_info['address']);
             $post_info['address_id'] = $address_id;
 
@@ -557,15 +564,17 @@ class Post_room extends AdminHome {
     }
 
     function edit($id = -1) {
-        $this->output->enable_profiler(TRUE);
         if ($this->session->userdata('userLogin')) {
             $userLogin = $this->session->userdata('userLogin');
         }
         if ($id > 0) {
             $data_post_room = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $id)));
+            if(count($data_post_room)>0)$data['post_room'] = $data_post_room;
             /* Load Parent */
             if (!empty($data_post_room->parent_id)) {
                 $data_post_room->parent = $this->Post_room_model->get_row(array('where' => array('post_room_id' => $data_post_room->parent_id)));
+                if(count($data_post_room->parent)>0)$data['post_room_parent'] = $data_post_room->parent;
+                
             }
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
             $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
@@ -604,13 +613,19 @@ class Post_room extends AdminHome {
                 $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required|min_length[20]|max_length[50]');
                 $this->form_validation->set_rules('description', 'description', 'trim|required|min_length[300]|max_length[1000]');
                 $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
-
+                $room_type = $this->input->post('room_type')?$this->input->post('room_type'):1;
+                if($room_type!=1){
+                    $this->form_validation->set_rules('parent_id', 'Căn gốc', 'trim|required|numeric|callback_checkRoomParent');
+                }
                 if ($this->form_validation->run()) {
                     $parent_id = $this->input->post('parent_id');
+                    if($this->input->post('room_type')==1)$parent_id=0;
                     $address_detail = $this->input->post('address_detail');
                     $lat = $this->input->post('lat');
                     $lng = $this->input->post('lng');
                     $address_street = $this->input->post('address_street');
+                    $address_street_ascii = strtolower(vn_str_filter($this->input->post('address_street')));
+                    $address_detail_ascii = strtolower(vn_str_filter($this->input->post('address_detail')));
                     $address_2 = $this->input->post('address_2');
                     $district = $this->input->post('district');
                     $district_ascii = stripUnicode($district);
@@ -647,6 +662,8 @@ class Post_room extends AdminHome {
                             'lat' => $lat,
                             'lng' => $lng,
                             'address_street' => $address_street,
+                            'address_detail_ascii'=>$address_detail_ascii,
+                            'address_street_ascii'=>$address_street_ascii,
                             'address_2' => $address_2,
                             'district' => $district,
                             'district_ascii' => $district_ascii,
@@ -657,6 +674,7 @@ class Post_room extends AdminHome {
                             'country_ascii' => $country_ascii,
                             'area_id'       => $area_id
                         ),
+                        'address_id'=>$data_post_room->address_id,
                         'parent_id' => $parent_id,
                         'post_room_name' => $post_room_name,
                         'description' => $description,
@@ -701,6 +719,7 @@ class Post_room extends AdminHome {
         if($user->role_id==2){
             $this->Post_room_model->db->where('user_id',$user->user_id);
         }
+        $this->db->where('parent_id',0);
         $this->Post_room_model->db->where('post_room_name_ascii LIKE "%' . stripUnicode($keyword) . '%"');
         $result = $this->Post_room_model->db->get()->result();
         echo json_encode($result);
@@ -764,6 +783,18 @@ class Post_room extends AdminHome {
         $data['description'] = 'Danh sách các ngày đã đặt theo lịch trong tháng/tuần/ngày';
         $data['temp'] = 'admin/calendar/index';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
+    }
+    
+    function checkRoomParent($parent_id){
+        $where = array();
+        $where = array('post_room_id' => $parent_id);
+        $check = $this->Post_room_model->check_exists($where);
+        if (!$check) {
+            $this->form_validation->set_message('checkRoomParent', '{field} chưa tồn tại.');
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

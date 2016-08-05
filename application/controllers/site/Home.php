@@ -98,6 +98,8 @@ class Home extends MY_Controller {
     }
 
     public function register() {
+        $this->load->library('email');
+        $this->load->model('Email_model');
         $data['meta_title'] = 'Register';
         $data['temp'] = ('site/home/register');
 
@@ -129,11 +131,28 @@ class Home extends MY_Controller {
                         'password' => $password,
                         'email' => $email,
                         'role_id' => $role_id,
-                        'created'=>$created
+                        'created'=>$created,
+                        'validate_code'=>  getConfirmEmailCode(substr($user_name, 0,10)), 
                     );
                     if ($this->User_model->create($data)) {
-//                        $this->session->set_userdata($data);
-                        $this->session->set_flashdata('message_register', 'Đăng ký tài khoản thành công!');
+//                        $this->session->set_userdata($data);!<br/>Thông tin đăng nhập đã được gửi vào mail của bạn<br/>. Yêu cầu xác nhận email
+                        $message_register = 'Đăng ký tài khoản thành công';
+                        $email_template = $this->Email_model->get_row(array('where'=>array("email_type"=>"6")));
+                        if(count($email_template)>0){
+                            $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
+                        $this->email->to($email);
+                        $this->email->subject($email_template->email_title);
+                        $email_content = $email_template->description;
+                        $email_content = str_replace('__user_name__', $data['user_name'], $email_content);
+                        $email_content = str_replace('__first_name__', $data['first_name'], $email_content);
+                        $email_content = str_replace('__last_name__', $data['last_name'], $email_content);
+                        $email_content = str_replace('__password__', $this->input->post('password'), $email_content);
+                        $email_content = str_replace('__email__', $data['user_name'], $email_content);
+                        $email_content = str_replace('__confirm__user_account__', $data['validate_code'], $email_content);
+                        $this->email->message($email_content); 
+                        }
+                        $this->session->set_flashdata('message_register', $message_register);
+                        
                     } else {
                         $this->session->set_flashdata('message_register', 'Đăng ký thất bại!');
                     }
@@ -148,7 +167,7 @@ class Home extends MY_Controller {
         //get data from address_model vs $query
         $query = strtolower(trim($_POST['query']));
         $query_no = vn_str_filter($query);
-        $data = $this->Address_model->getAddress($query_no);
+        $data = $this->Address_model->getAddress($query_no); 
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
                 //search theo tên đường
@@ -172,9 +191,7 @@ class Home extends MY_Controller {
             $result = array_unique($result);
             echo json_encode($result);
         } else
-            echo json_encode(array(
-                'result' => '',
-            ));
+            echo json_encode(array());
         exit();
     }
 

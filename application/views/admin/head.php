@@ -13,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/admin/css/index.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>public/admin/css/font-awesome.min.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/admin/plugins/fc/fullcalendar.min.css" media="screen" />
+<script>var url = '<?php echo base_url();?>';</script>
 <link href='<?php echo base_url();?>public/admin/plugins/fc/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/jquery/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/site/js/jquery-ui.js"></script>

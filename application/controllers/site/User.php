@@ -179,7 +179,6 @@ class User extends MY_Controller {
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');
-//        $role_id = 3;
 
         $input = array();
         $input['order'] = array('role_id', 'ASC');
@@ -226,7 +225,8 @@ class User extends MY_Controller {
                         continue;
                     } else {
                         $data['user_name'] = $user_name_tmp;
-                        $data['password'] = rand(100000, 999999);
+                        $data['password'] = md5($this->config->item("encode_pass_user")->encode($user_name.$phoneNumber));
+                        $data['role_id'] = 3;
                         $id = $this->user_model->create($data);
                         if ($id) {
                             echo json_encode(array(

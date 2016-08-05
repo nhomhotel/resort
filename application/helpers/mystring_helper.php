@@ -156,4 +156,16 @@ if (!function_exists('numberFormatToCurrency')) {
     }
 
 }
+
+if (!function_exists('getConfirmEmailCode')) {
+
+    function getConfirmEmailCode($str) {
+        $CI = & get_instance();
+        $result = base_url();
+        $encode_validate_user = $CI->config->item("encode_validate_user");
+        $result.="user/validate?confirm_code=".$encode_validate_user->encode($str);
+        return $result;
+    }
+
+}
 ?>
