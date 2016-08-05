@@ -1,6 +1,7 @@
 <script type="text/javascript">
 var id = '<?php echo $id_encode;?>';
 </script>
+<script type="text/javascript" src="<?php echo base_url()?>public/site/js/jquery.validate.js"></script>
 <div id="view" style="margin-left: 15px;margin-top: 85px;">
     <form accept-charset="UTF-8" action="<?php echo base_url();?>payments/book/<?php echo $id_encode.'?checkin='.$checkin->format('d-m-Y').'&checkout='.$checkout->format('d-m-Y').'&guests='.$guests;?>" data-action-book="/payments/book/<?php echo $id_encode;?>" data-action-contact="/users/update/7aea1cf9188e998f86c9d921fc0e8f21" data-action-finalize="/payments/finalize/1BPHJ-B6BB-VRMV" id="payment-form" method="post" name="book" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="7WoaKA9ACSC1KEJYL4+vfP+euhiO0gES5PeSi6PIbH4=" type="hidden"></div>
         <input name="oid" value="1BPHJ-B6BB-VRMV" type="hidden">
@@ -54,6 +55,7 @@ var id = '<?php echo $id_encode;?>';
                 <div class="dropdown ready method_payment">
                   <button class="dropdown-toggle form-control" type="button" id="method" data-toggle="dropdown">
                       <span class="placeholder">Chọn phương thức thanh toán</span>
+                      <input type="hidden" name="method" />
                   </button>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="method" style="margin-right: -60px; max-width: 1243px;">
                     <li role="presentation"><a role="menuitem" tabindex="-1"  data-value="visa">Visa</a></li>
@@ -61,14 +63,14 @@ var id = '<?php echo $id_encode;?>';
                     <li role="presentation"><a role="menuitem" tabindex="-1" data-value="paypal">PayPal</a></li>
                   </ul>
                   <div class="dropdown-menu-chevron" style="left: 185px;"></div>
-                  <input type="hidden" name="payment_type" id="payment-type" class="validate" value="">
+                  <input type="hidden" name="payment_type" id="payment-type" class="validate" value="" required="">
                 </div>
               </div>
                 <div class="payment-icons no-label form-group col-xs-6">
                 <ul class="list-inline">
-                  <li class="payment-visa">111111111</li>
-                  <li class="payment-mastercard">22222222222222</li>
-                  <li class="payment-paypal">5555555555</li>
+                    <li class="payment-visa"><img alt="Visa" width="52px" src="<?php echo base_url().'public/site/images/Visa.png';?>"/></li>
+                  <li class="payment-mastercard"><img alt="MasterCard" width="52px" src="<?php echo base_url().'public/site/images/MasterCard.png';?>"/></li>
+                  <li class="payment-paypal"><img alt="PayPal" width="52px" src="<?php echo base_url().'public/site/images/PayPal.png';?>"/></li>
                 </ul>
               </div>
             </div>
@@ -159,3 +161,44 @@ var id = '<?php echo $id_encode;?>';
   </div>
 </div>
 </div>
+<script>
+$(document).ready(function(){
+    $("#payment-form").validate({
+        rules: {
+            method:{
+               required: true, 
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            phno:{
+                required: true,
+                PhoneCheck:true,
+            }
+        },
+        messages: {
+            method:{
+               required: 'Chưa chọn phương thức thanh toán', 
+            },
+            email: {
+                required:"email không được để trống",
+                email:"Email không đúng"
+            },
+            phno:{
+                required: 'Số điện thoại không được để trống.',
+                PhoneCheck:'Số điện thoại không đúng định dạng đó'
+            }
+
+        },
+        submitHandler: function(form) {
+            if($("input[name='method']").val()!=="1"||$("input[name='method']").val()!=="2"||$("input[name='method']").val()!=="3"){
+                alert('chưa chọn hình thưc thanh toán');
+                return false;
+            }
+            form.submit();
+            }
+            
+        });
+})
+</script>

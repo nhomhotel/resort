@@ -463,6 +463,8 @@ if ($this->session->userdata('post_info') !== NULL) {
                                                         $selected = ($post_info['num_bathroom'] == $i) ? 'selected' : '';
                                                     } elseif (isset($data_post_room)) {
                                                         $selected = ($data_post_room->num_bathroom == $i) ? 'selected' : '';
+                                                    }elseif(isset ($num_bathroom)){
+                                                        $selected = $num_bathroom==$i?'selected':'';
                                                     }
                                                     $more = ($i == 10) ? '+' : '';
                                                     echo '<option value="' . $i . '" ' . $selected . '>' . $i . $more . ' phòng tắm</option>';
@@ -602,6 +604,11 @@ if ($this->session->userdata('post_info') !== NULL) {
     </form>
 </div>
 <script type="text/javascript">
+    if($("#room_type").val()==5){
+          $('#room_by_house').css('visibility', 'visible')
+        }else{
+          $('#room_by_house').css('visibility', 'hidden')
+        }
     $(document).ready(function () {
         $("#post_info").validate({
             errorElement: "div",

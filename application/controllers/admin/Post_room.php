@@ -201,6 +201,7 @@ class Post_room extends AdminHome {
             }
             else{
                 $data['room_type'] = $this->input->post('room_type');
+                $data['num_bathroom'] = $this->input->post('num_bathroom');
             }
         }
         $data['title'] = 'Đăng phòng cho thuê';

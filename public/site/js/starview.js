@@ -243,6 +243,13 @@ $(document).ready(function() {
             $('.method_payment').find('button span').html($(this).find('a').html());
         })
     })
+    $(function(){
+        $(".payment-icons ul li").on("click",function(){
+            if($(this).hasClass("payment-visa")){$(".method_payment #method span").html("Visa");$(".method_payment #method input").val('1')}
+            else if($(this).hasClass("payment-mastercard")){$(".method_payment #method span").html("MasterCard");$(".method_payment #method input").val("2")}
+            else {$(".method_payment #method span").html("Paypal");$(".method_payment #method input").val("3")}
+        })
+    })
 })
 
 //----------------------------------------------------Index--------------------------------------------
