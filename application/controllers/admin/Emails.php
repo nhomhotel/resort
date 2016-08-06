@@ -41,7 +41,7 @@ class Emails extends AdminHome {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-        $list = $this->Email_model->getList($input);
+        $list = $this->Email_model->get_list($input);
         $data['total'] = $total;
         $data['list'] = $list;
         $data['title'] = 'Danh sách email';

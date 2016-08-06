@@ -170,7 +170,9 @@ jQuery(function ($) {
         },
         user_name:{
             required: true,
-            minlength: 6
+            checkUserName:true,
+            minlength: 6,
+            
         },
         password: {
             required: true,
@@ -190,7 +192,8 @@ jQuery(function ($) {
         },
         user_name:{
             required: "Tên đăng nhập không được để trống",
-            minlength: "Tên đăng nhập dài tối thiếu 6 ký tự"
+            minlength: "Tên đăng nhập dài tối thiếu 6 ký tự",
+            checkUserName:"Tên chỉ chứa chữ, số, và dấu gạch dưới \_"
         },
         password: {
             required: "Mật khẩu không được để trống",

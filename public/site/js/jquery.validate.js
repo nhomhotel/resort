@@ -338,6 +338,11 @@ $.extend($.validator, {
                                 function(value, element) {
                                     return this.optional(element) || value == value.match(new RegExp("[0-9]{9,12}"));
                         }, "")
+                        $.validator.addMethod(
+                                "checkUserName", 
+                                function(value, element) {
+                                    return this.optional(element) || value == value.match(new RegExp("^[0-9a-zA-Z\_]+"));
+                        }, "bạn")
 //                        $.validator.addMethod(
 //                                "RoomCheck", 
 //                                function(value, element,parent) {

@@ -140,16 +140,16 @@ class Home extends MY_Controller {
                         $email_template = $this->Email_model->get_row(array('where'=>array("email_type"=>"6")));
                         if(count($email_template)>0){
                             $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
-                        $this->email->to($email);
-                        $this->email->subject($email_template->email_title);
-                        $email_content = $email_template->description;
-                        $email_content = str_replace('__user_name__', $data['user_name'], $email_content);
-                        $email_content = str_replace('__first_name__', $data['first_name'], $email_content);
-                        $email_content = str_replace('__last_name__', $data['last_name'], $email_content);
-                        $email_content = str_replace('__password__', $this->input->post('password'), $email_content);
-                        $email_content = str_replace('__email__', $data['user_name'], $email_content);
-                        $email_content = str_replace('__confirm__user_account__', $data['validate_code'], $email_content);
-                        $this->email->message($email_content); 
+                            $this->email->to($email);
+                            $this->email->subject($email_template->email_title);
+                            $email_content = $email_template->description;
+                            $email_content = str_replace('__user_name__', $data['user_name'], $email_content);
+                            $email_content = str_replace('__first_name__', $data['first_name'], $email_content);
+                            $email_content = str_replace('__last_name__', $data['last_name'], $email_content);
+                            $email_content = str_replace('__password__', $this->input->post('password'), $email_content);
+                            $email_content = str_replace('__email__', $data['user_name'], $email_content);
+                            $email_content = str_replace('__confirm__user_account__', $data['validate_code'], $email_content);
+                            $this->email->message($email_content); 
                         }
                         $this->session->set_flashdata('message_register', $message_register);
                         
@@ -196,9 +196,26 @@ class Home extends MY_Controller {
     }
 
     function Test() {
-        $this->load->model('Post_room_model');
-        $this->load->library('book_library');
-        pre($this->book_library->getMoney(array('checkin' => '2016-8-1', 'checkout' => '2016-8-20'), 5, '', 1, array('vat' => 10)));
+//        $this->load->model('Post_room_model');
+//        $this->load->library('book_library');
+//        pre($this->book_library->getMoney(array('checkin' => '2016-8-1', 'checkout' => '2016-8-20'), 5, '', 1, array('vat' => 10)));
+        $this->email->initialize(get_config_email($this->config->item('address_email'), $this->config->item('pass_email')));
+        
+        $email_template = $this->Email_model->get_row(array('where'=>array("email_type"=>"6")));
+        $this->email->from('lehai04.1991@gmail.com', '123'); 
+        $this->email->to('zefredzocohen@gmail.com');
+        $this->email->subject($email_template->email_title);
+        $email_content = $email_template->description;
+        $email_content = str_replace('__user_name__', "lehai", $email_content);
+        $email_content = str_replace('__first_name__', "le", $email_content);
+        $email_content = str_replace('__last_name__', 'hai', $email_content);
+        $email_content = str_replace('__password__', '12345678', $email_content);
+        $email_content = str_replace('__email__', "abc.com", $email_content);
+        $email_content = str_replace('__confirm__user_account__', getConfirmEmailCode(substr('lehai', 0,10)), $email_content);
+        $this->email->message($email_content);
+        if($this->email->send()){
+            echo 'send mail thanh cong';
+        }else  echo $this->email->print_debugger();
     }
 
     function checkUserName($user_name) {

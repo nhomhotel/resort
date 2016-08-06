@@ -159,11 +159,14 @@ if (!function_exists('numberFormatToCurrency')) {
 
 if (!function_exists('getConfirmEmailCode')) {
 
-    function getConfirmEmailCode($str) {
+    function getConfirmEmailCode($str,$para=array()) {
         $CI = & get_instance();
         $result = base_url();
-        $encode_validate_user = $CI->config->item("encode_validate_user");
-        $result.="user/validate?confirm_code=".$encode_validate_user->encode($str);
+        $encode_validate_user = $CI->config->item("encode_user");
+        $result.="user/validate?confirm_code=".md5($encode_validate_user->encode($str));
+        foreach ($para as $key => $value){
+            $result.="&".key.'='.$value;
+        }
         return $result;
     }
 

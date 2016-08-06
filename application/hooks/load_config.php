@@ -45,6 +45,6 @@ function load_encode(){
     $encode_validate_user = new Hashids('this is validate user pass email', 10, 'abcdefghijklmnopqrstxyz1234567890');
     $encode_pass_user = new Hashids('this is password usser', 10, 'abcdefghijklmnopqrstxyz1234567890');
     $CI->config->set_item('encode_id',$encode);
-    $CI->config->set_item('encode_validate_user',$encode_validate_user);
+    $CI->config->set_item('encode_user',$encode_validate_user);
     $CI->config->set_item('encode_pass_user',$encode_pass_user);
 }

@@ -86,11 +86,11 @@
                     <?php
                     if (isset($list)) {
                         $i = 0;
-                        foreach ($list->result() as $row) {
+                        foreach ($list as $row) {
                             $i++;
                             ?>
                             <tr class='row_20'>
-                                <td class="textC"><?php echo $i; ?></td>
+                                <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                                 <td class="textC img_room" >
                                     <?php echo $row->email_title ?>
                                 </td>
