@@ -3,7 +3,13 @@
         <div class="container-fluid">
             <?php if ($this->session->flashdata('message_register')): ?>
                 <div class="alert alert-success info">
-                    <strong>Success!</strong><?php echo $this->session->flashdata('message_register') ?> 
+                    <strong>Success!</strong><br><?php echo $this->session->flashdata('message_register'); ?> 
+                </div>
+            <?php endif;
+            ?>
+            <?php if ($this->session->flashdata('message_confirm')): ?>
+                <div class="alert alert-success info">
+                    <strong>Success!</strong><br><?php echo $this->session->flashdata('message_confirm'); ?> 
                 </div>
             <?php endif;
             ?>

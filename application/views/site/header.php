@@ -25,17 +25,6 @@
                       <input type="hidden" name="language" value="vie">
                     </div>
                 </li>
-                <li id="currency" style="padding-top: 19px; padding-right: 10px;">
-                <div class="dropdown dropdown-flat selected ready">
-                  <button class="dropdown-toggle form-control form-control-icon icon-currency" type="button" data-toggle="dropdown"><span class="display">VND<span class="description"> - Đồng Việt Nam</span></span></button>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="currency" style="margin-right: -94px; max-width: 1563px;">
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="USD">USD<span class="description"> - Đô la Mỹ</span></a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="VND" class="active">VND<span class="description"> - Đồng Việt Nam</span></a></li>
-                  </ul>
-                  <div class="dropdown-menu-chevron" style="left: 37px;"></div>
-                  <input type="hidden" name="currency" value="VND">
-                </div>
-              </li>
                 <?php if(isset($_SESSION['user_name'])){?>
                 <li class="account"  style="padding-top: 19px; padding-right: 10px;">
                     <div class="dropdown dropdown-flat ready">

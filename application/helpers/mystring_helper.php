@@ -162,13 +162,33 @@ if (!function_exists('getConfirmEmailCode')) {
     function getConfirmEmailCode($str,$para=array()) {
         $CI = & get_instance();
         $result = base_url();
-        $encode_validate_user = $CI->config->item("encode_user");
-        $result.="user/validate?confirm_code=".md5($encode_validate_user->encode($str));
+        $result.="user/confirm?confirm_code=".md5(convertStringToNumber($str));
         foreach ($para as $key => $value){
-            $result.="&".key.'='.$value;
+            $result.="&".$key.'='.$value;
         }
         return $result;
     }
 
 }
+
+if (!function_exists('convertStringToNumber')) {
+
+    function convertStringToNumber($str) {
+        $CI = & get_instance();
+        $encode_validate_user = $CI->config->item("encode_user");
+        $encode_str = crc32($str);
+        if($encode_str<0)$encode_str = -$encode_str;
+        return $encode_validate_user->encode($encode_str);
+    }
+}
+
+if (!function_exists('securityServer')) {
+
+    function securityServer($str) {
+        $CI = & get_instance();
+        $str = convert_accented_characters($CI->security->xss_clean(trim($str)));
+        return ($str);
+    }
+}
+
 ?>

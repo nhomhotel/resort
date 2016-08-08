@@ -1,29 +1,6 @@
 <!-- Main content -->
 <!-- Title area -->
-<script>
- function PrintElem(elem)
-    {
-//        console.log($(elem).html());return;
-        Popup($(elem).html());
-    }
-
-    function Popup(data) 
-    {
-        var mywindow = window.open('', 'my div', 'width=700px');
-        mywindow.document.write('<html><head><title>my div</title>');
-        /*optional stylesheet*/ 
-        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/crown/css/reset.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/css/bootstrap/bootstrap.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/crown/css/main.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="<?php echo base_url();?>public/admin/css/css.css" type="text/css" />');
-        mywindow.document.write('</head><body ><table>');
-        mywindow.document.write(data);
-        mywindow.document.write('</table></body></html>');
-        mywindow.print();
-        mywindow.close();
-        return true;
-    }
-</script>
+<link rel="stylesheet" type="text/css" href="/public/admin/css/print-table.css" media="print"/>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
@@ -95,7 +72,8 @@
                     <tr>
                         <td>STT</td>
                         <td colspan="2">Bài đăng</td>
-                        <td>Giá phòng</td>
+                        <td>Giá nhập</td>
+                        <td>Giá bán</td>
                         <td>Lợi nhuận</td>
                         <td>Người thuê phòng</td>
                         <?php if($user->role_id==1):?>
@@ -108,7 +86,7 @@
                 </thead>
                 <tfoot class="auto_check_pages">
                     <tr>
-                        <td colspan="3"><button class="btn btn-primary print_order" onclick="PrintElem('#order_room_table');">In Danh sách</button></td>
+                        <td colspan="3"><button class="btn btn-primary print_order">In Danh sách</button></td>
                         <td colspan="14">
                             <div class='pagination'>
                                 <?php echo isset($pagination_link) ? $pagination_link : ''; ?>
@@ -129,12 +107,41 @@
                                         <?php
                                         $img = json_decode($row->image_list);
                                         ?>
-                                        <img src="<?php // echo $img['0'] ?>" width = "120px" height = "90px"/>
+                                        <img src="<?php if($img[0]!='')echo $img['0'] ?>" width = "120px" height = "90px"/>
                                     </a>
                                 </td>
                                 <td class="textC" style="text-align: left;">
                                     <p class="room_name">
                                         <a href = "<?php echo base_url('room/room_detail/' . $row->post_room_id); ?>" target = "_blank"><?php echo $row->post_room_name; ?></a>
+                                    </p>
+                                </td>
+                                <td class="textC price">
+                                    <p class="price_vn price-item">
+                                        <label>VND: <span><?php echo numberFormatToCurrency($row->payment_type - $row->payment_type*$profit[$line]->profit_rate/100); ?></span></label>
+                                    </p>
+                                    <p class="price_en price-item">
+                                        <label>USD: <span><?php echo numberFormatToCurrency($row->price_night_en - $row->price_night_en*$profit[$line]->profit_rate/100); ?></span></label>
+                                    </p>
+                                    <p class="price_en price-item hidden-print">
+                                        <?php
+                                        if($user->role_id==1):?>
+                                        <div class="row"><!-- panel-footer -->
+                                        <div class="col-md-6 text-left hidden-xs hidden-print">
+                                              <button type="button" class="btn btn-primary" id="paymented">
+                                                  <span style="font-size: 11px"><?php echo $row->payment_status==1?'Đã thanh toán':'chưa thanh toán';?></span>
+                                              </button>
+                                            </div>
+                                            <div class="col-md-6 hidden-xs hidden-print" style="padding-left: 6px;">
+                                                  <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModal">
+                                                      <span style="font-size: 11px">Xuất hóa đơn</span>
+                                                  </button>
+                                                <?php $this->load->view('admin/order_room/phieu-chi',  isset($phieu_chi)?$phieu_chi:null);?>
+                                                </div>
+                                        </div>
+                                        <?php elseif($user->role_id==2):?>
+                                             <label><span><?php echo $row->payment_status==1?'Đã thanh toán':'chưa thanh toán'; ?></span></label>
+                                        <?php endif;
+                                        ?>
                                     </p>
                                 </td>
                                 <td class="textC price">
@@ -211,6 +218,21 @@
             }
         });
     }
+    
+    $('#paymented').on('click',function(){
+            var url = '<?php echo admin_url('order_room/paymentStatus'); ?>';
+            var urlCurrent = window.location.href;
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {'id': id},
+                dataType: 'text',
+                success: function (result) {
+                    $(".myTable").load(urlCurrent + " .myTable");
+                }
+            });
+        })
+    
 
     function del(id) {
         var url = '<?php echo admin_url(); ?>';
@@ -219,35 +241,25 @@
         $("#modal_del").modal("show");
     }
     $(function(){
-        $('.print_order1').on('click',function(){
-            var printContents = document.getElementById('order_room_table').innerHTML;
-            var originalContents = document.body.innerHTML;
-//            document.body.innerHTML = printContents;
-
-//            document.body.innerHTML = originalContents;
-//            var html='';
-            var list_item = $('.list_item').html();
-            var title_order_room = $('.title_order_room').html();
-            html = '';
-//            
-//            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="http://hotel.git-dev.new.nhom/public/admin/crown/css/main.css" />'?>';
-//            css += '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="http://hotel.git-dev.new.nhom/public/admin/css/css.css" />'?>';
-//            html+='<html>';
-//            html+='<head>';
-//            html += css ;
-//            html+='</head>';
-//            html+='<body>';
+        $('.print_order').on('click',function(){
+            var title_order_room = document.getElementsByClassName('title_order_room');
+            var list_item= document.getElementsByClassName('list_item');
+            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="/public/admin/css/print-table.css"/>'?>';
+            var html = '<html>';
+            
+            html += '<head>';
+            html += css ;
+            html += '</head>';
+             html += '<body>';
             html+='<table>';
-            html+=title_order_room;
-            html+=list_item
+            html+=title_order_room[0].outerHTML;
+            html+=list_item[0].outerHTML;
             html+='</table>';
-            document.body.innerHTML =html;
-//            html+='</body>';
-//            html+='</html>';
-//            newWin = window.open("");
-//            newWin.document.write(html);
-//            newWin.print();
-//            console.log(newWin);
+            html += '</body>';
+            html += '</html>';
+            newWin = window.open("");
+            newWin.document.write(html);
+            newWin.print();
         })
     })
 </script>

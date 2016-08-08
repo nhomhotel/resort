@@ -46,6 +46,7 @@ class Home extends MY_Controller {
                     'where' => array(
                         'email' => $this->input->post('email'),
                         'password' => md5($this->input->post('password')),
+                        'validate_code'=>''
                     )
                 );
                 $dataUser = $this->User_model->get_row($data);
@@ -124,6 +125,10 @@ class Home extends MY_Controller {
                     $email = $this->input->post('email');
                     $role_id = 3;
                     $created = date('Y-m-d H:i:s');
+                    $parameter = array(
+                        'user'=>$user_name,
+                        'active'=>true
+                    );
                     $data = array(
                         'last_name' => $last_name,
                         'first_name' => $first_name,
@@ -132,13 +137,13 @@ class Home extends MY_Controller {
                         'email' => $email,
                         'role_id' => $role_id,
                         'created'=>$created,
-                        'validate_code'=>  getConfirmEmailCode(substr($user_name, 0,10)), 
+                        'validate_code'=>  getConfirmEmailCode($user_name,$parameter), 
                     );
                     if ($this->User_model->create($data)) {
-//                        $this->session->set_userdata($data);!<br/>Thông tin đăng nhập đã được gửi vào mail của bạn<br/>. Yêu cầu xác nhận email
                         $message_register = 'Đăng ký tài khoản thành công';
                         $email_template = $this->Email_model->get_row(array('where'=>array("email_type"=>"6")));
                         if(count($email_template)>0){
+                            $this->email->initialize(get_config_email($this->config->item('address_email'), $this->config->item('pass_email')));
                             $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
                             $this->email->to($email);
                             $this->email->subject($email_template->email_title);
@@ -147,9 +152,12 @@ class Home extends MY_Controller {
                             $email_content = str_replace('__first_name__', $data['first_name'], $email_content);
                             $email_content = str_replace('__last_name__', $data['last_name'], $email_content);
                             $email_content = str_replace('__password__', $this->input->post('password'), $email_content);
-                            $email_content = str_replace('__email__', $data['user_name'], $email_content);
+                            $email_content = str_replace('__email__', $data['email'], $email_content);
                             $email_content = str_replace('__confirm__user_account__', $data['validate_code'], $email_content);
-                            $this->email->message($email_content); 
+                            $this->email->message($email_content);
+                            if($this->email->send()){
+                                $message_register.='Thông tin tài khoản đã được gửi<br/>Kiểm tra mail để xác minh tài khoản';
+                            }else  $message_register.='Có lỗi trong việc gửi mail xác minh tài khoản<br/>Liên hệ quản trị để biết thông tin';
                         }
                         $this->session->set_flashdata('message_register', $message_register);
                         

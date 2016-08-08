@@ -200,6 +200,25 @@ class Order_room extends AdminHome {
         $redirect = !empty($redirect) ? (base_url($redirect)) : '.';
         redirect($redirect);
     }
+    
+    function paymentStatus(){
+        $id  = intval($this->input->post('id'));
+        $field = 'payment_status';
+
+        $statusInfo = $this->Order_room_model->get_info($id, $field);
+        if (!$statusInfo) {
+            echo json_encode(array('message'=> 'Không tồn tại bản ghi!'));
+        } else {
+            if ($statusInfo->payment_status == 1)
+                $data = array('payment_status' => 0,);
+            
+                else $data = array('payment_status' => 1,);
+        }
+        if ($this->Order_room_model->update($id, $data)) {
+            echo json_encode(array('status'=> true));
+        }
+        exit;
+    }
 
 }
 

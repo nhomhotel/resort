@@ -179,7 +179,7 @@ class Book_library {
         $data['money']+=$dataPostRoom->clearning_fee_vn;
         $data['clearning_fee'] = $dataPostRoom->clearning_fee_vn;
         $data['guest'] = $guest;
-        if ($tax!=''&& is_array($tax)){
+        if ($tax!=''&& is_array($tax)&&$this->CI->config->item('tax')){
             $data['tax'] = 0;
             foreach ($tax as $key => $value) {
                 $data['money'] += ($data['money'] * $value / 100);

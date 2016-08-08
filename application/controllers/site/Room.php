@@ -175,7 +175,8 @@ class Room extends MY_Controller {
                 if ($data['checkinObj'] < $dateNow || $data['checkoutObj'] < $dateNow) {
                     redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
                 }
-                $price = $this->book_library->getMoney(array('checkin'=>$data['checkinObj']->format('d-m-Y'),'checkout'=>$data['checkoutObj']->format('d-m-Y')),$guests,'',$encode[0]);
+                $tax = $this->config->item('tax')?array('vat'=>10):array();
+                $price = $this->book_library->getMoney(array('checkin'=>$data['checkinObj']->format('d-m-Y'),'checkout'=>$data['checkoutObj']->format('d-m-Y')),$guests,'',$encode[0],$tax);
                 if(isset($price['money'])){
                     $data['price']=$this->load->view('site/room/caculatorPrices',array('price'=>$price),true);
                 }
@@ -250,7 +251,8 @@ class Room extends MY_Controller {
             $tmp = json_decode($prices->image_list);
             if(is_array($tmp))$data['image_room'] = $tmp[0];
             //giá 1 đêm
-            $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
+            $tax = $this->config->item('tax')?array('vat'=>10):array();
+            $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices,-1,$tax);
             $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
             $input = array();
             $input = array(

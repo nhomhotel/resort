@@ -254,5 +254,26 @@ class User extends MY_Controller {
         $this->session->sess_destroy();
         redirect('/');
     }
+    
+    function confirm(){
+        $confirm_code = $this->input->get('confirm_code')?  securityServer($this->input->get('confirm_code')):'';
+        $user = $this->input->get('user')?securityServer($this->input->get('user')):'';
+        $active = $this->input->get('active')?securityServer($this->input->get('active')):'';
+        pre($confirm_code);
+        if($active==''||$active!='1'||$user==''||$confirm_code==''){
+            $this->session->set_flashdata('message_confirm', 'Link không tồn tại');
+        }
+        if(md5(convertStringToNumber($user))==$confirm_code){
+            $user_info = $this->User_model->get_row(array('where'=>array('user_name'=>$user)));
+            if(count($user_info)>0){
+                $this->User_model->update($user_info->user_id,array('validate_code'=>''));
+                $this->session->set_flashdata('message_confirm', 'Xác minh tài khoản thành công');
+            }else{
+                $this->session->set_flashdata('message_confirm', 'Có lỗi trong việc xác minh tài khoản!');
+            }
+            
+        }else $this->session->set_flashdata('message_confirm', 'Link không tồn tại');
+        redirect('/');
+    }
 
 }

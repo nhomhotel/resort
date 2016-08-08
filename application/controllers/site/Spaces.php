@@ -60,7 +60,8 @@ class Spaces extends MY_Controller {
             echo json_encode(array('error'=>'Phòng đã được đặt trước.'));
             exit();
         };
-        $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
+        $tax = $this->config->item('tax')?array('vat'=>10):array();
+        $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices,-1,$tax);
         $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
         echo json_encode($data);
         exit;
