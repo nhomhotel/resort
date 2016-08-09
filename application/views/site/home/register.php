@@ -6,7 +6,7 @@
             <div class="modal-content">
                 <div class="modal-header">
 
-                    <h4 class="modal-title">Đăng ký</h4>
+                    <h4 class="modal-title"><?php echo lang('home_register')?></h4>
                 </div>
                 <div class="modal-body">
                     <form accept-charset="UTF-8"  method="post" name="signup" id="form"  >
@@ -14,12 +14,12 @@
                             <input name="authenticity_token" type="hidden" value="OqrtQgtHo5HUCnGv0mUTtoB4KKQ26LmXC+AVh5kdpcU="/></div>
                         <div id="signup-name">
                             <div id="signup-first-name" class="form-group">
-                                <input class="form-control" name="first_name" id="first_name" placeholder="Tên" size="30"
+                                <input class="form-control" name="first_name" id="first_name" placeholder="<?php echo lang('register_first_name')?>" size="30"
                                        type="text" required/>
                                 <div name="first_name_error" class="clear error"><?php echo form_error('first_name'); ?></div>
                             </div>
                             <div id="signup-last-name" class="form-group">
-                                <input class="form-control" name="last_name" placeholder="Họ" size="30"
+                                <input class="form-control" name="last_name" placeholder="<?php echo lang('register_last_name')?>" size="30"
                                        type="text" required/>
                                 <div name="last_name_error" class="clear error"><?php echo form_error('last_name'); ?></div>
                             </div>
@@ -31,31 +31,28 @@
                         </div>
                         <div class="form-group">
                             <div  class="form-group">
-                                <input class="form-control" name="user_name" placeholder="Tên đăng nhập" size="30"
+                                <input class="form-control" name="user_name" placeholder="<?php echo lang('register_user_name')?>" size="30"
                                        type="text" required/>
                                 <div name="user_name_error" class="clear error"><?php echo form_error('user_name'); ?></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name="password" id="password" placeholder="Mật khẩu" size="30"
+                            <input class="form-control" name="password" id="password" placeholder="<?php echo lang('register_password')?>" size="30"
                                    type="password"  required/>
                             <div name="password_error" class="clear error"><?php echo form_error('password'); ?></div>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name="repassword" placeholder="Nhập lại mật khẩu" size="30"
+                            <input class="form-control" name="repassword" placeholder="<?php echo lang('register_re_password')?>" size="30"
                                    type="password"  required/>
                             <div name="repassword_error" class="clear error"><?php echo form_error('rePassword'); ?></div>
                         </div>
-                        <p class="tip">Với việc nhấn vào Đăng Ký, bạn đồng ý với <a href="#" target="_blank">Điều kiện và
-                                điều khoản</a> và <a href="#"_blank>Chính sách bảo mật</a> của
-                            trang web.</p>
+                        <p class="tip"><?php echo lang('register_tip')?> <a href="#" target="_blank"><?php echo lang('register_condition')?></a> và <a href="#"_blank><?php echo lang('register_privacy_policy')?></a> <?php echo lang('register_web')?></p>
                         <input class="btn btn-primary btn-lg btn-block" data-tkey="Sign Up"
-                               data-tloc="Sign-Up Page" name="commit" type="submit" value="Đăng ký"/>
+                               data-tloc="Sign-Up Page" name="commit" type="submit" value="<?php echo lang('home_register')?>"/>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <p class="tip">Đã là thành viên? <a href="<?php echo base_url() . 'home/login' ?>" id="signup-signin">Đăng nhập tại
-                            đây</a></p>
+                    <p class="tip"><?php echo lang('register_is_account')?> <a href="<?php echo base_url() . 'home/login' ?>" id="signup-signin"><?php echo lang('home_login'); echo ' '.lang('register_here')?></a></p>
                 </div>
                 <style type="text/css">
                     .btn-lg.btn-social {
@@ -185,27 +182,29 @@ jQuery(function ($) {
     },
     messages: {
         first_name: {
-            required:"Tên không được để trống"
+            required:"<?php echo lang('register_first_name').' '.lang('register_not_empty')?>",
+            NameCheck:"<?php echo lang('register_first_name').' '.lang('register_only').' '.lang('register_validate_character').' '.lang('register_and').' '.lang('register_space')?>"
         },
         last_name: {
-            required:"Họ không được để trống"
+            required:"<?php echo lang('register_last_name').' '.lang('register_not_empty')?>",
+            NameCheck:"<?php echo lang('register_last_name').' '.lang('register_only').' '.lang('register_validate_character').' '.lang('register_and').' '.lang('register_space')?>"
         },
         user_name:{
-            required: "Tên đăng nhập không được để trống",
-            minlength: "Tên đăng nhập dài tối thiếu 6 ký tự",
-            checkUserName:"Tên chỉ chứa chữ, số, và dấu gạch dưới \_"
+            required: "<?php echo lang('register_user_name').' '.lang('register_not_empty')?>",
+            minlength: "<?php echo lang('register_user_name').' '.lang('register_validate_minlength').' 6 '.lang('register_validate_character')?>",
+            checkUserName:"<?php echo lang('register_user_name').' '.lang('register_only').' '.lang('register_number').' ,'.lang('register_word').' '.lang('and').' '.lang('register__')?>"
         },
         password: {
-            required: "Mật khẩu không được để trống",
-            minlength: "Mật khẩu dài ít nhất 6 ký tự"
+            required: "<?php echo lang('register_password').' '.lang('register_not_empty')?>",
+            minlength: "<?php echo lang('register_password').' '.lang('register_validate_minlength').' 6 '.lang('register_validate_character')?>"
         },
         repassword: {
-            required: "Mật khẩu không được để trống",
-            equalTo: "Mât khẩu nhập lại không khớp"
+            required: "<?php echo lang('register_re_password').' '.lang('register_not_empty')?>",
+            equalTo: "<?php echo lang('register_re_password').' '.lang('register_correct')?>"
         },
         email: {
-            required:"email không được để trống",
-            email:"Email không đúng"
+            required:"<?php echo 'email '.lang('register_not_empty')?>",
+            email:"Email <?php echo lang('register_not_validate')?>"
         },
     },
 

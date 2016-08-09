@@ -1,6 +1,6 @@
 <!-- Main content -->
 <!-- Title area -->
-<link rel="stylesheet" type="text/css" href="/public/admin/css/print-table.css" media="print"/>
+<link rel="stylesheet" type="text/css" href="/public/admin/css/print-table.css" media="print,screen"/>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
@@ -23,9 +23,11 @@
 <!-- Message -->
 <!-- Main content wrapper -->
 <div class="wrapper col-md-12  clearfix content">
-    <?php if (isset($message) && $message) {
+    <?php
+    if (isset($message) && $message) {
         $this->load->view('admin/message', $message);
-    } ?>
+    }
+    ?>
     <div class="widget">
         <div class="title">
             <span class="titleIcon"><img src="<?php echo base_url(); ?>public/admin/images/icons/tableArrows.png"/></span>
@@ -39,7 +41,6 @@
                     <tr>
                         <td colspan="17">
                             <form class="form-inline form_filter form" method="get">
-
                                 <table class="table-filter" cellpadding="0" cellspacing="0">
                                     <tbody>
                                         <tr>
@@ -55,11 +56,23 @@
                                             <td class="item">
                                                 <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
                                             </td>
-
                                             <td colspan='2'>
                                                 <input type="submit" class="button blueB" value="Lọc"/>
                                                 <input type="reset" class="basic" value="Reset"
                                                        onclick="window.location.href = '<?php echo admin_url('post_room'); ?>';">
+                                            </td>
+                                            <td>
+                                                <?php if ($user->role_id == 1): ?>
+                                                    <button type="button" class="button blueB"  data-toggle="modal" data-target="#myModal">Xuất hóa đơn</button>
+    <?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
+<?php endif; ?>
+                                            </td>
+                                        </tr>
+                                        <tr><td>
+                                                <button type="button" class="btn btn-default" aria-label="Left ">
+                                                    <span class="glyphicon glyphicon-align-left" aria-hidden="true" style="display: inline">Hiển thị thêm</span>
+                                                    <span class="glyphicon glyphicon-align-left" aria-hidden="true" style="display: none">Hiển thị bớt</span>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -70,15 +83,17 @@
                 </thead>
                 <thead class="title_order_room">
                     <tr>
+                        <td class="hidden-print"><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
                         <td>STT</td>
-                        <td colspan="2">Bài đăng</td>
+                        <td colspan="2" class="hidden-print" >Bài đăng</td>
+                        <td colspan="1" class="hidden-screen">Bài đăng</td>
                         <td>Giá nhập</td>
                         <td>Giá bán</td>
                         <td>Lợi nhuận</td>
                         <td>Người thuê phòng</td>
-                        <?php if($user->role_id==1):?>
-                        <td>Đối tác</td>
-                        <?php endif;?>
+                        <?php if ($user->role_id == 1): ?>
+                            <td>Đối tác</td>
+<?php endif; ?>
                         <td>Ngày nhận phòng</td>
                         <td>Ngày trả phòng</td>
                         <td>Số người ở</td>
@@ -89,25 +104,30 @@
                         <td colspan="3"><button class="btn btn-primary print_order">In Danh sách</button></td>
                         <td colspan="14">
                             <div class='pagination'>
-                                <?php echo isset($pagination_link) ? $pagination_link : ''; ?>
+<?php echo isset($pagination_link) ? $pagination_link : ''; ?>
                             </div>
                         </td>
                     </tr>
                 </tfoot>
                 <tbody class="list_item">
-                    <?php if (isset($list)) {
+                    <?php
+                    if (isset($list)) {
                         $i = 0;
-                        foreach ($list as $line=>$row) {
+                        foreach ($list as $line => $row) {
                             $i++;
                             ?>
                             <tr class='row_20'>
-                                <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
-                                <td class="textC img_room" >
+                                <td class="textC hidden-print">
+                                    <input type="checkbox" name="id[]" value="<?php echo $row->post_room_id; ?>" />
+                                </td>
+                                <td class="textC"><?php if (isset($start)) echo ($i + $start);
+                            else echo $i; ?></td>
+                                <td class="textC img_room hidden-print" >
                                     <a href="<?php echo base_url('room/room_detail/' . $row->post_room_id); ?>" target = "_blank">
-                                        <?php
-                                        $img = json_decode($row->image_list);
-                                        ?>
-                                        <img src="<?php if($img[0]!='')echo $img['0'] ?>" width = "120px" height = "90px"/>
+        <?php
+        $img = json_decode($row->image_list);
+        ?>
+                                        <img src="<?php if ($img[0] != '') echo $img['0'] ?>" width = "120px" height = "90px"/>
                                     </a>
                                 </td>
                                 <td class="textC" style="text-align: left;">
@@ -117,31 +137,30 @@
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">
-                                        <label>VND: <span><?php echo numberFormatToCurrency($row->payment_type - $row->payment_type*$profit[$line]->profit_rate/100); ?></span></label>
+                                        <label>VND: <span><?php echo numberFormatToCurrency($row->payment_type - $row->payment_type * $profit[$line]->profit_rate / 100); ?></span></label>
                                     </p>
                                     <p class="price_en price-item">
-                                        <label>USD: <span><?php echo numberFormatToCurrency($row->price_night_en - $row->price_night_en*$profit[$line]->profit_rate/100); ?></span></label>
+                                        <label>USD: <span><?php echo numberFormatToCurrency($row->price_night_en - $row->price_night_en * $profit[$line]->profit_rate / 100); ?></span></label>
                                     </p>
                                     <p class="price_en price-item hidden-print">
-                                        <?php
-                                        if($user->role_id==1):?>
+        <?php if ($user->role_id == 1): ?>
                                         <div class="row"><!-- panel-footer -->
-                                        <div class="col-md-6 text-left hidden-xs hidden-print">
-                                              <button type="button" class="btn btn-primary" id="paymented">
-                                                  <span style="font-size: 11px"><?php echo $row->payment_status==1?'Đã thanh toán':'chưa thanh toán';?></span>
-                                              </button>
+                                            <div class="col-md-6 text-left hidden-xs hidden-print">
+                                                <button type="button" class="btn btn-primary" id="paymented">
+                                                    <span style="font-size: 11px"><?php echo $row->payment_status == 1 ? 'Đã thanh toán' : 'chưa thanh toán'; ?></span>
+                                                </button>
                                             </div>
                                             <div class="col-md-6 hidden-xs hidden-print" style="padding-left: 6px;">
-                                                  <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModal">
-                                                      <span style="font-size: 11px">Xuất hóa đơn</span>
-                                                  </button>
-                                                <?php $this->load->view('admin/order_room/phieu-chi',  isset($phieu_chi)?$phieu_chi:null);?>
-                                                </div>
+                                                <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModal">
+                                                    <span style="font-size: 11px">Xuất hóa đơn</span>
+                                                </button>
+                                        <?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
+                                            </div>
                                         </div>
-                                        <?php elseif($user->role_id==2):?>
-                                             <label><span><?php echo $row->payment_status==1?'Đã thanh toán':'chưa thanh toán'; ?></span></label>
-                                        <?php endif;
-                                        ?>
+                                    <?php elseif ($user->role_id == 2): ?>
+                                        <label><span><?php echo $row->payment_status == 1 ? 'Đã thanh toán' : 'chưa thanh toán'; ?></span></label>
+        <?php endif;
+        ?>
                                     </p>
                                 </td>
                                 <td class="textC price">
@@ -154,18 +173,18 @@
                                 </td>
                                 <td class="textC price">
                                     <p class="price_vn price-item">
-                                        <label>VND: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.numberFormatToCurrency($row->payment_type*$profit[$line]->profit_rate/100); ?></span></label>
+                                        <label>VND: <span><?php echo '(' . $profit[$line]->profit_rate . '%) ' . numberFormatToCurrency($row->payment_type * $profit[$line]->profit_rate / 100); ?></span></label>
                                     </p>
                                     <p class="price_en price-item">
-                                        <label>USD: <span><?php echo '('.$profit[$line]->profit_rate.'%) '.numberFormatToCurrency($row->price_night_en*$profit[$line]->profit_rate/100); ?></span></label>
+                                        <label>USD: <span><?php echo '(' . $profit[$line]->profit_rate . '%) ' . numberFormatToCurrency($row->price_night_en * $profit[$line]->profit_rate / 100); ?></span></label>
                                     </p>
                                 </td>
                                 <td class="textC">
                                     <p style="font-size: 14px;font-weight: 600"><?php echo $row->user_name; ?></p>
                                 </td>
-                                 <?php if($user->role_id==1):?>
-                                <td class="textC price"><p style="font-size: 14px;font-weight: 600"><?php echo $profit[$line]->user_name?></p></td>
-                                <?php endif;?>
+        <?php if ($user->role_id == 1): ?>
+                                    <td class="textC price"><p style="font-size: 14px;font-weight: 600"><?php echo $profit[$line]->user_name ?></p></td>
+        <?php endif; ?>
                                 <td class="textC" id="status">
                                     <p style="font-size: 14px;font-weight: 600"><?php echo $row->checkin; ?></p>
                                 </td>
@@ -218,21 +237,21 @@
             }
         });
     }
-    
-    $('#paymented').on('click',function(){
-            var url = '<?php echo admin_url('order_room/paymentStatus'); ?>';
-            var urlCurrent = window.location.href;
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {'id': id},
-                dataType: 'text',
-                success: function (result) {
-                    $(".myTable").load(urlCurrent + " .myTable");
-                }
-            });
-        })
-    
+
+    $('#paymented').on('click', function () {
+        var url = '<?php echo admin_url('order_room/paymentStatus'); ?>';
+        var urlCurrent = window.location.href;
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {'id': id},
+            dataType: 'text',
+            success: function (result) {
+                $(".myTable").load(urlCurrent + " .myTable");
+            }
+        });
+    })
+
 
     function del(id) {
         var url = '<?php echo admin_url(); ?>';
@@ -240,21 +259,21 @@
         $('#allow-Del').attr('href', urlDel);
         $("#modal_del").modal("show");
     }
-    $(function(){
-        $('.print_order').on('click',function(){
+    $(function () {
+        $('.print_order').on('click', function () {
             var title_order_room = document.getElementsByClassName('title_order_room');
-            var list_item= document.getElementsByClassName('list_item');
-            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="/public/admin/css/print-table.css"/>'?>';
+            var list_item = document.getElementsByClassName('list_item');
+            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="/public/admin/css/print-table.css"/>' ?>';
             var html = '<html>';
-            
+
             html += '<head>';
-            html += css ;
+            html += css;
             html += '</head>';
-             html += '<body>';
-            html+='<table>';
-            html+=title_order_room[0].outerHTML;
-            html+=list_item[0].outerHTML;
-            html+='</table>';
+            html += '<body>';
+            html += '<table>';
+            html += title_order_room[0].outerHTML;
+            html += list_item[0].outerHTML;
+            html += '</table>';
             html += '</body>';
             html += '</html>';
             newWin = window.open("");

@@ -1,30 +1,4 @@
-<style type="text/css">
-    #pdf_content {
-        width: 700px;
-        display: block;
-        overflow: hidden;
-        position: relative;
-        padding: 20px;
-        font-size: 12px;
-    }
-    .text-left{
-        float: left;
-    }
-    #table-responsive {
-        max-width: 700px;
-    }
-    #pdf_logo img {
-        max-height: 70px;
-    }
-    #company_name {
-        text-transform: uppercase;
-        font-weight: bold;
-        color: #002FC2
-    }
-    #pdf_content span {
-        color: #002FC2;
-    }
-
+<style>
     #pdf_title {
         width: 100%;
         text-align: center;
@@ -213,20 +187,20 @@
                         <div id="pdf_header">
                             <div id="pdf_company" class="fl">
                                 <p id="company_name"><?php echo $this->config->item('company'); ?></p>
-                                <p><span><?php echo 'công ty'; ?></span></p>
-                                <p>Điện Thoại: <span><?php echo 'cong ty'; ?></span></p>
+                                <p><?php echo 'công ty'; ?></p>
+                                <p>Điện Thoại: <?php echo 'cong ty'; ?></p>
                                 <?php if ($this->config->item('website')) { ?>
-                                    <p>Website: <span><?php echo 'website'; ?></span></p>
+                                    <p>Website: <?php echo 'website'; ?></p>
                                 <?php } ?>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div >
                             <div id="pdf_customer" class="clb">
                                 <p>Người nhận tiền: <?php echo 'nguyen van a' ?></p>
                                 <p>Địa chỉ: <?php echo 'dia chi'; ?></p>
                                 <p>Lý do nộp: <?php echo 'ly do nop'; ?></p>
                                 <p>Số tiền: <?php echo 'số tiền' ?> </p>
-                                <p>Số tiền viết bằng chữ: <span><?php echo 'số tiền băng chữ'; ?></span></p>
+                                <p>Số tiền viết bằng chữ: <?php echo 'số tiền băng chữ'; ?></p>
                             </div>
                         </div>
                         <div class="form-group">

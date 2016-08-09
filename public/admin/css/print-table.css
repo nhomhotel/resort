@@ -7,6 +7,8 @@
     } 
 }
 @media print {
+    table{ overflow: visible !important;
+    display: inline ;}
     .hidden-print{
         display: none;
     }
@@ -32,7 +34,7 @@
         margin-bottom: 0px;
     }
     .table {
-        font-size: 14px;
+        font-size: 13px;
         vertical-align: middle;
     }
     .table {
@@ -83,4 +85,5 @@
     td.textC {
         border: 1px solid #e4e4e4;
     }
+    #page { overflow-y: visible; }
 }

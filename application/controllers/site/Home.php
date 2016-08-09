@@ -110,11 +110,11 @@ class Home extends MY_Controller {
             if ($this->input->post()) {
                 $this->load->library('form_validation');
                 $this->load->helper('form');
-                $this->form_validation->set_rules('user_name', 'Tên đăng nhập', 'trim|required|min_length[6]|max_length[12]|callback_checkUserName');
+                $this->form_validation->set_rules('user_name', lang('register_user_name'), 'trim|required|min_length[6]|max_length[12]|callback_checkUserName');
                 $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_checkEmail');
-                $this->form_validation->set_rules('last_name', 'Họ ', 'trim|required');
-                $this->form_validation->set_rules('first_name', 'Têm', 'trim|required');
-                $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[6]');
+                $this->form_validation->set_rules('last_name', lang('register_last_name'), 'trim|required');
+                $this->form_validation->set_rules('first_name', lang('register_first_name'), 'trim|required');
+                $this->form_validation->set_rules('password', lang('register_password'), 'trim|required|min_length[6]');
 
                 //chạy và kiểm tra các tập luật
                 if ($this->form_validation->run()) {
@@ -146,6 +146,7 @@ class Home extends MY_Controller {
                             $this->email->initialize(get_config_email($this->config->item('address_email'), $this->config->item('pass_email')));
                             $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
                             $this->email->to($email);
+                            
                             $this->email->subject($email_template->email_title);
                             $email_content = $email_template->description;
                             $email_content = str_replace('__user_name__', $data['user_name'], $email_content);
@@ -232,7 +233,7 @@ class Home extends MY_Controller {
         $where = array('user_name' => $user_name);
         $check = $this->User_model->check_exists($where);
         if ($check > 0) {
-            $this->form_validation->set_message('checkUserName', '{field} đã tồn tại.');
+            $this->form_validation->set_message('checkUserName', '{field} '.lang('register_exits'));
             return false;
         } else {
             return true;
@@ -245,7 +246,7 @@ class Home extends MY_Controller {
         $where = array('email' => $email);
         $check = $this->User_model->check_exists($where);
         if ($check > 0) {
-            $this->form_validation->set_message('checkEmail', '{field} đã tồn tại.');
+            $this->form_validation->set_message('checkEmail', '{field} '.lang('register_exits'));
             return false;
         } else {
             return true;
