@@ -26,7 +26,18 @@
 <div class="wrapper col-md-12  clearfix content">
     <?php if (isset($message) && $message) {
         $this->load->view('admin/message', $message);
-    } ?>
+    }
+    if($this->session->flashdata('message')):?>
+    <?php if($this->session->flashdata('success')):?>
+    <div class="alert alert-success">
+        <strong>Success!</strong> <?php echo $this->session->flashdata('message');?>
+    </div>
+    <?php else :?>
+    <div class="alert alert-danger">
+        <strong>Danger!</strong> <?php echo $this->session->flashdata('message');?>
+    </div>
+    <?php endif;?>
+    <?php endif;?>
     <div class="widget">
         <div class="title">
             <span class="titleIcon"><img src="<?php echo base_url(); ?>public/admin/images/icons/tableArrows.png"/></span>

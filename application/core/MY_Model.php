@@ -161,13 +161,13 @@ class MY_Model extends CI_Model {
      */
     function get_total($input = array(),$join=array())
     {
-        $this->get_list_set_input($input);
         if(count($join)>0){
             foreach ($join as $key => $value){
                 $tmp = explode('::', $value);
                 if(count($tmp)==2)$this->db->join($key, $key.'.'.$tmp[0].'='.  $this->table.'.'.$tmp[1]);
             }
         }
+        $this->get_list_set_input($input);
         $query = $this->db->get($this->table);
 
         return $query->num_rows();
@@ -212,9 +212,11 @@ class MY_Model extends CI_Model {
      * Lay danh sach
      * $input : mang cac du lieu dau vao
      */
-    function get_list($input = array(),$join = array())
+    function get_list($input = array(),$join = array(),$select= array())
     {
-
+        if(count($select)>0){
+            $this->db->select( implode(', ', $select));
+        }
         //xu ly ca du lieu dau vao
         $this->get_list_set_input($input);
         if(count($join)>0){

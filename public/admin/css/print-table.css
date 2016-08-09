@@ -4,7 +4,10 @@
     }
     img.sceen{
         display: block;
-    } 
+    }
+    .hidden-screen{
+        display: none;
+    }
 }
 @media print {
     table{ overflow: visible !important;

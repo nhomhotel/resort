@@ -27,26 +27,62 @@ class User extends AdminHome {
             return;
 //            redirect('site/No_access/'.  get_class());
         }
-        $this->load->model("role_model");
         $input = array();
-        $input['order'] = array('role_id', 'ASC');
-        $list_role = $this->role_model->get_list($input);
+        $filters = array();
+        if (!empty($_GET)) {
+            $params = $_GET;
+            foreach ($params as $key => $value) {
+                $data[$key] = securityServer($value);
+                if ($key != 'page') {
+                    $filters[] = $key . '=' . $value;
+                }
+            }
+        }
+        $user = $this->User_model->get_logged_in_employee_info();
+        /* -- Lọc user_name-- */
+        $user_name = securityServer($this->input->get('user_name'));
+        if ($user_name) {
+            $input['like'] = array('user_name', $user_name);
+        }
+        /* -- Lọc ozganzation-- */
+        $ozganzation = securityServer($this->input->get('ozganzation'));
+
+        if ($ozganzation) {
+            $input['or_like'] = array('ozganzation', $ozganzation);
+        }
+        /* -- Lọc role-- */
+        $role_id = securityServer($this->input->get('role'));
+        $role_id = (int) $role_id;
+        if ($role_id) {
+            $input['where']['user.role_id'] = $role_id;
+        }
+        
+        if (count($user)>0) {
+            $input['where']['user_id !='] = $user->user_id;
+        }
+        
+        $this->load->model("role_model");
+        $list_role = $this->role_model->get_list(array('order'=>array('order_id'=>'ASC')));
         $data['list_role'] = $list_role;
 
         $this->load->library('pagination');
-        $total = $this->user_model->get_total()-1;
+        $total = $this->user_model->get_total($input);
 
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = base_url('admin/user/index');
+        $config['use_page_numbers'] = TRUE;
+        $config['page_query_string'] = TRUE;
+        $config['query_string_segment'] = 'page';
+        $config['base_url'] = base_url('admin/user/index?'.implode('&', $filters));
         $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
         $config['use_page_numbers'] = TRUE;
         $this->pagination->initialize($config);
-        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
-            $segment = $this->uri->segment('4');
+        $page = securityServer($this->input->get('page'))?intval(securityServer($this->input->get('page'))):1;
+        if ($page>1) {
+            $segment = $page;
         } else {
             $segment = 1;
         }
@@ -59,35 +95,10 @@ class User extends AdminHome {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-
-        $input = array();
+        
         $input['limit'] = array($config['per_page'], $start);
         $input['order'] = array('user_id', 'DESC');
 
-
-        /* -- Lọc user_name-- */
-        $user_name = $this->input->get('user_name');
-        if ($user_name) {
-            $input['like'] = array('user_name', $user_name);
-        }
-        /* -- Lọc ozganzation-- */
-        $ozganzation = $this->input->get('ozganzation');
-
-        if ($ozganzation) {
-            $input['or_like'] = array('ozganzation', $ozganzation);
-        }
-        /* -- Lọc role-- */
-        $role_id = $this->input->get('role');
-        $role_id = (int) $role_id;
-        if ($role_id) {
-            $input['where']['user.role_id'] = $role_id;
-        }
-
-        //Lay session userLogin de list user != userLogin
-        if (!is_NULL($this->session->userdata('userLogin'))) {
-            $userLogin = $this->session->userdata('userLogin');
-            $input['where']['user_id !='] = $userLogin['user_id'];
-        }
         $list = $this->user_model->getList($input);
         $data['total'] = $total;
         $data['list'] = $list;
@@ -260,9 +271,48 @@ class User extends AdminHome {
     }
 
     function edit_account() {
-//        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
+        $this->load->library('upload_library');
+        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
         $data['title'] = 'Chỉnh sửa tài khoản';
         $data['temp'] = ('admin/user/edit_account');
+        $user = $this->User_model->get_logged_in_employee_info();
+        if(count($user)>0){
+            $data['user'] = $user;
+        }
+        if($this->input->post()){
+            $this->form_validation->set_rules('last_name', 'Họ', 'trim|required');
+            $this->form_validation->set_rules('first_name', 'Tên', 'trim|required');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+            $this->form_validation->set_rules('phone', 'Số điện thoại', 'trim|required|numeric');
+            if ($this->form_validation->run()) {
+                if($_FILES['avarta']['error']==0){
+                    $upload = './public/admin/images';
+                    $image = $this->upload_library->upload($upload,'avarta');
+                };
+                $data['user_update'] = array(
+                    'last_name'=>$this->input->post('last_name'),
+                    'first_name'=>$this->input->post('first_name'),
+                    'email'=>$this->input->post('email'),
+                    'phone'=>$this->input->post('phone'),
+                    'description'=>$this->input->post('description'),
+                    'gender'=>$this->input->post('gender'),
+                    'birthday'=>$this->input->post('birthday'),
+                    'address'=>$this->input->post('address'),
+                    'workplace'=>$this->input->post('workplace'),
+                    'country'=>$this->input->post('country'),
+                    'updated'=>date('Y-m-d : H-i-s')
+                );
+                if(isset($image))$data['user_update']['avarta'] = $image;
+                if($this->User_model->update($user->user_id,$data["user_update"])){
+                    $this->session->set_flashdata(array('message'=>'Cập nhật thành công','success'=>true));
+                }else{
+                    $this->session->set_flashdata(array('message'=>'Cập nhật không thành công','success'=>false));
+                }
+                redirect(admin_url('home'));
+            }else{
+                
+            }
+        }
         $this->load->view('admin/layout', isset($data) ? ($data) : null);
     }
 
@@ -313,5 +363,48 @@ class User extends AdminHome {
         }
         redirect(admin_url('login'));
     }
-
+    
+    public function suggest_user($query = '') {
+        $query = securityServer($this->input->get('term'));
+//        echo json_encode(array('12222'=>$query));exit;
+        $input = array();
+        $input['like'] = array('user_name',$query);
+        $input['select'] = array('user_id','user_name');
+        $input['join'] = array();
+        $data = $this->User_model->get_list($input);
+        echo json_encode($data);
+        exit();
+    }
+    
+    public function suggest_name_room($query = '') {
+        //get data from address_model vs $query
+        $query = strtolower(trim($_POST['query']));
+        $query_no = vn_str_filter($query);
+        $data = $this->Address_model->getAddress($query_no); 
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                //search theo tên đường
+                if (count(explode(strtolower($query_no), strtolower($value['address_detail_ascii']))) > 1) {
+                    $result[$key] = $value['address_detail'];
+                    //search theo tên quan, huyện    
+                } elseif (count(explode(strtolower($query_no), strtolower($value['district_ascii']))) > 1) {
+                    $result[$key] = $value['district'] . ', ' . $value['provincial'] . ', ' . $value['country'];
+                    //search theo tên tỉnh, thành phố
+                } elseif (count(explode(strtolower($query_no), strtolower($value['provincial_ascii']))) > 1) {
+                    $result[$key] = $value['provincial'] . ', ' . $value['country'];
+                    //search theo tên quốc gia
+                } elseif (count(explode(strtolower($query_no), strtolower($value['country_ascii']))) > 1) {
+                    $result[$key] = $value['country'];
+                    // search mặc định
+                } else {
+//                $result[$key] = $value['address_street'].', '.$value['district'].', '.$value['provincial'].', '.$value['country'];
+                    $result[$key] = $value['address_detail'];
+                }
+            }
+            $result = array_unique($result);
+            echo json_encode($result);
+        } else
+            echo json_encode(array());
+        exit();
+    }
 }

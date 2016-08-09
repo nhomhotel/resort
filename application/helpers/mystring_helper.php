@@ -191,4 +191,15 @@ if (!function_exists('securityServer')) {
     }
 }
 
+if (!function_exists('onlyCharacter')) {
+
+    function onlyCharacter($str) {
+        $CI = & get_instance();
+        $str = str_replace('/[^a-zA-Z0-9 ]/',' ',$str);
+        $str = str_replace('/[ ]{2,}/',' ',$str);
+        return ($str);
+    }
+}
+
+
 ?>

@@ -23,24 +23,48 @@ class Post_room extends AdminHome {
         $this->load->model('Post_room_model');
         $this->load->library('pagination');
         $input = array();
+        $filters = array();
+        if (!empty($_GET)) {
+            $params = $_GET;
+            foreach ($params as $key => $value) {
+                $data[$key] = securityServer($value);
+                if ($key != 'page') {
+                    $filters[] = $key . '=' . $value;
+                }
+            }
+        }
         $user = $this->User_model->get_logged_in_employee_info();
         if($user==null || $user==''){
             redirect(admin_url('login'));
         }
         if($user->role_id==2)$input['where'] = array('post_room.user_id'=> $user->user_id);
-        $total = $this->Post_room_model->get_total($input);
+        $post_room_name = onlyCharacter(securityServer($this->input->get('post_room_name')));
+        if ($post_room_name) {
+            $input['like'] = array('post_room_name_ascii', $post_room_name);
+        }
+
+        $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
+        if ($user_name) {
+            $join = array('user'=>'user_id::user_id');
+            $input['or_like'] = array('user_name', $user_name);
+        }
+        $total = $this->Post_room_model->get_total($input,  isset($join)?$join:NULL);
         $data['total'] = $total;
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = base_url('admin/post_room/index');
+        $config['use_page_numbers'] = TRUE;
+        $config['page_query_string'] = TRUE;
+        $config['query_string_segment'] = 'page';
+        $config['base_url'] = base_url('admin/post_room/index?'.implode('&', $filters));
         $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
         $config['use_page_numbers'] = TRUE;
         $this->pagination->initialize($config);
-        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
-            $segment = $this->uri->segment('4');
+        $page = securityServer($this->input->get('page'))?intval(securityServer($this->input->get('page'))):1;
+        if ($page>1) {
+            $segment = $page;
         } else {
             $segment = 1;
         }
@@ -55,14 +79,12 @@ class Post_room extends AdminHome {
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
 
-        $post_room_name = $this->input->get('post_room_name');
-
-        // like loi -- ko search dc dong thoi
+        $post_room_name = onlyCharacter(securityServer($this->input->get('post_room_name')));
         if ($post_room_name) {
-            $input['like'] = array('post_room_name', $post_room_name);
+            $input['like'] = array('post_room_name_ascii', $post_room_name);
         }
 
-        $user_name = $this->input->get('user_name');
+        $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
         if ($user_name) {
             $input['or_like'] = array('user_name', $user_name);
         }
@@ -677,6 +699,7 @@ class Post_room extends AdminHome {
                         'address_id'=>$data_post_room->address_id,
                         'parent_id' => $parent_id,
                         'post_room_name' => $post_room_name,
+                        'post_room_name_ascii'=> strtolower(vn_str_filter($post_room_name)),
                         'description' => $description,
                         'house_type' => $house_type,
                         'room_type' => $room_type,
@@ -795,6 +818,29 @@ class Post_room extends AdminHome {
         } else {
             return true;
         }
+    }
+    
+    function suggest_post_room(){
+        $this->load->model('Post_room_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        $keyword = onlyCharacter(securityServer($this->input->get('term')));
+        $result = array();
+
+        /* Check empty keyword */
+        if (empty($keyword)) {
+            echo json_encode($result);
+            return;
+        }
+        $input = array();
+        if(count($user)>0&&$user->role_id==2){
+            $input['where'] = array('user_id',$user->user_id);
+        }
+        $input['like'] = array('post_room_name_ascii',$keyword);
+        $input['select'] = array('user_id','user_name');
+        $input['join'] = array();
+        $data = $this->Post_room_model->get_list($input);
+        return json_encode($data);
+        exit;
     }
 
 }

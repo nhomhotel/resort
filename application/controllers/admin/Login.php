@@ -12,6 +12,10 @@ class Login extends CI_Controller {
         $this->load->library("form_validation");
         $this->load->helper('form');
         $this->load->model('user_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        if(is_array($user)&&count($user)>0||isset($user->user_id)){
+            redirect(admin_url('home'));
+        }
         if ($this->input->post('login')) {
             $this->form_validation->set_rules('login', 'Login', 'callback_checkLogin');
             $this->form_validation->set_error_delimiters('<div class="errorLogin"><span class="glyphicon glyphicon-exclamation-sign"></span> ', '</div>');

@@ -48,7 +48,7 @@
                                                 <label for="user_name">Tên đăng nhập</label>
                                             </td>
                                             <td class="item">
-                                                <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" type="text"/>
+                                                <input name="user_name" id="user_name"  autocomplete="off" value="<?php echo $this->input->get('user_name'); ?>" type="text"/>
                                             </td>
                                             <td class="label-tit">
                                                 <label for="ozganzation">Tổ chức</label>
@@ -119,9 +119,7 @@
                             <tr class='row_20 <?php echo 'class'; ?>'>
                                 <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                                 <td class="textC" >
-                                    <a href="#" title="<?php echo $row->last_name . ' ' . $row->first_name; ?>">
-        <?php echo $row->user_name; ?>
-                                    </a>
+                                    <a href="#" title="<?php echo $row->last_name . ' ' . $row->first_name; ?>"><?php echo $row->user_name; ?></a>
                                 </td>
                                 <td class="textC"><?php echo $row->email; ?></td>
                                 <td class="textC"><?php echo $row->phone; ?></td>
@@ -209,4 +207,26 @@
         $('#allow-Del').attr('href', urlDel);
         $("#modal_del").modal("show");
     }
+    $(function () {
+        $("#user_name").autocomplete({
+            source: "<?php echo site_url('admin/user/suggest_user'); ?>",
+            dataType: "json",
+            minLength: 1,
+            select: function (event, ui) {
+                event.preventDefault();
+                console.log(ui);
+                if (ui.item.user_id != undefined && ui.item.user_name != undefined) {
+                    $("#user_name").val(ui.item.user_name);
+                    var url = "<?php echo admin_url('user/index?user_name=');?>"+ui.item.user_name;
+                    if($('#ozganzation').val()!='') url+="&ozganzation="+$('#ozganzation').val();
+                    if($('select[name="role"]').val()>1) url+="&role="+$('select[name="role"]').val();
+                    window.location.href = url;
+                }
+            }
+        })
+                .data("uiAutocomplete")._renderItem = function (ul, item) {
+            return $("<li class='user-name-item'>").append("<a>" + item.user_name + "</a>").appendTo(ul);
+        };
+        ;
+    });
 </script>
