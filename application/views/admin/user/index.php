@@ -207,14 +207,25 @@
         $('#allow-Del').attr('href', urlDel);
         $("#modal_del").modal("show");
     }
+    
     $(function () {
         $("#user_name").autocomplete({
             source: "<?php echo site_url('admin/user/suggest_user'); ?>",
             dataType: "json",
             minLength: 1,
+            open: function(event) {
+                $('.ui-autocomplete').css('height', 'auto');
+                var $input = $(event.target),
+                inputTop = $input.offset().top,
+                inputHeight = $input.height(),
+                autocompleteHeight = $('.ui-autocomplete').height(),
+                windowHeight = $(window).height();
+                if ((inputHeight + inputTop+ autocompleteHeight) > windowHeight) {
+                    $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+                }
+            },
             select: function (event, ui) {
                 event.preventDefault();
-                console.log(ui);
                 if (ui.item.user_id != undefined && ui.item.user_name != undefined) {
                     $("#user_name").val(ui.item.user_name);
                     var url = "<?php echo admin_url('user/index?user_name=');?>"+ui.item.user_name;

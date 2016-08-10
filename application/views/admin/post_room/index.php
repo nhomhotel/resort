@@ -46,7 +46,7 @@
                                                 <label for="post_room_name">Tên phòng</label>
                                             </td>
                                             <td class="item">
-                                                <input name="post_room_name" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+                                                <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
                                             </td>
                                             <td class="label-tit">
                                                 <label for="user_name">Tài khoản đăng</label>
@@ -200,4 +200,68 @@
         $('#allow-Del').attr('href', urlDel);
         $("#modal_del").modal("show");
     }
+    
+    $(function () {
+        $("#post_room_name").autocomplete({
+            source: "<?php echo site_url('admin/Post_room/suggest_name_room'); ?>",
+            dataType: "json",
+            minLength: 1,
+            open: function(event) {
+                $('.ui-autocomplete').css('height', 'auto');
+                var $input = $(event.target),
+                inputTop = $input.offset().top,
+                inputHeight = $input.height(),
+                autocompleteHeight = $('.ui-autocomplete').height(),
+                windowHeight = $(window).height();
+                if ((inputHeight + inputTop+ autocompleteHeight) > windowHeight) {
+                    $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+                }
+            },
+            select: function (event, ui) {
+                event.preventDefault();
+                if (ui.item.post_room_id != undefined && ui.item.post_room_name != undefined) {
+                    $("#post_room_name").val(ui.item.post_room_name);
+                    var url = "<?php echo admin_url('Post_room/index?post_room_name=');?>"+ui.item.post_room_name;
+                    if($('#user_name').val()!='') url+="&user_name="+$('#user_name').val();
+                    window.location.href = url;
+                }
+            }
+        })
+                .data("uiAutocomplete")._renderItem = function (ul, item) {
+            return $("<li class='post-room-name-item'>").append("<a>" + item.post_room_name + "</a>").appendTo(ul);
+        };
+        ;
+    });
+    
+    $(function () {
+        $("#user_name").autocomplete({
+            source: "<?php echo site_url('admin/Post_room/suggest_user_name'); ?>",
+            dataType: "json",
+            minLength: 1,
+            open: function(event) {
+                $('.ui-autocomplete').css('height', 'auto');
+                var $input = $(event.target),
+                inputTop = $input.offset().top,
+                inputHeight = $input.height(),
+                autocompleteHeight = $('.ui-autocomplete').height(),
+                windowHeight = $(window).height();
+                if ((inputHeight + inputTop+ autocompleteHeight) > windowHeight) {
+                    $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+                }
+            },
+            select: function (event, ui) {
+                event.preventDefault();
+                if ( ui.item.user_name != undefined) {
+                    $("#user_name").val(ui.item.user_name);
+                    var url = "<?php echo admin_url('Post_room/index?user_name=');?>"+ui.item.user_name;
+                    if($('#post_room_name').val()!='') url+="&post_room_name="+$('#post_room_name').val();
+                    window.location.href = url;
+                }
+            }
+        })
+                .data("uiAutocomplete")._renderItem = function (ul, item) {
+            return $("<li class='user-name-item'>").append("<a>" + item.user_name + "</a>").appendTo(ul);
+        };
+        ;
+    });
 </script>

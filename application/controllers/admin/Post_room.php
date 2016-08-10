@@ -42,7 +42,6 @@ class Post_room extends AdminHome {
         if ($post_room_name) {
             $input['like'] = array('post_room_name_ascii', $post_room_name);
         }
-
         $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
         if ($user_name) {
             $join = array('user'=>'user_id::user_id');
@@ -78,16 +77,6 @@ class Post_room extends AdminHome {
         $data['message'] = $message;
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
-
-        $post_room_name = onlyCharacter(securityServer($this->input->get('post_room_name')));
-        if ($post_room_name) {
-            $input['like'] = array('post_room_name_ascii', $post_room_name);
-        }
-
-        $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
-        if ($user_name) {
-            $input['or_like'] = array('user_name', $user_name);
-        }
 
         $list_room = $this->Post_room_model->getListInfo_where($input);
         if ($list_room) {
@@ -820,7 +809,7 @@ class Post_room extends AdminHome {
         }
     }
     
-    function suggest_post_room(){
+    function suggest_name_room(){
         $this->load->model('Post_room_model');
         $user = $this->User_model->get_logged_in_employee_info();
         $keyword = onlyCharacter(securityServer($this->input->get('term')));
@@ -831,15 +820,41 @@ class Post_room extends AdminHome {
             echo json_encode($result);
             return;
         }
-        $input = array();
+        
+;        $input = array();
         if(count($user)>0&&$user->role_id==2){
-            $input['where'] = array('user_id',$user->user_id);
+            $input['where'] = array('user_id'=>$user->user_id);
         }
         $input['like'] = array('post_room_name_ascii',$keyword);
-        $input['select'] = array('user_id','user_name');
-        $input['join'] = array();
-        $data = $this->Post_room_model->get_list($input);
-        return json_encode($data);
+        $select = array('post_room_id','post_room_name');
+        $join = array();
+        $data = $this->Post_room_model->get_list($input,$join,$select);
+        echo json_encode($data);
+        exit;
+    }
+    
+    function suggest_user_name(){
+        $this->load->model('Post_room_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        $keyword = onlyCharacter(securityServer($this->input->get('term')));
+        $result = array();
+
+        /* Check empty keyword */
+        if (empty($keyword)) {
+            echo json_encode($result);
+            return;
+        }
+        
+;        $input = array();
+        if(count($user)>0&&$user->role_id==2){
+            $input['where'] = array('user_id'=>$user->user_id);
+        }
+        $input['like'] = array('user_name',$keyword);
+        $this->db->distinct();
+        $select = array('user_name');
+        $join = array('user'=>'user_id::user_id');
+        $data = $this->Post_room_model->get_list($input,$join,$select);
+        echo json_encode($data);
         exit;
     }
 

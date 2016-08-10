@@ -366,8 +366,10 @@ class User extends AdminHome {
     
     public function suggest_user($query = '') {
         $query = securityServer($this->input->get('term'));
+        $user = $this->User_model->get_logged_in_employee_info();
 //        echo json_encode(array('12222'=>$query));exit;
         $input = array();
+        $input['where'] = array('user_id!='=>$user->user_id);
         $input['like'] = array('user_name',$query);
         $input['select'] = array('user_id','user_name');
         $input['join'] = array();
@@ -375,36 +377,5 @@ class User extends AdminHome {
         echo json_encode($data);
         exit();
     }
-    
-    public function suggest_name_room($query = '') {
-        //get data from address_model vs $query
-        $query = strtolower(trim($_POST['query']));
-        $query_no = vn_str_filter($query);
-        $data = $this->Address_model->getAddress($query_no); 
-        if (count($data) > 0) {
-            foreach ($data as $key => $value) {
-                //search theo tên đường
-                if (count(explode(strtolower($query_no), strtolower($value['address_detail_ascii']))) > 1) {
-                    $result[$key] = $value['address_detail'];
-                    //search theo tên quan, huyện    
-                } elseif (count(explode(strtolower($query_no), strtolower($value['district_ascii']))) > 1) {
-                    $result[$key] = $value['district'] . ', ' . $value['provincial'] . ', ' . $value['country'];
-                    //search theo tên tỉnh, thành phố
-                } elseif (count(explode(strtolower($query_no), strtolower($value['provincial_ascii']))) > 1) {
-                    $result[$key] = $value['provincial'] . ', ' . $value['country'];
-                    //search theo tên quốc gia
-                } elseif (count(explode(strtolower($query_no), strtolower($value['country_ascii']))) > 1) {
-                    $result[$key] = $value['country'];
-                    // search mặc định
-                } else {
-//                $result[$key] = $value['address_street'].', '.$value['district'].', '.$value['provincial'].', '.$value['country'];
-                    $result[$key] = $value['address_detail'];
-                }
-            }
-            $result = array_unique($result);
-            echo json_encode($result);
-        } else
-            echo json_encode(array());
-        exit();
-    }
+   
 }
