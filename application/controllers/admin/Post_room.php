@@ -44,7 +44,7 @@ class Post_room extends AdminHome {
         }
         $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
         if ($user_name) {
-            $join = array('user'=>'user_id::user_id');
+            $join = array('user'=>'user.user_id::user_id');
             $input['or_like'] = array('user_name', $user_name);
         }
         $total = $this->Post_room_model->get_total($input,  isset($join)?$join:NULL);

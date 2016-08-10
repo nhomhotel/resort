@@ -164,7 +164,8 @@ class MY_Model extends CI_Model {
         if(count($join)>0){
             foreach ($join as $key => $value){
                 $tmp = explode('::', $value);
-                if(count($tmp)==2)$this->db->join($key, $key.'.'.$tmp[0].'='.  $this->table.'.'.$tmp[1]);
+                if(count($tmp)==2)$this->db->join($key, $tmp[0].'='.  $this->table.'.'.$tmp[1]);
+                if(count($tmp)==3)$this->db->join($key, $tmp[0].'='.  $this->table.'.'.$tmp[1],$tmp[2]);
             }
         }
         $this->get_list_set_input($input);

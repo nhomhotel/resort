@@ -12,6 +12,7 @@ class Order_room extends AdminHome {
     function index() {
         $this->load->library('pagination');
         $user = $this->User_model->get_logged_in_employee_info();
+        $input = array();
         if($user==null || $user==''){
             redirect(admin_url('login'));
         }
@@ -23,19 +24,46 @@ class Order_room extends AdminHome {
 
             $input['where'] = array('post_room.user_id'=> $user->user_id);
         }
+        
+        $filters = array();
+        if (!empty($_GET)) {
+            $params = $_GET;
+            foreach ($params as $key => $value) {
+                $data[$key] = securityServer($value);
+                if ($key != 'page') {
+                    $filters[] = $key . '=' . $value;
+                }
+            }
+        }
+        //phần chung
         $input['where']['refer_id!='] =0; 
-        $total = $this->Order_room_model->get_total($input,array('post_room'=>"post_room_id::post_room_id"));
+        $post_room_name = onlyCharacter(securityServer($this->input->get('post_room_name')));
+        if ($post_room_name) {
+            $input['like'] = array('post_room_name_ascii', $post_room_name);
+        }
+        $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
+        if ($user_name) {
+            $join['user'] = 'post_room.user_id::user_id';
+            $input['like'] = array('user_name', $user_name);
+        }
+        $total = $this->Order_room_model->_get_total($user,$filters);
+        
+        
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = base_url('admin/order_room/index');
+        $config['base_url'] = base_url('admin/order_room/index?'.  implode('&', $filters));
+        $config['use_page_numbers'] = TRUE;
+        $config['page_query_string'] = TRUE;
+        $config['query_string_segment'] = 'page';
         $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
         $config['prev_link'] = 'Trang trước';
         $config['use_page_numbers'] = TRUE;
         $this->pagination->initialize($config);
-        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
-            $segment = $this->uri->segment('4');
+        $page = securityServer($this->input->get('page'))?intval(securityServer($this->input->get('page'))):1;
+        if ($page>1) {
+            $segment = $page;
         } else {
             $segment = 1;
         }
@@ -49,8 +77,8 @@ class Order_room extends AdminHome {
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
         $input['order'] = array('order_id', 'ASC');
-        $list = $this->Order_room_model->get_list_room($input)->result();
-        $data['profit'] = $this->Order_room_model->get_profit($input)->result();
+        $list = $this->Order_room_model->_get_list($user,$filters,$config['per_page'],$start)->result();
+        $data['profit'] = $this->Order_room_model->_get_profit($user,$filters,$config['per_page'],$start)->result();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['user'] = $user;
