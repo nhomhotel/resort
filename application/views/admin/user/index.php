@@ -95,6 +95,7 @@
                         <td>Tổ chức</td>
                         <td>Vai trò</td>
                         <td>Trạng thái</td>
+                        <td>Xác nhận tài khoản</td>
                         <td>Lợi nhuận</td>
                         <td>Ngày tạo</td>
                         <td>Hành động</td>
@@ -143,7 +144,19 @@
                                     }
                                     ?>
                                 </td>
-                                <td class="textC" id="profit"><?php echo $row->profit_rate >0?$row->profit_rate:'----';?></td>
+                                
+                                <td class="textC" id="validate">
+                                    <?php
+                                    if ($row->validate_code != '') {
+                                        ?>
+                                        <a href="javascript:void(0)" onclick="validate_user(<?php echo $row->user_id; ?>)" class="lightbox" title="block">
+                                            <img src="<?php echo base_url(); ?>public/admin/images/icons/color/block.png" />
+                                        </a>
+                                        <?php
+                                    } else echo '----';
+                                    ?>
+                                </td>
+                                <td class="textC" id="profit"><?php if($row->profit_rate >0) echo $row->profit_rate; else echo '----';?></td>
                                 <?php endif;?>
                                 <td class="textC"><?php echo date('d-m-Y - H:i:s', strtotime($row->created)); ?></td>
                                 <?php if($role_permisson==1):?>
@@ -189,6 +202,20 @@
 <script type="text/javascript">
     function status(id) {
         var url = '<?php echo admin_url('user/status'); ?>';
+        var urlCurrent = window.location.href;
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {'id': id},
+            dataType: 'text',
+            success: function (result) {
+                $(".myTable").load(urlCurrent + " .myTable");
+            }
+        });
+    }
+    
+    function validate_user(id) {
+        var url = '<?php echo admin_url('user/validate_user'); ?>';
         var urlCurrent = window.location.href;
         $.ajax({
             url: url,

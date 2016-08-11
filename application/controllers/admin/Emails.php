@@ -57,7 +57,7 @@ class Emails extends AdminHome {
                 )
             );
             $join = array(
-                'email_template' => 'email_template_id::email_type',
+                'email_template' => 'email_template.email_template_id::email_type',
             );
             $data['email'] = $this->Email_model->get_row($input, $join);
             $data['email_template'] = $this->Email_model->getEmailTemplate()->result();

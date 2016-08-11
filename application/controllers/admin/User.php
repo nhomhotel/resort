@@ -364,6 +364,30 @@ class User extends AdminHome {
         redirect(admin_url('login'));
     }
     
+    function validate_user() {
+        if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
+        $id = $this->input->post('id');
+        $id = (int) $id;
+
+        $statusInfo = $this->user_model->get_info($id, 'validate_code');
+        if (!$statusInfo) {
+
+            $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+            redirect(admin_url('user/index'));
+        } else {
+            if ($statusInfo->validate_code != '') {
+                $data = array(
+                    'validate_code' => '',
+                );
+            }
+            if ($this->user_model->update($id, $data)) {
+                echo json_encode(array('success'=>true));
+            }else{
+                echo json_encode(array('success'=>false));
+            }
+        }
+    }
+    
     public function suggest_user($query = '') {
         $query = securityServer($this->input->get('term'));
         $user = $this->User_model->get_logged_in_employee_info();

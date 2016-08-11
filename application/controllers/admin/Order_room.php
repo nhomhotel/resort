@@ -26,12 +26,14 @@ class Order_room extends AdminHome {
         }
         
         $filters = array();
+        $search = array();
         if (!empty($_GET)) {
             $params = $_GET;
             foreach ($params as $key => $value) {
                 $data[$key] = securityServer($value);
-                if ($key != 'page') {
+                if ($key != 'page'&&$data[$key]!='') {
                     $filters[] = $key . '=' . $value;
+                    $search[$key] = $value;
                 }
             }
         }
@@ -46,7 +48,7 @@ class Order_room extends AdminHome {
             $join['user'] = 'post_room.user_id::user_id';
             $input['like'] = array('user_name', $user_name);
         }
-        $total = $this->Order_room_model->_get_total($user,$filters);
+        $total = $this->Order_room_model->_get_total($user,$search);
         
         
         $config = array();
@@ -77,8 +79,8 @@ class Order_room extends AdminHome {
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
         $input['order'] = array('order_id', 'ASC');
-        $list = $this->Order_room_model->_get_list($user,$filters,$config['per_page'],$start)->result();
-        $data['profit'] = $this->Order_room_model->_get_profit($user,$filters,$config['per_page'],$start)->result();
+        $list = $this->Order_room_model->_get_list($user,$search,$config['per_page'],$start)->result();
+        $data['profit'] = $this->Order_room_model->_get_profit($user,$search,$config['per_page'],$start)->result();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['user'] = $user;
@@ -247,7 +249,57 @@ class Order_room extends AdminHome {
         }
         exit;
     }
+    
+    function suggest_name_room(){
+        $this->load->model('Order_room_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        $keyword = onlyCharacter(securityServer($this->input->get('term')));
+        $result = array();
 
+        /* Check empty keyword */
+        if (empty($keyword)) {
+            echo json_encode($result);
+            return;
+        }
+        
+;        $input = array();
+        if(count($user)>0&&$user->role_id==2){
+            $input['where'] = array('user_id'=>$user->user_id);
+        }
+        $input['like'] = array('post_room_name_ascii',$keyword);
+        $input['group_by']='post_room.post_room_id';
+        $select = array('post_room.post_room_id','post_room_name');
+        $join = array('post_room'=>'post_room.post_room_id::order.post_room_id');
+        $data = $this->Order_room_model->get_list($input,$join,$select);
+        echo json_encode($data);
+        exit;
+    }
+    
+    function suggest_user_name(){
+        $this->load->model('Order_room_model');
+//        $this->load->model('Post_room_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        $keyword = onlyCharacter(securityServer($this->input->get('term')));
+        $result = array();
+
+        /* Check empty keyword */
+        if (empty($keyword)) {
+            echo json_encode($result);
+            return;
+        }
+        
+;        $input = array();
+        if(count($user)>0&&$user->role_id==2){
+            $input['where'] = array('user_id'=>$user->user_id);
+        }
+        $input['like'] = array('user_name',$keyword);
+        $this->db->distinct();
+        $select = array('user_name');
+        $join = array('post_room'=>'order.post_room_id::post_room.post_room_id', 'user'=>'post_room.user_id::user.user_id');
+        $data = $this->Order_room_model->get_list($input,$join,$select);
+        echo json_encode($data);
+        exit;
+    }
 }
 
 ?>

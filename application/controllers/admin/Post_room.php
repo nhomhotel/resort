@@ -115,7 +115,11 @@ class Post_room extends AdminHome {
         $list_house_type = $this->house_type_model->get_list($input);
         $list_room_type = $this->room_type_model->get_list($input);
         $list_amenities = $this->amenities_model->get_list($input);
-        $list_area      = $this->area_model->get_list();
+        $no_area[0] = new stdClass();
+        $no_area[0]->area_id = -11;
+        $no_area[0]->name = 'Chọn khu vực';
+        $no_area[0]->name_en = 'Select area';
+        $list_area      = array_merge($no_area,$this->area_model->get_list());
         $list_experience = $this->experience_model->getListAll($input);
 
         $data["list_house_type"] = $list_house_type;
@@ -146,8 +150,8 @@ class Post_room extends AdminHome {
                 $lat = $this->input->post('lat');
                 $lng = $this->input->post('lng');
                 $address_street = $this->input->post('address_street');
-                $address_street_ascii = strtolower(vn_str_filter($this->input->post('address_street_ascii')));
-                $address_detail_ascii = strtolower(vn_str_filter($this->input->post('address_detail')));
+                $address_street_ascii = onlyCharacter(securityServer(($this->input->post('address_street_ascii'))));
+                $address_detail_ascii = onlyCharacter(securityServer(($this->input->post('address_detail'))));
                 $address_2 = $this->input->post('address_2');
                 $district = $this->input->post('district');
                 $district_ascii = stripUnicode($district);
@@ -487,10 +491,10 @@ class Post_room extends AdminHome {
             $upload_path = './uploads/room';
             $this->load->library('upload_library');
             $imageList = array();
-            $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
             if ($_FILES['image_list']['error'][0] == 4)
                 $imageList = $data['data_post_room']->image_list;
             else{
+                $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
                 $imageList = str_replace('./uploads', '/uploads', $imageList);
                 $sess['image_list'] = json_encode($imageList);
             }
@@ -503,7 +507,6 @@ class Post_room extends AdminHome {
              * 	Thêm dữ liệu vào table address, get id_address
              * 	unset address trong array post_info
              */
-            pre($post_info);return;
             $address_id = $post_info['address_id'];
             $this->address_model->update($post_info['address_id'],$post_info['address']);
             unset($post_info['address']);
@@ -587,8 +590,15 @@ class Post_room extends AdminHome {
                 if(count($data_post_room->parent)>0)$data['post_room_parent'] = $data_post_room->parent;
                 
             }
+            $no_area[0] = new stdClass();
+            $no_area[0]->area_id = -11;
+            $no_area[0]->name = 'Chọn khu vực';
+            $no_area[0]->name_en = 'Select area';
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
             $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
+            if(count($data[''])==0){
+                $data[''] = $no_area[0];
+            }
             $this->load->model("house_type_model");
             $this->load->model("room_type_model");
             $this->load->model("amenities_model");
@@ -602,7 +612,7 @@ class Post_room extends AdminHome {
             $list_house_type = $this->house_type_model->get_list($input);
             $list_room_type = $this->room_type_model->get_list($input);
             $list_amenities = $this->amenities_model->get_list($input);
-            $list_area = $this->area_model->get_list();
+            $list_area = array_merge($no_area[0], $this->area_model->get_list());
             $list_experience = $this->experience_model->getListAll($input);
 
             $data["list_house_type"] = $list_house_type;
@@ -635,8 +645,8 @@ class Post_room extends AdminHome {
                     $lat = $this->input->post('lat');
                     $lng = $this->input->post('lng');
                     $address_street = $this->input->post('address_street');
-                    $address_street_ascii = strtolower(vn_str_filter($this->input->post('address_street')));
-                    $address_detail_ascii = strtolower(vn_str_filter($this->input->post('address_detail')));
+                    $address_street_ascii = onlyCharacter(securityServer(($this->input->post('address_street'))));
+                    $address_detail_ascii = onlyCharacter(securityServer(($this->input->post('address_detail'))));
                     $address_2 = $this->input->post('address_2');
                     $district = $this->input->post('district');
                     $district_ascii = stripUnicode($district);
@@ -852,7 +862,7 @@ class Post_room extends AdminHome {
         $input['like'] = array('user_name',$keyword);
         $this->db->distinct();
         $select = array('user_name');
-        $join = array('user'=>'user_id::user_id');
+        $join = array('user'=>'user.user_id::post_room.user_id');
         $data = $this->Post_room_model->get_list($input,$join,$select);
         echo json_encode($data);
         exit;

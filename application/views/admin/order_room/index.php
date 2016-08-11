@@ -48,7 +48,7 @@
                                                 <label for="post_room_name">Tên phòng</label>
                                             </td>
                                             <td class="item">
-                                                <input name="post_room_name" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+                                                <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
                                             </td>
                                             <td class="label-tit">
                                                 <label for="user_name">Tài khoản đăng</label>
@@ -56,31 +56,39 @@
                                             <td class="item">
                                                 <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
                                             </td>
+                                            <td class="label-tit">
+                                                <label for="status">Trạng thái</label>
+                                            </td>
+                                            <td class="item">
+                                                <select name="status">
+                                                    <option value="">--</option>
+                                                    <option value="paid" <?php if(convert_accented_characters($this->input->get('status'))=='paid') echo ' selected'?>>Đã thanh toán</option>
+                                                    <option value="unpaid" <?php if(convert_accented_characters($this->input->get('status'))=='unpaid') echo ' selected'?>>chưa thanh toán</option>
+                                                </select>
+                                            </td>
                                             <td colspan='2'>
                                                 <input type="submit" class="button blueB" value="Lọc"/>
                                                 <input type="reset" class="basic" value="Reset"
                                                        onclick="window.location.href = '<?php echo admin_url('post_room'); ?>';">
-                                            </td>
-                                            <td>
-                                                <?php if ($user->role_id == 1): ?>
-                                                    <button type="button" class="button blueB"  data-toggle="modal" data-target="#myModal">Xuất hóa đơn</button>
-    <?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
-<?php endif; ?>
-                                            </td>
-                                        </tr>
-                                        <tr><td>
-                                                <button type="button" class="btn btn-default" aria-label="Left ">
-                                                    <span class="glyphicon glyphicon-align-left" aria-hidden="true" style="display: inline">Hiển thị thêm</span>
-                                                    <span class="glyphicon glyphicon-align-left" aria-hidden="true" style="display: none">Hiển thị bớt</span>
-                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </form>
                         </td>
+                        <?php if ($user->role_id == 1): ?>
+                        <td colspan="2">
+                    <button type="button" class="button blueB"  data-toggle="modal" data-target="#myModalBill">Xuất hóa đơn</button>
+                    <?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
+                        </td><td>
+                    <button type="button" id="btn-do-payment" class="button blueB"  data-toggle="modal" data-target="#myModalPayment">Thanh toán</button>
+                    <?php $this->load->view('admin/order_room/paymentConfirmation', isset($phieu_chi) ? $phieu_chi : null); ?>
+                    </td>
+                <?php endif; ?>
                     </tr>
                 </thead>
+                    <thead id="method-change">
+                    </thead>
                 <thead class="title_order_room">
                     <tr>
                         <td class="hidden-print"><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
@@ -141,26 +149,6 @@
                                     </p>
                                     <p class="price_en price-item">
                                         <label>USD: <span><?php echo numberFormatToCurrency($row->price_night_en - $row->price_night_en * $profit[$line]->profit_rate / 100); ?></span></label>
-                                    </p>
-                                    <p class="price_en price-item hidden-print">
-        <?php if ($user->role_id == 1): ?>
-                                        <div class="row"><!-- panel-footer -->
-                                            <div class="col-md-6 text-left hidden-xs hidden-print">
-                                                <button type="button" class="btn btn-primary" id="paymented">
-                                                    <span style="font-size: 11px"><?php echo $row->payment_status == 1 ? 'Đã thanh toán' : 'chưa thanh toán'; ?></span>
-                                                </button>
-                                            </div>
-                                            <div class="col-md-6 hidden-xs hidden-print" style="padding-left: 6px;">
-                                                <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModal">
-                                                    <span style="font-size: 11px">Xuất hóa đơn</span>
-                                                </button>
-                                        <?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
-                                            </div>
-                                        </div>
-                                    <?php elseif ($user->role_id == 2): ?>
-                                        <label><span><?php echo $row->payment_status == 1 ? 'Đã thanh toán' : 'chưa thanh toán'; ?></span></label>
-        <?php endif;
-        ?>
                                     </p>
                                 </td>
                                 <td class="textC price">
@@ -251,8 +239,70 @@
             }
         });
     })
-
-
+    
+    $(function () {
+        $("#post_room_name").autocomplete({
+            source: "<?php echo site_url('admin/Order_room/suggest_name_room'); ?>",
+            dataType: "json",
+            minLength: 1,
+            open: function(event) {
+                $('.ui-autocomplete').css('height', 'auto');
+                var $input = $(event.target),
+                inputTop = $input.offset().top,
+                inputHeight = $input.height(),
+                autocompleteHeight = $('.ui-autocomplete').height(),
+                windowHeight = $(window).height();
+                if ((inputHeight + inputTop+ autocompleteHeight) > windowHeight) {
+                    $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+                }
+            },
+            select: function (event, ui) {
+                event.preventDefault();
+                if (ui.item.post_room_id != undefined && ui.item.post_room_name != undefined) {
+                    $("#post_room_name").val(ui.item.post_room_name);
+                    var url = "<?php echo admin_url('Order_room/index?post_room_name=');?>"+encodeURI(ui.item.post_room_name);
+                    if($('#user_name').val()!='') url+="&user_name="+encodeURI($('#user_name').val());
+                    window.location.href = url;
+                }
+            }
+        })
+        .data("uiAutocomplete")._renderItem = function (ul, item) {
+            return $("<li class='order-room-name-item'>").append("<a>" + item.post_room_name + "</a>").appendTo(ul);
+        };
+        ;
+    });
+    
+    $(function () {
+        $("#user_name").autocomplete({
+            source: "<?php echo site_url('admin/Order_room/suggest_user_name'); ?>",
+            dataType: "json",
+            minLength: 1,
+            open: function(event) {
+                $('.ui-autocomplete').css('height', 'auto');
+                var $input = $(event.target),
+                inputTop = $input.offset().top,
+                inputHeight = $input.height(),
+                autocompleteHeight = $('.ui-autocomplete').height(),
+                windowHeight = $(window).height();
+                if ((inputHeight + inputTop+ autocompleteHeight) > windowHeight) {
+                    $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+                }
+            },
+            select: function (event, ui) {
+                event.preventDefault();
+                if ( ui.item.user_name != undefined) {
+                    $("#user_name").val(ui.item.user_name);
+                    var url = "<?php echo admin_url('Order_room/index?user_name=');?>"+encodeURI(ui.item.user_name);
+                    if($('#post_room_name').val()!='') url+="&post_room_name="+encodeURI($('#post_room_name').val());
+                    window.location.href = url;
+                }
+            }
+        })
+                .data("uiAutocomplete")._renderItem = function (ul, item) {
+            return $("<li class='user-name-item'>").append("<a>" + item.user_name + "</a>").appendTo(ul);
+        };
+        ;
+    });
     function del(id) {
         var url = '<?php echo admin_url(); ?>';
         var urlDel = url + '/post_room/delete/' + id;
@@ -279,6 +329,60 @@
             newWin = window.open("");
             newWin.document.write(html);
             newWin.print();
+        })
+    })
+    
+    $(function(){
+        $("#btn-do-payment1").click(function(){
+            var arrId = new Array();
+        $('[name = "id[]"]:checked').each(function () {
+            arrId.push($(this).val());
+        });
+
+        if (!arrId.length) {
+            confirm('Không có phòng được lựa chọn!');
+            return false;
+        }
+
+        if (!confirm('Thanh toán các phòng đã chọn!')) {
+            return false;
+        }
+        var url = $('#submit').attr('url');
+        console.log(arrId);
+//        return false;
+//        $.ajax({
+//            url: url,
+//            type: 'POST',
+//            data: {'arrId': arrId},
+//            success: function () {
+//                $(arrId).each(function (id, val) {
+//                    $('tr.row_' + val).fadeOut();
+//                });
+//            }
+//        });
+//        return false;
+        })
+    })
+    
+    $(function(){
+        $('#btn-do-payment').on('click',function(){
+            var arrId = new Array();
+        $('[name="id[]"]:checked').each(function () {
+            arrId.push($(this).val());
+        });
+
+        if (!arrId.length) {
+            alert('Không có đơn hàng được lựa chọn!')
+            return false;
+        }
+
+        if (!confirm('Thanh toán các đơn hàng đã chọn!')) {
+            return false;
+        }
+
+        var url = $('#submit').attr('url');
+        console.log(arrId);
+        return true;
         })
     })
 </script>

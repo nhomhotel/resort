@@ -201,7 +201,7 @@ class MY_Model extends CI_Model {
         if(count($join)>0){
             foreach ($join as $key => $value){
                 $tmp = explode('::', $value);
-                if(count($tmp)==2)$this->db->join($key, $key.'.'.$tmp[0].'='.  $this->table.'.'.$tmp[1]);
+                if(count($tmp)==2)$this->db->join($key, $tmp[0].'='.  $this->table.'.'.$tmp[1]);
             }
         }
         $query = $this->db->get($this->table);
@@ -223,7 +223,7 @@ class MY_Model extends CI_Model {
         if(count($join)>0){
             foreach ($join as $key => $value){
                 $tmp = explode('::', $value);
-                if(count($tmp)==2)$this->db->join($key, $key.'.'.$tmp[0].'='.  $this->table.'.'.$tmp[1]);
+                if(count($tmp)==2)$this->db->join($key, $tmp[0].'='. $tmp[1]);
             }
         }
         //thuc hien truy van du lieu
@@ -278,6 +278,10 @@ class MY_Model extends CI_Model {
         if (isset($input['limit'][0]) && isset($input['limit'][1]))
         {
             $this->db->limit($input['limit'][0], $input['limit'][1]);
+        }
+        if (isset($input['group_by']))
+        {
+            $this->db->group_by($input['group_by']); 
         }
     }
 
