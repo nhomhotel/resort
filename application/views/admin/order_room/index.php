@@ -36,59 +36,48 @@
             <div class="num f12">Tổng số: <b><?php echo isset($total) ? $total : 0; ?></b></div>
         </div>
         <div class="table-responsive">
-            <table class="table sTable mTable myTable" id="order_room_table">
-                <thead class="filter">
-                    <tr>
-                        <td colspan="17">
-                            <form class="form-inline form_filter form" method="get">
-                                <table class="table-filter" cellpadding="0" cellspacing="0">
-                                    <tbody>
-                                        <tr>
-                                            <td class="label-tit">
-                                                <label for="post_room_name">Tên phòng</label>
-                                            </td>
-                                            <td class="item">
-                                                <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-                                            </td>
-                                            <td class="label-tit">
-                                                <label for="user_name">Tài khoản đăng</label>
-                                            </td>
-                                            <td class="item">
-                                                <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
-                                            </td>
-                                            <td class="label-tit">
-                                                <label for="status">Trạng thái</label>
-                                            </td>
-                                            <td class="item">
-                                                <select name="status">
-                                                    <option value="">--</option>
-                                                    <option value="paid" <?php if(convert_accented_characters($this->input->get('status'))=='paid') echo ' selected'?>>Đã thanh toán</option>
-                                                    <option value="unpaid" <?php if(convert_accented_characters($this->input->get('status'))=='unpaid') echo ' selected'?>>chưa thanh toán</option>
-                                                </select>
-                                            </td>
-                                            <td colspan='2'>
-                                                <input type="submit" class="button blueB" value="Lọc"/>
-                                                <input type="reset" class="basic" value="Reset"
-                                                       onclick="window.location.href = '<?php echo admin_url('post_room'); ?>';">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </td>
-                        <?php if ($user->role_id == 1): ?>
-                        <td colspan="2">
-                    <button type="button" class="button blueB"  data-toggle="modal" data-target="#myModalBill">Xuất hóa đơn</button>
-                    <?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
-                        </td><td>
-                    <button type="button" id="btn-do-payment" class="button blueB"  data-toggle="modal" data-target="#myModalPayment">Thanh toán</button>
-                    <?php $this->load->view('admin/order_room/paymentConfirmation', isset($phieu_chi) ? $phieu_chi : null); ?>
-                    </td>
-                <?php endif; ?>
-                    </tr>
-                </thead>
-                    <thead id="method-change">
-                    </thead>
+            <table>
+<tr>
+	<form>
+		<td>
+			<label for="post_room_name">Tên phòng</label></td><td>
+			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+		</td>
+		<td>
+			<label for="post_room_name">Tên phòng</label></td><td>
+			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+		</td>
+		<td>
+			<label for="post_room_name">Tên phòng</label></td><td>
+			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+		</td>
+		<td>
+			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+		</td>
+	</form>
+	<td>
+		<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+	</td>
+</tr>
+</table>
+            
+<?php if ($user->role_id == 1): ?>
+<div class="">
+<div id="do-excel" >
+	<button type="button" class="button blueB"  data-toggle="modal" data-target="#myModalBill">Xuất hóa đơn</button>
+	<?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
+</div>
+</div>
+<div class="">
+<div id="do-payment" >
+	<button type="button" id="btn-do-payment" class="button blueB"  data-toggle="modal" data-target="#myModalPayment">Thanh toán</button>
+	<?php $this->load->view('admin/order_room/paymentConfirmation', isset($phieu_chi) ? $phieu_chi : null); ?>
+</div>
+</div>
+<?php endif; ?>
+            <table class="table sTable mTable myTable">
                 <thead class="title_order_room">
                     <tr>
                         <td class="hidden-print"><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
@@ -99,9 +88,7 @@
                         <td>Giá bán</td>
                         <td>Lợi nhuận</td>
                         <td>Người thuê phòng</td>
-                        <?php if ($user->role_id == 1): ?>
-                            <td>Đối tác</td>
-<?php endif; ?>
+                        <?php if ($user->role_id == 1): ?><td>Đối tác</td><?php endif; ?>
                         <td>Ngày nhận phòng</td>
                         <td>Ngày trả phòng</td>
                         <td>Số người ở</td>
