@@ -1,4 +1,9 @@
+<div class="modal fade" id="myModalBill" role="dialog">
 <style>
+    #myModalBill{
+        text-align: left !important;
+        color: black;
+    }
     #pdf_title {
         width: 100%;
         text-align: center;
@@ -6,6 +11,9 @@
         font-weight: bold;
         font-size: 16px;
         margin-top: 12px;
+    }
+    #pdf_customer{
+        font-size: 14px;
     }
 
     #pdf_tbl_items {
@@ -172,7 +180,6 @@
     }
     /*@media screen and (min-device-width: 481px) and (max-device-width: 768px)*/
 </style>
-<div class="modal fade hidden-print" id="myModal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -184,23 +191,19 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="pdf_header">
-                            <div id="pdf_company" class="fl">
-                                <p id="company_name"><?php echo $this->config->item('company'); ?></p>
-                                <p><?php echo 'công ty'; ?></p>
-                                <p>Điện Thoại: <?php echo 'cong ty'; ?></p>
-                                <?php if ($this->config->item('website')) { ?>
-                                    <p>Website: <?php echo 'website'; ?></p>
-                                <?php } ?>
-                            </div>
-                        </div>
+                        <?php if(isset($data)&&is_array($data)):?>
                         <div >
                             <div id="pdf_customer" class="clb">
-                                <p>Người nhận tiền: <?php echo 'nguyen van a' ?></p>
-                                <p>Địa chỉ: <?php echo 'dia chi'; ?></p>
-                                <p>Lý do nộp: <?php echo 'ly do nop'; ?></p>
-                                <p>Số tiền: <?php echo 'số tiền' ?> </p>
-                                <p>Số tiền viết bằng chữ: <?php echo 'số tiền băng chữ'; ?></p>
+                                <p>Người nhận tiền: <strong><?php echo $data[0]->user_name ?></strong></p>
+                                <p>Địa chỉ: <strong><?php echo $data[0]->address; ?></strong></p>
+                                <p>Lý do nộp: <strong>Nộp cho đơn hàng</strong></p> 
+                                <?php $total = 0;
+                                foreach ($data as $row):
+                                    $payment = $row->payment_type*(1-$row->profit_rate/100);
+                                    $total+=$payment;?>
+                                <p>&nbsp;&nbsp;&nbsp;<strong><?php echo $row->post_room_name; ?></strong> - <?php echo numberFormatToCurrency($payment) ?></p>
+                                <?php endforeach;?>
+                                <p>Tổng tiền: <strong><?php echo getStringNumber($total);?></strong></p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -231,13 +234,36 @@
                                 </div>
                             </div>
                         </div>
+                        <?php endif;?>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <?php if(isset($data)&&is_array($data)):?>
                 <button type="button" data-dismiss="modal" class="btn btn-default">Đóng</button>
-                <button type="submit" class="btn btn-primary" id="save_info_customer">In hóa đơn</button>
+                <button type="submit" class="btn btn-primary" id="print-bill">In hóa đơn</button>
+                <?php endif;?>
             </div>
         </div>
     </div>
 </div>
+<script>$(function(){
+    $('#print-bill').on('click',function(){
+            var content_bill = document.getElementById('myModalBill');
+            var css = document.getElementById('myModalBill').getElementsByTagName('style');
+//            console.log(content_bill);return false;
+            if(typeof content_bill !='undefined'){
+                newWin = window.open("");
+                newWin.document.write('<html>');
+                newWin.document.write('<head>');
+                newWin.document.write('</head>');
+                newWin.document.write('<body>');
+                newWin.document.write(css);
+                newWin.document.write(content_bill.outerHTML);
+//                newWin.document.write(content_bill.outerHTML);
+                newWin.document.write('</body>');
+                newWin.document.write('</html>');
+            newWin.print();
+            }
+        })
+})</script>

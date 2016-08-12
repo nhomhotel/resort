@@ -300,6 +300,80 @@ class Order_room extends AdminHome {
         echo json_encode($data);
         exit;
     }
+    
+    function do_payment(){
+        $user = $this->User_model->get_logged_in_employee_info();
+        if(!$user)redirect (admin_url('login'));
+        $ids=$this->input->post('arrId');
+        if(!is_array($ids)){
+            echo json_encode(array('success'=>'false','message'=>'Đơn hàng không hợp lệ<br/>xin thử lại'));
+            exit;
+        }
+        $idFix = array();
+        foreach ($ids as $id){
+            $idFix[] = intval(securityServer($id));
+        }
+        if($user->role_id==2){
+            echo json_encode(array('success'=>false,'message'=>'Bạn không có quyền sử dụng chức năng này'));
+            exit;
+        }
+        $data_check = $this->db->from('order')
+                ->join('post_room','order.post_room_id=post_room.post_room_id')
+                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$idFix)->get()->num_rows();
+        if($data_check>0){
+            echo json_encode(array('success'=>false,'message'=>'Đã có những đơn hàng đã thanh toán trước đó<br/>Đề nghị thử lại'));
+            exit;
+        }
+        $data_check = $this->db->distinct()->select('post_room.user_id')->from('order')
+                ->join('post_room','order.post_room_id=post_room.post_room_id')
+                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$idFix)->get()->num_rows();
+        if($data_check !=1){
+            echo json_encode(array('success'=>false,'message'=>'Chỉ có thể xuất nhiều hóa đơn của cùng 1 đối tác!'));
+            exit;
+        }
+        
+        $data['payment'] = $this->load->view('admin/order_room/paymentConfirmation',array('ids'=>$idFix),true);
+        echo json_encode(array('success'=>true,'message'=>$data));
+        exit;
+    }
+    
+    function do_bill(){
+        $user = $this->User_model->get_logged_in_employee_info();
+        if(!$user)redirect (admin_url('login'));
+        $ids=$this->input->post('arrId');
+        if(!is_array($ids)){
+            echo json_encode(array('success'=>false,'message'=>'Đơn hàng không hợp lệ<br/>xin thử lại'));
+            exit;
+        }
+        $idFix = array();
+        foreach ($ids as $id){
+            $idFix[] = intval(securityServer($id));
+        }
+        $id=  intval(securityServer($ids[0]));
+        if($user->role_id==2){
+            echo json_encode(array('success'=>false,'message'=>'Bạn không có quyền sử dụng chức năng này'));
+            exit;
+        }
+        $data_check = $this->db->distinct()->select('post_room.user_id')->from('order')
+            ->join('post_room','post_room.post_room_id=order.post_room_id')->join('user','user.user_id=post_room.user_id')
+            ->where('refer_id!=',0)->where_in('order_id',$idFix)
+            ->get()->num_rows();
+        if($data_check!=1){
+            echo json_encode(array('success'=>false,'message'=>'Chỉ có thể xuất nhiều hóa đơn của cùng 1 đối tác!'));
+            exit;
+        }
+        $data_room=$this->db->from('order')
+            ->join('post_room','post_room.post_room_id=order.post_room_id')->join('user','user.user_id=post_room.user_id')
+            ->where('refer_id!=',0)->where_in('order_id',$idFix)
+            ->get()->result();
+        if(count($data_room)<1){
+            echo json_encode(array('success'=>false,'message'=>'Đơn hàng không hợp lệ<br/>xin thử lại'));
+            exit;
+        }
+        $data['bill'] = $this->load->view('admin/order_room/phieu-chi',array('data'=>$data_room),true);
+        echo json_encode(array('success'=>true,'message'=>$data));
+        exit;
+    }
 }
 
 ?>

@@ -1,6 +1,7 @@
 <!-- Main content -->
 <!-- Title area -->
 <link rel="stylesheet" type="text/css" href="/public/admin/css/print-table.css" media="print,screen"/>
+<script type="text/javascript" src="<?php echo base_url()?>public/admin/js/jquery.toaster.js"></script>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
@@ -36,48 +37,62 @@
             <div class="num f12">Tổng số: <b><?php echo isset($total) ? $total : 0; ?></b></div>
         </div>
         <div class="table-responsive">
-            <table>
-<tr>
-	<form>
-		<td>
-			<label for="post_room_name">Tên phòng</label></td><td>
-			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-		</td>
-		<td>
-			<label for="post_room_name">Tên phòng</label></td><td>
-			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-		</td>
-		<td>
-			<label for="post_room_name">Tên phòng</label></td><td>
-			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-		</td>
-		<td>
-			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-		</td>
-	</form>
-	<td>
-		<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-			<input name="post_room_name" id="post_room_name" class="form-control"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
-	</td>
-</tr>
-</table>
-            
-<?php if ($user->role_id == 1): ?>
-<div class="">
-<div id="do-excel" >
-	<button type="button" class="button blueB"  data-toggle="modal" data-target="#myModalBill">Xuất hóa đơn</button>
-	<?php $this->load->view('admin/order_room/phieu-chi', isset($phieu_chi) ? $phieu_chi : null); ?>
-</div>
-</div>
-<div class="">
-<div id="do-payment" >
-	<button type="button" id="btn-do-payment" class="button blueB"  data-toggle="modal" data-target="#myModalPayment">Thanh toán</button>
-	<?php $this->load->view('admin/order_room/paymentConfirmation', isset($phieu_chi) ? $phieu_chi : null); ?>
-</div>
-</div>
-<?php endif; ?>
             <table class="table sTable mTable myTable">
+                <thead class="filter">
+                    <tr>
+                        <td colspan="17">
+                            <form class="form-inline form_filter form" method="get">
+                                <table class="table-filter" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="label-tit">
+                                                <label for="post_room_name">Tên phòng</label>
+                                            </td>
+                                            <td class="item">
+                                                <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
+                                            </td>
+                                            <td class="label-tit">
+                                                <label for="user_name">Tài khoản đăng</label>
+                                            </td>
+                                            <td class="item">
+                                                <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
+                                            </td>
+                                            <td class="label-tit">
+                                                <label for="status">Trạng thái</label>
+                                            </td>
+                                            <td class="item">
+                                                <select name="status">
+                                                    <option value="">--</option>
+                                                    <option value="paid" <?php if(convert_accented_characters($this->input->get('status'))=='paid') echo ' selected'?>>Đã thanh toán</option>
+                                                    <option value="unpaid" <?php if(convert_accented_characters($this->input->get('status'))=='unpaid') echo ' selected'?>>chưa thanh toán</option>
+                                                </select>
+                                            </td>
+                                            <td colspan='2'>
+                                                <input type="submit" class="button blueB" value="Lọc"/>
+                                                <input type="reset" class="basic" value="Reset"
+                                                       onclick="window.location.href = '<?php echo admin_url('post_room'); ?>';">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        
+                        <?php if ($user->role_id == 1): ?>
+                        <td colspan="2">
+                    <button type="button" class="button blueB"  id="btn-do-bill" data-toggle="modal" data-target="#myModalBill">Xuất hóa đơn</button>
+                    <div id="content-bill"></div>
+                        </td><td>
+                    <button type="button" id="btn-do-payment" class="button blueB"  data-toggle="modal" data-target="#myModalPayment">Thanh toán</button>
+                     <div id="content-payment"></div>
+                    </td>
+                <?php endif; ?>
+                    </tr>
+                </thead>
                 <thead class="title_order_room">
                     <tr>
                         <td class="hidden-print"><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
@@ -92,6 +107,8 @@
                         <td>Ngày nhận phòng</td>
                         <td>Ngày trả phòng</td>
                         <td>Số người ở</td>
+                        <td>Trạng thái</td>
+                        <td>Xác nhận</td>
                     </tr>
                 </thead>
                 <tfoot class="auto_check_pages">
@@ -113,7 +130,7 @@
                             ?>
                             <tr class='row_20'>
                                 <td class="textC hidden-print">
-                                    <input type="checkbox" name="id[]" value="<?php echo $row->post_room_id; ?>" />
+                                    <input type="checkbox" name="id[]" value="<?php echo $row->order_id; ?>" />
                                 </td>
                                 <td class="textC"><?php if (isset($start)) echo ($i + $start);
                             else echo $i; ?></td>
@@ -155,19 +172,25 @@
                                     </p>
                                 </td>
                                 <td class="textC">
-                                    <p style="font-size: 14px;font-weight: 600"><?php echo $row->user_name; ?></p>
+                                    <p style="font-size: 13px;font-weight: 600"><?php echo $row->user_name; ?></p>
                                 </td>
         <?php if ($user->role_id == 1): ?>
-                                    <td class="textC price"><p style="font-size: 14px;font-weight: 600"><?php echo $profit[$line]->user_name ?></p></td>
+                                    <td class="textC price"><p style="font-size: 13px;font-weight: 600"><?php echo $profit[$line]->user_name ?></p></td>
         <?php endif; ?>
                                 <td class="textC" id="status">
-                                    <p style="font-size: 14px;font-weight: 600"><?php echo $row->checkin; ?></p>
+                                    <p style="font-size: 13px;font-weight: 600"><?php echo $row->checkin; ?></p>
                                 </td>
                                 <td class="textC" id="status">
-                                    <p style="font-size: 14px;font-weight: 600"><?php echo $row->checkout; ?></p>
+                                    <p style="font-size: 13px;font-weight: 600"><?php echo $row->checkout; ?></p>
                                 </td>
                                 <td class="textC" id="status">
-                                    <p style="font-size: 14px;font-weight: 600"><?php echo $row->guests; ?></p>
+                                    <p style="font-size: 13px;font-weight: 600"><?php echo $row->guests; ?></p>
+                                </td>
+                                <td class="textC" id="payments">
+                                    <p style="font-size: 13px;font-weight: 600"><?php echo $row->payment_status?'Đã thanh toán':'Chưa thanh toán'; ?></p>
+                                </td>
+                                <td class="textC" id="feedback">
+                                    <p style="font-size: 13px;font-weight: 600"><?php echo $row->payment_status?'Có log':'Không có log'; ?></p>
                                 </td>
                             </tr>
                             <?php
@@ -188,7 +211,7 @@
                 <h4 class="modal-title">Xóa</h4>
             </div>
             <div class="modal-body">
-                <p style="color:red;font-size: 14px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
+                <p style="color:red;font-size: 13px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">hủy</button>
@@ -337,17 +360,18 @@
         var url = $('#submit').attr('url');
         console.log(arrId);
 //        return false;
-//        $.ajax({
-//            url: url,
-//            type: 'POST',
-//            data: {'arrId': arrId},
-//            success: function () {
-//                $(arrId).each(function (id, val) {
-//                    $('tr.row_' + val).fadeOut();
-//                });
-//            }
-//        });
-//        return false;
+        $.ajax({
+            url: "<?php echo admin_url('order_room/do_bill')?>",
+            type: 'POST',
+            data: {'arrId': arrId},
+            success: function () {
+                $(arrId).each(function (id, val) {
+                    $('tr.row_' + val).fadeOut();
+                });
+            },
+            dataType: "json",
+        });
+        return false;
         })
     })
     
@@ -366,10 +390,57 @@
         if (!confirm('Thanh toán các đơn hàng đã chọn!')) {
             return false;
         }
-
-        var url = $('#submit').attr('url');
-        console.log(arrId);
+        $('#content-payment').html('');
+        $.ajax({
+            url: "<?php echo admin_url('order_room/do_payment')?>",
+            type: 'POST',
+            data: {'arrId': arrId},
+            success: function (data) {
+                console.log(data);
+                if(!data.success){
+                     $.toaster({priority:'danger', title:"Cảnh báo",message:data.message,display:50000});
+                }else{
+                    $('#content-payment').html(data.message.payment);
+                    $("#myModalPayment").modal()
+                }
+            },
+            dataType: "json",
+        });
         return true;
         })
+        
+        $('#btn-do-bill').on('click',function(){
+            var arrId = new Array();
+        $('[name="id[]"]:checked').each(function () {
+            arrId.push($(this).val());
+        });
+
+        if (!arrId.length) {
+            alert('Không có đơn hàng được lựa chọn!')
+            return false;
+        }
+        
+//        if (arrId.length>1) {
+//            alert('Chỉ có thể xuất hóa đơn cho 1 đơn hàng !')
+//            return false;
+//        }
+        $('#content-bill').html('');
+        $.ajax({
+            url: "<?php echo admin_url('order_room/do_bill')?>",
+            type: 'POST',
+            data: {'arrId': arrId},
+            success: function (data) {
+                if(!data.success){
+                     $.toaster({priority:'danger', title:"Cảnh báo",message:data.message,display:50000});
+                }else{
+                    $('#content-bill').html(data.message.bill);
+                    $("#myModalBill").modal()
+                }
+            },
+            dataType: "json",
+        });
+        return true;
+        })
+        
     })
 </script>
