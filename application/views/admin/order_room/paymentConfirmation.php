@@ -4,6 +4,18 @@
         text-align: left !important;
         color: black;
     }
+    .error_submit{
+        color: red;
+        font-size: 14px;
+    }
+    @media only screen and (min-width : 992px) {
+        #payment_type_bank {
+            width: 66.666667% !important;
+        }
+        #payment_type_CVV{
+            width: 33.333333% !important;
+        }
+    }
 </style>
 <div class="modal fade hidden-print" id="myModalPayment" role="dialog">
     <div class="modal-dialog">
@@ -15,39 +27,49 @@
                 <p class="error_submit"></p>
             </div>
             <?php if(isset($ids)||  is_array($ids)):?>
-            <form method="post" name="form-save-info-payment" id="form-save-info-payment">
+            <form method="post" name="form-save-info-payment" id="form-save-info-payment" action="<?php echo base_url().'paymentOnline';?>">
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                             <div class="form-group">
-                                <label for="input_name_customer" class="control-label ">Tên khách hàng</label>
+                                <label for="input_name_customer" class="control-label ">Tên đối tác</label>
                                 <div class="input-field">
                                     <input type="text" class="form-control " name = "name_customer" id="name_customer" required/>
+                                    <div name="name_error" class="clear error"><?php echo form_error('name_customer'); ?></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="input_payment_type" class="control-label ">Loại tiền thanh toán</label>
-                                <select name="input_payment_type" id="input_payment_type" class="form-control" required>
+                                <select name="payment_type" id="input_payment_type" class="form-control" required>
                                     <option value="">--</option>
                                     <option value="cash" >Thanh toán bằng tiền mặt</option>
                                     <option value="bank" >Thanh toán bằng visa/mastercard</option>
                                 </select>
+                                <div name="name_error" class="clear error"><?php echo form_error('payment_type'); ?></div>
                             </div>
                             <div class="form-group" id="payment-type-group" style="display: none">
                                 <label for="input_payment_type_cash" id="label_cash" class="control-label ">Số tiền thanh toán</label>
-                                <input name="input_payment_type_cash" id="input_payment_type_cash" class="form-control">
-                                <label for="input_payment_type_bank" id="label_bank" class=" col-xs-3 control-label ">Số tài khoản visa mastercard</label>
-                                <input name="input_payment_type_bank" class="col-xs-9" id="input_payment_type_bank" class="form-control">
+                                <input name="payment_type_cash" id="input_payment_type_cash" class="form-control">
+                                <div name="name_error" class="clear error"><?php echo form_error('payment_type_cash'); ?></div>
+                                <label for="input_payment_type_bank" id="label_bank" class="control-label ">Số tài khoản visa mastercard</label>
+                                <input name="payment_type_bank" class="form-control col-md-8" placeholder="Số Visa/Mastercard" id="payment_type_bank" class="form-control">
+                                <div name="name_error" class="clear error"><?php echo form_error('payment_type'); ?></div>
+                                <input name="payment_type_CVV" class="form-control col-md-4" placeholder="Số CVV" id="payment_type_CVV" class="form-control">
+                                <div name="name_error" class="clear error"><?php echo form_error('payment_type'); ?></div>
                             </div>
                             <div class="form-group">
                                 <label for="paymentReason" class="control-label ">Lý do thanh toán</label>
                                 <div class="input-field">
                                     <input type="text" class="form-control" name="paymentReason" id="email" required/>
+                                    <div name="name_error" class="clear error"><?php echo form_error('payment_type'); ?></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-field">
-                                    <input type="hidden" class="form-control" name="ids" id="email" value="<?php echo '';?>"/>
+                                    <input type="hidden" class="form-control" name="ids" id="email" value="<?php echo implode(',', $ids);?>"/>
+                                    <input type="hidden" class="form-control" name="token" id="email" value="<?php echo $token;?>"/>
+                                    <div name="name_error" class="clear error"><?php echo form_error('payment_type'); ?></div>
+                                    <div name="name_error" class="clear error"><?php echo form_error('payment_type'); ?></div>
                                 </div>
                             </div>
                         
@@ -70,7 +92,8 @@
         rules:{
             name_customer:{
                 required:true,
-                checkUserName:true
+                checkUserName:true,
+                minlength: 6,
             },
             input_payment_type:{
                 required:true,
@@ -82,7 +105,8 @@
         },messages:{
             name_customer:{
                 required:'Trường không được để trống',
-                checkUserName:'Tên không đúng'
+                checkUserName:'Tên không đúng',
+                minlength:'Tên độ dài tối thiểu 6'
             },
             input_payment_type:{
                 required:'Trường không được để trống',
@@ -91,20 +115,30 @@
                 required:'Trường không được để trống',
             }
         },submitHandler: function(form) {
-            form.submit();
+//            console.log($(this).serialize());return false;
+            $.ajax({
+                url:form.action,
+                type: 'POST',
+                dataType: 'json',
+                data:$('#form-save-info-payment').serialize(),
+                success: function (data) {
+                        if(!data.success)$('.error_submit').html(data.messages)
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(2)
+                    }
+            })
         }
         
     })
     $('#input_payment_type').change(function(){
         if($(this).val()=='cash'){
-            $('#input_payment_type_cash,label_cash').css('display','block');
-            $('#payment-type-group').css('display','block');
-            $('#input_payment_type_bank,#payment-type-group #label_bank').css('display','none');
+            $('#payment-type-group,#label_cash,#input_payment_type_cash').css('display','block');
+            $('#label_bank,#payment_type_bank, #payment_type_CVV').css('display','none');
         }
         else if($(this).val()=='bank'){
-            $('#input_payment_type_cash, #payment-type-group #label_bank').css('display','none');
-            $('#input_payment_type_bank,#label_bank').css('display','block');
-            $('#payment-type-group').css('display','block');
+            $('#payment-type-group,#label_cash,#input_payment_type_cash').css('display','none');
+            $('#payment-type-group,#label_bank,#payment_type_bank, #payment_type_CVV').css('display','block');
         }
         else{
             $('#payment-type-group').css('display','none');

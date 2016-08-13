@@ -160,5 +160,69 @@ class payments extends MY_Controller {
         $data_content = str_replace('__guest__', $data['guests'], $data_content);
         return $data_content;
     }
+    
+    function paymentOnline(){
+        $user = $this->User_model->get_logged_in_employee_info();
+        if($this->input->post('token')){
+            $this->form_validation->set_rules('name_customer', 'Tên khách hàng', 'trim|required|min_length[6]|callback_checkUserName');
+            $this->form_validation->set_rules('payment_type', 'Loại hình thanh toán', 'trim|required|callback_checkPaymentType');
+//            $this->form_validation->set_rules('ids', 'Lý do thanh toán', 'trim|required|callback_checkIds');
+//            $this->form_validation->set_rules('token', 'Lý do thanh toán', 'trim|required|callback_checkToken');
+            if(securityServer($this->input->post('payment_type')=='cash')){
+                $this->form_validation->set_rules('payment_type_cash', 'Tài khoản', 'trim|required|numeric');
+            }elseif(securityServer($this->input->post('payment_type')=='bank')){
+                $this->form_validation->set_rules('payment_type_bank', 'Tài khoản', 'trim|required|numeric');
+                $this->form_validation->set_rules('payment_type_CVV', 'CVV',  'trim|required|numeric');
+            }
+            if ($this->form_validation->run()) {
+                echo json_encode(array(1=>1));
+                exit;
+            }else{
+                echo json_encode(array('success'=>false, 'messages'=>validation_errors()));
+                exit;
+            }
+        }
+        
+    }
+    
+    function checkUserName($user_name) {
+
+        $where = array();
+        $where = array('user_name' => $user_name);
+        $check = $this->User_model->check_exists($where);
+        if ($check <= 0) {
+            $this->form_validation->set_message('checkUserName', '{field} chưa tồn tại.');
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    function checkPaymentType($paymentType) {
+        if($paymentType =='cash'||$paymentType=='bank'){
+            return true;
+        }else {
+            $this->form_validation->set_message('checkPaymentType', '{field} định dạng không đúng.');
+            return false;
+        }
+    }
+    
+    function checkIds($paymentType) {
+        if($paymentType =='cash'||$paymentType=='bank'){
+            return true;
+        }else {
+            $this->form_validation->set_message('checkPaymentType', '{field} định dạng không đúng.');
+            return false;
+        }
+    }
+    
+    function checkToken($paymentType) {
+        if($paymentType =='cash'||$paymentType=='bank'){
+            return true;
+        }else {
+            $this->form_validation->set_message('checkPaymentType', '{field} định dạng không đúng.');
+            return false;
+        }
+    }
 
 }

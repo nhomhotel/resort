@@ -1,3 +1,28 @@
+<style>
+ul[class^="ui-autocomplete"] {
+    z-index: 99999;
+}
+#owl-demo .item {
+    margin: 3px;
+}
+#owl-demo .item img {
+    display: block;
+    width: 50%;
+    height: auto;
+}
+.owl-theme .owl-controls .owl-page {
+    display: inline-block;
+}
+.owl-theme .owl-controls .owl-page span {
+    background: none repeat scroll 0 0 #869791;
+    border-radius: 20px;
+    display: block;
+    height: 12px;
+    margin: 5px 7px;
+    opacity: 0.5;
+    width: 12px;
+}
+</style>
 <section id="banner-search">
     <div class="block-banner">
         <div class="container-fluid">
@@ -13,12 +38,21 @@
                 </div>
             <?php endif;
             ?>
-            <div class="row">
+            <div class="row owl-theme owl-loaded" id="home-slider">
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
+                <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
                 <div class="banner-bg" style = "background:url(public/site/images/hero2w.jpg) no-repeat center center scroll;background-size:cover;"></div>
             </div>
         </div>
     </div>
-    <div class="home-search">
+    <div class="home-search" style="z-index: 9999">
         <div class="container">
             <div class="row">
                 <h2><?php echo lang('home_discover_the_best_travel_accommodation') ?></h2>
@@ -178,3 +212,31 @@
         </div>
     </div>
 </section>
+<script>
+$(document).ready(function(){
+    alert(1)
+            $('#home-slider').owlCarousel({
+        margin:3,
+        loop:true,
+        autoplay:true,
+        navigation:true,
+//         nav:true,
+//         navText:['<i class="glyphicon glyphicon-menu-left"></i>','<i class="glyphicon glyphicon-menu-right"></i>'],
+        autoplayTimeout:150000,
+        autoplayHoverPause:true,
+        autoplaySpeed:1000,
+        dotsSpeed:40000,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+            },
+            600:{
+                items:1,
+            },
+            1000:{
+                items:1,
+            }
+        }
+    });
+})</script>

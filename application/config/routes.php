@@ -63,6 +63,7 @@ $route['home'] = 'site/home';
 $route['user/(:any)'] = 'site/user/$1';
 $route['payments/(:any)/(:any)'] = 'site/payments/$1/$2';
 $route['payments'] = 'site/payments';
+$route['paymentOnline'] = 'site/Payments/paymentOnline';
 $route['spaces/prices/(:any)'] = 'site/spaces/prices/$1';
 $route['language'] = 'site/language';
 //$route['site'] = "site/home";

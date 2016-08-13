@@ -20,7 +20,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>public/site/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/starview.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/admin/js/localization/messages_vi.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>public/admin/plugins/fc/lib/moment.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>public/admin/plugins/fc/fullcalendar.min.js"></script>
