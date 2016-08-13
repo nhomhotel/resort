@@ -304,7 +304,7 @@ class User extends AdminHome {
                 );
                 if(isset($image))$data['user_update']['avarta'] = $image;
                 if($this->User_model->update($user->user_id,$data["user_update"])){
-                    $this->session->set_flashdata(array('message'=>'Cập nhật thành công','success'=>true));
+                    $this->session->set_flashdata(array('message'=>$this->db->last_query(),'success'=>true));
                 }else{
                     $this->session->set_flashdata(array('message'=>'Cập nhật không thành công','success'=>false));
                 }

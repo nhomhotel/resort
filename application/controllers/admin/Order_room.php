@@ -309,9 +309,9 @@ class Order_room extends AdminHome {
             echo json_encode(array('success'=>'false','message'=>'Đơn hàng không hợp lệ<br/>xin thử lại'));
             exit;
         }
-        $idFix = array();
+        $data = array();
         foreach ($ids as $id){
-            $idFix[] = intval(securityServer($id));
+            $data['ids'][] = intval(securityServer($id));
         }
         if($user->role_id==2){
             echo json_encode(array('success'=>false,'message'=>'Bạn không có quyền sử dụng chức năng này'));
@@ -319,20 +319,20 @@ class Order_room extends AdminHome {
         }
         $data_check = $this->db->from('order')
                 ->join('post_room','order.post_room_id=post_room.post_room_id')
-                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$idFix)->get()->num_rows();
+                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$data['ids'])->get()->num_rows();
         if($data_check>0){
             echo json_encode(array('success'=>false,'message'=>'Đã có những đơn hàng đã thanh toán trước đó<br/>Đề nghị thử lại'));
             exit;
         }
         $data_check = $this->db->distinct()->select('post_room.user_id')->from('order')
                 ->join('post_room','order.post_room_id=post_room.post_room_id')
-                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$idFix)->get()->num_rows();
-        if($data_check !=1){
-            echo json_encode(array('success'=>false,'message'=>'Chỉ có thể xuất nhiều hóa đơn của cùng 1 đối tác!'));
+                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$data['ids'])->get()->num_rows();
+        if($data_check !=0){
+            echo json_encode(array('success'=>false,'message'=>$this->db->last_query()));
             exit;
         }
         
-        $data['payment'] = $this->load->view('admin/order_room/paymentConfirmation',array('ids'=>$idFix),true);
+        $data['payment'] = $this->load->view('admin/order_room/paymentConfirmation',$data,true);
         echo json_encode(array('success'=>true,'message'=>$data));
         exit;
     }
