@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="input_name_customer" class="control-label ">Tên đối tác</label>
                                 <div class="input-field">
-                                    <input type="text" class="form-control " name = "name_customer" id="name_customer" required/>
+                                    <input type="text" class="form-control " name = "name_customer" value="<?php echo isset($doitac)?$doitac->user_name:''; ?>" id="name_customer" required/>
                                     <div name="name_error" class="clear error"><?php echo form_error('name_customer'); ?></div>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="form-group" id="payment-type-group" style="display: none">
                                 <label for="input_payment_type_cash" id="label_cash" class="control-label ">Số tiền thanh toán</label>
-                                <input name="payment_type_cash" id="input_payment_type_cash" class="form-control">
+                                <input name="payment_type_cash" id="input_payment_type_cash" class="form-control" value="<?php echo isset($total_payment)&&isset($doitac)? ($total_payment->total_money*(1-$doitac->profit_rate/100)):''; ?>">
                                 <div name="name_error" class="clear error"><?php echo form_error('payment_type_cash'); ?></div>
                                 <label for="input_payment_type_bank" id="label_bank" class="control-label ">Số tài khoản visa mastercard</label>
                                 <input name="payment_type_bank" class="form-control col-md-8" placeholder="Số Visa/Mastercard" id="payment_type_bank" class="form-control">

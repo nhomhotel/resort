@@ -12,13 +12,17 @@ class Home extends MY_Controller {
 
     public function index() {
         $this->load->model('area_model');
+        $this->load->model('Home_Slider_model');
         $data['meta_title'] = $this->config->item('name_website');
         $data['temp'] = ('site/home/index');
         $data['sliders'] = $this->area_model->get_list(array(
             'where' => array('sort>' => 0),
             'limit' => array('9' => '0')
         ));
-        $data['popular'] = $this->load->view('site/slidehome', $data, TRUE);
+        $data['home_slider_image'] = $this->Home_Slider_model->get_list();
+        if(count($data['home_slider_image'])<2)$data['is_loop'] = 'false';else $data['is_loop'] = 'true';
+        $data['popular'] = $this->load->view('site/slidePopular', $data, TRUE);
+        $data['home_slider_image'] = $this->load->view('site/homeSliderImage', $data, TRUE);
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 

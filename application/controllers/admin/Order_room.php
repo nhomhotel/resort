@@ -185,11 +185,14 @@ class Order_room extends AdminHome {
         }
         $data_check = $this->db->distinct()->select('post_room.user_id')->from('order')
                 ->join('post_room','order.post_room_id=post_room.post_room_id')
-                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$data['ids'])->get()->num_rows();
-        if($data_check !=0){
-            echo json_encode(array('success'=>false,'message'=>$this->db->last_query()));
+                ->where('refer_id!=',0)->where_in('order_id',$data['ids'])->get();
+//        echo json_encode(array('1'=>$this->db->last_query()));exit;
+        if($data_check->num_rows() !=1){
+            echo json_encode(array('success'=>false,'message'=>'Chỉ thanh toán được những đơn hàng của cùng 1 đối tác.<br/>Xin thử lại'));
             exit;
         }
+        $data['total_payment'] = $this->db->select('SUM(payment_type) as total_money')->from('order')->where_in('order_id',$data['ids'])->get()->row();
+        $data['doitac'] =$this->db->from('user')->select('user_name,profit_rate')->where('user_id',$data_check->result()[0]->user_id)->get()->row();
         $data['token']=  md5($user->user_name.$user->user_name);
         $data['payment'] = $this->load->view('admin/order_room/paymentConfirmation',$data,true);
         echo json_encode(array('success'=>true,'message'=>$data));
@@ -197,6 +200,7 @@ class Order_room extends AdminHome {
     }
     
     function do_bill(){
+        $this->load->library('Payment_library');
         $user = $this->User_model->get_logged_in_employee_info();
         if(!$user)redirect (admin_url('login'));
         $ids=$this->input->post('arrId');

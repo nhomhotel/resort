@@ -240,7 +240,10 @@ class MY_Model extends CI_Model {
 
     protected function get_list_set_input($input = array())
     {
-
+        if ((isset($input['select'])) && $input['select'])
+        {
+            $this->db->select($input['select']);
+        }
         // Thêm ?i?u ki?n cho câu truy v?n truy?n qua bi?n $input['where']
         //(vi du: $input['where'] = array('email' => 'hocphp@gmail.com'))
         if ((isset($input['where'])) && $input['where'])

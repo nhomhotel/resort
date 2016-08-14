@@ -282,7 +282,6 @@
             return false;
         }
         var url = $('#submit').attr('url');
-        console.log(arrId);
 //        return false;
         $.ajax({
             url: "<?php echo admin_url('order_room/do_bill')?>",
@@ -320,7 +319,6 @@
             type: 'POST',
             data: {'arrId': arrId},
             success: function (data) {
-                console.log(data);
                 if(!data.success){
                      $.toaster({priority:'danger', title:"Cảnh báo",message:data.message,display:50000});
                 }else{

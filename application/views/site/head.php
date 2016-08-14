@@ -12,6 +12,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/login.css"/> -->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/animate.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/owl.theme.green.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/fotorama.css"> <!-- 3 KB -->
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/fill-price-jquery.css">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/site/css/jquery-ui.min.css">

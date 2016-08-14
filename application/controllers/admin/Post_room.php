@@ -116,7 +116,7 @@ class Post_room extends AdminHome {
         $list_room_type = $this->room_type_model->get_list($input);
         $list_amenities = $this->amenities_model->get_list($input);
         $no_area[0] = new stdClass();
-        $no_area[0]->area_id = -11;
+        $no_area[0]->area_id = -1;
         $no_area[0]->name = 'Chọn khu vực';
         $no_area[0]->name_en = 'Select area';
         $list_area      = array_merge($no_area,$this->area_model->get_list());
@@ -591,13 +591,13 @@ class Post_room extends AdminHome {
                 
             }
             $no_area[0] = new stdClass();
-            $no_area[0]->area_id = -11;
+            $no_area[0]->area_id = -1;
             $no_area[0]->name = 'Chọn khu vực';
             $no_area[0]->name_en = 'Select area';
             $data['address'] = $this->Address_model->get_row(array('where' => array('address_id' => $data_post_room->address_id)));
             $data['area_room'] = $this->Area_model->get_row(array('where' => array('area_id' => $data['address']->area_id)));
-            if(count($data[''])==0){
-                $data[''] = $no_area[0];
+            if(count($data['area_room'])==0){
+                $data['area_room'] = $no_area[0];
             }
             $this->load->model("house_type_model");
             $this->load->model("room_type_model");
@@ -612,7 +612,7 @@ class Post_room extends AdminHome {
             $list_house_type = $this->house_type_model->get_list($input);
             $list_room_type = $this->room_type_model->get_list($input);
             $list_amenities = $this->amenities_model->get_list($input);
-            $list_area = array_merge($no_area[0], $this->area_model->get_list());
+            $list_area = array_merge($no_area, $this->area_model->get_list());
             $list_experience = $this->experience_model->getListAll($input);
 
             $data["list_house_type"] = $list_house_type;

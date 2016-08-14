@@ -65,6 +65,20 @@
                 </li>
             </ul>
         </li>
+        <?php if($role==1):?>
+        <li class="homeSlider">
+            <a href="#collapse7" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
+                <span><?php echo 'Quản lý slider';?></span>
+                <strong>4</strong>
+            </a>
+            <ul class="sub collapse" id="collapse7" aria-expanded="false" style="height: 1px;">
+                <li>
+                    <a href="<?php echo  admin_url('HomeSlider');?>">Danh sách slider </a>
+                </li>
+                
+            </ul>
+        </li>
+        <?php endif;?>
         <li class="room">
             <a href="#collapse5" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo 'Quản lý phòng';?></span>
@@ -119,5 +133,6 @@ $('.category').find('strong').html($('.category').find('ul li').length);
 $('.account').find('strong').html($('.account').find('ul li').length);
 $('.room').find('strong').html($('.room').find('ul li').length);
 $('.email').find('strong').html($('.email').find('ul li').length);
+$('.homeSlider').find('strong').html($('.homeSlider').find('ul li').length);
 
 </script>

@@ -203,7 +203,7 @@
                                     $total+=$payment;?>
                                 <p>&nbsp;&nbsp;&nbsp;<strong><?php echo $row->post_room_name; ?></strong> - <?php echo numberFormatToCurrency($payment) ?></p>
                                 <?php endforeach;?>
-                                <p>Tổng tiền: <strong><?php echo getStringNumber($total);?></strong></p>
+                                <p>Tổng tiền: <strong><?php echo numberFormatToCurrency($total).'---'.getStringNumber($total);?></strong></p>
                             </div>
                         </div>
                         <div class="form-group">

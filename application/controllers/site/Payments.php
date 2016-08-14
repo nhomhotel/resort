@@ -166,8 +166,8 @@ class payments extends MY_Controller {
         if($this->input->post('token')){
             $this->form_validation->set_rules('name_customer', 'Tên khách hàng', 'trim|required|min_length[6]|callback_checkUserName');
             $this->form_validation->set_rules('payment_type', 'Loại hình thanh toán', 'trim|required|callback_checkPaymentType');
-//            $this->form_validation->set_rules('ids', 'Lý do thanh toán', 'trim|required|callback_checkIds');
-//            $this->form_validation->set_rules('token', 'Lý do thanh toán', 'trim|required|callback_checkToken');
+            $this->form_validation->set_rules('ids', 'Mã đơn hàng', 'trim|required|callback_checkIds');
+            $this->form_validation->set_rules('token', 'Mã xác nhận', 'trim|required|callback_checkToken');
             if(securityServer($this->input->post('payment_type')=='cash')){
                 $this->form_validation->set_rules('payment_type_cash', 'Tài khoản', 'trim|required|numeric');
             }elseif(securityServer($this->input->post('payment_type')=='bank')){
@@ -175,7 +175,62 @@ class payments extends MY_Controller {
                 $this->form_validation->set_rules('payment_type_CVV', 'CVV',  'trim|required|numeric');
             }
             if ($this->form_validation->run()) {
-                echo json_encode(array(1=>1));
+                if(securityServer($this->input->post('payment_type')=='cash')){
+                    $moneyPay = securityServer($this->input->post('payment_type_cash'));
+                    $arrIds = explode(',', securityServer($this->input->post('ids')));
+                    $IdsFix = array();
+                    $payment = '';
+                    $total = 0;
+                    if(count($arrIds)>0){
+                        foreach ($arrIds as $row) {
+                            $IdsFix[] = intval($row);
+                        }
+                    }
+                    $data_room=$this->db->from('order')
+                        ->join('post_room','post_room.post_room_id=order.post_room_id')->join('user','user.user_id=post_room.user_id')
+                        ->where('refer_id!=',0)->where_in('order_id',$IdsFix)
+                        ->get()->result();
+                    foreach ($data_room as $row){
+                        $payment = $row->payment_type*(1-$row->profit_rate/100);
+                        $total+=$payment;
+                    }
+                    if($moneyPay<$total){
+                        // trường hợp đang thanh toán
+                        echo json_encode(array('success'=>FALSE, 'messages'=>'Bạn đang thanh toán ít hơn số tiền phải trả cho các đơn hàng '.$total));
+                        exit;
+                        
+                    }else if($moneyPay==$total){
+                        $created = date('Y-m-d H:i:s');
+                        $data['bill_history'] = array(
+                            'order_room_id'=>  implode(',', $IdsFix),
+                            'admin_id'=> ($user->user_id),
+                            'user_id'=>($data_room[0]->user_id),
+                            'money_payment'=> $moneyPay,
+                            'payment_reason'=>  securityServer($this->input->post('paymentReason')),
+                            'create'=>$created
+                        );
+                        $this->db->from('bill_history');
+                        $this->db->from('order')->where_in('order_id',$IdsFix)->update('payment_status',1);
+                        
+                        echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng '));
+                        exit;
+                    }else{
+                        $created = date('Y-m-d H:i:s');
+                        $data['bill_history'] = array(
+                            'order_room_id'=>  implode(',', $IdsFix),
+                            'admin_id'=> ($user->user_id),
+                            'user_id'=>($data_room[0]->user_id),
+                            'money_payment'=> $moneyPay,
+                            'payment_reason'=>  securityServer($this->input->post('paymentReason')),
+                            'create'=>$created
+                        );
+                        $this->db->from('bill_history');
+                        $this->db->from('order')->where_in('order_id',$IdsFix)->update('payment_status',1);
+                        echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng '.$total));
+                        exit;
+                    }
+                }
+                echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng'));
                 exit;
             }else{
                 echo json_encode(array('success'=>false, 'messages'=>validation_errors()));
@@ -207,22 +262,44 @@ class payments extends MY_Controller {
         }
     }
     
-    function checkIds($paymentType) {
-        if($paymentType =='cash'||$paymentType=='bank'){
-            return true;
-        }else {
-            $this->form_validation->set_message('checkPaymentType', '{field} định dạng không đúng.');
+    function checkIds($Ids) {
+        $user = $this->User_model->get_logged_in_employee_info();
+        $arrIds = explode(',', securityServer($Ids));
+        $IdsFix = array();
+        if(count($arrIds)>0){
+            foreach ($arrIds as $row) {
+                $IdsFix[] = intval($row);
+            }
+            
+        }
+        if($user->role_id==2){
+            $this->form_validation->set_message('checkIds', 'Bạn không có quyền sử dụng chức năng này');
             return false;
         }
+        $data_check = $this->db->from('order')
+                ->join('post_room','order.post_room_id=post_room.post_room_id')
+                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$IdsFix)->get()->num_rows();
+        if($data_check>0){
+            $this->form_validation->set_message('checkIds', 'Đã có những đơn hàng đã thanh toán trước đó');
+            return false;
+        }
+        $data_check = $this->db->distinct()->select('post_room.user_id')->from('order')
+                ->join('post_room','order.post_room_id=post_room.post_room_id')
+                ->where('payment_status',1)->where('refer_id!=',0)->where_in('order_id',$IdsFix)->get()->num_rows();
+        if($data_check !=0){
+            $this->form_validation->set_message('checkIds', 'Chỉ thanh toán được những đơn hàng của cùng 1 đối tác');
+            return false;
+        }
+        return true;
     }
     
-    function checkToken($paymentType) {
-        if($paymentType =='cash'||$paymentType=='bank'){
-            return true;
-        }else {
-            $this->form_validation->set_message('checkPaymentType', '{field} định dạng không đúng.');
+    function checkToken($token) {
+        $user = $this->User_model->get_logged_in_employee_info();
+        if(md5($user->user_name.$user->user_name)!=$token){
+            $this->form_validation->set_message('checkToken', '{field} định dạng không đúng.');
             return false;
         }
+        return true;
     }
 
 }
