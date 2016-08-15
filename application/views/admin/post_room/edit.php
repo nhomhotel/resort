@@ -144,10 +144,10 @@ if ($this->session->userdata('post_info') !== NULL) {
                             <div class="panel-heading">Thông tin cho thuê</div>
                             <div class="panel-body">
                                 <div class="formRow">
-                                    <label class="formLeft">Tên bài đăng:<span class="req">*</span></label>
+                                    <label class="formLeft">Tên căn/phòng:<span class="req">*</span></label>
                                     <div class="formRight">
                                         <div class="left">
-                                            <input type="text" class="required" minlength="20" maxlength="50"  id="post_room_name" name="post_room_name" value="<?php echo (isset($post_info)) ? $post_info['post_room_name'] : set_value('post_room_name'); ?>" >
+                                            <input type="text" class="required" id="post_room_name" name="post_room_name" value="<?php echo (isset($post_info)) ? $post_info['post_room_name'] : set_value('post_room_name'); ?>" >
                                         </div>
                                         <div name="image_error" class="clear error"><?php echo form_error('post_room_name'); ?></div>
                                     </div>

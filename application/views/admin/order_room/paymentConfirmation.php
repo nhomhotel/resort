@@ -115,7 +115,8 @@
                 required:'Trường không được để trống',
             }
         },submitHandler: function(form) {
-//            console.log($(this).serialize());return false;
+//            console.log($(this).serialize());return false;    
+            var url = window.location.href;
             $.ajax({
                 url:form.action,
                 type: 'POST',
@@ -123,9 +124,13 @@
                 data:$('#form-save-info-payment').serialize(),
                 success: function (data) {
                         if(!data.success)$('.error_submit').html(data.messages)
+                        else{
+                            $.toaster({priority:'success', title:"",message:data.messages,display:50000});
+                            window.location.href = url;
+                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert(2)
+                        
                     }
             })
         }

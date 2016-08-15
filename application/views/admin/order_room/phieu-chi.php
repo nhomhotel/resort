@@ -190,6 +190,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
+                    <div class="col-xs-6 col-md-8">Phiên bản chưa đăng ký giấy phép sử dụng<br/>Phiên bản chưa đăng ký giấy phép sử dụng</div>
+                    <div class="col-xs-6 col-md-4">Mẫu số 02-TT<br/>Phiên bản chưa đăng ký giấy phép sử dụng</div>
                     <div class="col-md-12">
                         <?php if(isset($data)&&is_array($data)):?>
                         <div >

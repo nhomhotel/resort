@@ -70,7 +70,7 @@
                 <thead>
                     <tr>
                         <td>STT</td>
-                        <td colspan="2">Bài đăng</td>
+                        <td colspan="2">Tên căn/phòng</td>
                         <td>Giá phòng</td>
                         <td>Người đăng</td>
                         <td>trạng thái</td>
@@ -169,7 +169,7 @@
                 <h4 class="modal-title">Xóa</h4>
             </div>
             <div class="modal-body">
-                <p style="color:red;font-size: 14px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
+                <p style="color:red;font-size: 14px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa tên căn/phòng này ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">hủy</button>

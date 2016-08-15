@@ -57,8 +57,8 @@ class Area extends AdminHome {
         $this->load->library('form_validation');
         $this->load->helper('form');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('area_name', 'area_name', 'trim|required|min_length[5]');
-            $this->form_validation->set_rules('area_name_en', 'area_name_en', 'trim|required|min_length[5]');
+            $this->form_validation->set_rules('area_name', 'area_name', 'trim|required');
+            $this->form_validation->set_rules('area_name_en', 'area_name_en', 'trim|required');
             if (empty($_FILES['image_area']['name']))
                 $this->form_validation->set_rules('image_area', 'image_area', 'required');
             if ($this->form_validation->run()) {
@@ -103,8 +103,8 @@ class Area extends AdminHome {
             }
             $data['info'] = $info;
             if ($this->input->post('submit')) {
-                $this->form_validation->set_rules('area_name', 'area_name', 'trim|required|min_length[5]');
-                $this->form_validation->set_rules('area_name_en', 'area_name_en', 'trim|required|min_length[5]');
+                $this->form_validation->set_rules('area_name', 'area_name', 'trim|required');
+                $this->form_validation->set_rules('area_name_en', 'area_name_en', 'trim|required');
                 if ($this->form_validation->run()) {
                     $name = $this->input->post('area_name');
                     $name_en = $this->input->post('area_name_en');

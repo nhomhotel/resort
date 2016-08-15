@@ -32,8 +32,8 @@ class Order_room extends AdminHome {
             foreach ($params as $key => $value) {
                 $data[$key] = securityServer($value);
                 if ($key != 'page'&&$data[$key]!='') {
-                    $filters[] = $key . '=' . $value;
-                    $search[$key] = $value;
+                    $filters[] = $key . '=' . securityServer($value);
+                    $search[$key] = securityServer($value);
                 }
             }
         }
@@ -79,8 +79,8 @@ class Order_room extends AdminHome {
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
         $input['order'] = array('order_id', 'ASC');
-        $list = $this->Order_room_model->_get_list($user,$search,$config['per_page'],$start)->result();
-        $data['profit'] = $this->Order_room_model->_get_profit($user,$search,$config['per_page'],$start)->result();
+        $list = $this->Order_room_model->_get_list($user,$search,-1,$config['per_page'],$start)->result();
+        $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1,$config['per_page'],$start)->result();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['user'] = $user;
@@ -236,6 +236,74 @@ class Order_room extends AdminHome {
         $data['bill'] = $this->load->view('admin/order_room/phieu-chi',array('data'=>$data_room),true);
         echo json_encode(array('success'=>true,'message'=>$data));
         exit;
+    }
+    
+    function view_order($id=-1){
+        if($id>0){
+            $this->load->library('pagination');
+            $user = $this->User_model->get_logged_in_employee_info();
+            $input = array();
+            if($user==null || $user==''){
+                redirect(admin_url('login'));
+            }
+            $role_id = $user->role_id;
+            if ($role_id == 3) {
+                $this->session->destroy();
+                redirect(admin_url('login'));
+            } elseif ($role_id == 2) {
+
+                $input['where'] = array('post_room.user_id'=> $user->user_id);
+            }
+
+            $filters = array();
+            $search = array();
+            if (!empty($_GET)) {
+                $params = $_GET;
+                foreach ($params as $key => $value) {
+                    $data[$key] = securityServer($value);
+                    if ($key != 'page'&&$data[$key]!='') {
+                        $filters[] = $key . '=' . $value;
+                        $search[$key] = $value;
+                    }
+                }
+            }
+            $total = $this->Order_room_model->_get_total($user,$search,$id);
+
+            $config = array();
+            $config["total_rows"] = $total;
+            $config['base_url'] = base_url('admin/order_room/index?'.  implode('&', $filters));
+            $config['use_page_numbers'] = TRUE;
+            $config['page_query_string'] = TRUE;
+            $config['query_string_segment'] = 'page';
+            $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
+            $config['uri_segment'] = 4;
+            $config['next_link'] = 'Trang kế tiếp';
+            $config['prev_link'] = 'Trang trước';
+            $config['use_page_numbers'] = TRUE;
+            $this->pagination->initialize($config);
+            $page = securityServer($this->input->get('page'))?intval(securityServer($this->input->get('page'))):1;
+            if ($page>1) {
+                $segment = $page;
+            } else {
+                $segment = 1;
+            }
+            $segment = (int) $segment;
+            $start = ($segment - 1) * $config['per_page'];
+            $pagination_link = $this->pagination->create_links();
+            $data['pagination_link'] = $pagination_link;
+
+            $message = $this->session->flashdata();
+            $data['message'] = $message;
+            $list = $this->Order_room_model->_get_list($user,$search,$id,$config['per_page'],$start)->result();
+            $data['profit'] = $this->Order_room_model->_get_profit($user,$search,$id,$config['per_page'],$start)->result();
+            $data['total'] = $total;
+            $data['list'] = $list;
+            $data['user'] = $user;
+            $data['title'] = 'Danh sách phòng đã đặt';
+            $data['temp'] = 'admin/order_room/index';
+            $data['table_body_order'] = $this->load->view('admin/order_room/table_body_order',$data,true);
+            $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
+        }
     }
 }
 

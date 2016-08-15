@@ -162,6 +162,7 @@ class payments extends MY_Controller {
     }
     
     function paymentOnline(){
+        $this->load->model('Bill_history_model');
         $user = $this->User_model->get_logged_in_employee_info();
         if($this->input->post('token')){
             $this->form_validation->set_rules('name_customer', 'Tên khách hàng', 'trim|required|min_length[6]|callback_checkUserName');
@@ -209,10 +210,19 @@ class payments extends MY_Controller {
                             'payment_reason'=>  securityServer($this->input->post('paymentReason')),
                             'create'=>$created
                         );
-                        $this->db->from('bill_history');
-                        $this->db->from('order')->where_in('order_id',$IdsFix)->update('payment_status',1);
-                        
-                        echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng '));
+                        $data['payment'] = array(
+                            'payment_status'=>1
+                        );
+                        $id = $this->Bill_history_model->create($data['bill_history']);
+                        if($id)$data['payment']['bill_history_ids'] = $id;
+                        if($this->db->where_in('order_id',$IdsFix)->update('order',$data['payment'])){
+                            echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng '.$moneyPay));
+                            $this->session->set_flashdata(array('message'=>'Đã thanh toán thành công đơn hàng '.$moneyPay,'success'=>true));
+                        }
+                        else {
+                            $this->session->set_flashdata(array('message'=>'Đã thanh toán không thành công đơn hàng '.$moneyPay,'success'=>FALSE));
+                            echo json_encode(array('success'=>FALSE, 'messages'=>'Đã thanh toán không thành công đơn hàng '.$moneyPay));
+                        }
                         exit;
                     }else{
                         $created = date('Y-m-d H:i:s');
@@ -224,9 +234,19 @@ class payments extends MY_Controller {
                             'payment_reason'=>  securityServer($this->input->post('paymentReason')),
                             'create'=>$created
                         );
-                        $this->db->from('bill_history');
-                        $this->db->from('order')->where_in('order_id',$IdsFix)->update('payment_status',1);
-                        echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng '.$total));
+                        $data['payment'] = array(
+                            'payment_status'=>1
+                        );
+                        $id = $this->Bill_history_model->create($data['bill_history']);
+                        if($id)$data['payment']['bill_history_ids'] = $id;
+                        if($this->db->where_in('order_id',$IdsFix)->update('order',$data['payment'])){
+                            echo json_encode(array('success'=>true, 'messages'=>'Đã thanh toán thành công đơn hàng '.$moneyPay));
+                            $this->session->set_flashdata(array('message'=>'Đã thanh toán thành công đơn hàng '.$moneyPay,'success'=>true));
+                        }
+                        else{
+                            $this->session->set_flashdata(array('message'=>'Đã thanh toán không thành công đơn hàng '.$moneyPay,'success'=>FALSE));
+                            echo json_encode(array('success'=>FALSE, 'messages'=>'Đã thanh toán không thành công đơn hàng '.$moneyPay));
+                        }
                         exit;
                     }
                 }

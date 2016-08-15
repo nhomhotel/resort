@@ -52,7 +52,7 @@
                                                 <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
                                             </td>
                                             <td class="label-tit">
-                                                <label for="user_name">Tài khoản đăng</label>
+                                                <label for="user_name">Tên đối tác</label>
                                             </td>
                                             <td class="item">
                                                 <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
@@ -97,8 +97,8 @@
                     <tr>
                         <td class="hidden-print"><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
                         <td>STT</td>
-                        <td colspan="2" class="hidden-print" >Bài đăng</td>
-                        <td colspan="1" class="hidden-screen">Bài đăng</td>
+                        <td colspan="2" class="hidden-print" >Tên căn/phòng</td>
+                        <td colspan="1" class="hidden-screen">Tên căn/phòng</td>
                         <td>Giá nhập</td>
                         <td>Giá bán</td>
                         <td>Lợi nhuận</td>
@@ -135,7 +135,7 @@
                 <h4 class="modal-title">Xóa</h4>
             </div>
             <div class="modal-body">
-                <p style="color:red;font-size: 13px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa bài đăng này ?</p>
+                <p style="color:red;font-size: 13px;padding: 0px;"><span class="glyphicon glyphicon-trash"></span> Bạn có muốn xóa tên căn/phòng này ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">hủy</button>
@@ -245,24 +245,31 @@
     }
     $(function () {
         $('.print_order').on('click', function () {
-            var title_order_room = document.getElementsByClassName('title_order_room');
-            var list_item = document.getElementsByClassName('list_item');
-            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="/public/admin/css/print-table.css"/>' ?>';
-            var html = '<html>';
-
-            html += '<head>';
-            html += css;
-            html += '</head>';
-            html += '<body>';
-            html += '<table>';
-            html += title_order_room[0].outerHTML;
-            html += list_item[0].outerHTML;
-            html += '</table>';
-            html += '</body>';
-            html += '</html>';
-            newWin = window.open("");
-            newWin.document.write(html);
-            newWin.print();
+//            var title_order_room = document.getElementsByClassName('title_order_room');
+//            var list_item = document.getElementsByClassName('list_item');
+//            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="/public/admin/css/print-table.css"/>' ?>';
+//            var html = '<html>';
+//
+//            html += '<head>';
+//            html += css;
+//            html += '</head>';
+//            html += '<body>';
+//            html += '<table>';
+//            html += title_order_room[0].outerHTML;
+//            html += list_item[0].outerHTML;
+//            html += '</table>';
+//            html += '</body>';
+//            html += '</html>';
+//            newWin = window.open("");
+//            newWin.document.write(html);
+//            newWin.print();
+            var url = window.location.href;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            if(hashes==url){
+                hashes=[];
+            }
+            window.location.href = '<?php echo base_url().'admin/Report/do_pdf?'?>'+hashes.join('&');
+//            
         })
     })
     

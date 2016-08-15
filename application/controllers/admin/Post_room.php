@@ -135,7 +135,7 @@ class Post_room extends AdminHome {
             $this->form_validation->set_rules('provincial', 'Provincial', 'trim|required');
             $this->form_validation->set_rules('zip_code', 'zip_code', 'trim|required|numeric|max_length[6]');
             $this->form_validation->set_rules('country', 'Country', 'trim|required');
-            $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required|min_length[20]|max_length[50]');
+            $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required');
             $this->form_validation->set_rules('description', 'description', 'trim|required|min_length[300]|max_length[1000]');
             $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
             $room_type = $this->input->post('room_type')?$this->input->post('room_type'):1;
@@ -202,7 +202,7 @@ class Post_room extends AdminHome {
                     ),
                     'parent_id' => $parent_id,
                     'post_room_name' => $post_room_name,
-                    'post_room_name_ascii'=> strtolower(vn_str_filter($post_room_name)),
+                    'post_room_name_ascii'=> onlyCharacter(securityServer($post_room_name)),
                     'description' => $description,
                     'house_type' => $house_type,
                     'room_type' => $room_type,
@@ -631,7 +631,7 @@ class Post_room extends AdminHome {
                 $this->form_validation->set_rules('provincial', 'Provincial', 'trim|required');
                 $this->form_validation->set_rules('zip_code', 'zip_code', 'trim|required|numeric|max_length[6]');
                 $this->form_validation->set_rules('country', 'Country', 'trim|required');
-                $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required|min_length[20]|max_length[50]');
+                $this->form_validation->set_rules('post_room_name', 'post_room_name', 'trim|required');
                 $this->form_validation->set_rules('description', 'description', 'trim|required|min_length[300]|max_length[1000]');
                 $this->form_validation->set_rules('acreage', 'Acreage', 'numeric');
                 $room_type = $this->input->post('room_type')?$this->input->post('room_type'):1;
@@ -698,7 +698,7 @@ class Post_room extends AdminHome {
                         'address_id'=>$data_post_room->address_id,
                         'parent_id' => $parent_id,
                         'post_room_name' => $post_room_name,
-                        'post_room_name_ascii'=> strtolower(vn_str_filter($post_room_name)),
+                        'post_room_name_ascii'=> onlyCharacter(securityServer($post_room_name)),
                         'description' => $description,
                         'house_type' => $house_type,
                         'room_type' => $room_type,

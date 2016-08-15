@@ -110,7 +110,7 @@ class Order_room_model extends MY_Model {
         $this->db->order_by('order_id','DESC');
     }
     
-    function _get_list($userInfo, $search=array(),$limit=10000,$start=0){
+    function _get_list($userInfo, $search=array(),$order_id=-1,$limit=10000,$start=0){
         $this->db->from('order');
         $this->db->join('post_room','order.post_room_id=post_room.post_room_id');
         if(isset($userInfo)&&$userInfo->role_id==2)
@@ -128,12 +128,15 @@ class Order_room_model extends MY_Model {
         if(isset($search['status'])&&convert_accented_characters($search['status'])=='paid'){
             $this->db->where('payment_status', 1);
         }else if(isset($search['status'])) $this->db->where('payment_status', 0);
+        if($order_id>0){
+            $this->db->where('order_id',$order_id);
+        }
         $this->db->order_by('order_id','DESC');
         $this->db->limit($limit,$start);
         return $this->db->get();
     }
     
-    function _get_total($userInfo, $search=array()){
+    function _get_total($userInfo, $search=array(),$order_id=-1){
         $this->db->from('order');
         $this->db->join('post_room','order.post_room_id=post_room.post_room_id');
         if(isset($userInfo)&&$userInfo->role_id==2)
@@ -151,11 +154,14 @@ class Order_room_model extends MY_Model {
         if(isset($search['status'])&&convert_accented_characters($search['status'])=='paid'){
             $this->db->where('payment_status', 1);
         }else if(isset($search['status'])) $this->db->where('payment_status', 0);
+        if($order_id>0){
+            $this->db->where('order_id',$order_id);
+        }
         $this->db->order_by('order_id','DESC');
         return $this->db->get()->num_rows();
     }
     
-    function _get_profit($userInfo, $search=array(),$limit=10000,$start=0){
+    function _get_profit($userInfo, $search=array(),$order_id=-1,$limit=10000,$start=0){
         $this->db->from('order');
         $this->db->join('post_room','order.post_room_id=post_room.post_room_id');
         if(isset($userInfo)&&$userInfo->role_id==2)
@@ -171,6 +177,9 @@ class Order_room_model extends MY_Model {
         if(isset($search['status'])&&convert_accented_characters($search['status'])=='paid'){
             $this->db->where('payment_status', 1);
         }else if(isset($search['status'])) $this->db->where('payment_status', 0);
+        if($order_id>0){
+            $this->db->where('order_id',$order_id);
+        }
         $this->db->order_by('order_id','DESC');
         $this->db->limit($limit,$start);
         return $this->db->get();
