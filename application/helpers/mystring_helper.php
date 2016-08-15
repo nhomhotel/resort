@@ -188,7 +188,7 @@ if (!function_exists('securityServer')) {
 
     function securityServer($str) {
         $CI = & get_instance();
-        $str = convert_accented_characters($CI->security->xss_clean(trim($str)));
+        $str = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($str))));
         return ($str);
     }
 

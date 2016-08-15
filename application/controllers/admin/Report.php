@@ -291,6 +291,33 @@ class Report extends AdminHome
     function do_bill(){
         
     }
+    
+    function liabilities_customer(){
+        $search = array();
+        $this->load->model('Order_room_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        if (!empty($_GET)) {
+            $params = $_GET;
+            foreach ($params as $key => $value) {
+                $data[$key] = securityServer($value);
+                if ($key != 'page'&&$data[$key]!='') {
+                    $search[$key] = securityServer($value);
+                }
+            }
+        }
+        $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests, order.refer_id');
+        $this->db->from('post_room');
+        $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
+        
+        $data['user'] =$user;
+        $list = $this->Order_room_model->_get_list($user,$search,-1)->result();
+        $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1)->result();
+        $data['list'] = $list;
+        $data['payment_active'] = false;
+        $data['history_active'] = false;
+        $data['table_body_order'] = $this->load->view('admin/order_room/table_body_order',$data,true);
+        $this->load->view('admin/report/reder_pdf', isset($data) ? ($data) : NULL);
+    }
 }
 
 ?>

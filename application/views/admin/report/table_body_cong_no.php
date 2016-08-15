@@ -6,7 +6,25 @@
         font-size: 12px;
     }
 </style>
+<table>
 <tbody class="list_item">
+    <tr>
+        <td>STT</td>
+        <td>Đối tác/Tên phòng căn</td>
+        <td>Tổng thanh toán</td>
+        <td>Đã thanh toán</td>
+        <td>Còn nợ</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>doitac1</td>
+        <td>100000</td>
+        <td>100000</td>
+        <td>100000</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
     <?php
     if (isset($list)) {
         $i = 0;
@@ -112,3 +130,4 @@
         <td colspan="<?php echo !isset($history_active)||!isset($payment_active)?'8':'7'?>"></td>
     </tr>
 </tbody>
+</table>

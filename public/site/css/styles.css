@@ -69,9 +69,18 @@ body{
 
 }
 #banner-search .block-banner .info{
-    position: relative;
+    position: absolute;
     top: 71px;
+    /*float: right;*/
+    right: 0px;
+    z-index: 9;
+}
+#book-main .block.clearfix .info{
+    position: absolute;
+    top: 53px;
     float: right;
+    right: 0px;
+    z-index: 9;
 }
 #banner-search .home-search{
     position: absolute;

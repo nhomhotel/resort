@@ -2,7 +2,7 @@
 include("Payment.php");
 $payment = new Payment();
 $payment->setSecureSecret("198BE3F2E8C75A53F38C1C4A5B6DBA27");
-$payment->setVirtualPaymentUrl("https://paymentcert.smartlink.com.vn:8181/vpcpay.do");
+$payment->setVirtualPaymentUrl("http://paymentcert.smartlink.com.vn:8181/vpcpay.do");
 
 /*
  1. Tao mot mang cac tham so:

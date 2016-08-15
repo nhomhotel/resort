@@ -19,6 +19,11 @@ var id='<?php echo $id_encode;?>';
     <div class="container">
         <div class="row">
             <div class="block clearfix" style="margin-top: 47px;">
+                <?php if ($this->session->flashdata('message')): ?>
+                    <div class="alert alert-success info">
+                        <strong>Success!</strong><br><?php echo $this->session->flashdata('message'); ?> 
+                    </div>
+                <?php endif;?>
                 <div id="book-left" class="col-sm-8 col-xs-12">
                     <div class="tit-room">
                         <h1><?php echo (isset($info))? $info->post_room_name : '';?></h1>

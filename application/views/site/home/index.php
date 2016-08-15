@@ -117,50 +117,6 @@ ul[class^="ui-autocomplete"] {
         </div>
     </div>
 </section>
-<!--<section id="subjects">
-    <div class="container">
-        <div class="row">
-            <div class="block">
-                <div class="col-sm-4 col-xs-12 item owner-item">
-                    <a href="#">
-                        <div class="tit">
-                            <h4>Chủ nhà</h4>
-                            <p>Đăng tin và nhận thêm thu nhập từ việc cho thuê phòng</p>
-                        </div>
-                        <span>Tìm hiểu thêm</span>
-                    </a>
-                </div>
-                <div class="col-sm-4 col-xs-12 item visitor-item">
-                    <a href="#">
-                        <div class="tit">
-                            <h4>Chủ nhà</h4>
-                            <p>Đăng tin và nhận thêm thu nhập từ việc cho thuê phòng</p>
-                        </div>
-                        <span>Tìm hiểu thêm</span>
-                    </a>
-                </div>
-                        
-                <div class="col-sm-4 col-xs-12 item mobile-item">
-                    <div>
-                        <b>Di động</b>
-                        <a href="#">
-                            <img src="<?php echo base_url(); ?>public/site/images/store-appstore.svg" class="img-responsive"/>
-                        </a>
-                        <a href="#">
-                            <img src="<?php echo base_url(); ?>public/site/images/store-googleplay.svg" class="img-responsive"/>
-                        </a>
-                        <a href="#" class="th">
-                            <span>Tìm hiểu thêm</span>
-                        </a>
-                    </div>
-                    <a href="#" class="mb">
-
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>-->
 <section id="partner">
     <div class="container">
         <div class="row">
@@ -192,8 +148,8 @@ $(document).ready(function(){
          navText:["<img src='/public/site/images/icon_left.png'/>","<img src='/public/site/images/icon_right.png'/>"],
         autoplayTimeout:150000,
         autoplayHoverPause:true,
-        autoplaySpeed:1000,
-        dotsSpeed:40000,
+        autoplaySpeed:100,
+        dotsSpeed:1000,
         responsiveClass:true,
         responsive:{
             0:{

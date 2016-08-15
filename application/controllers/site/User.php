@@ -233,6 +233,7 @@ class User extends MY_Controller {
                                 'success' => true,
                                 'message' => 'Tao thanh cong user',
                             ));
+                            $this->session->set_flashdata(array('message'=>'Bạn đã tạo tài khoản thành công<br/>Mời bạn tiếp tục đặt phòng','success'=>true));
                             $data['user_id'] = $id;
                             $this->session->set_userdata($data);
                             exit;
