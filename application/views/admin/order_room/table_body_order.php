@@ -90,6 +90,7 @@
                     <p style="font-size: 12px;font-weight: 600"><?php echo $row->payment_status ? 'Đã thanh toán' : 'Chưa thanh toán'; ?></p>
                 </td>
                 <?php endif;?>
+                <?php if($user->role_id==1){?>
                  <?php if(!isset($history_active)):?>
                 <td class="textC" id="feedback">
                     <p style="font-size: 12px;font-weight: 600;"> 
@@ -99,6 +100,7 @@
                         Không có log <?php endif;?></p>
                 </td>
                 <?php endif;?>
+                <?php }?>
             </tr>
             <?php
         }

@@ -47,7 +47,7 @@
                         <label class="formLeft" for="param_name">Ảnh đại diện:</label>
                         <div class="formRight">
                             <span class="oneTwo">
-                                <img  src="<?php if(isset($user)&&isset($user->avarta))echo  base_url().'public/admin/images/'.$user->avarta; else echo base_url().'public/admin/images/no_avatar.jpg'; ?>" width = "100px" height = "100px">
+                                <img  src="<?php if(isset($user)&&isset($user->avarta)&&($user->avarta!=''))echo  $user->avarta; else echo base_url().'public/admin/images/no_avatar.jpg'; ?>" width = "100px" height = "100px">
                             </span>
                             <p class="oneTwo">
                                 <input type="file" name="avarta" id="avarta" _autocheck="true" />

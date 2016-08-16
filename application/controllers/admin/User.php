@@ -302,7 +302,7 @@ class User extends AdminHome {
                     'country'=>$this->input->post('country'),
                     'updated'=>date('Y-m-d : H-i-s')
                 );
-                if(isset($image))$data['user_update']['avarta'] = $image;
+                if(isset($image))$data['user_update']['avarta'] = substr($upload, 1) . '/' . $image['data_upload']['file_name'];
                 if($this->User_model->update($user->user_id,$data["user_update"])){
                     $this->session->set_flashdata(array('message'=>'Cập nhật thành công','success'=>true));
                 }else{

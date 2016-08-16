@@ -48,13 +48,14 @@
                                             <td class="item">
                                                 <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
                                             </td>
+                                            <?php if($user->role_id==1):?>
                                             <td class="label-tit">
                                                 <label for="user_name">Tài khoản đăng</label>
                                             </td>
                                             <td class="item">
                                                 <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
                                             </td>
-
+                                            <?php endif;?>
                                             <td colspan='2'>
                                                 <input type="submit" class="button blueB" value="Lọc"/>
                                                 <input type="reset" class="basic" value="Reset"
@@ -75,7 +76,9 @@
                         <td>Người đăng</td>
                         <td>trạng thái</td>
                         <td>Created</td>
+                        <?php if($user->role_id==1):?>
                         <td>Hành động</td>
+                        <?php endif;?>
                         <td>ID</td>
                     </tr>
                 </thead>
@@ -144,11 +147,13 @@
                                     ?>
                                 </td>
                                 <td class="textC"><?php echo date('d-m-Y - H:i:s', strtotime($row->created)); ?></td>
+                                <?php if($user->role_id==1):?>
                                 <td class="textC">
                                     <a href="javascript:void(0)" class="lightbox" title="delete" onclick="del(<?php echo $row->post_room_id; ?>)">
                                         <img src="<?php echo base_url(); ?>public/admin/images/icons/color/uninstall.png" />
                                     </a>
                                 </td>
+                                <?php endif;?>
                                 <td class="textC"><?php echo $row->post_room_id; ?></td>
                             </tr>
                             <?php

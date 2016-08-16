@@ -3,11 +3,12 @@
     if($this->session->userdata('userLogin')){
         $userLogin = $this->session->userdata('userLogin');
         $role = $this->User_model->get_role();
+        $user = $this->User_model->get_logged_in_employee_info();
     }
 ?>
 <div class="sideProfile">
     <a href="#" title="" class="profileFace">
-        <img width="40" src="<?php echo base_url();?>public/admin/images/user.png">
+        <img width="40" src="<?php if($user &&isset($user->avarta)&&$user->avarta!='')echo $user->avarta;else echo "/public/admin/images/user.png"?>">
     </a>
     <span><?php echo 'Xin chào';;?>: <strong><?php echo (isset($userLogin)) ? $userLogin['user_name'] : '' ;?></strong></span>
     <span><?php echo (isset($userLogin)) ? $userLogin['last_name'].' '.$userLogin['first_name'] : '' ;?> </span>
@@ -57,9 +58,6 @@
                     <a href="<?php echo admin_url('user/index');?>"><?php echo 'Danh sách';?></a>
                 </li>
                 <?php endif;?>
-                <li>
-                    <a href="<?php echo admin_url('user/view_account');?>">Tài khoản của tôi</a>
-                </li>
                 <li>
                     <a href="<?php echo admin_url('user/edit_account');?>">Chỉnh sửa tài khoản</a>
                 </li>

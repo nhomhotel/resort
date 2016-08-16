@@ -82,7 +82,7 @@ class Post_room extends AdminHome {
         if ($list_room) {
             $data['list_room'] = $list_room;
         }
-
+        $data['user'] = $user;
         $data['title'] = 'Danh sách';
         $data['temp'] = 'admin/post_room/index';
         $this->load->view('admin/layout', isset($data) ? $data : '');

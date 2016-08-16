@@ -51,12 +51,14 @@
                                             <td class="item">
                                                 <input name="post_room_name" id="post_room_name"  autocomplete="off" value="<?php echo $this->input->get('post_room_name'); ?>" type="text"/>
                                             </td>
+                                            <?php if($user->role_id==1):?>
                                             <td class="label-tit">
                                                 <label for="user_name">Tên đối tác</label>
                                             </td>
                                             <td class="item">
                                                 <input name="user_name" value="<?php echo $this->input->get('user_name'); ?>" id="user_name" type="text"/>
                                             </td>
+                                             <?php endif;?>
                                             <td class="label-tit">
                                                 <label for="status">Trạng thái</label>
                                             </td>
@@ -108,7 +110,9 @@
                         <td>Ngày trả phòng</td>
                         <td>Số người ở</td>
                         <td>Trạng thái</td>
+                        <?php if($user->role_id==1):?>
                         <td>Xác nhận</td>
+                        <?php endif;?>
                     </tr>
                 </thead>
                 <tfoot class="auto_check_pages">
