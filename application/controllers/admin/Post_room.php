@@ -9,6 +9,7 @@ class Post_room extends AdminHome {
     function __construct() {
         parent::__construct(get_class());
         $this->load->model("Post_room_model");
+        $this->load->model("Order_room_model");
         $this->load->model("Address_model");
         $this->load->model("Area_model");
         $this->load->model("house_type_model");
@@ -553,6 +554,10 @@ class Post_room extends AdminHome {
     }
 
     function delete() {
+        if(!$this->check_action_permisson('delete', get_class())){
+            redirect('site/No_access/'.  get_class());
+        }
+        $this->load->model("Order_room_model");
         $this->load->model('address_model');
         $id = $this->uri->rsegment(3);
         $id = (int) $id;
@@ -562,6 +567,11 @@ class Post_room extends AdminHome {
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
             redirect(admin_url('post_room/index'));
         } else {
+            $check_order = $this->Order_room_model->get_row(array('where'=>array('post_room_id'=>$id)));
+            if($check_order>0){
+                $this->session->set_flashdata('message', 'Đã tồn tại giao dịch bán hàng? không thể xóa được');
+                redirect(admin_url('post_room/index'));
+            }
             $address_id = $info->address_id;
             $this->address_model->delete($address_id);
             $this->Post_room_model->delete($id);

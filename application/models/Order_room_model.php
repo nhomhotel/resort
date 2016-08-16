@@ -116,11 +116,16 @@ class Order_room_model extends MY_Model {
         if(isset($userInfo)&&$userInfo->role_id==2)
             $this->db->where('post_room.user_id',$userInfo->user_id);
         $this->db->where('order.refer_id!=',0);
+        if($order_id>0){
+            $this->db->join('user','order.user_id=user.user_id');
+            $this->db->where_in('order_id',$order_id);
+        }else{
         if(isset($search['user_name'])){
-            $this->db->join('user','post_room.user_id=user.user_id');
+            $this->db->join('user','order.user_id=user.user_id');
             $this->db->like('user.user_name',$search['user_name']);
         }else{
             $this->db->join('user','order.user_id=user.user_id');
+        }
         }
         if(isset($search['post_room_name'])){
             $this->db->like('post_room_name_ascii', $search['post_room_name']);
@@ -128,9 +133,9 @@ class Order_room_model extends MY_Model {
         if(isset($search['status'])&&convert_accented_characters($search['status'])=='paid'){
             $this->db->where('payment_status', 1);
         }else if(isset($search['status'])) $this->db->where('payment_status', 0);
-        if($order_id>0){
-            $this->db->where('order_id',$order_id);
-        }
+//        if($order_id>0){
+//            $this->db->where('order_id',$order_id);
+//        }
         $this->db->order_by('order_id','DESC');
         $this->db->limit($limit,$start);
         return $this->db->get();
@@ -162,6 +167,7 @@ class Order_room_model extends MY_Model {
     }
     
     function _get_profit($userInfo, $search=array(),$order_id=-1,$limit=10000,$start=0){
+//        $this->db->select('user.*');
         $this->db->from('order');
         $this->db->join('post_room','order.post_room_id=post_room.post_room_id');
         if(isset($userInfo)&&$userInfo->role_id==2)

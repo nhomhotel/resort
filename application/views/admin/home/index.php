@@ -56,7 +56,11 @@
                         <td>Vai trò</td>
                         <td>trạng thái</td>
                         <td>Created</td>
+                        <?php if($admin_info->role_id==1):?>
                         <td>Hành động</td>
+                        <?php else :?>
+                        <td>Chiết khấu</td>
+                        <?php endif;?>
                         <td>ID</td>
                     </tr>
                 </thead>
@@ -100,11 +104,15 @@
                                 ?>
                             </td>
                             <td class="textC"><?php echo date('d-m-Y - H:i:s', strtotime($admin_info->created)); ?></td>
+                            <?php if($admin_info->role_id==1):?>
                             <td class="textC">
                                 <a href="<?php echo admin_url('user/edit/' . $admin_info->user_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                             </td>
+                            <?php else:?>
+                            <td class="textC"><?php echo $admin_info->profit_rate.' %'?></td>
+                            <?php endif;?>
                             <td class="textC"><?php echo $admin_info->user_id; ?></td>
                         </tr>
                         <?php

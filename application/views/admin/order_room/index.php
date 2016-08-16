@@ -117,8 +117,12 @@
                 </thead>
                 <tfoot class="auto_check_pages">
                     <tr>
-                        <td colspan="3"><button class="btn btn-primary print_order">In Danh sách</button></td>
-                        <td colspan="14">
+                        <td colspan="6"><button class="btn btn-primary print_order">In Danh sách</button>
+                        <?php if($user->role_id==1):?>
+                        <button class="btn btn-primary print_order_cong_no">Báo cáo công nợ</button>
+                        <?php endif;?>
+                        </td>
+                        <td colspan="12">
                             <div class='pagination'>
 <?php echo isset($pagination_link) ? $pagination_link : ''; ?>
                             </div>
@@ -199,7 +203,9 @@
                 if (ui.item.post_room_id != undefined && ui.item.post_room_name != undefined) {
                     $("#post_room_name").val(ui.item.post_room_name);
                     var url = "<?php echo admin_url('Order_room/index?post_room_name=');?>"+encodeURI(ui.item.post_room_name);
+                    <?php if($user->role_id==1):?>
                     if($('#user_name').val()!='') url+="&user_name="+encodeURI($('#user_name').val());
+                    <?php endif;?>
                     window.location.href = url;
                 }
             }
@@ -209,7 +215,7 @@
         };
         ;
     });
-    
+    <?php if($user->role_id==1):?>
     $(function () {
         $("#user_name").autocomplete({
             source: "<?php echo site_url('admin/Order_room/suggest_user_name'); ?>",
@@ -241,6 +247,18 @@
         };
         ;
     });
+    $(function () {
+        $('.print_order_cong_no').on('click', function () {
+            var url = window.location.href;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            if(hashes==url){
+                hashes=[];
+            }
+            window.location.href = '<?php echo base_url().'admin/Report/liabilities_customer?'?>'+hashes.join('&');
+//            
+        })
+    })
+    <?php endif;?>
     function del(id) {
         var url = '<?php echo admin_url(); ?>';
         var urlDel = url + '/post_room/delete/' + id;
@@ -249,24 +267,6 @@
     }
     $(function () {
         $('.print_order').on('click', function () {
-//            var title_order_room = document.getElementsByClassName('title_order_room');
-//            var list_item = document.getElementsByClassName('list_item');
-//            var css = '<?php echo '<link rel="stylesheet" type="text/css" media="print" href="/public/admin/css/print-table.css"/>' ?>';
-//            var html = '<html>';
-//
-//            html += '<head>';
-//            html += css;
-//            html += '</head>';
-//            html += '<body>';
-//            html += '<table>';
-//            html += title_order_room[0].outerHTML;
-//            html += list_item[0].outerHTML;
-//            html += '</table>';
-//            html += '</body>';
-//            html += '</html>';
-//            newWin = window.open("");
-//            newWin.document.write(html);
-//            newWin.print();
             var url = window.location.href;
             var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
             if(hashes==url){
@@ -366,8 +366,12 @@
                 if(!data.success){
                      $.toaster({priority:'danger', title:"Cảnh báo",message:data.message,display:50000});
                 }else{
-                    $('#content-bill').html(data.message.bill);
-                    $("#myModalBill").modal()
+                    var url = window.location.href;
+                    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                    if(hashes==url){
+                        hashes=[];
+                    }
+                    window.location.href = '<?php echo base_url().'admin/Report/do_bill?'?>'+'ids='+data.message+'&'+hashes.join('&');
                 }
             },
             dataType: "json",

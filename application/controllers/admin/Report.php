@@ -72,6 +72,8 @@ class Report extends AdminHome
     function index()
     {
         /* Render Layout */
+        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
+        if(!$this->check_action_permisson('search', get_class()))redirect('site/No_access/'.  get_class());
         $data['range'] = $this->_get_range();
         $data['title'] = 'Báo cáo';
         $data['description'] = 'Báo cáo trong tháng/tuần/ngày';
@@ -84,6 +86,7 @@ class Report extends AdminHome
      */
     function result()
     {
+        if(!$this->check_action_permisson('search', get_class()))redirect('site/No_access/'.  get_class());
         $debug = $this->input->post('debug');
         if (!empty($debug)) {
             $this->output->enable_profiler(TRUE);
@@ -266,15 +269,16 @@ class Report extends AdminHome
     }
     
     function do_pdf(){
+        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
         $search = array();
         $this->load->model('Order_room_model');
         $user = $this->User_model->get_logged_in_employee_info();
         if (!empty($_GET)) {
             $params = $_GET;
             foreach ($params as $key => $value) {
-                $data[$key] = securityServer($value);
+                $data[$key] = onlyCharacter(securityServer($value));
                 if ($key != 'page'&&$data[$key]!='') {
-                    $search[$key] = securityServer($value);
+                    $search[$key] = onlyCharacter(securityServer($value));
                 }
             }
         }
@@ -289,29 +293,53 @@ class Report extends AdminHome
     }
     
     function do_bill(){
-        
+        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
+        $search = array();
+        $filters = array();
+        $this->load->model('Order_room_model');
+        $user = $this->User_model->get_logged_in_employee_info();
+        if (!empty($_GET)) {
+            $params = $_GET;
+            foreach ($params as $key => $value) {
+                $data[$key] = onlyCharacter(securityServer($value));
+                if ($key != 'page'&&$data[$key]!='') {
+                    $filters[] = $key . '=' . onlyCharacter(securityServer($value));
+                    $search[$key] = onlyCharacter(securityServer($value));
+                }
+            }
+        }
+        $data = array();
+        if(!isset($search['ids'])){
+            $this->session->set_flashdata('message', 'dữ liệu không đúng!');
+            redirect(admin_url('order_room?'.  implode('&', $filters)));
+        }
+        $ids = explode(' ', $search['ids']);
+        $data['data_room']=$this->db->from('order')
+            ->join('post_room','post_room.post_room_id=order.post_room_id')->join('user','user.user_id=post_room.user_id')
+            ->where('refer_id!=',0)->where_in('order_id',$ids)
+            ->get()->result();
+        $this->load->view('admin/report/phieu-chi',$data);
     }
     
     function liabilities_customer(){
+        if(!$this->check_action_permisson('view', get_class()))redirect('site/No_access/'.  get_class());
         $search = array();
         $this->load->model('Order_room_model');
         $user = $this->User_model->get_logged_in_employee_info();
         if (!empty($_GET)) {
             $params = $_GET;
             foreach ($params as $key => $value) {
-                $data[$key] = securityServer($value);
+                $data[$key] = onlyCharacter(securityServer($value));
                 if ($key != 'page'&&$data[$key]!='') {
-                    $search[$key] = securityServer($value);
+                    $search[$key] = onlyCharacter(securityServer($value));
                 }
             }
         }
-        $this->db->select('post_room.post_room_id, post_room.parent_id, post_room.post_room_name, order.order_id, order.checkin, order.checkout, order.guests, order.refer_id');
-        $this->db->from('post_room');
-        $this->db->join('order', 'order.post_room_id = post_room.post_room_id');
-        
         $data['user'] =$user;
         $list = $this->Order_room_model->_get_list($user,$search,-1)->result();
         $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1)->result();
+        pre($data['profit']);
+        pre($list);exit;
         $data['list'] = $list;
         $data['payment_active'] = false;
         $data['history_active'] = false;

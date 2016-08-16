@@ -12,7 +12,7 @@ if ($this->session->userdata('post_info') !== NULL) {
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="product/add.html">
+                    <a href="<?php echo base_url().'admin/post_room/post'?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png" />
                         <span>Thêm mới</span>
                     </a>
@@ -28,14 +28,7 @@ if ($this->session->userdata('post_info') !== NULL) {
                 <?php endif; ?>
 
                 <li>
-                    <a href="product/?feature=1.html">
-                        <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/feature.png" />
-                        <span>Tiêu biểu</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="product.html">
+                    <a href="<?php echo base_url().'admin/post_room'?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/list.png" />
                         <span>Danh sách</span>
                     </a>

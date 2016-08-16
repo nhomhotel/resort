@@ -201,6 +201,7 @@ class User extends AdminHome {
 
     function edit() {
         if(!$this->check_action_permisson('edit', get_class()))redirect('site/No_access/'.  get_class());
+        if(!$this->check_action_permisson('edit_profit', get_class()))redirect('site/No_access/'.  get_class());
         $this->load->model("role_model");
         $this->load->library('form_validation');
         $this->load->helper('form');

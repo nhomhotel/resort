@@ -227,7 +227,9 @@
                 if (ui.item.post_room_id != undefined && ui.item.post_room_name != undefined) {
                     $("#post_room_name").val(ui.item.post_room_name);
                     var url = "<?php echo admin_url('Post_room/index?post_room_name=');?>"+ui.item.post_room_name;
+                    <?php if($user->role_id==1):?>
                     if($('#user_name').val()!='') url+="&user_name="+$('#user_name').val();
+                    <?php endif;?>
                     window.location.href = url;
                 }
             }
@@ -237,7 +239,7 @@
         };
         ;
     });
-    
+    <?php if($user->role_id==1):?>
     $(function () {
         $("#user_name").autocomplete({
             source: "<?php echo site_url('admin/Post_room/suggest_user_name'); ?>",
@@ -269,4 +271,5 @@
         };
         ;
     });
+    <?php endif;?>
 </script>

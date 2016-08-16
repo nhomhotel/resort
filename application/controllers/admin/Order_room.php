@@ -79,8 +79,12 @@ class Order_room extends AdminHome {
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
         $input['order'] = array('order_id', 'ASC');
-        $list = $this->Order_room_model->_get_list($user,$search,-1,$config['per_page'],$start)->result();
         $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1,$config['per_page'],$start)->result();
+        $order_ids = array();
+        foreach ($data['profit'] as $row){
+            $order_ids[] = intval($row->order_id);
+        }
+        $list = $this->Order_room_model->_get_list($user,$search,$order_ids,$config['per_page'],$start)->result();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['user'] = $user;
@@ -123,7 +127,7 @@ class Order_room extends AdminHome {
         
 ;        $input = array();
         if(count($user)>0&&$user->role_id==2){
-            $input['where'] = array('user_id'=>$user->user_id);
+            $input['where'] = array('post_room.user_id'=>$user->user_id);
         }
         $input['like'] = array('post_room_name_ascii',$keyword);
         $input['group_by']='post_room.post_room_id';
@@ -234,7 +238,7 @@ class Order_room extends AdminHome {
             exit;
         }
         $data['bill'] = $this->load->view('admin/order_room/phieu-chi',array('data'=>$data_room),true);
-        echo json_encode(array('success'=>true,'message'=>$data));
+        echo json_encode(array('success'=>true,'message'=>  implode(',', $idFix)));
         exit;
     }
     
