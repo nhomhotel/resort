@@ -16,14 +16,6 @@ class Order_room extends AdminHome {
         if($user==null || $user==''){
             redirect(admin_url('login'));
         }
-        $role_id = $user->role_id;
-        if ($role_id == 3) {
-            $this->session->destroy();
-            redirect(admin_url('login'));
-        } elseif ($role_id == 2) {
-
-            $input['where'] = array('post_room.user_id'=> $user->user_id);
-        }
         
         $filters = array();
         $search = array();
@@ -37,19 +29,7 @@ class Order_room extends AdminHome {
                 }
             }
         }
-        //phần chung
-        $input['where']['refer_id!='] =0; 
-        $post_room_name = onlyCharacter(securityServer($this->input->get('post_room_name')));
-        if ($post_room_name) {
-            $input['like'] = array('post_room_name_ascii', $post_room_name);
-        }
-        $user_name = onlyCharacter(securityServer($this->input->get('user_name')));
-        if ($user_name) {
-            $join['user'] = 'post_room.user_id::user_id';
-            $input['like'] = array('user_name', $user_name);
-        }
         $total = $this->Order_room_model->_get_total($user,$search);
-        
         
         $config = array();
         $config["total_rows"] = $total;
@@ -76,15 +56,14 @@ class Order_room extends AdminHome {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-        $input['limit'] = array($config['per_page'], $start);
-        $data['start'] = $start;
-        $input['order'] = array('order_id', 'ASC');
         $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1,$config['per_page'],$start)->result();
         $order_ids = array();
         foreach ($data['profit'] as $row){
             $order_ids[] = intval($row->order_id);
         }
-        $list = $this->Order_room_model->_get_list($user,$search,$order_ids,$config['per_page'],$start)->result();
+        if(count($order_ids)>0)
+            $list = $this->Order_room_model->_get_list($user,$search,$order_ids,$config['per_page'],$start)->result();
+        else $list=null;
         $data['total'] = $total;
         $data['list'] = $list;
         $data['user'] = $user;

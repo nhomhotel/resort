@@ -1,4 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <base href="<?php echo base_url() ?>">
 <title><?php echo isset($meta_title) ? htmlspecialchars($meta_title) : ''; ?></title>
 <meta name="robots" content="noindex, nofollow" />

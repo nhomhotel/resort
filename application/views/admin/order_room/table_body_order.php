@@ -104,8 +104,7 @@
             </tr>
             <?php
         }
-    }
-    ?>
+        ?>
     <tr>
         <td colspan="<?php echo !isset($history_active)||!isset($payment_active)?'4':'3'?>">Tổng(VNĐ/USD)</td>
         <td colspan="1" style="font-weight: bold"><?php echo numberFormatToCurrency($sum_input_price_vn).'/'.numberFormatToCurrency($sum_input_price_en)?></td>
@@ -113,4 +112,5 @@
         <td colspan="1" style="font-weight: bold"><?php echo numberFormatToCurrency($sum_profix_vn).'/'.numberFormatToCurrency($sum_profix_en)?></td>
         <td colspan="<?php echo !isset($history_active)||!isset($payment_active)?'8':'7'?>"></td>
     </tr>
+    <?php }?>
 </tbody>

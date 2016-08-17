@@ -151,7 +151,7 @@ class Post_room extends AdminHome {
                 $lat = $this->input->post('lat');
                 $lng = $this->input->post('lng');
                 $address_street = $this->input->post('address_street');
-                $address_street_ascii = onlyCharacter(securityServer(($this->input->post('address_street_ascii'))));
+                $address_street_ascii = onlyCharacter(securityServer(($this->input->post('address_street'))));
                 $address_detail_ascii = onlyCharacter(securityServer(($this->input->post('address_detail'))));
                 $address_2 = $this->input->post('address_2');
                 $district = $this->input->post('district');
@@ -410,7 +410,6 @@ class Post_room extends AdminHome {
         if ($this->session->userdata('post_price') !== NULL) {
             $post_price = $this->session->userdata('post_price');
         }
-
         if (!isset($post_info) && !isset($post_price)) {
             redirect(admin_url('post_room/post'));
         } else if (isset($post_info) && !isset($post_price)) {
@@ -420,22 +419,23 @@ class Post_room extends AdminHome {
         $this->load->model('address_model');
 
         if ($this->input->post('submit')) {
-
-            $upload_path = '/uploads/room';
-            $this->load->library('upload_library');
-            $imageList = array();
-            $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
-            // pre($imageList);die;
-            $image_list = json_encode($imageList);
-
             $created = date('Y-m-d : H-i-s');
             $updated = $created;
             $sess = array(
-                'image_list' => $image_list,
                 'created' => $created,
                 'updated' => $updated
             );
-
+            $upload_path = './uploads/room';
+            $this->load->library('upload_library');
+            $imageList = array();
+            if ($_FILES['image_list']['error'][0] == 0){
+                $imageList = $this->upload_library->upload_files($upload_path, 'image_list');
+                $imageList = str_replace('./uploads', '/uploads', $imageList);
+            }
+            if(count($imageList)>0){
+                $image_list = json_encode($imageList);
+                $sess['image_list'] = $image_list;
+            }
             $data_sess['post_photo'] = $sess;
             $this->session->set_userdata($data_sess);
             $post_photo = $this->session->userdata('post_photo');
@@ -632,7 +632,6 @@ class Post_room extends AdminHome {
             $data["list_experience"] = $list_experience;
             $data['data_post_room'] = $data_post_room;
             $data['post_room_id'] = $id;
-//            pre($data['list_area']);return;
 
             if ($this->input->post()) {
 
@@ -790,7 +789,6 @@ class Post_room extends AdminHome {
             $this->db->where('post_room.user_id',$user->user_id);
         }
         $result = $this->db->get()->result();
-//        pre($this->db->last_query());return;
         /* Register Events In Calendar */
 
         $events = array();
