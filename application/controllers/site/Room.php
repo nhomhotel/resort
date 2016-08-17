@@ -135,6 +135,7 @@ class Room extends MY_Controller {
      */
 
     function room_detail($id) {
+        pre($this->session->userdata);
         $this->load->model('Order_room_model');
         $this->load->library('book_library');
         if ($id == null) {
@@ -299,7 +300,7 @@ class Room extends MY_Controller {
         $filters = array();
 
         if (!empty($_GET)) {
-            $params = $_GET;
+            $params = onlyCharacter(securityServer(vn_str_filter( $_GET)));
             foreach ($params as $key => $value) {
                 $data[$key] = $value;
                 if ($key != 'page') {
@@ -368,17 +369,17 @@ class Room extends MY_Controller {
                 $this->load->helper('text');
                 $location_parts = explode(',', $params['location']);
                 foreach ($location_parts as $index => $location) {
-                    $location_parts[$index] = str_replace(' ', '', strtolower(trim(convert_accented_characters(vn_str_filter($location_parts[$index])))));
+                    $location_parts[$index] = str_replace(' ', '', $location_parts[$index]);
                 }
                 if (count($location_parts) >= 3) {
-                    $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
-                    $this->db->where('(replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[1] . '%\')');
-                    $this->db->where('(replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[2] . '%\')');
+                    $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('(replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[1] . '%\')');
+                    $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[2] . '%\')');
                 } elseif (count($location_parts) == 2) {
-                    $this->db->where('(replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\')');
-                    $this->db->where('(replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[1] . '%\')');
+                    $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[1] . '%\')');
                 } else {
-                    $this->db->where('(replace(lower(tbl_area.name), " ", "") like \'%'.$location_parts[0].'%\' or replace(lower(address_street_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(district_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(lower(provincial_ascii), " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(lower(country_ascii), " ","") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('(replace(tbl_area.name, " ", "") like \'%'.$location_parts[0].'%\' or replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(country_ascii, " ","") LIKE \'%' . $location_parts[0] . '%\')');
                 }
             }
 

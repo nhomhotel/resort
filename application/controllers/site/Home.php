@@ -11,6 +11,7 @@ class Home extends MY_Controller {
     }
 
     public function index() {
+        pre($this->session->flashdata);
         $this->load->model('area_model');
         $this->load->model('Home_Slider_model');
         $data['meta_title'] = $this->config->item('name_website');
@@ -179,7 +180,7 @@ class Home extends MY_Controller {
     public function process($query = '') {
         //get data from address_model vs $query
         $query = strtolower(trim($_POST['query']));
-        $query_no = vn_str_filter($query);
+        $query_no = onlyCharacter(securityServer(vn_str_filter($query)));
         $data = $this->Address_model->getAddress($query_no); 
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
@@ -255,6 +256,96 @@ class Home extends MY_Controller {
         } else {
             return true;
         }
+    }
+    
+    function __book($id = '') {
+        echo 1;return;
+        $id_decode = $this->config->item('encode_id')->decode($id);
+
+        if (count($id_decode) <= 0) {
+            redirect(base_url());
+        } else {
+            $id_encode = $id;
+        }
+        $checkin = $this->input->get('checkin') ? $this->input->get('checkin') : '';
+        $checkout = $this->input->get('checkout') ? $this->input->get('checkout') : '';
+        $guests = $this->input->get('guests') ? $this->input->get('guests') : '';
+        if ($checkin == '' || $checkout == '' || $guests == '') {
+            redirect(base_url() . 'room/room_detail/' . $id_encode);
+        }
+        // thanh toán online
+        // thêm vào db
+        $input = array(
+            'where' => array(
+                'post_room_id' => $id_decode[0],
+            )
+        );
+        $date1 = new DateTime();
+        $date2 = new DateTime();
+        $dateNow = new DateTime();
+        $data['checkin'] = $date1->setDate(
+                date('Y', strtotime(str_replace('/', '-', $checkin))), date('m', strtotime(str_replace('/', '-', $checkin))), date('d', strtotime(str_replace('/', '-', $checkin)))
+        );
+        $data['guests'] = $guests;
+        $data['checkout'] = $date2->setDate(
+                date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
+        );
+        if ($data['checkin'] > $data['checkout']) {
+            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+        }
+        if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
+            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+        }
+        //check room in database
+        if ($this->order_room_model->check_exists_room($id_decode[0], $data['checkin'], $data['checkout'])) {
+            echo 'Phòng này đã có người đặt trước đó.';
+            return;
+        }
+        $prices = $this->post_room_model->get_row($input);
+        $data['name_room'] = $prices->post_room_name;
+        $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
+        $data['price_all_night_add_fee'] = $priceCaculator['money'];
+        $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
+        // phân biệt họ thuê nguyên cân hay thuê phòng riêng
+        $data_insert = array(
+            'post_room_id' => $id_decode[0],
+            'user_id' => $user_id,
+            'payment_type' => $priceCaculator['money'],
+            'checkin' => $data['checkin']->format('Y-m-d'),
+            'checkout' => $data['checkout']->format('Y-m-d'),
+            'guests' => $data['guests'],
+            'refer_id'=>$id_decode[0]
+        );
+        if($prices->parent_id==0){
+            // get vê toàn bộ phòng riêng của nó về
+            $childs = $this->db->from('post_room')->where('parent_id',$prices->parent_id)->get()->result();
+            $data_child = array();
+            foreach ($childs as $row){
+                $data_child[] = array(
+                    'post_room_id' => $row->post_room_id,
+                    'user_id' => $user_id,
+                    'payment_type' => $priceCaculator['money'],
+                    'checkin' => $data['checkin']->format('Y-m-d'),
+                    'checkout' => $data['checkout']->format('Y-m-d'),
+                    'guests' => $data['guests']
+                );
+            }
+            $this->db->insert_batch('order', $data_child); 
+        }else{
+            if($prices->parent_id!=0){
+                $data_insert_parent = array(
+                    'post_room_id' => $id_decode[0],
+                    'user_id' => $user_id,
+                    'payment_type' => $priceCaculator['money'],
+                    'checkin' => $data['checkin']->format('Y-m-d'),
+                    'checkout' => $data['checkout']->format('Y-m-d'),
+                    'guests' => $data['guests'],
+                    'post_room_id' => $prices->parent_id
+                );
+                $this->order_room_model->create($data_insert_parent);
+            }
+        }
+        $this->order_room_model->create($data_insert);
     }
 
 }

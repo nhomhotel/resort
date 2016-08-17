@@ -34,8 +34,6 @@ class Order_room_model extends MY_Model {
         if (!$this->check_exists(array('post_room_id'=> $id)))
             return FALSE;
         $this->db->from('order');
-//                $this->db->or_where('checkin<=',$checkout);
-//                $this->db->or_where('checkout>=',$checkin);
         $this->db->where('post_room_id', $id);
         $result = $this->db->get()->result();
         $date1 = new DateTime();

@@ -71,7 +71,6 @@ $lang = get_lang();
                 </tfoot>
                 <tbody class="list_item">
                     <?php
-//                                                pre($list->result());
                     if (isset($list) && is_array($list->result())) {
                         $i = 1;
                         foreach ($list->result() as $row) {

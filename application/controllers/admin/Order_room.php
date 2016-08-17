@@ -277,7 +277,8 @@ class Order_room extends AdminHome {
 
             $message = $this->session->flashdata();
             $data['message'] = $message;
-            $list = $this->Order_room_model->_get_list($user,$search,$id,$config['per_page'],$start)->result();
+            $data['profit'] = $this->Order_room_model->_get_profit($user,$search,$id,$config['per_page'],$start)->result();
+            $list = $this->Order_room_model->_get_list($user,$search,array($id),$config['per_page'],$start)->result();
             $data['profit'] = $this->Order_room_model->_get_profit($user,$search,$id,$config['per_page'],$start)->result();
             $data['total'] = $total;
             $data['list'] = $list;

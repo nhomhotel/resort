@@ -260,7 +260,6 @@ class User extends MY_Controller {
         $confirm_code = $this->input->get('confirm_code')?  securityServer($this->input->get('confirm_code')):'';
         $user = $this->input->get('user')?securityServer($this->input->get('user')):'';
         $active = $this->input->get('active')?securityServer($this->input->get('active')):'';
-        pre($confirm_code);
         if($active==''||$active!='1'||$user==''||$confirm_code==''){
             $this->session->set_flashdata('message_confirm', 'Link không tồn tại');
         }

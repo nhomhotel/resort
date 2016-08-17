@@ -188,7 +188,13 @@ if (!function_exists('securityServer')) {
 
     function securityServer($str) {
         $CI = & get_instance();
-        $str = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($str))));
+        if(is_array($str)){
+            foreach ($str as &$row){
+                $row = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($row))));
+            }
+        }
+        else 
+            $str = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($str))));
         return ($str);
     }
 
@@ -198,7 +204,7 @@ if (!function_exists('onlyCharacter')) {
 
     function onlyCharacter($str) {
         $CI = & get_instance();
-        $str = preg_replace('/[^a-zA-Z0-9 ]/', ' ', $str);
+        $str = preg_replace('/[^a-zA-Z0-9 \/\-,]/', ' ', $str);
         $str = preg_replace('/[ ]{2,}/', ' ', $str);
         return ($str);
     }

@@ -76,6 +76,7 @@ class payments extends MY_Controller {
         $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices);
         $data['price_all_night_add_fee'] = $priceCaculator['money'];
         $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
+        // phân biệt họ thuê nguyên cân hay thuê phòng riêng
         $data_insert = array(
             'post_room_id' => $id_decode[0],
             'user_id' => $user_id,
@@ -85,7 +86,22 @@ class payments extends MY_Controller {
             'guests' => $data['guests'],
             'refer_id'=>$id_decode[0]
         );
-        if($prices->parent_id!=0){
+        if($prices->parent_id==0){
+            // get vê toàn bộ phòng riêng của nó về
+            $childs = $this->db->from('post_room')->where('parent_id',$prices->post_room_id)->get()->result();
+            $data_child = array();
+            foreach ($childs as $row){
+                $data_child[] = array(
+                    'post_room_id' => $row->post_room_id,
+                    'user_id' => $user_id,
+                    'payment_type' => $priceCaculator['money'],
+                    'checkin' => $data['checkin']->format('Y-m-d'),
+                    'checkout' => $data['checkout']->format('Y-m-d'),
+                    'guests' => $data['guests']
+                ); 
+            }
+            $this->db->insert_batch('order', $data_child); 
+        }else{
             $data_insert_parent = array(
                 'post_room_id' => $id_decode[0],
                 'user_id' => $user_id,
@@ -95,10 +111,10 @@ class payments extends MY_Controller {
                 'guests' => $data['guests'],
                 'post_room_id' => $prices->parent_id
             );
+            $this->order_room_model->create($data_insert_parent);
         }
         $this->order_room_model->create($data_insert);
-        if(isset($data_insert_parent))$this->order_room_model->create($data_insert_parent);
-        //gửi email
+//        gửi email
         $input = array();
         $input = array(
             'where' => array(
@@ -109,17 +125,31 @@ class payments extends MY_Controller {
         $data['user'] = $this->User_model->get_row($input);
 
         $config = get_config_email($this->config->item('address_email'), $this->config->item('pass_email'));
-        echo $this->email->print_debugger();
         $email_contact = $this->email_model->getEmailBook(array('1', '2', '3'))->result();
         //replace email content
         $content_gui_dat_phong = $email_contact[2]->description;
         $content_gui_doi_tac = $email_contact[1]->description;
         $content_gui_quan_tri = $email_contact[0]->description;
+        $dataSuccessMail = array('success'=>true,'message'=>'');
+        if($this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title,                $this->replaceContenEmail($content_gui_dat_phong,$data), $config)){
+            $dataSuccessMail['message'].='Gửi thành công cho bạn.';
         
-        if($this->sendEmail($this, $data['user']->email, $email_contact[2]->email_title,                $this->replaceContenEmail($content_gui_dat_phong,$data), $config))echo 'Đã gửi mail thành công';;
-        if($this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail_dt($content_gui_doi_tac,$data), $config))echo 'Đã gửi mail thành công';;
-        if($this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title,              $this->replaceContenEmail($content_gui_quan_tri,$data), $config))echo 'Đã gửi mail thành công';;
-        echo 'Đã gửi mail thành công';
+        }else{
+            $this->session->set_flashdata($dataSuccessMail);
+        }
+        if($this->sendEmail($this, $this->config->item('address_email'), $email_contact[1]->email_title, $this->replaceContenEmail_dt($content_gui_doi_tac,$data), $config)){
+            $dataSuccessMail['message'] .="<br/>Gửi thành công cho đối tác";
+        }else{
+            $this->session->set_flashdata($dataSuccessMail);
+        }
+        if($this->sendEmail($this, $data['doitac']->email, $email_contact[0]->email_title,              $this->replaceContenEmail($content_gui_quan_tri,$data), $config)){
+            $dataSuccessMail['message'] .="<br/>Gửi thành công cho Người quản trị";
+        }else{
+            $this->session->set_flashdata($dataSuccessMail);
+        }
+        $this->session->set_flashdata($dataSuccessMail);
+        pre($dataSuccessMail);
+//        redirect('/');
     }
 
     function sendEmail(&$mail_object, $mailTo, $mailSubject, $content, $config) {

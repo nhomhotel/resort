@@ -283,8 +283,14 @@ class Report extends AdminHome
             }
         }
         $data['user'] =$user;
-        $list = $this->Order_room_model->_get_list($user,$search,-1)->result();
         $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1)->result();
+        $order_ids = array();
+        foreach ($data['profit'] as $row){
+            $order_ids[] = intval($row->order_id);
+        }
+        if(count($order_ids)>0)
+            $list = $this->Order_room_model->_get_list($user,$search,$order_ids)->result();
+        else $list=null;
         $data['list'] = $list;
         $data['payment_active'] = false;
         $data['history_active'] = false;
@@ -338,8 +344,6 @@ class Report extends AdminHome
         $data['user'] =$user;
         $list = $this->Order_room_model->_get_list($user,$search,-1)->result();
         $data['profit'] = $this->Order_room_model->_get_profit($user,$search,-1)->result();
-        pre($data['profit']);
-        pre($list);exit;
         $data['list'] = $list;
         $data['payment_active'] = false;
         $data['history_active'] = false;

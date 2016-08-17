@@ -37,7 +37,7 @@ var id='<?php echo $id_encode;?>';
                             $arr_img= (isset($info))?json_decode($info->image_list): '';
                             if($arr_img && is_array($arr_img)){
                                 foreach ($arr_img as $img) {?>
-                                    <img src="<?php echo $img?>" data-caption="<?php echo strtoupper((isset($info))? $info->post_room_name : '');?>">
+                                    <img src="<?php echo $img?>" data-caption="<?php echo ((isset($info))? $info->post_room_name : '');?>">
                                 <?php }
                             }else{
                                     echo '<img src="'.base_url().'public/site/images/none.svg"  data-caption="NONE IMAGES">';

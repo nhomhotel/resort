@@ -97,21 +97,9 @@
                             <label for="item_per_page_site" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Giá đã bao gôm thuế'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                                 <!--<input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('item_per_page_site'); ?>">-->
-                                <label><input type="checkbox" name="tax" value="1" style=""></label>
+                                <label><input type="checkbox" name="tax" value="1" <?php echo ($this->config->item('tax')==1)?"checked":'';?>></label>
                             </div>
                         </div>
-<!--                        <div class="form-group">
-                            <label for="item_per_page_site" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php // echo 'Tên thuế'; ?></label>
-                            <div class="col-sm-4 col-md-4 col-lg-4 input-field">
-                                <input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('default_tax_1_name'); ?>">
-                            </div>
-                            <div class="col-sm-1 col-md-1 col-lg-2 input-field">
-                                <label> <==></label>
-                            </div>
-                            <div class="col-sm-4 col-md-4 col-lg-4 input-field">
-                                <input type="text" name="item_per_page_site" class="form-control" value="<?php // echo $this->config->item('default_tax_1_name'); ?>">
-                            </div>
-                        </div>-->
                         <div class="form-group">
                             <label for="thousands_separator" class="col-sm-3 col-md-3 col-lg-2 control-label "><?php echo 'Dấu phân cách đơn vị nghìn'; ?></label>
                             <div class="col-sm-9 col-md-9 col-lg-10 input-field">

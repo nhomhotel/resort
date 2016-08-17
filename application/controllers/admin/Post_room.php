@@ -216,7 +216,7 @@ class Post_room extends AdminHome {
                     'experience' => $experience,
                     'user_id' => $user_id
                 );
-                $data_sess['post_info'] = $sess;
+                $data_sess['post_info_post'] = $sess;
                 $this->session->set_userdata($data_sess);
                 redirect(admin_url('post_room/post_price/' . $id));
             }
@@ -232,8 +232,8 @@ class Post_room extends AdminHome {
 
     function post_price($id = -1) {
 
-        if ($this->session->userdata('post_info') !== NULL) {
-            $post_info = $this->session->userdata('post_info');
+        if ($this->session->userdata('post_info_post') !== NULL) {
+            $post_info = $this->session->userdata('post_info_post');
         }
         if (!isset($post_info)) {
             redirect(admin_url('post_room/edit/' . $id));
@@ -404,8 +404,8 @@ class Post_room extends AdminHome {
 
     function post_photo($id = -1) {
 
-        if ($this->session->userdata('post_info') !== NULL) {
-            $post_info = $this->session->userdata('post_info');
+        if ($this->session->userdata('post_info_post') !== NULL) {
+            $post_info = $this->session->userdata('post_info_post');
         }
         if ($this->session->userdata('post_price') !== NULL) {
             $post_price = $this->session->userdata('post_price');
