@@ -122,17 +122,7 @@ ul[class^="ui-autocomplete"] {
         <div class="row">
             <div class="block col-md-8 col-md-offset-2">
                 <h3><?php echo lang('home_introduced_on'); ?></h3>
-                <div class="owl-carousel" >
-                    <div class="item">
-                        <img src="<?php echo base_url(); ?>public/site/images/featured-cosmo.png" alt ="" class="img-resposive"/>
-                    </div>
-                    <div class="item">
-                        <img src="<?php echo base_url(); ?>public/site/images/featured-bbc.png" alt ="" class="img-resposive"/>
-                    </div>
-                    <div class="item">
-                        <img src="<?php echo base_url(); ?>public/site/images/featured-techcrunch.png" alt ="" class="img-resposive"/>
-                    </div>
-                </div>
+                <?php echo isset($intro_slider_image)?$intro_slider_image:'';?>
             </div>
         </div>
     </div>
@@ -141,7 +131,7 @@ ul[class^="ui-autocomplete"] {
 $(document).ready(function(){
     $('#home-slider').owlCarousel({
         margin:0,
-        loop:<?php if(isset($is_loop)) echo $is_loop; else echo 'false';?>,
+        loop:<?php if(isset($is_loop_home_slider)) echo $is_loop_home_slider; else echo 'false';?>,
         autoplay:true,
         navigation:true,
          nav:true,
@@ -160,6 +150,30 @@ $(document).ready(function(){
             },
             1280:{
                 items:1,
+            }
+        }
+    });
+    $('#intro-slider').owlCarousel({
+        margin:10,
+        loop:<?php if(isset($is_loop_intro_slider)) echo $is_loop_intro_slider; else echo 'false';?>,
+        autoplay:true,
+        navigation:true,
+         nav:true,
+         navText:["<img src='/public/site/images/icon_left.png'/>","<img src='/public/site/images/icon_right.png'/>"],
+        autoplayTimeout:10000,
+        autoplayHoverPause:true,
+        autoplaySpeed:1,
+        dotsSpeed:1000,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+            },
+            600:{
+                items:2,
+            },
+            1280:{
+                items:2,
             }
         }
     });

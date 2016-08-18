@@ -162,9 +162,6 @@ $(document).ready(function() {
                 },
                 dataType:'json',
                 })
-//                var url = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
-                
-//                window.location.href = url;
             } else {
                 var bathrooms = $('#bathrooms');
                 var bedrooms = $('#bedrooms');
@@ -224,7 +221,6 @@ $(document).ready(function() {
         $('#language li').click(function () {
             var language = $(this).find('a');
             var data = {language:language.data('value')};
-            $('#language').find('.icon-language span').html(language.html());
             var urlCurrent = window.location.href;
             $.ajax({
                 url:url + 'language',
