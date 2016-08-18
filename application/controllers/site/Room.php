@@ -4,11 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Room extends MY_Controller {
 
-    var $ITEM_PER_PAGE = 10;
-
     function __construct() {
         parent:: __construct();
-        $this->ITEM_PER_PAGE = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;
+//        $this->ITEM_PER_PAGE = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;
         $this->load->model('Post_room_model');
         $this->load->model('Order_room_model');
         $this->load->model('Address_model');
@@ -135,7 +133,6 @@ class Room extends MY_Controller {
      */
 
     function room_detail($id) {
-        pre($this->session->userdata);
         $this->load->model('Order_room_model');
         $this->load->library('book_library');
         if ($id == null) {
@@ -262,7 +259,6 @@ class Room extends MY_Controller {
                 )
             );
             $data['user'] = $this->User_model->get_row($input);
-//                        pre($data['user']);return;
             $data['meta_title'] = 'order room';
             $data['temp'] = ('site/room/order');
             $this->load->view('site/layout_index', isset($data) ? ($data) : null);
@@ -317,7 +313,7 @@ class Room extends MY_Controller {
                 $data['experiences_ids'] = explode(',', $data['experiences_ids']);
             }
             if (!isset($data['per_page'])) {
-                $data['per_page'] = $this->ITEM_PER_PAGE;
+                $data['per_page'] = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;;
             }
         }
 
@@ -514,9 +510,17 @@ class Room extends MY_Controller {
             }
         }
 
-        $start = isset($_GET['page']) && trim($_GET['page']) != '' ? ($_GET['page'] - 1) * $data['per_page'] : 0;
+        $page = securityServer($this->input->get('page'))?intval(securityServer($this->input->get('page'))):1;
+        if ($page>1) {
+            $segment = $page;
+        } else {
+            $segment = 1;
+        }
+        $item_per_page = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;
+        $segment = (int) $segment;
+        $start = ($segment - 1) * $item_per_page;
         $this->db->group_by('post_room.post_room_id');
-        $this->db->limit($this->ITEM_PER_PAGE);
+        $this->db->limit($item_per_page);
         $this->db->offset($start);
         $result = $this->db->get();
         $data['total'] = $this->db->query('SELECT FOUND_ROWS() count;')->row()->count;

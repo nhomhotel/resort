@@ -71,7 +71,10 @@
             </a>
             <ul class="sub collapse" id="collapse7" aria-expanded="false" style="height: 1px;">
                 <li>
-                    <a href="<?php echo  admin_url('HomeSlider');?>">Danh sách slider </a>
+                    <a href="<?php echo  admin_url('HomeSlider');?>">Danh sách home slider </a>
+                </li>
+                <li>
+                    <a href="<?php echo  admin_url('IntroSlider');?>">Danh sách intro slider </a>
                 </li>
                 
             </ul>
