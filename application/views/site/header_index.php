@@ -1,3 +1,4 @@
+<?php $userInfoSite=$this->User_model->get_logged_in_user_info();?>
 <nav class="navbar navbar-default navbar-fixed-top" id="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -31,10 +32,10 @@
                       <input type="hidden" name="language" value="vie">
                     </div>
                 </li>
-                <?php if(isset($_SESSION['user_name'])){?>
-                    <li class="account"  style="padding-top: 19px; padding-right: 10px;">
+                <?php if(isset($userInfoSite->user_name)&&$userInfoSite->user_name!=''){?>
+                <li class="account"  style="padding-top: 19px; padding-right: 10px;">
                     <div class="dropdown dropdown-flat ready">
-                        <button class="dropdown-toggle form-control" type="button" data-toggle="dropdown"><span class="hi"><?php echo lang('block_hello').', '; echo $this->session->userdata('user_name');?></span></button>
+                        <button class="dropdown-toggle form-control" type="button" data-toggle="dropdown"><span class="hi"><?php echo lang('block_hello').', ';echo $userInfoSite->user_name;?></span></button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="currency">
                           <li role="presentation"><a href="/reservations" data-href="follow" role="menuitem" tabindex="-1">Yêu cầu đặt chỗ</a></li>
                           <li role="presentation"><a href="/user/edit" data-href="follow" role="menuitem" tabindex="-1">Tài khoản của tôi</a></li>

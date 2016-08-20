@@ -154,15 +154,15 @@ $(document).ready(function(){
         }
     });
     $('#intro-slider').owlCarousel({
-        margin:10,
+        margin:50,
         loop:<?php if(isset($is_loop_intro_slider)) echo $is_loop_intro_slider; else echo 'false';?>,
         autoplay:true,
         navigation:true,
          nav:true,
          navText:["<img src='/public/site/images/icon_left.png'/>","<img src='/public/site/images/icon_right.png'/>"],
-        autoplayTimeout:10000,
+        autoplayTimeout:1000,
         autoplayHoverPause:true,
-        autoplaySpeed:1,
+        autoplaySpeed:1000,
         dotsSpeed:1000,
         responsiveClass:true,
         responsive:{
@@ -170,10 +170,10 @@ $(document).ready(function(){
                 items:1,
             },
             600:{
-                items:2,
+                items:3,
             },
             1280:{
-                items:2,
+                items:3,
             }
         }
     });

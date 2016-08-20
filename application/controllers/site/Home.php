@@ -61,7 +61,7 @@ class Home extends MY_Controller {
                 );
                 $dataUser = $this->User_model->get_row($data);
                 if ($dataUser != NULL && count($dataUser)) {
-                    $this->session->set_userdata(array(
+                    $userLoginSite= array(
                         'user_id' => $dataUser->user_id,
                         'last_name' => $dataUser->last_name,
                         'first_name' => $dataUser->first_name,
@@ -69,8 +69,8 @@ class Home extends MY_Controller {
                         'email' => $dataUser->email,
                         'phone' => $dataUser->phone,
                         'avarta' => $dataUser->avarta,
-                        'role_id' => $dataUser->role_id,
-                    ));
+                        'role_id' => $dataUser->role_id,);
+                    $this->session->set_userdata('userLoginSite',$userLoginSite);
                     redirect($redirect);
                 } else {
                     $this->session->set_flashdata('login_message', 'Tài khoản hoặc mật khẩu không đúng!');

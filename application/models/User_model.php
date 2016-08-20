@@ -52,6 +52,15 @@ class User_model extends MY_Model {
 
         return false;
     }
+    
+    function get_logged_in_user_info() {
+        if ($this->is_logged_in_site()) {
+            $userLoginSite = $this->session->userdata('userLoginSite');
+            return $this->get_info_id($userLoginSite['user_id']);
+        }
+
+        return false;
+    }
 
     function get_info_id($id) {
         $this->db->select('user.*,role.role_name');
@@ -75,6 +84,10 @@ class User_model extends MY_Model {
 
     function is_logged_in() {
         return $this->session->userdata('userLogin') != false;
+    }
+    
+    function is_logged_in_site() {
+        return $this->session->userdata('userLoginSite') != false;
     }
 
     function has_module_permission($module_id, $user_id, $role_id) {
