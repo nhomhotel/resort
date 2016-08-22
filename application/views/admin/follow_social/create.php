@@ -7,7 +7,7 @@
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo base_url('admin/area'); ?>">
+                    <a href="<?php echo base_url('admin/FollowSocial'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/list.png" />
                         <span>Danh sách</span>
                     </a>
@@ -29,48 +29,25 @@
                 <div class="tab_container tab-content">
                     <div id='tab1' class="tab_content pd0 tab-pane active" role="tabpanel">
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Tên Khu vực:<span class="req">*</span></label>
+                            <label class="formLeft" for="name_network">Tên mạng:<span class="req">*</span></label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <input type="text" name="area_name" id="param_name" _autocheck="true" value="<?php echo set_value('area_name'); ?>" />
+                                    <input type="text" name="name_network" id="param_name" _autocheck="true"/>
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('area_name'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('name_network'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
-
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Tên Khu vực (EN):<span class="req">*</span></label>
+                            <label class="formLeft" for="link_network">Link:</label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <input type="text" name="area_name_en" id="param_name" _autocheck="true" value="<?php echo set_value('area_name_en'); ?>" />
-                                </span>
-                                <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('area_name_en'); ?></div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-
-                        <div class="formRow">
-                            <label class="formLeft" for="position_area">Vị trí hiển thị trên web:</label>
-                            <div class="formRight">
-                                <span class="oneTwo">
-                                    <input type="text" class="form-control" id="usr" name="sort">
+                                    <input type="text" class="form-control" id="usr" name="link_network">
                                 </span>
                             </div>
                             <div class="clear"></div>
                         </div>	
-                        <div class="formRow">
-                            <label class="formLeft" for="image_area">Hình ảnh:</label>
-                            <div class="formRight">
-                                <input type="file" name="image_area"/>
-                                <span name="name_autocheck" class="autocheck"></span>
-                                <div name="image_area" class="clear error"><?php echo form_error('image_area'); ?></div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>	
-
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->

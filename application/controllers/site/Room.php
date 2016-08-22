@@ -364,13 +364,14 @@ class Room extends MY_Controller {
             if (!empty($params['location'])) {
                 $this->load->helper('text');
                 $location_parts = explode(',', $params['location']);
+                $number = count($location_parts);
                 foreach ($location_parts as $index => $location) {
                     $location_parts[$index] = str_replace(' ', '', $location_parts[$index]);
                 }
                 if (count($location_parts) >= 3) {
-                    $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\')');
-                    $this->db->where('(replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[1] . '%\')');
-                    $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[2] . '%\')');
+                    $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[$number-3] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[$number-3] . '%\'  OR ' . 'replace(address_detail_ascii, " ", "") LIKE \'%' . $location_parts[$number-3] . '%\')');
+                    $this->db->where('(replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[$number-2] . '%\')');
+                    $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[$number-1] . '%\')');
                 } elseif (count($location_parts) == 2) {
                     $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\')');
                     $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[1] . '%\')');

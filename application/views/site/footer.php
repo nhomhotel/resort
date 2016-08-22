@@ -5,11 +5,11 @@
                     <div class="col-md-3 col-sm-3 col-xs-6 info-item">
                         <h5><?php echo lang('home_top_destinations');?></h5>
                         <ul>
-                            <li><a href="#">Bali</a></li>
-                            <li><a href="#">Băng Cốc</a></li>
-                            <li><a href="#">Đài Bắc</a></li>
-                            <li><a href="#">Hồng Kông</a></li>
-                            <li><a href="#">Kuala Lumpur</a></li>
+                            <?php if(isset($view_footer)):?>
+                            <?php foreach ($view_footer as $row):?>
+                            <li><a href="<?php echo base_url().'room/search?location='. urldecode($row->name)?>"><?php echo $row->name?></a></li>
+                            <?php endforeach;?>
+                            <?php endif;?>
                         </ul>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-6 info-item">
@@ -26,9 +26,11 @@
                     <div class="col-md-3 col-sm-3 col-xs-6 info-item">
                         <h5><?php echo lang('home_follow_us');?></h5>
                         <ul>
-                            <li><a href="#">Facebook</a></li>
-                            <li><a href="#">Twitter</a></li>
-                            <li><a href="#">Google+</a></li>
+                            <?php if(isset($FollowSocial)):?>
+                            <?php foreach ($FollowSocial as $row):?>
+                            <li><a href="<?php echo $row->link?>"><?php echo $row->name?></a></li>
+                            <?php endforeach;?>
+                            <?php endif;?>
                         </ul>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-6 info-item payment">

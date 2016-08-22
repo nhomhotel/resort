@@ -2,8 +2,8 @@
 
 class Follow_Social_model extends MY_Model {
 
-    var $table = 'experience';
-    var $key = 'experience_id';
+    var $table = 'follow_social';
+    var $key = 'follow_social_id';
 
 }
 

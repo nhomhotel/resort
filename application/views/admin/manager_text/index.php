@@ -9,7 +9,7 @@
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo base_url('admin/FollowSocial/create'); ?>">
+                    <a href="<?php echo base_url('admin/ManagerText/create'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png">
                         <span>Thêm mới</span>
                     </a>
@@ -38,9 +38,10 @@
                 <thead>
                     <tr>
                         <td>STT</td>
-                        <td>Tên</td>
-                        <td>Link</td>
-                        <td>Hành động</td>
+                        <td>Tiêu đề</td>
+                        <td>Tiêu đề(en)</td>
+                        <td>Nội dung</td>
+                        <td>Nội dung(en)</td>
                     </tr>
                 </thead>
                 <tfoot class="auto_check_pages">
@@ -59,14 +60,14 @@
                     $i = 1;
                     foreach ($list as $row) {
                         ?>
-                        <tr class='row_<?php echo $row->follow_social_id; ?>'>
+                        <tr class='row_<?php echo $row->manager_text_id; ?>'>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
+                            <td class="textC"><?php echo $row->title?></td>
+                            <td class="textC"><?php echo $row->title_en?></td>
+                            <td class="textC"><?php echo $row->content?></td>
+                            <td class="textC"><?php echo $row->content_en?></td>
                             <td class="textC">
-                                <?php echo $row->name; ?>
-                            </td>
-                            <td class="textC"><?php echo $row->link; ?></td>
-                            <td class="textC">
-                                <a href="<?php echo base_url('admin/FollowSocial/edit/' . $row->follow_social_id); ?>" class="lightbox" title="edit">
+                                <a href="<?php echo base_url('admin/ManagerText/edit/' . $row->manager_text_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                             </td>

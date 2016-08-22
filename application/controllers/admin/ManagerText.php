@@ -3,21 +3,20 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once 'AdminHome.php';
 
-class FollowSocial extends AdminHome {
+class ManagerText extends AdminHome {
 
     function __construct() {
         parent::__construct(get_class());
-        $this->load->model('Follow_Social_model');
+        $this->load->model('Manager_Text_model');
     }
 
     function index() {
 
         $this->load->library('pagination');
-        $total = $this->Follow_Social_model->get_total();
-
+        $total = $this->Manager_Text_model->get_total();
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = base_url('admin/FollowSocial/index');
+        $config['base_url'] = base_url('admin/ManagerText/index');
         $config['per_page'] = $this->config->item('item_per_page_system') ? $this->config->item('item_per_page_system') : 10;
         ;
         $config['uri_segment'] = 4;
@@ -40,15 +39,14 @@ class FollowSocial extends AdminHome {
 
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
-        $input['order'] = array('follow_social_id', 'ASC');
+        $input['order'] = array('manager_text_id', 'ASC');
 
-        $list = $this->Follow_Social_model->get_list($input);
+        $list = $this->Manager_Text_model->get_list($input);
         $data['total'] = $total;
         $data['list'] = $list;
         $data['start'] = $start;
-
-        $data['title'] = 'Danh sách mạng liên kết';
-        $data['temp'] = 'admin/follow_social/index';
+        $data['title'] = 'Danh sách Text';
+        $data['temp'] = 'admin/manager_text/index';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
 
@@ -57,22 +55,21 @@ class FollowSocial extends AdminHome {
         $this->load->library('form_validation');
         $this->load->helper('form');
         if ($this->input->post()) {
-            $name = $this->input->post('name_network');
-            $link = $this->input->post('link_network');
+            $title = $this->input->post('title');
+            $content = $this->input->post('content');
             $data = array(
-                'name' => $name,
-                'link' => $link,
+                'title' => $title,
+                'content' => $content,
             );
-            if ($this->Follow_Social_model->create($data)) {
+            if ($this->Manager_Text_model->create($data)) {
                 $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
             } else {
                 $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
             }
-            redirect(base_url('admin/FollowSocial'));
+            redirect(base_url('admin/ManagerText'));
         }
-
-        $data['title'] = 'Thêm mới FollowSocial';
-        $data['temp'] = 'admin/follow_social/create';
+        $data['title'] = 'Thêm mới text';
+        $data['temp'] = 'admin/manager_text/create';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
 
@@ -80,31 +77,36 @@ class FollowSocial extends AdminHome {
         $this->load->library('form_validation');
         $this->load->helper('form');
         if ($id > 0) {
-            $info = $this->Follow_Social_model->get_info($id);
+            $info = $this->Manager_Text_model->get_info($id);
             if (!$info) {
                 $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-                redirect(base_url('admin/FollowSocial'));
+                redirect(base_url('admin/ManagerText'));
             }
             $data['info'] = $info;
             if ($this->input->post()) {
-                $name_network = $this->input->post('name_network');
-                $link_network = $this->input->post('link_network');
+                $title = $this->input->post('title');
+                $content = $this->input->post('content');
+                $title_en = $this->input->post('title_en');
+                $content_en = $this->input->post('content_en');
                 $data = array(
-                    'name' => $name_network,
-                    'link' => $link_network,
+                    'title' => $title,
+                    'content' => $content,
+                    'title_en' => $title_en,
+                    'content_en' => $content_en,
                 );
-                if ($this->Follow_Social_model->update($id, $data)) {
+                if ($this->Manager_Text_model->update($id, $data)) {
                     $this->session->set_flashdata('message', 'Cập nhật dữ liệu thành công!');
                 } else {
                     $this->session->set_flashdata('message', 'Cập nhật dữ liệu thất bại!');
                 }
-                redirect(base_url('admin/FollowSocial'));
+                redirect(base_url('admin/ManagerText'));
             }
-            $data['title'] = 'Cập nhật FollowSocial';
-            $data['temp'] = 'admin/follow_social/edit';
+            $data['title'] = 'Cập nhật text';
+            $data['temp'] = 'admin/manager_text/edit';
             $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
         }
     }
+
 }
 
 ?>

@@ -219,5 +219,9 @@ class User extends MY_Controller {
     function edit(){
         echo 1;
     }
+    
+    function resetPassWord($id){
+        
+    }
 
 }

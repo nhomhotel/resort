@@ -18,7 +18,8 @@ class Home extends MY_Controller {
         $data['temp'] = ('site/home/index');
         $data['sliders'] = $this->area_model->get_list(array(
             'where' => array('sort>' => 0),
-            'limit' => array('9' => '0')
+            'limit' => array('9' => '0'),
+            'order'=>array('sort','desc')
         ));
         $data['home_slider_image'] = $this->Home_Slider_model->get_list();
         $data['is_loop_home_slider'] = count($data['home_slider_image'])<2 ?'false':'true';

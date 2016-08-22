@@ -107,6 +107,31 @@
             </ul>
         </li>
         <?php if($role==1):?>
+        <li class="managerText">
+            <a href="#collapse8" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
+                <span><?php echo 'Quản lý nội dung trang home';?></span>
+                <strong>4</strong>
+            </a>
+            <ul class="sub collapse" id="collapse8" aria-expanded="false" style="height: 1px;">
+                <li>
+                    <a href="<?php echo  admin_url('ManagerText');?>">Danh sách nội dung trang home </a>
+                </li>
+                <li>
+                    <a href="<?php echo  admin_url('FollowSocial');?>">Danh sách mạng liên kết</a>
+                </li>
+            </ul>
+        </li>
+        <li class="ManagerNews">
+            <a href="#collapse9" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
+                <span><?php echo 'Quản lý tin tức';?></span>
+                <strong>4</strong>
+            </a>
+            <ul class="sub collapse" id="collapse9" aria-expanded="false" style="height: 1px;">
+                <li>
+                    <a href="<?php echo  admin_url('about');?>">Bài viết tin tức </a>
+                </li>
+            </ul>
+        </li>
         <li class="email">
             <a href="#collapse6" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
                 <span><?php echo "Quản lý email";?></span>
@@ -135,5 +160,7 @@ $('.account').find('strong').html($('.account').find('ul li').length);
 $('.room').find('strong').html($('.room').find('ul li').length);
 $('.email').find('strong').html($('.email').find('ul li').length);
 $('.homeSlider').find('strong').html($('.homeSlider').find('ul li').length);
+$('.managerText').find('strong').html($('.managerText').find('ul li').length);
+$('.ManagerNews').find('strong').html($('.ManagerNews').find('ul li').length);
 
 </script>

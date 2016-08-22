@@ -13,7 +13,15 @@
         $this->load->view($temp, isset($data) ? ($data) : NULL);
     } ?>
     <footer>
-        <?php $this->load->view('site/footer'); ?>
+        <?php $view_footer = $this->area_model->get_list(array(
+            'where' => array('view_footer>' => 0),
+            'limit' => array('5' => '0'),
+            'order'=>array('view_footer','desc')
+        ));
+            $FollowSocial = $this->Follow_Social_model->get_list();
+            if(count($FollowSocial)>0)$data['FollowSocial'] = $FollowSocial;
+            if(count($view_footer)>0)$data['view_footer'] = $view_footer;
+            $this->load->view('site/footer',  isset($data['view_footer'])?$data:null);?>
     </footer>
 </div>
 </body>

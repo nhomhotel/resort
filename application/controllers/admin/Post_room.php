@@ -155,12 +155,12 @@ class Post_room extends AdminHome {
                 $address_detail_ascii = onlyCharacter(securityServer(($this->input->post('address_detail'))));
                 $address_2 = $this->input->post('address_2');
                 $district = $this->input->post('district');
-                $district_ascii = stripUnicode($district);
+                $district_ascii = onlyCharacter(securityServer($district));
                 $provincial = $this->input->post('provincial');
-                $provincial_ascii = stripUnicode($provincial);
+                $provincial_ascii = onlyCharacter(securityServer($provincial));
                 $zip_code = $this->input->post('zip_code');
                 $country = $this->input->post('country');
-                $country_ascii = stripUnicode($country);
+                $country_ascii = onlyCharacter(securityServer($country));
                 $area_id = $this->input->post('area_name');
 
                 $post_room_name = $this->input->post('post_room_name');
@@ -658,12 +658,12 @@ class Post_room extends AdminHome {
                     $address_detail_ascii = onlyCharacter(securityServer(($this->input->post('address_detail'))));
                     $address_2 = $this->input->post('address_2');
                     $district = $this->input->post('district');
-                    $district_ascii = stripUnicode($district);
+                    $district_ascii = onlyCharacter(securityServer($district));
                     $provincial = $this->input->post('provincial');
-                    $provincial_ascii = stripUnicode($provincial);
+                    $provincial_ascii = onlyCharacter(securityServer($provincial));
                     $zip_code = $this->input->post('zip_code');
                     $country = $this->input->post('country');
-                    $country_ascii = stripUnicode($country);
+                    $country_ascii = onlyCharacter(securityServer($country));
                     $area_id = $this->input->post('area_name');
 
                     $post_room_name = $this->input->post('post_room_name');

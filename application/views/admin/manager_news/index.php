@@ -1,5 +1,5 @@
 <!-- Main content -->			
-<!-- Title area -->
+<!-- Title manager_news -->
 <div class="titleArea clearfix">
     <div class="wrapper col-md-12">
         <div class="pageTitle">
@@ -9,7 +9,7 @@
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo base_url('admin/area/create'); ?>">
+                    <a href="<?php echo base_url('admin/manager_news/create'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png">
                         <span>Thêm mới</span>
                     </a>
@@ -50,7 +50,7 @@
                     <tr>
                         <td colspan="9">
                             <div class="list_action itemActions">
-                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('area/deleteAll'); ?>">
+                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('manager_news/deleteAll'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     &nbsp;
                                     <span style='color:white;'>Xóa chọn</span>
@@ -69,9 +69,9 @@
                     $i = 1;
                     foreach ($list as $row) {
                         ?>
-                        <tr class='row_<?php echo $row->area_id; ?>'>
+                        <tr class='row_<?php echo $row->manager_news_id; ?>'>
                             <td class="textC">
-                                <input type="checkbox" name="id[]" value="<?php echo $row->area_id; ?>" />
+                                <input type="checkbox" name="id[]" value="<?php echo $row->manager_news_id; ?>" />
                             </td>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
@@ -87,11 +87,11 @@
                                 <?php echo $row->view_footer; ?>
                             </td>
                             <td class="textC">
-                                <a href="<?php echo base_url('admin/area/edit/' . $row->area_id); ?>" class="lightbox" title="edit">
+                                <a href="<?php echo base_url('admin/manager_news/edit/' . $row->manager_news_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                                 &nbsp;
-                                <a href="<?php echo base_url('admin/area/delete/' . $row->area_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
+                                <a href="<?php echo base_url('admin/manager_news/delete/' . $row->manager_news_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/uninstall.png" />
                                 </a>
                             </td>
@@ -112,7 +112,7 @@
         var admin_url = "<?php echo admin_url(); ?>";
         var curUrl = window.location.href;
         $.ajax({
-            url: admin_url + '/area/status',
+            url: admin_url + '/manager_news/status',
             type: "post",
             dataType: "text",
             data: {

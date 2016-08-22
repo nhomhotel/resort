@@ -109,6 +109,7 @@ class Area extends AdminHome {
                     $name = $this->input->post('area_name');
                     $name_en = $this->input->post('area_name_en');
                     $sort = $this->input->post('sort');
+                    $view_footer = $this->input->post('view_footer');
                     if (!empty($_FILES['image_area']['name'])) {
                         $upload_path = './uploads/area';
                         $this->load->library('upload_library');
@@ -121,6 +122,7 @@ class Area extends AdminHome {
                             'name' => $name,
                             'name_en' => $name_en,
                             'sort' => $sort,
+                            'view_footer' => $view_footer,
                             'image' => $image,
                         );
                     }else {
@@ -128,6 +130,7 @@ class Area extends AdminHome {
                             'name' => $name,
                             'name_en' => $name_en,
                             'sort' => $sort,
+                            'view_footer' => $view_footer,
                         );
                     }
                     if ($this->area_model->update($id, $data)) {
