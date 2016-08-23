@@ -269,4 +269,16 @@ function getStringNumber($amount) {
     return ucfirst($textnumber . "đồng chẵn");
 }
 
+if (!function_exists('isTokent')) {
+
+    function isTokent($str) {
+        $CI = & get_instance();
+        if(strlen($str));
+        $str = preg_replace('/[^a-zA-Z0-9 \/\-,]/', ' ', $str);
+        $str = preg_replace('/[ ]{2,}/', ' ', $str);
+        return ($str);
+    }
+
+}
+
 ?>

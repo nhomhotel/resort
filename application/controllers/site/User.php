@@ -220,7 +220,13 @@ class User extends MY_Controller {
         echo 1;
     }
     
-    function resetPassWord($id){
+    function forgot_password(){
+        $token = securityServer($this->input->post('tokent'));
+        $email = securityServer($this->input->post('email'));
+        if(!isset($token)||$token==''||!isset($email)||$email==''){
+            $this->session->set_flashdata(array('success'=>FALSE,'message'=>'Lỗi xác nhận chứng thực.'));
+            redirect('/');
+        }
         
     }
 

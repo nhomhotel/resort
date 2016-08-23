@@ -109,12 +109,12 @@
         <?php if($role==1):?>
         <li class="managerText">
             <a href="#collapse8" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
-                <span><?php echo 'Quản lý nội dung trang home';?></span>
+                <span><?php echo 'Quản lý nd trang home';?></span>
                 <strong>4</strong>
             </a>
             <ul class="sub collapse" id="collapse8" aria-expanded="false" style="height: 1px;">
                 <li>
-                    <a href="<?php echo  admin_url('ManagerText');?>">Danh sách nội dung trang home </a>
+                    <a href="<?php echo  admin_url('ManagerText');?>">Danh sách nd trang home </a>
                 </li>
                 <li>
                     <a href="<?php echo  admin_url('FollowSocial');?>">Danh sách mạng liên kết</a>
