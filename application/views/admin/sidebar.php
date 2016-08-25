@@ -128,7 +128,10 @@
             </a>
             <ul class="sub collapse" id="collapse9" aria-expanded="false" style="height: 1px;">
                 <li>
-                    <a href="<?php echo  admin_url('about');?>">Bài viết tin tức </a>
+                    <a href="<?php echo  admin_url('News_category');?>">Danh mục tin tức </a>
+                </li>
+                <li>
+                    <a href="<?php echo  admin_url('About');?>">Bài viết tin tức </a>
                 </li>
             </ul>
         </li>

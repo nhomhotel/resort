@@ -1,0 +1,1 @@
+INSERT INTO `tbl_permissions` (`module_id`, `role_id`) VALUES ('News_category', '1');
