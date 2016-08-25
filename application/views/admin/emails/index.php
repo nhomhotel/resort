@@ -9,10 +9,10 @@
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo admin_url('post_room/post'); ?>">
-                        <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png"/>
+<!--                    <a href="<?php // echo admin_url('emails/create'); ?>">
+                        <img src="<?php // echo base_url(); ?>public/admin/images/icons/control/16/add.png"/>
                         <span>Thêm email</span>
-                    </a>
+                    </a>-->
                 </li>
             </ul>
         </div>

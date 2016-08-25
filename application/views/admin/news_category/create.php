@@ -29,13 +29,35 @@
                 <div class="tab_container tab-content">
                     <div id='tab1' class="tab_content pd0 tab-pane active" role="tabpanel">
                         <div class="formRow">
+                            <label class="formLeft" for="param_name">Tiêu đề:<span class="req">*</span></label>
+                            <div class="formRight">
+                                <span class="oneTwo">
+                                    <input  class="form-control" name="News_category_title" value="<?php echo set_value('News_category_title'); ?>"  _autocheck="true" />
+                                </span>
+                                <span name="name_autocheck" class="autocheck"></span>
+                                <div name="name_error" class="clear error"><?php echo form_error('News_category_title'); ?></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="formRow">
+                            <label class="formLeft" for="param_name">Tiêu đề(en):<span class="req">*</span></label>
+                            <div class="formRight">
+                                <span class="oneTwo">
+                                    <input class="form-control" name="News_category_title_en" value="<?php echo set_value('News_category_title_en'); ?>"  _autocheck="true" />
+                                </span>
+                                <span name="name_autocheck" class="autocheck"></span>
+                                <div name="name_error" class="clear error"><?php echo form_error('News_category_title_en'); ?></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="formRow">
                             <label class="formLeft" for="param_name">Mô tả:<span class="req">*</span></label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <textarea name="News_category_name" value="<?php echo set_value('News_category_name_en'); ?>"  _autocheck="true" ></textarea>
+                                    <textarea name="News_category_description" value="<?php echo set_value('News_category_description_en'); ?>"  _autocheck="true" ></textarea>
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('News_category_name_en'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('News_category_description_en'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -44,11 +66,11 @@
                             <div class="formRight">
                                 <span class="oneTwo">
                                     <span class="oneTwo">
-                                    <textarea name="News_category_name_en" value="<?php echo set_value('News_category_name_en'); ?>"  _autocheck="true" ></textarea>
+                                    <textarea name="News_category_description_en" value="<?php echo set_value('News_category_description_en'); ?>"  _autocheck="true" ></textarea>
                                 </span>
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('News_category_name_en'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('News_category_description_en'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>

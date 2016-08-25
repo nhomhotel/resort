@@ -1,5 +1,5 @@
 <!-- Main content -->			
-<!-- Title News_category -->
+<!-- Title news -->
 <div class="titleArea clearfix">
     <div class="wrapper col-md-12">
         <div class="pageTitle">
@@ -9,7 +9,7 @@
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo base_url('admin/News_category/create'); ?>">
+                    <a href="<?php echo base_url('admin/News/create'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/add.png">
                         <span>Thêm mới</span>
                     </a>
@@ -39,10 +39,10 @@
                     <tr>
                         <td><input type="checkbox" id="titleCheck" name="titleCheck" /></td>
                         <td>STT</td>
-                        <td>Mô tả</td>
-                        <td>Mô tả(en)</td>
-                        <td>trạng thái</td>
-                        <td>Ảnh đại diện</td>
+                        <td>Tiêu đề </td>
+                        <td>Nội dung tin</td>
+                        <td>Trạng thái</td>
+                        <td>Danh mục tin</td>
                         <td>Hành động</td>
                     </tr>
                 </thead>
@@ -50,7 +50,7 @@
                     <tr>
                         <td colspan="9">
                             <div class="list_action itemActions">
-                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('News_category/deleteAll'); ?>">
+                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('news/deleteAll'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     &nbsp;
                                     <span style='color:white;'>Xóa chọn</span>
@@ -69,30 +69,32 @@
                     $i = 1;
                     foreach ($list as $row) {
                         ?>
-                        <tr class='row_<?php echo $row->news_category_id; ?>'>
+                        <tr class='row_<?php echo $row->news_id; ?>'>
                             <td class="textC">
-                                <input type="checkbox" name="id[]" value="<?php echo $row->news_category_id; ?>" />
+                                <input type="checkbox" name="id[]" value="<?php echo $row->news_id; ?>" />
                             </td>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
-                                <div ><?php echo substr($row->description,0,150).'....';?></div>
+                                <?php echo $row->title; ?>
                             </td>
                             <td class="textC">
-                                <div ><?php echo substr($row->description_en,0,150).'....';?></div>
+                                <?php echo $row->content; ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->status; ?>
+                                <?php
+                                
+                                echo getStatus($row, $row->news_id);
+                                ?>
                             </td>
                             <td class="textC">
-                                <image src="<?php echo $row->image; ?>" style="width: 145px;"/>
+                                <?php echo 'Loại tin';?>
                             </td>
-                            
                             <td class="textC">
-                                <a href="<?php echo base_url('admin/News_category/edit/' . $row->news_category_id); ?>" class="lightbox" title="edit">
+                                <a href="<?php echo base_url('admin/News/edit/' . $row->news_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                                 &nbsp;
-                                <a href="<?php echo base_url('admin/News_category/delete/' . $row->news_category_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
+                                <a href="<?php echo base_url('admin/News/delete/' . $row->news_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/uninstall.png" />
                                 </a>
                             </td>
@@ -113,7 +115,7 @@
         var admin_url = "<?php echo admin_url(); ?>";
         var curUrl = window.location.href;
         $.ajax({
-            url: admin_url + '/News_category/status',
+            url: admin_url + '/news/status',
             type: "post",
             dataType: "text",
             data: {

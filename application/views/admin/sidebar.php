@@ -131,7 +131,7 @@
                     <a href="<?php echo  admin_url('News_category');?>">Danh mục tin tức </a>
                 </li>
                 <li>
-                    <a href="<?php echo  admin_url('About');?>">Bài viết tin tức </a>
+                    <a href="<?php echo  admin_url('News');?>">Bài viết tin tức </a>
                 </li>
             </ul>
         </li>

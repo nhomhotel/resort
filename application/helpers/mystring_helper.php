@@ -281,4 +281,21 @@ if (!function_exists('isTokent')) {
 
 }
 
+if (!function_exists('getStatus')) {
+
+    function getStatus($stdData,$stdID) {
+        $CI = & get_instance();
+        $return = '';
+        if(get_class($stdData)==='stdClass'){
+            if ($stdData->status == 1) {
+              $return = $CI->load->view('admin/template/tmp_status',array('index'=>'1','id'=>$stdID),true);                      
+            } else {
+                $return = $CI->load->view('admin/template/tmp_status',array('index'=>'0','id'=>$stdID),true); 
+            }
+        }
+        return ($return);
+    }
+
+}
+
 ?>

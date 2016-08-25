@@ -52,16 +52,6 @@
                                 <select name="view_home" class="form-control">
                                     <option value="1">Hiển thị</option>
                                     <option value="0">Ẩn</option>
-                                    <?php
-                                    if (isset($list_slider_view) && is_array($list_slider_view)) {
-                                        $selected = '';
-                                        foreach ($list_slider_view as $view) {
-//                                            $selected = ($this->input->get('role') == $view->role_id) ? 'selected' : '';
-//                                            echo '<option value="' . $role->role_id . '" ' . $selected . '>' . $role->role_name . '</option>';
-                                            
-                                        }
-                                    }
-                                    ?>
                                 </select>
                             </div>
                             <div class="clear"></div>

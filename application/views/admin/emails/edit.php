@@ -4,7 +4,7 @@
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
-            <h5>Cấu hình hệ thống</h5>
+            <h5>chỉnh sửa nội dung email</h5>
             <span><?php echo isset($title) ? $title : ''; ?></span>
         </div>
         <div id="message"></div>

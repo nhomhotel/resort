@@ -1,17 +1,16 @@
-<?php 
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class MY_Model extends CI_Model {
 
     // Ten table
     var $table = '';
-
     // Key chinh cua table
     var $key = '';
-
     // Order mac dinh (VD: $order = array('id', 'desc))
     var $order = '';
-
     // Cac field select mac dinh khi get_list (VD: $select = 'id, name')
     var $select = '';
 
@@ -19,13 +18,11 @@ class MY_Model extends CI_Model {
      * Them row moi
      * $data : du lieu ma ta can them
      */
-    function create($data = array())
-    {
+    function create($data = array()) {
 //        $id = $this->db->insert($this->table, $data);
-        if($this->db->insert($this->table, $data))
-        {
+        if ($this->db->insert($this->table, $data)) {
             return $this->db->insert_id();
-        }else{
+        } else {
             return FALSE;
         }
     }
@@ -35,10 +32,8 @@ class MY_Model extends CI_Model {
      * $id : khoa chinh cua bang can sua
      * $data : mang du lieu can sua
      */
-    function update($id, $data)
-    {
-        if (!$id)
-        {
+    function update($id, $data) {
+        if (!$id) {
             return FALSE;
         }
 
@@ -54,10 +49,8 @@ class MY_Model extends CI_Model {
      * $where : dieu kien
      * $data : mang du lieu can cap nhat
      */
-    function update_rule($where, $data)
-    {
-        if (!$where)
-        {
+    function update_rule($where, $data) {
+        if (!$where) {
             return FALSE;
         }
 
@@ -71,20 +64,16 @@ class MY_Model extends CI_Model {
      * Xoa row tu id
      * $id : gia tri cua khoa chinh
      */
-    function delete($id)
-    {
-        if (!$id)
-        {
+    function delete($id) {
+        if (!$id) {
             return FALSE;
         }
         //neu la so
-        if(is_numeric($id))
-        {
+        if (is_numeric($id)) {
             $where = array($this->key => $id);
-        }else
-        {
+        } else {
             //$id = 1,2,3...
-            $where = $this->key . " IN (".$id.") ";
+            $where = $this->key . " IN (" . $id . ") ";
         }
         $this->del_rule($where);
 
@@ -95,10 +84,8 @@ class MY_Model extends CI_Model {
      * Xoa row tu dieu kien
      * $where : mang dieu kien de xoa
      */
-    function del_rule($where)
-    {
-        if (!$where)
-        {
+    function del_rule($where) {
+        if (!$where) {
             return FALSE;
         }
 
@@ -112,7 +99,7 @@ class MY_Model extends CI_Model {
      * Th?c hi?n câu l?nh query
      * $sql : cau lenh sql
      */
-    function query($sql){
+    function query($sql) {
         $rows = $this->db->query($sql);
         return $rows->result;
     }
@@ -122,10 +109,8 @@ class MY_Model extends CI_Model {
      * $id : id can lay thong tin
      * $field : cot du lieu ma can lay
      */
-    function get_info($id, $field = '')
-    {
-        if (!$id)
-        {
+    function get_info($id, $field = '') {
+        if (!$id) {
             return FALSE;
         }
 
@@ -140,16 +125,13 @@ class MY_Model extends CI_Model {
      * $where: M?ng ?i?u ki?n
      * $field: C?t mu?n l?y d? li?u
      */
-    function get_info_rule($where = array(), $field= '')
-    {
-        if($field)
-        {
+    function get_info_rule($where = array(), $field = '') {
+        if ($field) {
             $this->db->select($field);
         }
         $this->db->where($where);
         $query = $this->db->get($this->table);
-        if ($query->num_rows())
-        {
+        if ($query->num_rows()) {
             return $query->row();
         }
 
@@ -159,13 +141,14 @@ class MY_Model extends CI_Model {
     /**
      * Lay tong so
      */
-    function get_total($input = array(),$join=array())
-    {
-        if(count($join)>0){
-            foreach ($join as $key => $value){
+    function get_total($input = array(), $join = array()) {
+        if (count($join) > 0) {
+            foreach ($join as $key => $value) {
                 $tmp = explode('::', $value);
-                if(count($tmp)==2)$this->db->join($key, $tmp[0].'='.  $this->table.'.'.$tmp[1]);
-                if(count($tmp)==3)$this->db->join($key, $tmp[0].'='.  $this->table.'.'.$tmp[1],$tmp[2]);
+                if (count($tmp) == 2)
+                    $this->db->join($key, $tmp[0] . '=' . $this->table . '.' . $tmp[1]);
+                if (count($tmp) == 3)
+                    $this->db->join($key, $tmp[0] . '=' . $this->table . '.' . $tmp[1], $tmp[2]);
             }
         }
         $this->get_list_set_input($input);
@@ -178,15 +161,13 @@ class MY_Model extends CI_Model {
      * Lay tong so
      * $field: cot muon tinh tong
      */
-    function get_sum($field, $where = array())
-    {
-        $this->db->select_sum($field);//tinh rong
-        $this->db->where($where);//dieu kien
+    function get_sum($field, $where = array()) {
+        $this->db->select_sum($field); //tinh rong
+        $this->db->where($where); //dieu kien
         $this->db->from($this->table);
 
         $row = $this->db->get()->row();
-        foreach ($row as $f => $v)
-        {
+        foreach ($row as $f => $v) {
             $sum = $v;
         }
         return $sum;
@@ -195,13 +176,15 @@ class MY_Model extends CI_Model {
     /**
      * Lay 1 row
      */
-    function get_row($input = array(),$join = array()){
+    function get_row($input = array(), $join = array()) {
         $this->get_list_set_input($input);
-        if($join);
-        if(count($join)>0){
-            foreach ($join as $key => $value){
+        if ($join)
+            ;
+        if (count($join) > 0) {
+            foreach ($join as $key => $value) {
                 $tmp = explode('::', $value);
-                if(count($tmp)==2)$this->db->join($key, $tmp[0].'='.  $this->table.'.'.$tmp[1]);
+                if (count($tmp) == 2)
+                    $this->db->join($key, $tmp[0] . '=' . $this->table . '.' . $tmp[1]);
             }
         }
         $query = $this->db->get($this->table);
@@ -213,17 +196,17 @@ class MY_Model extends CI_Model {
      * Lay danh sach
      * $input : mang cac du lieu dau vao
      */
-    function get_list($input = array(),$join = array(),$select= array())
-    {
-        if(count($select)>0){
-            $this->db->select( implode(', ', $select));
+    function get_list($input = array(), $join = array(), $select = array()) {
+        if (count($select) > 0) {
+            $this->db->select(implode(', ', $select));
         }
         //xu ly ca du lieu dau vao
         $this->get_list_set_input($input);
-        if(count($join)>0){
-            foreach ($join as $key => $value){
+        if (count($join) > 0) {
+            foreach ($join as $key => $value) {
                 $tmp = explode('::', $value);
-                if(count($tmp)==2)$this->db->join($key, $tmp[0].'='. $tmp[1]);
+                if (count($tmp) == 2)
+                    $this->db->join($key, $tmp[0] . '=' . $tmp[1]);
             }
         }
         //thuc hien truy van du lieu
@@ -237,54 +220,43 @@ class MY_Model extends CI_Model {
      * Gan cac thuoc tinh trong input khi lay danh sach
      * $input : mang du lieu dau vao
      */
-
-    protected function get_list_set_input($input = array())
-    {
-        if ((isset($input['select'])) && $input['select'])
-        {
+    protected function get_list_set_input($input = array()) {
+        if ((isset($input['select'])) && $input['select']) {
             $this->db->select($input['select']);
         }
         // Thêm ?i?u ki?n cho câu truy v?n truy?n qua bi?n $input['where']
         //(vi du: $input['where'] = array('email' => 'hocphp@gmail.com'))
-        if ((isset($input['where'])) && $input['where'])
-        {
+        if ((isset($input['where'])) && $input['where']) {
             $this->db->where($input['where']);
         }
 
         //tim kiem like
         // $input['like'] = array('name' => 'abc');
-        if ((isset($input['like'])) && $input['like'])
-        {
+        if ((isset($input['like'])) && $input['like']) {
             $this->db->like($input['like'][0], $input['like'][1]);
         }
 
-        if ((isset($input['or_like'])) && $input['or_like'])
-        {
+        if ((isset($input['or_like'])) && $input['or_like']) {
             $this->db->like($input['or_like'][0], $input['or_like'][1]);
         }
 
         // Thêm s?p x?p d? li?u thông qua bi?n $input['order']
         //(ví d? $input['order'] = array('id','DESC'))
-        if (isset($input['order'][0]) && isset($input['order'][1]))
-        {
+        if (isset($input['order'][0]) && isset($input['order'][1])) {
             $this->db->order_by($input['order'][0], $input['order'][1]);
-        }
-        else
-        {
+        } else {
             //m?c ??nh s? s?p x?p theo id gi?m d?n
-            $order = ($this->order == '') ? array($this->table.'.'.$this->key, 'desc') : $this->order;
-            $this->db->order_by($order[0], $order[1],'none');
+            $order = ($this->order == '') ? array($this->table . '.' . $this->key, 'desc') : $this->order;
+            $this->db->order_by($order[0], $order[1], 'none');
         }
 
         // Thêm ?i?u ki?n limit cho câu truy v?n thông qua bi?n $input['limit']
         //(ví d? $input['limit'] = array('10' ,'0'))
-        if (isset($input['limit'][0]) && isset($input['limit'][1]))
-        {
+        if (isset($input['limit'][0]) && isset($input['limit'][1])) {
             $this->db->limit($input['limit'][0], $input['limit'][1]);
         }
-        if (isset($input['group_by']))
-        {
-            $this->db->group_by($input['group_by']); 
+        if (isset($input['group_by'])) {
+            $this->db->group_by($input['group_by']);
         }
     }
 
@@ -292,21 +264,46 @@ class MY_Model extends CI_Model {
      * ki?m tra s? t?n t?i c?a d? li?u theo 1 ?i?u ki?n nào ?ó
      * $where : mang du lieu dieu kien
      */
-    function check_exists($where = array())
-    {
+    function check_exists($where = array()) {
 //        $this->db->where($where);
-        foreach ($where as $key =>$value){
-            $this->db->where($key,$value);
+        foreach ($where as $key => $value) {
+            $this->db->where($key, $value);
         }
         //thuc hien cau truy van lay du lieu
         $query = $this->db->get($this->table);
 
-        if($query->num_rows() > 0){
+        if ($query->num_rows() > 0) {
             return TRUE;
-        }else{
+        } else {
             return FALSE;
         }
     }
 
+    function changeStatus($id, $redirection) {
+        $field = 'status';
+
+        $statusInfo = $this->get_info($id, $field);
+        if (!$statusInfo) {
+
+            $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+            redirect(admin_url('amenities/index'));
+        } else {
+
+            if ($statusInfo->status == 1) {
+                $data = array(
+                    'status' => 0,
+                );
+            } else {
+                $data = array(
+                    'status' => 1,
+                );
+            }
+        }
+        if ($this->update($id, $data)) {
+            
+        }
+    }
+
 }
+
 ?>

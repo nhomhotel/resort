@@ -8,7 +8,6 @@ class News_category extends AdminHome {
     function __construct() {
         parent::__construct(get_class());
         $this->load->model('News_category_model');
-//        $this->load->library('simple_image_library');
     }
 
     function index() {
@@ -18,7 +17,7 @@ class News_category extends AdminHome {
 
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = base_url('admin/News_category/index');
+        $config['base_url'] = base_url('admin/news_category/index');
         $config['per_page'] = $this->config->item('item_per_page_system') ? $this->config->item('item_per_page_system') : 10;
         ;
         $config['uri_segment'] = 4;
@@ -49,7 +48,7 @@ class News_category extends AdminHome {
         $data['start'] = $start;
 
         $data['title'] = 'Danh sách danh mục tin';
-        $data['temp'] = 'admin/News_category/index';
+        $data['temp'] = 'admin/news_category/index';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
 
@@ -58,13 +57,17 @@ class News_category extends AdminHome {
         $this->load->library('form_validation');
         $this->load->helper('form');
         if ($this->input->post()) {
-            $this->form_validation->set_rules('News_category_name', 'Mô tả', 'trim|required');
-            $this->form_validation->set_rules('News_category_name_en', 'Mô tả tiếng anh', 'trim|required');
+            $this->form_validation->set_rules('News_category_description', 'Mô tả', 'trim|required');
+            $this->form_validation->set_rules('News_category_description_en', 'Mô tả (en)', 'trim|required');
+            $this->form_validation->set_rules('News_category_title', 'Tiêu đề', 'trim|required');
+            $this->form_validation->set_rules('News_category_title_en', 'Tiêu đề(en)', 'trim|required');
             if (empty($_FILES['image_News_category']['name']))
                 $this->form_validation->set_rules('image_News_category', 'Ảnh', 'required');
             if ($this->form_validation->run()) {
-                $description = $this->input->post('News_category_name');
-                $description_en = $this->input->post('News_category_name_en');
+                $description = $this->input->post('News_category_description');
+                $description_en = $this->input->post('News_category_description_en');
+                $title = $this->input->post('News_category_title');
+                $title_en = $this->input->post('News_category_title_en');
                 $upload_path = './uploads/news_category';
                 $this->load->library('upload_library');
                 $image_data = $this->upload_library->upload($upload_path, 'image_News_category');
@@ -75,6 +78,8 @@ class News_category extends AdminHome {
                 $data = array(
                     'description' => $description,
                     'description_en' => $description_en,
+                    'title' => $title,
+                    'title_en' => $title_en,
                     'image' => $image,
                     'status'=>intval($this->input->post('status_news_category'))
                 );
@@ -83,12 +88,12 @@ class News_category extends AdminHome {
                 } else {
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
                 }
-                redirect(base_url('admin/News_category'));
+                redirect(base_url('admin/news_category'));
             }
         }
 
         $data['title'] = 'Thêm mới danh mục tin';
-        $data['temp'] = 'admin/News_category/create';
+        $data['temp'] = 'admin/news_category/create';
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
 
@@ -99,15 +104,19 @@ class News_category extends AdminHome {
             $info = $this->News_category_model->get_info($id);
             if (!$info) {
                 $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-                redirect(base_url('admin/News_category'));
+                redirect(base_url('admin/news_category'));
             }
             $data['info'] = $info;
             if ($this->input->post('submit')) {
-                $this->form_validation->set_rules('News_category_name', 'News_category_name', 'trim|required');
-                $this->form_validation->set_rules('News_category_name_en', 'News_category_name_en', 'trim|required');
+                $this->form_validation->set_rules('News_category_description', 'Mô tả', 'trim|required');
+                $this->form_validation->set_rules('News_category_description_en', 'Mô tả(en)', 'trim|required');
+                $this->form_validation->set_rules('News_category_title', 'Tiêu đề', 'trim|required');
+                $this->form_validation->set_rules('News_category_title_en', 'Tiêu đề(en)', 'trim|required');
                 if ($this->form_validation->run()) {
-                    $description = $this->input->post('News_category_name');
-                    $description_en = $this->input->post('News_category_name_en');
+                    $description = $this->input->post('News_category_description');
+                    $description_en = $this->input->post('News_category_description_en');
+                    $title = $this->input->post('News_category_title');
+                    $title_en = $this->input->post('News_category_title_en');
                     $status = intval($this->input->post('status_news_category'));
                     if (!empty($_FILES['image_News_category']['name'])) {
                         $upload_path = './uploads/news_category';
@@ -120,6 +129,8 @@ class News_category extends AdminHome {
                         $data = array(
                             'description' => $description,
                             'description_en' => $description_en,
+                            'title' => $title,
+                            'title_en' => $title_en,
                             'status' => $status,
                             'image' => $image,
                         );
@@ -127,6 +138,8 @@ class News_category extends AdminHome {
                         $data = array(
                             'description' => $description,
                             'description_en' => $description_en,
+                            'title' => $title,
+                            'title_en' => $title_en,
                             'status' => $status,
                         );
                     }
@@ -135,11 +148,11 @@ class News_category extends AdminHome {
                     } else {
                         $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại!');
                     }
-                    redirect(base_url('admin/News_category'));
+                    redirect(base_url('admin/news_category'));
                 }
             }
             $data['title'] = 'Cập nhật danh mục tin';
-            $data['temp'] = 'admin/News_category/edit';
+            $data['temp'] = 'admin/news_category/edit';
             $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
         }
     }
@@ -154,7 +167,7 @@ class News_category extends AdminHome {
             if ($this->News_category_model->delete($id))
                 $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
         }
-        redirect(base_url('admin/News_category'));
+        redirect(base_url('admin/news_category'));
     }
 
     function deleteAll() {
