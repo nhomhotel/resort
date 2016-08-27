@@ -279,14 +279,15 @@ class MY_Model extends CI_Model {
         }
     }
 
-    function changeStatus($id, $redirection) {
+    function changeStatus($id) {
         $field = 'status';
-
+        $data = array();
         $statusInfo = $this->get_info($id, $field);
         if (!$statusInfo) {
 
             $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-            redirect(admin_url('amenities/index'));
+            $data['error']=array('success'=>false,'message'=>'Không tồn tại bản ghi!');
+            return $data;
         } else {
 
             if ($statusInfo->status == 1) {
@@ -300,8 +301,11 @@ class MY_Model extends CI_Model {
             }
         }
         if ($this->update($id, $data)) {
-            
         }
+        else{
+            $data['error']=array('success'=>false,'message'=>'Update dữ liệu không thành công!');
+        }
+        return $data;
     }
 
 }

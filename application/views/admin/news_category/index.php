@@ -89,7 +89,7 @@
                                 <div ><?php echo substr($row->description_en,0,150).'....';?></div>
                             </td>
                             <td class="textC">
-                                <?php echo $row->status; ?>
+                                <?php echo getStatus($row, $row->news_category_id); ?>
                             </td>
                             <td class="textC">
                                 <image src="<?php echo $row->image; ?>" style="width: 145px;"/>

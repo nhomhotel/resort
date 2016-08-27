@@ -188,12 +188,11 @@ if (!function_exists('securityServer')) {
 
     function securityServer($str) {
         $CI = & get_instance();
-        if(is_array($str)){
-            foreach ($str as &$row){
+        if (is_array($str)) {
+            foreach ($str as &$row) {
                 $row = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($row))));
             }
-        }
-        else 
+        } else
             $str = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($str))));
         return ($str);
     }
@@ -273,7 +272,8 @@ if (!function_exists('isTokent')) {
 
     function isTokent($str) {
         $CI = & get_instance();
-        if(strlen($str));
+        if (strlen($str))
+            ;
         $str = preg_replace('/[^a-zA-Z0-9 \/\-,]/', ' ', $str);
         $str = preg_replace('/[ ]{2,}/', ' ', $str);
         return ($str);
@@ -283,14 +283,14 @@ if (!function_exists('isTokent')) {
 
 if (!function_exists('getStatus')) {
 
-    function getStatus($stdData,$stdID) {
+    function getStatus($stdData, $stdID) {
         $CI = & get_instance();
         $return = '';
-        if(get_class($stdData)==='stdClass'){
+        if (get_class($stdData) === 'stdClass') {
             if ($stdData->status == 1) {
-              $return = $CI->load->view('admin/template/tmp_status',array('index'=>'1','id'=>$stdID),true);                      
+                $return = $CI->load->view('admin/template/tmp_status', array('index' => '1', 'id' => $stdID), true);
             } else {
-                $return = $CI->load->view('admin/template/tmp_status',array('index'=>'0','id'=>$stdID),true); 
+                $return = $CI->load->view('admin/template/tmp_status', array('index' => '0', 'id' => $stdID), true);
             }
         }
         return ($return);
@@ -298,4 +298,30 @@ if (!function_exists('getStatus')) {
 
 }
 
+if (!function_exists('shortNews')) {
+
+    function shortNews($content, $length=250) {
+        $CI = & get_instance();
+        $return = '';
+        if(!empty($content)){
+            if(strlen($content)>250)$return=  '“'.substr ($content, 0,250).'“';
+            else $return = $content;
+        }
+        return ($return);
+    }
+
+}
+
+if (!function_exists('NewsUrl')) {
+
+    function NewsUrl($content,$id) {
+        $return = '';
+        if(!empty($content)&&!!empty($id)){
+            $return = base_url().'tin-tuc/'.  onlyCharacter(vn_str_filter($content)).'-'.$id;
+        }
+        else $return = base_url ().'tin-tuc';
+        return ($return);
+    }
+
+}
 ?>

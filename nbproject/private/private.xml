@@ -12,26 +12,15 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/news_category/create.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/ManagerNews.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/News_category.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/news_category/edit.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/News.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/sidebar.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/template/tmp_status.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/amenities/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/config/autoload.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Experience.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Area.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/AdminHome.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/models/News_category_model.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Emails.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/core/MY_Model.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/news/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/helpers/mystring_helper.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/controllers/admin/Amenities.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/news_category/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/15-7/resort/application/views/admin/news/create.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news_releases.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/contact/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/contact.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news_category.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/layout.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/helpers/mystring_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/News.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news.php</file>
         </group>
     </open-files>
 </project-private>

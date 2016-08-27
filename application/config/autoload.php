@@ -58,7 +58,7 @@ $autoload['packages'] = array(APPPATH.'third_party/Hashids/HashGenerator.php',AP
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('form_validation', 'database', 'session','pagination','Payment_library');
+$autoload['libraries'] = array('form_validation', 'database', 'session','pagination','Payment_library','Recaptcha');
 
 /*
 | -------------------------------------------------------------------

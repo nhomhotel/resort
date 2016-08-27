@@ -49,6 +49,7 @@ class News extends AdminHome {
 
         $data['title'] = 'Danh sách tin';
         $data['temp'] = 'admin/news/index';
+//        $data['recapcha'] = $this->recaptcha->recaptcha_get_html();
         $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
     }
 
@@ -179,8 +180,10 @@ class News extends AdminHome {
     
     function status(){
         $id = intval($this->input->post('id'));
-        $redirection = admin_url('News/index');
-        $this->New_model->changeStatus($id,$redirection);
+        $data = $this->News_model->changeStatus($id);
+        if(isset($data['error'])) return $data['error'];
+        else return array('success'=>TRUE);
+        exit;
     }
 
 }

@@ -16,7 +16,7 @@
                         <h5><?php echo lang('home_company_info');?></h5>
                         <ul>
                             <li><a href="#"><?php echo lang('home_about_us');?></a></li>
-                            <li><a href="#"><?php echo lang('home_news');?></a></li>
+                            <li><a href="<?php echo base_url('tin-tuc/')?>"><?php echo lang('home_news');?></a></li>
                             <li><a href="#"><?php echo lang('home_contact');?></a></li>
                             <li><a href="#">Blog</a></li>
                             <li><a href="#"><?php echo lang('home_help');?></a></li>

@@ -11,7 +11,7 @@ class News_category extends AdminHome {
     }
 
     function index() {
-
+        $this->load->model('News_category_model');
         $this->load->library('pagination');
         $total = $this->News_category_model->get_total();
 
@@ -177,6 +177,14 @@ class News_category extends AdminHome {
                 $this->News_category_model->delete($id);
             }
         }
+    }
+    
+    function status(){
+        $id = intval($this->input->post('id'));
+        $data=$this->News_category_model->changeStatus($id);
+        if(isset($data['error'])) return $data['error'];
+        else return array('success'=>TRUE);
+        exit;
     }
 
 }
