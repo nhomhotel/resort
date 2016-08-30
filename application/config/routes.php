@@ -67,6 +67,6 @@ $route['payments'] = 'site/payments';
 $route['paymentOnline'] = 'site/Payments/paymentOnline';
 $route['spaces/prices/(:any)'] = 'site/spaces/prices/$1';
 $route['language'] = 'site/language';
-$route['tin-tuc/([a-zA-Z\-]+)-([0-9]+)'] = 'site/news/index/$2';
+$route['tin-tuc/([a-zA-Z\-]+)-([0-9]+)'] = 'site/news/view/$2';
 $route['tin-tuc'] = 'site/news/index/-1';
 //$route['site'] = "site/home";
