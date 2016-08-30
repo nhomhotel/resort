@@ -145,6 +145,9 @@
                     <a href="<?php echo  admin_url('emails');?>">Danh sách loại email</a>
                 </li>
                 <li>
+                    <a href="<?php echo  admin_url('emails/contact');?>">Danh sách emai liên hệ</a>
+                </li>
+                <li>
                     <a href="<?php echo  admin_url('emails/history');?>">Lịch sử gửi email</a>
                 </li>
             </ul>

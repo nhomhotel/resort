@@ -305,7 +305,7 @@ if (!function_exists('shortNews')) {
         $return = '';
         if(!empty($content)){
             if(strlen($content)>250)$return=  '“'.substr ($content, 0,250).'“';
-            else $return = $content;
+            else $return = '“'.$content.'“';
         }
         return ($return);
     }
@@ -316,8 +316,9 @@ if (!function_exists('NewsUrl')) {
 
     function NewsUrl($content,$id) {
         $return = '';
-        if(!empty($content)&&!!empty($id)){
-            $return = base_url().'tin-tuc/'.  onlyCharacter(vn_str_filter($content)).'-'.$id;
+        if(!empty($content)&&!empty($id)){
+            $content = strtolower(str_replace(' ', '-', onlyCharacter(vn_str_filter($content))));
+            $return = base_url().'danh-sach-tin/'.  $content.'-'.$id;
         }
         else $return = base_url ().'tin-tuc';
         return ($return);

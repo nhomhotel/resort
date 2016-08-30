@@ -15,11 +15,10 @@
                     <div class="col-md-3 col-sm-3 col-xs-6 info-item">
                         <h5><?php echo lang('home_company_info');?></h5>
                         <ul>
-                            <li><a href="#"><?php echo lang('home_about_us');?></a></li>
+                            <li><a href="<?php echo base_url().'tin-tuc/'?>"><?php echo lang('home_about_us');?></a></li>
                             <li><a href="<?php echo base_url('tin-tuc/')?>"><?php echo lang('home_news');?></a></li>
-                            <li><a href="#"><?php echo lang('home_contact');?></a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#"><?php echo lang('home_help');?></a></li>
+                            <li><a href="<?php echo base_url().'lien-he';?>"><?php echo lang('home_contact');?></a></li>
+                            <li><a href="<?php echo base_url()?>helps"><?php echo lang('home_help');?></a></li>
                         </ul>
                     </div>
 

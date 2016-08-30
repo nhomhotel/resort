@@ -1,11 +1,14 @@
 <div class="item-container">
-    <h1><b>Press Releases</b> </h1>
+    <h1><b><?php echo lang('news_releases');?></b> </h1>
     <ul>
+        <?php if(isset($release)):?>
+        <?php foreach ($release as $row):?>
         <li>
-            <em>'Ngà2013 dd tháng MM năm' 2013</em>
+            <em><?php if(isset($row->update)) echo $row->update;?></em>
             <br>
-            <a href="http://img.travelmob.com.s3-ap-southeast-1.amazonaws.com/press/travelmob-launches-ios-app.pdf" class="forange">travelmob launches iOS app to further expand its reach in the Asia Pacific region</a>
+            <a href="<?php echo base_url().'tin-tuc/'.strtolower(str_replace(' ', '-', onlyCharacter(vn_str_filter($row->title)))).'-'.$row->news_id;?>" class="forange"><?php echo $row->title?></a>
         </li>
-        <?php echo 'Tin liên quan'; ?>
+        <?php endforeach;?>
+        <?php endif;?>
     </ul>
 </div>

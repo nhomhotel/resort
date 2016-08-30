@@ -16,7 +16,7 @@ class Contact extends MY_Controller {
         $id = intval(securityServer($id));
         $data = array();
         if ($id > 0) {
-            $info = $this->db->from('news')
+            $info = $this->db->from('contact')
                     ->order_by('update', 'DESC')
                     ->where('news_id', $id)
                     ->get()
@@ -45,7 +45,7 @@ class Contact extends MY_Controller {
         if (!empty($newsCategory))
             $data['newsCategory'] = $newsCategory;
         $data['temp'] = 'site/contact/index';
-        $this->load->view('site/contact/index', isset($data) ? ($data) : null);
+        $this->load->view('site/layout', isset($data) ? ($data) : null);
     }
 
 }

@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once 'AdminHome.php';
 
-class Emails extends AdminHome {
+class Helps extends AdminHome {
 
     function __construct() {
         parent::__construct(get_class());
@@ -17,7 +17,7 @@ class Emails extends AdminHome {
 
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = admin_url('emails/index');
+        $config['base_url'] = admin_url('Helps/index');
         $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
@@ -37,7 +37,7 @@ class Emails extends AdminHome {
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
-        $input['order'] = array('email_id', 'ASC');
+        $input['order'] = array('help_id', 'ASC');
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
@@ -45,7 +45,7 @@ class Emails extends AdminHome {
         $data['total'] = $total;
         $data['list'] = $list;
         $data['title'] = 'Danh sách email';
-        $data['temp'] = 'admin/emails/index';
+        $data['temp'] = 'admin/Helps/index';
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
 
@@ -53,7 +53,7 @@ class Emails extends AdminHome {
         if ($id > 0) {
             $input = array(
                 'where' => array(
-                    'email_id' => $id,
+                    'help_id' => $id,
                 )
             );
             $join = array(
@@ -61,7 +61,7 @@ class Emails extends AdminHome {
             );
             $data['email'] = $this->Email_model->get_row($input, $join);
             $data['email_template'] = $this->Email_model->getEmailTemplate()->result();
-            $data['temp'] = 'admin/emails/edit';
+            $data['temp'] = 'admin/Helps/edit';
             $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
         }
     }
@@ -88,7 +88,7 @@ class Emails extends AdminHome {
 
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = admin_url('emails/index');
+        $config['base_url'] = admin_url('Helps/index');
         $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
@@ -108,7 +108,7 @@ class Emails extends AdminHome {
         $input = array();
         $input['limit'] = array($config['per_page'], $start);
         $data['start'] = $start;
-        $input['order'] = array('email_id', 'ASC');
+        $input['order'] = array('help_id', 'ASC');
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
@@ -118,7 +118,7 @@ class Emails extends AdminHome {
         if(!empty($info))$data['list'] = $list;
         $data['total'] = $total;
         $data['title'] = 'Danh sách email';
-        $data['temp'] = 'admin/emails/index';
+        $data['temp'] = 'admin/helps/contact';
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
 

@@ -15,35 +15,19 @@ class News extends MY_Controller {
     public function index($id=-1) {
         $id = intval(securityServer($id));
         $data = array();
-//        pre($id);exit;
-         if($id>0){
-             $info = $this->db->from('news')
-                ->order_by('update','DESC')
-                ->where('news_id',$id)
-                ->get()
-                ->row();
-             pre($id);exit;
-             if(!empty($info)){
-                $data['info'] = $info;
-                $data['release'] = $this->db->from('news')
-                     ->where('news_category_id',$info->news_category_id)
-                     ->order_by('update','DESC')
-                     ->get()
-                     ->result();
-             }
-         }
-         else {
-             // get about from new category have new category_id=1
-             $info = $this->db->from('news')
-                ->where('news_category_id','1')->where('news.status','1')
-                ->order_by('update','DESC')
-                ->get()
-                ->result();
-             if(!empty($info))$data['info'] = $info;
-        }
+        // get about from new category have new category_id=1
+        $info = $this->db->from('news')
+           ->where('news_category_id','1')->where('news.status','1')
+           ->order_by('update','DESC')
+           ->get()
+           ->row();
+        if(!empty($info))$data['info'] = $info;
         $newsCategory = $this->db->from('news_category')
+                ->where('status',1)
                 ->get()->result();
-         if(!empty($newsCategory))$data['newsCategory'] = $newsCategory;
+         if(!empty($newsCategory)){
+             $data['newsCategory'] = $newsCategory;
+         }
         $data['temp'] = 'site/news/news';
         $this->load->view('site/layout',isset($data) ? ($data) : null);
     }
@@ -51,14 +35,12 @@ class News extends MY_Controller {
     public function view($id=-1) {
         $id = intval(securityServer($id));
         $data = array();
-//        pre($id);exit;
          if($id>0){
              $info = $this->db->from('news')
                 ->order_by('update','DESC')
                 ->where('news_id',$id)
                 ->get()
                 ->row();
-             pre($id);exit;
              if(!empty($info)){
                 $data['info'] = $info;
                 $data['release'] = $this->db->from('news')
@@ -68,15 +50,27 @@ class News extends MY_Controller {
                      ->result();
              }
          }
-         else {
-             // get about from new category have new category_id=1
+        $newsCategory = $this->db->from('news_category')
+                ->get()->result();
+         if(!empty($newsCategory))$data['newsCategory'] = $newsCategory;
+        $data['temp'] = 'site/news/news';
+        $this->load->view('site/layout',isset($data) ? ($data) : null);
+    }
+    
+    public function category($id=-1) {
+        $id = intval(securityServer($id));
+        $data = array();
+         if($id>0){
              $info = $this->db->from('news')
-                ->where('news_category_id','1')->where('news.status','1')
                 ->order_by('update','DESC')
+                ->where('news_category_id',$id)
                 ->get()
                 ->result();
-             if(!empty($info))$data['info'] = $info;
-        }
+             if(!empty($info)){
+                $data['info'] = $info[0];
+                $data['release'] = $info;
+             }
+         }
         $newsCategory = $this->db->from('news_category')
                 ->get()->result();
          if(!empty($newsCategory))$data['newsCategory'] = $newsCategory;

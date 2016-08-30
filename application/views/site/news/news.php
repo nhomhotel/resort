@@ -58,29 +58,10 @@
                 <!-- start press-left-column -->
                 <div class="col-md-6 press-left-column inline">
                     <div class="item-container">
-                        <h1><b><?php echo lang('about_us');?></b></h1>
-                        <p><b>HomeAway.com.vn</b> (trước đây gọi là travelmob) là một thị trường dạng xã hội nơi "các vị khách" đi du lịch có thể xác định vị trí và đặt chỗ ở những nơi tuyệt vời thuộc sở hữu của "Chủ khách sạn" địa phương trong khu vực Châu Á Thái Bình Dương. Nơi độc đáo có thể là một căn phòng ấm cúng còn dư, một gác xép tuyệt vời hoặc thậm chí là một biệt thự tư nhân. Khách có thể tạo các gắn kết thực sự với người chủ khách sạn của họ, sống như dân địa phương và đắm mình trong nền văn hóa ở nơi đến.<br><br>Vào tháng 7 năm 2013, travelmob đã được HomeAway, Inc. (NASDAQ: AWAY) mua lại, thị trường trực tuyến hàng đầu thế giới về cho thuê chỗ nghỉ. Là một phần của gia đình HomeAway, chúng tôi đang tiếp tục sứ mệnh của mình trong việc tiếp cận với các du khách toàn cầu, những người muốn trải nghiệm du lịch đích thực ở châu Á Thái Bình Dương.</p><p></p>
+                        <h1><b><?php if(isset($info))echo $info->title?></b></h1>
+                        <p><?php if(isset($info))echo $info->content?></p>
                     </div>
                     <?php $this->load->view('site/news/news_releases');?>
-                    <div class="item-container">
-                        <h1><b>Media Contact</b> </h1>
-                        <a href="mailto:pr@homeaway.asia" class="forange">pr@homeaway.asia</a>
-                    </div>
-                    <div class="item-container">
-                        <h1><b>Social</b> </h1>
-                        <a href="https://www.facebook.com/HomeAwayAsia" class="social-items fblue">
-                            <i class="tm-sprite icon-fb"></i>
-                            <span><b> Like us on facebook</b></span>
-                        </a>
-                        <a href="https://twitter.com/homeaway_asia" class="social-items tblue">
-                            <i class="tm-sprite icon-twitter"></i>
-                            <span><b>Follow us on twitter</b></span>
-                        </a>
-                        <a href="http://blog.homeaway.com.vn/" class="social-items orange">
-                            <i class="tm-sprite icon-blog"></i>
-                            <span><b>Blog</b></span>
-                        </a>
-                    </div>
                 </div>
                 <!-- End press-left-column -->
                 <?php $this->load->view('site/news/news_category');?>
