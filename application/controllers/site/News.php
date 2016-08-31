@@ -38,19 +38,19 @@ class News extends MY_Controller {
          if($id>0){
              $info = $this->db->from('news')
                 ->order_by('update','DESC')
-                ->where('news_id',$id)
+                ->where('news_id',$id)->where('news.status','1')
                 ->get()
                 ->row();
              if(!empty($info)){
                 $data['info'] = $info;
                 $data['release'] = $this->db->from('news')
-                     ->where('news_category_id',$info->news_category_id)
+                     ->where('news_category_id',$info->news_category_id)->where('status','1')
                      ->order_by('update','DESC')
                      ->get()
                      ->result();
              }
          }
-        $newsCategory = $this->db->from('news_category')
+        $newsCategory = $this->db->from('news_category')->where('status','1')
                 ->get()->result();
          if(!empty($newsCategory))$data['newsCategory'] = $newsCategory;
         $data['temp'] = 'site/news/news';
@@ -63,7 +63,7 @@ class News extends MY_Controller {
          if($id>0){
              $info = $this->db->from('news')
                 ->order_by('update','DESC')
-                ->where('news_category_id',$id)
+                ->where('news_category_id',$id)->where('status','1')
                 ->get()
                 ->result();
              if(!empty($info)){
@@ -71,7 +71,7 @@ class News extends MY_Controller {
                 $data['release'] = $info;
              }
          }
-        $newsCategory = $this->db->from('news_category')
+        $newsCategory = $this->db->from('news_category')->where('status','1')
                 ->get()->result();
          if(!empty($newsCategory))$data['newsCategory'] = $newsCategory;
         $data['temp'] = 'site/news/news';

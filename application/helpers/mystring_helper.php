@@ -318,6 +318,8 @@ if (!function_exists('NewsUrl')) {
         $return = '';
         if(!empty($content)&&!empty($id)){
             $content = strtolower(str_replace(' ', '-', onlyCharacter(vn_str_filter($content))));
+            $content = preg_replace('/[,\/]/', '-', $content);
+            $content = preg_replace('/[-]{2,}/', '-', $content);
             $return = base_url().'danh-sach-tin/'.  $content.'-'.$id;
         }
         else $return = base_url ().'tin-tuc';
