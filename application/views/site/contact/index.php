@@ -10,7 +10,7 @@
         <div id="system-snippets-add_attachment">Add Another Attachment</div>
     </div>
     <div id="breadcrumbs">
-        <a href="/"></a> › Email us
+        <a href="/">Home</a> › Email us
     </div>
     <div id="support-main">
         <div class="support-body">
@@ -89,7 +89,6 @@
                         <div>
                             <div class="input-button" style="margin-top: 12px;">
                                 <input id="email_submit" class="btn btn-primary" name="commit" type="submit" value="Send Email">
-                                <img alt="Ajax-loader-small" id="email_submit_spinner" src="./HomeAway Asia _ Email us_files/ajax-loader-small.gif" style="display: none; margin: 7px 0 0 5px; position: absolute;">
                             </div>
                         </div>
                     </form>

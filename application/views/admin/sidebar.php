@@ -152,6 +152,23 @@
                 </li>
             </ul>
         </li>
+        <li class="help">
+            <a href="#collapse10" class="exp collapsed" data-toggle="collapse" aria-expanded="false">
+                <span><?php echo "Quản lý hỗ trợ";?></span>
+                <strong>2</strong>
+            </a>
+            <ul class="sub collapse" id="collapse10" aria-expanded="false" style="height: 1px;">
+                <li>
+                    <a href="<?php echo  admin_url('helps/tag');?>">Danh sách tags</a>
+                </li>
+                <li>
+                    <a href="<?php echo  admin_url('helps/topic');?>">Danh sách loại hỗ trơ</a>
+                </li>
+                <li>
+                    <a href="<?php echo  admin_url('helps/postGuide');?>">Danh sách loại bài viết</a>
+                </li>
+            </ul>
+        </li>
         <li class="config">
             <a href="<?php echo  admin_url('config');?>" >
                 <span><?php echo 'Cấu hình hệ thống';?></span>
@@ -168,5 +185,6 @@ $('.email').find('strong').html($('.email').find('ul li').length);
 $('.homeSlider').find('strong').html($('.homeSlider').find('ul li').length);
 $('.managerText').find('strong').html($('.managerText').find('ul li').length);
 $('.ManagerNews').find('strong').html($('.ManagerNews').find('ul li').length);
+$('.help').find('strong').html($('.help').find('ul li').length);
 
 </script>

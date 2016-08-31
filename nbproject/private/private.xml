@@ -5,24 +5,41 @@
         <group>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news_releases.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Helpes.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/footer.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/helpers/mystring_helper.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/language/english/common_lang.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/news_category/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/template/tmp_status.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Home.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/language/vietnamese/home_lang.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/ManagerNews.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/manager_news/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/core/MY_Model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/topic/create.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/header_index.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/contact/index.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/language/english/home_lang.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/contact.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news_category.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/topic/edit.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Emails.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/News.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/postGuide/create.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/footer.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/helpers/mystring_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/language/english/common_lang.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Help_tag_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/news_category/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/FollowSocial.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/topic/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/tag/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Post_guide_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/tag/create.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/template/tmp_status.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Home.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/language/vietnamese/home_lang.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/postGuide/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/tag/edit.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Help_postGuide_model.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/index.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/sidebar.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Helps.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Help_topic_model.php</file>
         </group>
     </open-files>
 </project-private>
