@@ -254,7 +254,7 @@ if ($id > 0) {
             $content = $this->input->post('contentPostGuide');
             $title_en = $this->input->post('titlePostGuide_en');
             $content_en = $this->input->post('contentPostGuide_en');
-            $status = $this->input->post('status');
+            $status = $this->input->post('statusPostGuide');
             $tag = $this->input->post('tags');
             $data = array(
                 'title' => $title,
@@ -264,6 +264,7 @@ if ($id > 0) {
                 'status' => $status,
                 'tag' => $tag,
             );
+            pre($data);exit;
             if ($this->Help_postGuide_model->create($data)) {
                 $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
             } else {
@@ -278,7 +279,8 @@ if ($id > 0) {
     
     function postGuide(){
         $this->load->library('pagination');
-        $total = $this->db->from('post_guide')->get()->num_rows();
+        $this->load->model('Help_postGuide_model');
+        $total = $this->Help_postGuide_model->get_total();
         $config = array();
         $config["total_rows"] = $total;
         $config['base_url'] = admin_url('Helps/postGuide');
@@ -305,7 +307,7 @@ if ($id > 0) {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-        $list = $this->db->from('post_guide ')->get()->result();
+        $list = $this->Help_postGuide_model->get_list();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['title'] = 'Danh sách bài viết';
@@ -313,6 +315,42 @@ if ($id > 0) {
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
     
+    function editpostGuide($id=-1){
+        if ($id > 0) {
+            if($this->input->post('submit')){
+                $title = $this->input->post('titlePostGuide');
+                $content = $this->input->post('contentPostGuide');
+                $title_en = $this->input->post('titlePostGuide_en');
+                $content_en = $this->input->post('contentPostGuide_en');
+                $status = $this->input->post('statusPostGuide');
+                $tag = $this->input->post('tags');
+                $data = array(
+                    'title' => $title,
+                    'content' => $content,
+                    'title_en' => $title_en,
+                    'content_en' => $content_en,
+                    'status' => $status,
+                    'tag' => $tag,
+                );
+                if ($this->Help_postGuide_model->update($id,$data)) {
+                    $this->session->set_flashdata('message', 'Thêm dữ liệu thành công');
+                } else {
+                    $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại');
+                }
+                redirect(base_url('admin/helps/postGuide'));
+            }
+            $input = array(
+                'where' => array(
+                    'postGuide_id' => $id,
+                )
+            );
+            $data['title'] = 'Chỉnh sửa bài viết';
+            $data['info'] = $this->Help_postGuide_model->get_row($input);
+            $data['temp'] = 'admin/Help/postGuide/edit';
+            $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
+        }
+    }
+            
     function tag(){
         $this->load->library('pagination');
         $total = $this->Help_tag_model->get_total();
@@ -348,6 +386,23 @@ if ($id > 0) {
         $data['title'] = 'Danh sách bài viết';
         $data['temp'] = 'admin/Help/tag/index';
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
+    }
+    
+    function suggest_tag(){
+        $this->load->model('Help_tag_model');
+        $keyword = onlyCharacter(securityServer($this->input->get('term')));
+        $result = array();
+        /* Check empty keyword */
+        if (empty($keyword)) {
+            echo json_encode($result);
+            return;
+        }
+        $result = $this->db->from('help_tag')
+                ->select('tag_id, name')
+                ->like('name',$keyword)
+                ->get()->result();
+        echo json_encode($result);
+        exit;
     }
 }
 
