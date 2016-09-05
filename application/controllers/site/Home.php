@@ -11,6 +11,11 @@ class Home extends MY_Controller {
     }
 
     public function index() {
+        $this->load->model('Amenities_model');
+//        var_dump(array_search('1', array(2,3,6)));
+        pre($this->Amenities_model->deleteListAmenities(array(30,25)));
+        pre($this->db->last_query());
+        exit;
         $this->load->model('area_model');
         $this->load->model('Home_Slider_model');
         $this->load->model('Intro_Slider_model');
@@ -287,7 +292,24 @@ class Home extends MY_Controller {
     
     echo  $plaintext_dec . "\n";
     }
-
+    
+    function test3(){
+        $tmpAmenities[]=Array(30,25,8,4,2);
+        $tmpAmenities[]=Array( 30, 25,9,8,3,2);
+        $arrAmenitiesID = array(30,25);
+        foreach ($resultAmenities as &$value){
+                $tmpAmenities = @explode(',', $value->amenities);
+                foreach ($arrAmenitiesID as $value1){
+                    pre('search:'.$value1);
+                    $search = array_search($value1, $tmpAmenities);
+                    if(!$search &&$search>=0){
+                        pre('vi tri'.$search    );
+                        unset($tmpAmenities[$search]);
+                    }
+                }
+                $value->amenities = implode(',', $tmpAmenities);
+            }
+    }
     function checkUserName($user_name) {
 
         $where = array();

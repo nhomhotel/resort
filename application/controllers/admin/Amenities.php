@@ -150,6 +150,7 @@ class Amenities extends AdminHome {
     }
 
     function delete() {
+        $this->load->model('Post_room_model');
         $id = $this->uri->rsegment('3');
         $id = (int) $id;
 
@@ -161,8 +162,7 @@ class Amenities extends AdminHome {
             redirect(base_url('admin/amenities'));
         }
 
-        if ($this->amenities_model->delete($id)) {
-
+        if ($this->amenities_model->delete($id)&&$this->Post_room_model->deleteAmenities($id)) {
             $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
         }
 

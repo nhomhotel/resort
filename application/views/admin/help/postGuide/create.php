@@ -149,11 +149,22 @@
                             <label class="formLeft" for="tag">Tag:</label>
                             <div class="formRight">
                                 <div class="oneTwo">
-                                    <input type="hidden" class="form-control" name="tags" value="">
+                                    <input type="hidden" class="form-control" name="tags" id="tags" value="">
                                     <div class="selectize-input">
                                         <input class="" name="tagsPostGuide" id="tagsPostGuide" autocomplete="off" type="text" >
                                     </div>
                                 </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="formRow">
+                            <label class="formLeft" for="param_name">thuộc topic:<span class="req">*</span></label>
+                            <div class="formRight">
+                                <span class="oneTwo">
+                                    <input type="text" name="topic" id="param_topic" _autocheck="true" value="<?php echo set_value('topic'); ?>" />
+                                </span>
+                                <span name="name_autocheck" class="autocheck"></span>
+                                <div name="name_error" class="clear error"><?php echo form_error('topic'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -175,10 +186,16 @@
 </div>
 <script>
     $(function () {
+        $(document).keyup(function (e) {
+            if (e.keyCode == 46) {
+              $('.selectize-input .item.active').remove();
+            }
+        });
         $("#tagsPostGuide").autocomplete({
             source: "<?php echo site_url('admin/helps/suggest_tag'); ?>",
             dataType: "json",
             minLength: 1,
+            data:{term:term},
             messages: {
                 noResults: '',
                 results: function() {}
@@ -198,12 +215,19 @@
             select: function (event, ui) {
                 event.preventDefault();
                 if (ui.item.name != undefined && ui.item.tag_id != undefined) {
-//                    $("#tagsPostGuide").val(ui.item.name);
                     $(".selectize-input").append("<div data-value='" + ui.item.tag_id + "' class='item' >" + ui.item.name + "</div>");
+                    var tags = $("#tags");
+                    if(tags.val() !=''){
+                        var elemt = tags.val().split(',');
+                        if(elemt.indexOf(ui.item.tag_id)==-1){
+                            elemt.push(ui.item.tag_id);
+                            tags.val(elemt.toString());
+                        }
+                    }
+                    else tags.val(ui.item.tag_id);
+                
                     $('.selectize-input .item').on('click',function(){
-                        $(this).addClass('active');
-                    })
-                    $('.selectize-input .item').each(function(){
+                        $('.selectize-input .item').removeClass('active');
                         $(this).addClass('active');
                     })
                     $('#tagsPostGuide').val('');

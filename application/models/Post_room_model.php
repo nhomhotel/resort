@@ -110,6 +110,62 @@ class Post_room_model extends MY_Model {
             return false;
         }
     }
+    
+    public function deleteAmenities($amenityID){
+        $this->db->from('post_room');
+            $this->db->like ("CONCAT(',',amenities,',')",','.$amenityID.',');
+        $resultAmenities = $this->db->get()->result();
+        if(empty($resultAmenities))return FALSE;
+        foreach ($resultAmenities as &$value){
+            $tmpAmenities = @explode(',', $value->amenities);
+            $search = array_search($amenityID, $tmpAmenities);
+            if(!$search &&$search>=0){
+                unset($tmpAmenities[$search]);
+            }
+            $value->amenities = implode(',', $tmpAmenities);
+        }
+        $dataUpdateAmenities = array();
+        foreach ($resultAmenities as $value1){
+            $dataUpdateAmenities[] = array(
+                'amenities'=>$value1->amenities,
+                'post_room_id'=>$value1->post_room_id
+            );
+        }
+        if($this->db->update_batch('post_room', $dataUpdateAmenities, 'post_room_id'))return true;
+        else RETURN false;
+    }
+    
+    public function deleteListAmenities($arrAmenitiesID){
+        if(!empty($arrAmenitiesID)){
+            $arrAmenitiesID = array_unique($arrAmenitiesID);
+             $this->db->from('post_room');
+            foreach ($arrAmenitiesID as &$value){
+                $value = intval($value);
+                $this->db->like ("CONCAT(',',amenities,',')",','.$value.',');
+            }
+            $resultAmenities = $this->db->get()->result();
+            if(empty($resultAmenities))return FALSE;
+            foreach ($resultAmenities as &$value){
+                $tmpAmenities = @explode(',', $value->amenities);
+                foreach ($arrAmenitiesID as $value1){
+                    $search = array_search($value1, $tmpAmenities);
+                    if($search!==FALSE&&$search>=0){
+                        unset($tmpAmenities[$search]);
+                    }
+                }
+                $value->amenities = implode(',', $tmpAmenities);
+            }
+            $dataUpdateAmenities = array();
+            foreach ($resultAmenities as $value2){
+                $dataUpdateAmenities[] = array(
+                    'amenities'=>$value2->amenities,
+                    'post_room_id'=>$value2->post_room_id
+                );
+            }
+            if($this->db->update_batch('post_room', $dataUpdateAmenities, 'post_room_id'))return true;
+            else RETURN false;
+        }
+    }
 
 }
 
