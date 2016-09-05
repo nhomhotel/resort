@@ -321,7 +321,7 @@ th.ui-state-default:first-child { border-left: none; }
 
 /* ===== UI autocomplete ===== */
 
-.ui-autocomplete { position: absolute; display: none; padding: 0; z-index: 10000; border: none; height: 202px; overflow: auto; }	
+.ui-autocomplete { position: absolute; display: table; padding: 0; z-index: 1000000 !important; border: none; height: 202px; overflow: auto; }	
 .ui-autocomplete .ui-state-hover { background: none; padding: 6px 10px 7px 32px; }
 
 /* workarounds */

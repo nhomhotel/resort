@@ -46,7 +46,7 @@ class Home extends MY_Controller {
     }
 
     public function login() {
-        if ($this->session->userdata('user_id') != null)
+        if ($this->session->userdata('userLoginSite') != null)
             redirect(base_url());
         if (count($_POST) > 0) {
             $redirect = $this->input->get('redirect') != null ? trim($this->input->get('redirect')) : base_url();
@@ -74,7 +74,7 @@ class Home extends MY_Controller {
                     $this->session->set_userdata('userLoginSite',$userLoginSite);
                     redirect($redirect);
                 } else {
-                    $this->session->set_flashdata('login_message', 'Tài khoản hoặc mật khẩu không đúng!');
+                    $this->session->set_flashdata('login_message', lang('login_account').' / '.lang('register_password').lang('register_not_validate').' !');
                     redirect('home/login');
                 }
                 exit;

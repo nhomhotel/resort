@@ -23,7 +23,8 @@ class payments extends MY_Controller {
 
     function book($id = '') {
         //check điều kiện
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->userdata('userLoginSite');
+        if(isset($user_id))$user_id = $user_id['user_id'];
         if (!isset($user_id) || $user_id == '') {
             redirect(base_url());
         }

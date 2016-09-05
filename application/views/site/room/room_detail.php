@@ -185,7 +185,7 @@ var id='<?php echo $id_encode;?>';
                                         <button  class="btn btn-success order_room_btn tclick" data-toggle="modal" data-target="#myModal">
                                             <span class="glyphicon glyphicon-time"></span> Đặt phòng
                                         </button>
-                                        <?php if(!$this->session->userdata('user_id')){?>
+                                        <?php $user = $this->session->userdata('userLoginSite');if(!empty($user))$user_id=$user['user_id'];if(!$user_id){?>
                                             <div class="modal fade" id="myModal" role="dialog">
                                                 <form method="post" name="form-save-info" id="form-save-info">
                                                     <div class="modal-dialog">
@@ -354,7 +354,7 @@ $(document).ready(function(){
             var checkin = $('#bookin-dpk');
             var checkout = $('#bookout-dpk');
             var guest = $('#guests');
-            <?php if(!$this->session->userdata('user_id')){?>
+            <?php $user = $this->session->userdata('userLoginSite');if(!empty($user))$user_id=$user['user_id'];if(!$user_id){?>
 //            $('#myModal').modal('show');
             return false;
             <?php }?>

@@ -1,11 +1,16 @@
 <style>
+    .selector{
+        z-index: 1000;
+    }
+    .ui-autocomplete{
+        display: table;
+    }
     .selectize-input{
         color: #333333;
         font-family: inherit;
         font-size: inherit;
         line-height: 20px;
         -webkit-font-smoothing: inherit;
-        background: #ffffff;
         cursor: text;
         display: inline-block;
         padding: 6px 12px;
@@ -174,6 +179,11 @@
             source: "<?php echo site_url('admin/helps/suggest_tag'); ?>",
             dataType: "json",
             minLength: 1,
+            messages: {
+                noResults: '',
+                results: function() {}
+            },
+                    error:function(e,v){alert(e);alert(v)},
             open: function (event) {
                 $('.ui-autocomplete').css('height', 'auto');
                 var $input = $(event.target),

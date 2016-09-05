@@ -204,7 +204,8 @@ class Room extends MY_Controller {
         if (!isset($_SESSION['user_name'])) {
             redirect('home/register');
         } else {
-            $user_id = $this->session->userdata('user_id');
+            $user_id = $this->session->userdata('userLoginSite');
+            if(!empty($user_id))$user_id = $user_id['user_id'];
             if (!isset($user_id) || $user_id == '') {
                 redirect(base_url());
             }
