@@ -485,7 +485,7 @@ class Helps extends AdminHome {
         return true;
     }
 
-    function status() {
+    function statusPostGuide() {
         $id = intval($this->input->post('id'));
         $data = $this->Help_postGuide_model->changeStatus($id);
         if (isset($data['error']))
@@ -494,6 +494,17 @@ class Helps extends AdminHome {
             return array('success' => TRUE);
         exit;
     }
+    
+    function statusTopic() {
+        $id = intval($this->input->post('id'));
+        $data = $this->Help_topic_model->changeStatus($id);
+        if (isset($data['error']))
+            return $data['error'];
+        else
+            return array('success' => TRUE);
+        exit;
+    }
+    
 
 }
 

@@ -124,7 +124,7 @@
         var admin_url = "<?php echo admin_url(); ?>";
         var curUrl = window.location.href;
         $.ajax({
-            url: admin_url + '/helps/status',
+            url: admin_url + '/helps/statusPostGuide',
             type: "post",
             dataType: "text",
             data: {

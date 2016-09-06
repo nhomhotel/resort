@@ -18,7 +18,7 @@
                             <li><a href="<?php echo base_url().'tin-tuc/'?>"><?php echo lang('home_about_us');?></a></li>
                             <li><a href="<?php echo base_url('tin-tuc/')?>"><?php echo lang('home_news');?></a></li>
                             <li><a href="<?php echo base_url().'lien-he';?>"><?php echo lang('home_contact');?></a></li>
-                            <li><a href="<?php echo base_url()?>helps"><?php echo lang('home_help');?></a></li>
+                            <li><a href="<?php echo base_url()?>help"><?php echo lang('home_help');?></a></li>
                         </ul>
                     </div>
 

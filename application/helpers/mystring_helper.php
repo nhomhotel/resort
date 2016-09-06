@@ -201,9 +201,9 @@ if (!function_exists('securityServer')) {
 
 if (!function_exists('onlyCharacter')) {
 
-    function onlyCharacter($str) {
-        $CI = & get_instance();
-        $str = preg_replace('/[^a-zA-Z0-9 \/\-,]/', ' ', $str);
+    function onlyCharacter($str,$type=1) {
+        if($type==1)$str = preg_replace('/[^a-zA-Z0-9 \/\-,]/', ' ', $str);
+        elseif ($type==2)$str = preg_replace('/[^a-zA-Z0-9]/', ' ', $str);
         $str = preg_replace('/[ ]{2,}/', ' ', $str);
         return ($str);
     }
@@ -323,6 +323,21 @@ if (!function_exists('NewsUrl')) {
             $return = base_url().'danh-sach-tin/'.  $content.'-'.$id;
         }
         else $return = base_url ().'tin-tuc';
+        return ($return);
+    }
+
+}
+
+if (!function_exists('convertUrl')) {
+
+    function convertUrl($content,$id) {
+        $return = '';
+        if(!empty($content)&&!empty($id)){
+            $content = strtolower(str_replace(' ', '-', onlyCharacter(vn_str_filter($content))));
+            $content = preg_replace('/[,\/]/', '-', $content);
+            $content = preg_replace('/[-]{2,}/', '-', $content);
+            $return = $content.'-'.$id;
+        }
         return ($return);
     }
 

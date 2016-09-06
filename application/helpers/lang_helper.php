@@ -29,3 +29,12 @@ function parseDefaultLanguage($http_accept, $deflang = "en") {
    }
    return strtolower($deflang);
 }
+
+function getLanguage(){
+    $_CI = & get_instance();;
+    $current_language = $_CI->session->userdata('language');
+    if (empty($current_language)) {
+        $current_language = 'vietnamese';
+    }
+    return $current_language;
+}
