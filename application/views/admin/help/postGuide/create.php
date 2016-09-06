@@ -160,18 +160,19 @@
                         <div class="formRow">
                             <label class="formLeft" for="param_name">thuộc topic:<span class="req">*</span></label>
                             <div class="formRight">
-                                <span class="oneTwo">
-                                    <input type="text" name="topic" id="param_topic" _autocheck="true" value="<?php echo set_value('topic'); ?>" />
-                                </span>
+                                <select name="topicPostGuide" class="form-control">
+                                    <option value="-1">--Chọn topic--</option>
+                                    <?php if (isset($topics)): ?>
+                                        <?php foreach ($topics as $row): ?>
+                                            <option value="<?php echo $row->topic_id ?>"><?php echo $row->title ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
                                 <span name="name_autocheck" class="autocheck"></span>
                                 <div name="name_error" class="clear error"><?php echo form_error('topic'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
-                        <div class="formRow">
-                            <span class="oneTwo">Tag được phân cách bằng dấu phẩy, và</span>
-                        </div>
-
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->
@@ -188,19 +189,62 @@
     $(function () {
         $(document).keyup(function (e) {
             if (e.keyCode == 46) {
-              $('.selectize-input .item.active').remove();
+                var itemActive = $('.selectize-input .item.active');
+                var tags = $("#tags");
+                if (typeof itemActive != 'undefined') {
+                    if (tags.val() != '') {
+                        var elemt = tags.val().split(',');
+                        console.log(elemt)
+                        console.log(itemActive.data('value'));
+                        console.log(elemt.indexOf(itemActive.data('value')));
+                        //return;
+                        var position = elemt.indexOf(itemActive.data('value').toString());
+                        if (position > -1) {
+                            elemt.splice(position, 1);
+                            tags.val(elemt.toString());
+                        }
+                    }
+                }
+                $('.selectize-input .item.active').remove();
             }
         });
         $("#tagsPostGuide").autocomplete({
-            source: "<?php echo site_url('admin/helps/suggest_tag'); ?>",
+            source: function (request, response) {
+                if ($('#tags') != undefined && $('#tags').val().trim() != '') {
+                    var TagsID = $('#tags').val().trim();
+                }
+                var TagsID = $('#tags').val().trim();
+                $.ajax({
+                    url: '<?php echo site_url('admin/helps/suggest_tag'); ?>',
+                    data: {term: request.term, Tags: TagsID},
+                    dataType: "json",
+                    type: "get",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                name: item.name,
+                                tag_id: item.tag_id
+                            }
+                        }));
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
             dataType: "json",
             minLength: 1,
-            data:{term:term},
             messages: {
                 noResults: '',
-                results: function() {}
+                results: function () {}
             },
-                    error:function(e,v){alert(e);alert(v)},
+            error: function (e, v) {
+                alert(e);
+                alert(v)
+            },
             open: function (event) {
                 $('.ui-autocomplete').css('height', 'auto');
                 var $input = $(event.target),
@@ -217,16 +261,16 @@
                 if (ui.item.name != undefined && ui.item.tag_id != undefined) {
                     $(".selectize-input").append("<div data-value='" + ui.item.tag_id + "' class='item' >" + ui.item.name + "</div>");
                     var tags = $("#tags");
-                    if(tags.val() !=''){
+                    if (tags.val() != '') {
                         var elemt = tags.val().split(',');
-                        if(elemt.indexOf(ui.item.tag_id)==-1){
+                        if (elemt.indexOf(ui.item.tag_id) == -1) {
                             elemt.push(ui.item.tag_id);
                             tags.val(elemt.toString());
                         }
-                    }
-                    else tags.val(ui.item.tag_id);
-                
-                    $('.selectize-input .item').on('click',function(){
+                    } else
+                        tags.val(ui.item.tag_id);
+
+                    $('.selectize-input .item').on('click', function () {
                         $('.selectize-input .item').removeClass('active');
                         $(this).addClass('active');
                     })

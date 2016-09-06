@@ -13,9 +13,9 @@ class Home extends MY_Controller {
     public function index() {
         $this->load->model('Amenities_model');
 //        var_dump(array_search('1', array(2,3,6)));
-        pre($this->Amenities_model->deleteListAmenities(array(30,25)));
-        pre($this->db->last_query());
-        exit;
+//        pre($this->Amenities_model->deleteListAmenities(array(30,25)));
+//        pre($this->db->last_query());
+//        exit;
         $this->load->model('area_model');
         $this->load->model('Home_Slider_model');
         $this->load->model('Intro_Slider_model');

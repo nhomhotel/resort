@@ -44,13 +44,14 @@
                         <td>Nội dung</td>
                         <td>Nội dung(en)</td>
                         <td>Trạng thái</td>
+                        <td>Topic</td>
                         <td>Tag</td>
                         <td>Hành động</td>
                     </tr>
                 </thead>
                 <tfoot class="auto_check_pages">
                     <tr>
-                        <td colspan="9">
+                        <td colspan="10">
                             <div class="list_action itemActions">
                                 <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteAll'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
@@ -69,31 +70,40 @@
                 <tbody class="list_item">
                     <?php
                     $i = 1;
-                    foreach ($list as $row) {
+                    foreach ($list as $line =>$row) {
                         ?>
-                        <tr class='row_<?php echo $row->post_guid_id; ?>'>
+                        <tr class='row_<?php echo $row->post_guide_id; ?>'>
                             <td class="textC">
-                                <input type="checkbox" name="id[]" value="<?php echo $row->post_guid_id; ?>" />
+                                <input type="checkbox" name="id[]" value="<?php echo $row->post_guide_id; ?>" />
                             </td>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
-                                <?php echo $row->name; ?>
+                                <?php echo $row->title; ?>
                             </td>
                             <td class="textC">
-                                <image src="<?php echo $row->image; ?>" style="width: 145px;"/>
+                                <?php echo $row->title_en; ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->sort; ?>
+                                <?php echo $row->content; ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->view_footer; ?>
+                                <?php echo $row->content_en; ?>
                             </td>
                             <td class="textC">
-                                <a href="<?php echo base_url('admin/helps/edit/' . $row->post_guid_id); ?>" class="lightbox" title="edit">
+                                <?php echo getStatus($row, $row->post_guide_id); ?>
+                            </td>
+                            <td class="textC">
+                                <?php echo $row->topic_title; ?>
+                            </td>
+                            <td class="textC">
+                                <?php if(!empty($tags)) echo $tags[$line]; ?>
+                            </td>
+                            <td class="textC">
+                                <a href="<?php echo base_url('admin/helps/editPostGuide/' . $row->post_guide_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                                 &nbsp;
-                                <a href="<?php echo base_url('admin/helps/delete/' . $row->post_guid_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
+                                <a href="<?php echo base_url('admin/helps/deletePostGuide/' . $row->post_guide_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/uninstall.png" />
                                 </a>
                             </td>

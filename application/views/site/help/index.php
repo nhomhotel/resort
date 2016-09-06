@@ -15,7 +15,12 @@
                 <h3>Browse by Topic</h3>
 
                 <table width="100%" cellspacing="0">
-                    <tbody><tr class="row1">
+                    <tbody>
+                        <?php if(!empty($topics)&&!empty($post_guides)):?>
+                        <?php $number = count($topics);$topic_title = '';?>
+                        <?php foreach ($post_guides as $row):?>
+                        <?php if($topic_title!==$row->topic_title)?>
+                        <tr class="row1">
                             <td class="col1">
                                 <div class="topic topic642516">
                                     <h4>Getting Started</h4>
@@ -47,7 +52,8 @@
 
                                     </ul>
                                 </div>
-                            </td><td class="col2">
+                            </td>
+                            <td class="col2">
                                 <div class="topic topic704065">
                                     <h4>Account &amp; Settings</h4>
 
@@ -80,8 +86,10 @@
 
                                     </ul>
                                 </div>
-                            </td></tr>
-                        <tr class="row2"><td class="col1">
+                            </td>
+                        </tr>
+                        <tr class="row2">
+                            <td class="col1">
                                 <div class="topic topic731741">
                                     <h4>For Guests (Travellers)</h4>
 
@@ -114,7 +122,8 @@
 
                                     </ul>
                                 </div>
-                            </td><td class="col2">
+                            </td>
+                            <td class="col2">
                                 <div class="topic topic753730">
                                     <h4>For Hosts (Property Owners)</h4>
 
@@ -148,7 +157,8 @@
                                     </ul>
                                 </div>
                             </td></tr>
-                        <tr class="row3"><td class="col1">
+                        <tr class="row3">
+                            <td class="col1">
                                 <div class="topic topic760921">
                                     <h4>Safety &amp; Security</h4>
 
@@ -180,7 +190,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </td><td class="col2">
+                            </td>
+                            <td class="col2">
                                 <div class="topic topic760920">
                                     <h4>Mobile</h4>
 
@@ -200,7 +211,10 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </td></tr>
+                            </td>
+                        </tr>
+                        <?php endforeach;?>
+                        <?php endif;?>
                     </tbody></table>
             </div>
         </div>
