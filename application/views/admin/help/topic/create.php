@@ -7,7 +7,7 @@
         <div class="horControlB menu_action">
             <ul>
                 <li>
-                    <a href="<?php echo base_url('adminhelps/topic'); ?>">
+                    <a href="<?php echo base_url('admin/helps/topic'); ?>">
                         <img src="<?php echo base_url(); ?>public/admin/images/icons/control/16/list.png" />
                         <span>Danh sách</span>
                     </a>

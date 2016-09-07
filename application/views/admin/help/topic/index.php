@@ -49,7 +49,7 @@
                     <tr>
                         <td colspan="9">
                             <div class="list_action itemActions">
-                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteAll'); ?>">
+                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteListTopic'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     &nbsp;
                                     <span style='color:white;'>Xóa chọn</span>
@@ -147,11 +147,15 @@
         $.ajax({
             url: url,
             type: 'POST',
+            dataType: 'json',
             data: {'arrId': arrId},
-            success: function () {
-                $(arrId).each(function (id, val) {
-                    $('tr.row_' + val).fadeOut();
-                });
+            success: function (data) {
+                if(!data.success) alert(data.message);
+                else{
+                    $(arrId).each(function (id, val) {
+                        $('tr.row_' + val).fadeOut();
+                    });
+                }
             }
         });
         return false;

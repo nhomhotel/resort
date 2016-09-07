@@ -46,7 +46,7 @@ class Helps extends AdminHome {
         $data['total'] = $total;
         $data['list'] = $list;
         $data['title'] = 'Danh sách topic';
-        $data['temp'] = 'admin/Help/topic/index';
+        $data['temp'] = 'admin/help/topic/index';
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
 
@@ -98,7 +98,7 @@ class Helps extends AdminHome {
             );
             $data['title'] = 'Chỉnh sửa topic';
             $data['info'] = $this->Help_topic_model->get_row($input);
-            $data['temp'] = 'admin/Help/topic/edit';
+            $data['temp'] = 'admin/help/topic/edit';
             $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
         }
     }
@@ -155,7 +155,7 @@ class Helps extends AdminHome {
             );
             $data['title'] = 'Chỉnh sửa tag';
             $data['info'] = $this->Help_tag_model->get_row($input);
-            $data['temp'] = 'admin/Help/tag/edit';
+            $data['temp'] = 'admin/help/tag/edit';
             $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
         }
     }
@@ -165,112 +165,115 @@ class Helps extends AdminHome {
             $data['info'] = $this->Help_postGuide_model->get_info($id);
             if (!$data['info']) {
                 $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-                redirect(base_url('admin/news'));
+                redirect(base_url('admin/postGuide'));
             }
-            if ($this->News_model->delete($id))
+            if ($this->Help_postGuide_model->delete($id))
                 $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
         }
-        redirect(base_url('admin/news'));
+        redirect(base_url('admin/helps/postGuide'));
     }
-    
+
+    function deleteListPostGuide() {
+        if ($this->input->post('arrId')) {
+            $arrId = $this->input->post('arrId');
+            foreach ($arrId as &$id) {
+                $id = intval($id);
+            }
+            if ($this->db->where_in('post_guide_id', $arrId)->delete('help_post_guide')) {
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
+            } else {
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thất bại!');
+            }
+        }
+        redirect(admin_url('helps/postGuide'));
+    }
+
     function deleteTopic($id = -1) {
+        $id = intval($id);
         if ($id > 0) {
-            if ($this->input->post('submit')) {
-                $title = $this->input->post('titleTopic');
-                $title_en = $this->input->post('titleTopic_en');
-                $status = $this->input->post('statusTopic');
-                $data = array(
-                    'title' => $title,
-                    'title_en' => $title_en,
-                    'status' => $status
-                );
-                if ($this->Help_topic_model->update($id, $data)) {
-                    $this->session->set_flashdata('message', 'Thêm dữ liệu thành công');
-                } else {
-                    $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại');
-                }
+            $data_info = $this->db->from('help_topic')
+                            ->select('help_topic.*,help_post_guide.title as post_guide_title')
+                            ->join('help_post_guide', 'help_post_guide.topic_id=help_topic.topic_id', 'left')
+                            ->where('help_topic.topic_id', $id)
+                            ->get()->row();
+            if (empty($data_info)) {
+                $this->session->set_flashdata('message', 'Không tồn tại bản ghi !');
+                redirect(base_url('admin/helps/topic'));
+            } elseif (!empty($data_info->post_guide_title)) {
+                $this->session->set_flashdata('message', 'Không thể xóa.Topic đã tồn tại bài viết!');
                 redirect(base_url('admin/helps/topic'));
             }
-            $input = array(
-                'where' => array(
-                    'topic_id' => $id,
-                )
-            );
-            $data['title'] = 'Chỉnh sửa topic';
-            $data['info'] = $this->Help_topic_model->get_row($input);
-            $data['temp'] = 'admin/Help/topic/edit';
-            $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
+            if ($this->Help_topic_model->delete($id))
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
+            else
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thất bại!');
         }
     }
-    
+
+    function deleteListTopic() {
+        if ($this->input->post('arrId')) {
+            $arrId = $this->input->post('arrId');
+            foreach ($arrId as &$id) {
+                $id = intval($id);
+            }
+            $data_info = $this->db->from('help_topic')
+                            ->select('help_topic.*,help_post_guide.title as post_guide_title')
+                            ->join('help_post_guide', 'help_post_guide.topic_id=help_topic.topic_id', 'left')
+                            ->where_in('help_post_guide.topic_id', $arrId)
+                            ->get()->result();
+            if (empty($data_info)) {
+                echo json_encode(array('success' => FALSE, 'message' => 'Không tồn tại bản ghi !'));
+                exit;
+            } else {
+                foreach ($data_info as $row) {
+                    if (!empty($row->post_guide_title)) {
+                        echo json_encode(array('success' => FALSE, 'message' => 'Không thể xóa.Topic đã tồn tại bài viết!'));
+                        exit;
+                    }
+                }
+            }
+            if ($this->db->where_in('topic_id', $arrId)->delete('help_topic')) {
+                echo json_encode(array('success' => TRUE, 'message' => 'Xóa dữ liệu thành công!'));
+                exit;
+            } else {
+                echo json_encode(array('success' => FALSE, 'message' => 'Xóa dữ liệu thất bại!'));
+                exit;
+            }
+        }
+        redirect(admin_url('helps/topic'));
+    }
+
     function deleteTag($id = -1) {
         if ($id > 0) {
-            $data['info'] = $this->News_model->get_info($id);
+            $this->load->model('Help_postGuide_model');
+            $data['info'] = $this->Help_tag_model->get_info($id);
             if (!$data['info']) {
                 $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
-                redirect(base_url('admin/news'));
+                redirect(base_url('admin/tag'));
             }
-            if ($this->News_model->delete($id))
+            if ($this->Help_tag_model->delete($id) && $this->Help_postGuide_model->deleteTag($id))
                 $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
+            else
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thất bại!');
         }
-        redirect(base_url('admin/news'));
+        redirect(base_url('admin/Helps/tag'));
     }
 
-    function save($id = -1) {
-        if ($id > 0) {
-            $data = array(
-                'email_title' => $this->input->post('title_email') ? trim($this->input->post('title_email')) : '',
-                "description" => $this->input->post('edit_email') ? trim($this->input->post('edit_email')) : '',
-                'email_type' => $this->input->post('type_email') ? trim($this->input->post('type_email')) : '',
-            );
-            if ($this->Email_model->update($id, $data))
-                echo json_encode(array('success' => true, 'message' => $data['description']));
-            else {
-                echo json_encode(array('success' => FALSE, 'message' => 'error_email_update'));
+    function deleteListTag() {
+        if ($this->input->post('arrId')) {
+            $this->load->model('Help_postGuide_model');
+            $arrId = $this->input->post('arrId');
+            foreach ($arrId as &$id) {
+                $id = intval($id);
+            }
+            if ($this->Help_postGuide_model->deleteListTag($arrId) && $this->db->where_in('tag_id', $arrId)->delete('help_tag')) {
+                echo json_encode(array('success' => true, 'message' => 'Xóa dữ liệu thành công!'));
+                exit;
+            } else {
+                echo json_encode(array('success' => FALSE, 'message' => 'Xóa dữ liệu thất bại!'));
+                exit;
             }
         }
-    }
-
-    function contact() {
-        $this->load->library('pagination');
-        $total = $this->Email_model->get_total();
-
-        $config = array();
-        $config["total_rows"] = $total;
-        $config['base_url'] = admin_url('Helps/index');
-        $config['per_page'] = $this->config->item('item_per_page_system') ? $this->config->item('item_per_page_system') : 10;
-        ;
-        $config['uri_segment'] = 4;
-        $config['next_link'] = 'Trang kế tiếp';
-        $config['prev_link'] = 'Trang trước';
-        $config['use_page_numbers'] = TRUE;
-        $this->pagination->initialize($config);
-        if ($this->uri->segment('4') && $this->uri->segment('4') > 1) {
-            $segment = $this->uri->segment('4');
-        } else {
-            $segment = 1;
-        }
-        $segment = (int) $segment;
-        $start = ($segment - 1) * $config['per_page'];
-        $pagination_link = $this->pagination->create_links();
-        $data['pagination_link'] = $pagination_link;
-
-        $input = array();
-        $input['limit'] = array($config['per_page'], $start);
-        $data['start'] = $start;
-        $input['order'] = array('help_id', 'ASC');
-
-        $message = $this->session->flashdata();
-        $data['message'] = $message;
-        $list = $this->db->from('email_history')
-                        ->where('type', 'contact')
-                        ->get()->result();
-        if (!empty($info))
-            $data['list'] = $list;
-        $data['total'] = $total;
-        $data['title'] = 'Danh sách email';
-        $data['temp'] = 'admin/helps/contact';
-        $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
 
     function createPostGuide() {
@@ -354,57 +357,78 @@ class Helps extends AdminHome {
                         ->join('help_topic', 'help_topic.topic_id=help_post_guide.topic_id')
                         ->get()->result();
         $tags = array();
+        $_tags = array();
         foreach ($list as $line => $row) {
             $tmpTags = $row->tags;
             if ($tmpTags != '')
                 $tmpTags = explode(',', $tmpTags);
-            $_tags = $this->db->from('help_tag')
+            $_tags[$line] = $this->db->from('help_tag')
                             ->where_in('tag_id', $tmpTags)
                             ->get()->result();
-            foreach ($_tags as $_tag) {
-                $tags[$line] = $_tag->name . ',';
-            }
         }
+//        foreach ($_tags as &$_tag) {
+////            $_tag = $_tag->name . ',';
+//            pre($_tag);
+//        }
         $data['total'] = $total;
         $data['list'] = $list;
         $data['tags'] = $tags;
         $data['title'] = 'Danh sách bài viết';
-        $data['temp'] = 'admin/Help/postGuide/index';
+        $data['temp'] = 'admin/help/postGuide/index';
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
 
     function editPostGuide($id = -1) {
         if ($id > 0) {
             if ($this->input->post('submit')) {
-                $title = $this->input->post('titlePostGuide');
-                $content = $this->input->post('contentPostGuide');
-                $title_en = $this->input->post('titlePostGuide_en');
-                $content_en = $this->input->post('contentPostGuide_en');
-                $status = $this->input->post('statusPostGuide');
-                $tag = $this->input->post('tags');
-                $data = array(
-                    'title' => $title,
-                    'content' => $content,
-                    'title_en' => $title_en,
-                    'content_en' => $content_en,
-                    'status' => $status,
-                    'tag' => $tag,
-                );
-                if ($this->Help_postGuide_model->update($id, $data)) {
-                    $this->session->set_flashdata('message', 'Thêm dữ liệu thành công');
-                } else {
-                    $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại');
+                $this->form_validation->set_rules('titlePostGuide', 'Tiêu đề', 'trim|required');
+                $this->form_validation->set_rules('titlePostGuide_en', 'Tiêu đề(en)', 'trim|required');
+                $this->form_validation->set_rules('contentPostGuide', 'Nội dung', 'trim|required');
+                $this->form_validation->set_rules('contentPostGuide_en', 'nội dung(en)', 'trim|required');
+                $this->form_validation->set_rules('tags', 'tag', 'trim|required');
+                $this->form_validation->set_rules('topicPostGuide', 'Topic', 'trim|required|numeric|callback_checkTopic');
+                if ($this->form_validation->run()) {
+                    $title = $this->input->post('titlePostGuide');
+                    $content = $this->input->post('contentPostGuide');
+                    $title_en = $this->input->post('titlePostGuide_en');
+                    $content_en = $this->input->post('contentPostGuide_en');
+                    $status = $this->input->post('statusPostGuide');
+                    $tag = $this->input->post('tags');
+                    $topic_id = intval($this->input->post('topicPostGuide'));
+                    $data = array(
+                        'title' => $title,
+                        'content' => $content,
+                        'title_en' => $title_en,
+                        'content_en' => $content_en,
+                        'status' => $status,
+                        'tags' => $tag,
+                        'topic_id'=>$topic_id
+                    );
+                    if ($this->Help_postGuide_model->update($id, $data)) {
+                        $this->session->set_flashdata('message', 'Thêm dữ liệu thành công');
+                    } else {
+                        $this->session->set_flashdata('message', 'Thêm dữ liệu thất bại');
+                    }
+                    redirect(base_url('admin/helps/postGuide'));
                 }
-                redirect(base_url('admin/helps/postGuide'));
             }
             $input = array(
                 'where' => array(
-                    'postGuide_id' => $id,
+                    'post_guide_id' => $id,
                 )
             );
             $data['title'] = 'Chỉnh sửa bài viết';
             $data['info'] = $this->Help_postGuide_model->get_row($input);
-            $data['temp'] = 'admin/Help/postGuide/edit';
+            if(!empty($data['info'])){
+                $tagIDs = explode(',', $data['info']->tags);
+                foreach ($tagIDs as &$row)
+                    $row = intval ($row);
+                $data['tags'] = $this->db->from('help_tag')
+                        ->where_in('tag_id',$tagIDs)
+                        ->get()->result();
+            }
+            $data['topic'] = $this->Help_topic_model->get_list();
+            $data['temp'] = 'admin/help/postGuide/edit';
             $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
         }
     }
@@ -442,8 +466,8 @@ class Helps extends AdminHome {
         $list = $this->Help_tag_model->get_list();
         $data['total'] = $total;
         $data['list'] = $list;
-        $data['title'] = 'Danh sách bài viết';
-        $data['temp'] = 'admin/Help/tag/index';
+        $data['title'] = 'Danh sách tags';
+        $data['temp'] = 'admin/help/tag/index';
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
     }
 
@@ -494,7 +518,7 @@ class Helps extends AdminHome {
             return array('success' => TRUE);
         exit;
     }
-    
+
     function statusTopic() {
         $id = intval($this->input->post('id'));
         $data = $this->Help_topic_model->changeStatus($id);
@@ -504,7 +528,6 @@ class Helps extends AdminHome {
             return array('success' => TRUE);
         exit;
     }
-    
 
 }
 

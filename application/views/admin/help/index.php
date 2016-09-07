@@ -50,7 +50,7 @@
                     <tr>
                         <td colspan="9">
                             <div class="list_action itemActions">
-                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteAll'); ?>">
+                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteListTopic'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     &nbsp;
                                     <span style='color:white;'>Xóa chọn</span>
@@ -87,11 +87,11 @@
                                 <?php echo $row->view_footer; ?>
                             </td>
                             <td class="textC">
-                                <a href="<?php echo base_url('admin/helps/edit/' . $row->helps_id); ?>" class="lightbox" title="edit">
+                                <a href="<?php echo base_url('admin/helps/editTopic/' . $row->helps_id); ?>" class="lightbox" title="edit">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/pencil.png" />
                                 </a>
                                 &nbsp;
-                                <a href="<?php echo base_url('admin/helps/delete/' . $row->helps_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
+                                <a href="<?php echo base_url('admin/helps/deleteTopic/' . $row->helps_id); ?>" class="lightbox" title="delete" onclick="return confirm('Bạn có muốn xóa?');">
                                     <img src="<?php echo base_url(); ?>public/admin/images/icons/color/uninstall.png" />
                                 </a>
                             </td>
@@ -130,7 +130,7 @@
     }
 
     //xóa nhiều dữ liệu
-    function deleteAll() {
+    function deleteLAll() {
 
         var arrId = new Array();
         $('[name="id[]"]:checked').each(function () {

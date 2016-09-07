@@ -157,9 +157,16 @@ class News extends AdminHome {
 
     function deleteAll() {
         if ($this->input->post('arrId')) {
-            $arrId = $this->input->post('arrId');
-            foreach ($arrId as $id) {
-                $this->News_model->delete($id);
+            $arrId = onlyCharacter(securityServer($this->input->post('arrId')));
+            foreach ($arrId as &$id) {
+                $id=intval($id);
+            }
+            if($this->db->where_in('news_id',$arrId)->delete('news')){
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thành công');
+                redirect(base_url('admin/News'));
+            }else{
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thất bại');
+                redirect(base_url('admin/News'));
             }
         }
     }

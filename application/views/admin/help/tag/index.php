@@ -47,7 +47,7 @@
                     <tr>
                         <td colspan="9">
                             <div class="list_action itemActions">
-                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteAllTag'); ?>">
+                                <a href="javascript:void(0)" onclick = "deleteAll()" id="submit" class="button blueB" url="<?php echo admin_url('helps/deleteListTag'); ?>">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     &nbsp;
                                     <span style='color:white;'>Xóa chọn</span>

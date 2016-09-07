@@ -2,60 +2,7 @@
     .selector{
         z-index: 1000;
     }
-    .ui-autocomplete{
-        display: table;
-    }
-    .selectize-input{
-        color: #333333;
-        font-family: inherit;
-        font-size: inherit;
-        line-height: 20px;
-        -webkit-font-smoothing: inherit;
-        cursor: text;
-        display: inline-block;
-        padding: 6px 12px;
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        z-index: 1;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        -webkit-border-radius: 0px !important;
-        -moz-border-radius: 0px !important;
-        border-radius: 0px !important;
-        min-height: 34px;
-        padding: 6px 8px 3px;
-        padding: 5px 12px 2px;
-        padding-left: 9px;
-        padding-right: 9px;
-    }
-    .selectize-input .item{
-        vertical-align: baseline;
-        display: -moz-inline-stack;
-        display: inline-block;
-        zoom: 1;
-        vertical-align: baseline;
-        display: -moz-inline-stack;
-        margin: 0 3px 3px 0;
-        padding: 2px 6px;
-        background: #f2f2f2;
-        border: 0 solid #d0d0d0;
-        margin: 0 3px 3px 0;
-        padding: 1px 3px;
-        background: #efefef;
-        color: #333333;
-        border: 0 solid rgba(0, 0, 0, 0);
-        cursor: pointer;
-    }
-    .selectize-input .item.active{
-        background: #428bca;
-        color: #ffffff;
-        border: 0 solid rgba(0, 0, 0, 0);
-    }
+    
 </style>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
@@ -270,10 +217,7 @@
                     } else
                         tags.val(ui.item.tag_id);
 
-                    $('.selectize-input .item').on('click', function () {
-                        $('.selectize-input .item').removeClass('active');
-                        $(this).addClass('active');
-                    })
+                    $('.selectize-input .item').tagAddActive();
                     $('#tagsPostGuide').val('');
                     $('#tagsPostGuide').focus();
                 }

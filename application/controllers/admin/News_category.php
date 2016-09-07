@@ -158,23 +158,57 @@ class News_category extends AdminHome {
     }
 
     function delete($id) {
+        $id = intval(onlyCharacter(securityServer($id)));
         if ($id > 0) {
-            $data['info'] = $this->News_category_model->get_info($id);
-            if (!$data['info']) {
+            $data_info = $this->db->from('news_category')
+                    ->select('news.content')
+                    ->join('news','news.news_category_id = news_category.news_category_id','left')
+                    ->where('news_category.news_category_id',$id)
+                    ->get()->row();
+            if(empty($data_info)){
                 $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+                redirect(base_url('admin/News_category'));
+            }elseif(!empty ($data_info->content)){
+                $this->session->set_flashdata('message', 'Không xóa được được danh mục vì đã tồn tại bài viết');
                 redirect(base_url('admin/News_category'));
             }
             if ($this->News_category_model->delete($id))
                 $this->session->set_flashdata('message', 'Xóa dữ liệu thành công!');
+            else{
+                $this->session->set_flashdata('message', 'Xóa dữ liệu thất bại!');
+            }
         }
         redirect(base_url('admin/news_category'));
     }
 
     function deleteAll() {
         if ($this->input->post('arrId')) {
-            $arrId = $this->input->post('arrId');
-            foreach ($arrId as $id) {
-                $this->News_category_model->delete($id);
+            $arrId = onlyCharacter(securityServer($this->input->post('arrId')));
+            foreach ($arrId as &$id) {
+                $id = intval($id);
+            }
+            $data_info = $this->db->from('news_category')
+                    ->select('news.content')
+                    ->join('news','news.news_category_id = news_category.news_category_id','left')
+                    ->where_in('news_category.news_category_id',$arrId)
+                    ->get()->result();
+            if(empty($data_info)){
+                $this->session->set_flashdata('message', 'Không tồn tại bản ghi!');
+                redirect(base_url('admin/News_category'));
+            }else{
+                foreach ($data_info as $row){
+                    if(!empty($row->content)){
+                        $this->session->set_flashdata('message', 'Không xóa được được danh mục vì đã tồn tại bài viết');
+                        redirect(base_url('admin/News_category'));
+                    }
+                }
+                if($this->db->where_in('news_category_id',$arrId)->delete('news_category')){
+                    $this->session->set_flashdata('message', 'Xóa dữ liệu thành công');
+                    redirect(base_url('admin/News_category'));
+                }else{
+                    $this->session->set_flashdata('message', 'Xóa dữ liệu thất bại');
+                    redirect(base_url('admin/News_category'));
+                }
             }
         }
     }

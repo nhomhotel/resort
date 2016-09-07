@@ -44,8 +44,8 @@
                 </div>
                 <div class="desk-widgets">
                     <h4>Cần giúp đỡ để đặt phòng?</h4>
-                    <span class="assistly-widget" id="assistly-widget-1">              
-                        <a href="#" class="a-desk-widget a-desk-widget-chat" style="text-decoration:none;width:65px;display:inline-block;min-height:22px;background: url(http://assets0.assistly.com/images/customer/widget/chat/launch_chat_sprite.png) no-repeat scroll 0 0px transparent;" onmouseover="this.style.backgroundPosition = '0 -20px'" onmouseout="this.style.backgroundPosition = '0 0px'" onclick="window.open('http://support.homeaway.asia:80/customer/widget/chats/new?ticket[desc]=Order%20ID%3A%201BPHJ-B6BB-VRMV%2C%20Check-in%20Date%3A%20June%2021%2C%202016%2C%20Check-out%20Date%3A%20June%2030%2C%202016%2C%20Guests%3A%2010%2C%20Amount%3A%20VND%2022929515%2C%20Listing%20URL%3A%20https%3A//www.homeaway.com.vn/vacation-rentals/vietnam/h%25C3%25A0-n%25E1%25BB%2599i/hanoi/tm-fOgPD6I8iZB&amp;ticket[custom_theme]=ha&amp;ticket[custom_brand]=HomeAway&amp;interaction[email]=zefredzocohen@gmail.com&amp;interaction[name]=hai%20le&amp;', 'assistly_chat', 'resizable=1, status=0, toolbar=0,width=640,height=700')">&nbsp;</a></span><span class="assistly-widget" id="assistly-widget-2">              <a href="#" class="a-desk-widget a-desk-widget-email" style="text-decoration:none;width:65px;display:inline-block;min-height:22px;background: url(http://assets0.assistly.com/images/customer/widget/email/launch_email_sprite.png) no-repeat scroll 0 0px transparent;" onmouseover="this.style.backgroundPosition = '0 -20px'" onmouseout="this.style.backgroundPosition = '0 0px'" onclick="window.open('http://support.homeaway.asia:80/customer/widget/emails/new?ticket[desc]=Order%20ID%3A%201BPHJ-B6BB-VRMV%2C%20Check-in%20Date%3A%20June%2021%2C%202016%2C%20Check-out%20Date%3A%20June%2030%2C%202016%2C%20Guests%3A%2010%2C%20Amount%3A%20VND%2022929515%2C%20Listing%20URL%3A%20https%3A//www.homeaway.com.vn/vacation-rentals/vietnam/h%25C3%25A0-n%25E1%25BB%2599i/hanoi/tm-fOgPD6I8iZB&amp;ticket[custom_theme]=ha&amp;ticket[custom_brand]=HomeAway&amp;interaction[email]=zefredzocohen@gmail.com&amp;interaction[name]=hai%20le&amp;', 'assistly_chat', 'resizable=1, status=0, toolbar=0,width=640,height=700')">&nbsp;</a></span></div>
+                    <span class="assistly-widget" id="assistly-widget-1"></span>             
+                </div>
             </div>
             <div id="form" class="col-sm-8 col-sm-pull-4">
                 <div class="encrypt">Chúng tôi mã hóa thông tin thanh toán của bạn để việc xử lý được bảo mật</div>
@@ -191,13 +191,11 @@
                 }
             },
             submitHandler: function (form) {
-                submitHandler: function(form) {
-                    if ($('.method_payment #method input[name="method"]').val() !== "1" || $('.method_payment #method input[name="method"]').val() == "2" || $('.method_payment #method input[name="method"]').val() == "3") {
-                        form.submit();
-                    } else {
-                        alert('chưa chọn hình thưc thanh toán');
-                        return false;
-                    }
+                if ($('.method_payment #method input[name="method"]').val() !== "1" || $('.method_payment #method input[name="method"]').val() == "2" || $('.method_payment #method input[name="method"]').val() == "3") {
+                    form.submit();
+                } else {
+                    alert('chưa chọn hình thưc thanh toán');
+                    return false;
                 }
             }
         });

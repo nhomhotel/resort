@@ -16,7 +16,6 @@
         </div>
     </div>
 </div>
-
 <div class="line"></div>
 <div class="wrapper col-md-12  clearfix content">
     <form class="form" id="form" method="post" enctype="multipart/form-data">
@@ -29,56 +28,90 @@
                 <div class="tab_container tab-content">
                     <div id='tab1' class="tab_content pd0 tab-pane active" role="tabpanel">
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Tên khu vực:<span class="req">*</span></label>
+                            <label class="formLeft" for="param_name">Tiêu đề:<span class="req">*</span></label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <input type="text" name="area_name" id="param_name" _autocheck="true" value="<?php echo!(set_value('name')) ? ($info->name) : (set_value('name')); ?>" />
+                                    <input type="text" name="titlePostGuide" id="param_name" _autocheck="true" value="<?php echo!(set_value('titlePostGuide')) ? ($info->title) : (set_value('titlePostGuide')); ?>" />
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('area_name'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('titlePostGuide'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
-
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Tên khu vực (EN):<span class="req">*</span></label>
+                            <label class="formLeft" for="param_name">Tiêu đề(en):<span class="req">*</span></label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <input type="text" name="area_name_en" id="param_name" _autocheck="true" value="<?php echo!(set_value('area_name_en')) ? ($info->name_en) : (set_value('area_name_en')); ?>" />
+                                    <input type="text" name="titlePostGuide_en" id="param_name" _autocheck="true" value="<?php echo!(set_value('titlePostGuide_en')) ? ($info->title_en) : (set_value('titlePostGuide_en')); ?>" />
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('area_name_en'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('titlePostGuide_en'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
                         <div class="formRow">
-                            <label class="formLeft" for="param_image">Ảnh đại diện:<span class="req">*</span></label>
+                            <label class="formLeft" for="param_name">Nội dung:<span class="req">*</span></label>
                             <div class="formRight">
-                                <input type="file" name="image_area"/>
+                                <span class="oneTwo">
+                                    <input type="text" name="contentPostGuide" id="param_name" _autocheck="true" value="<?php echo!(set_value('contentPostGuide')) ? ($info->content) : (set_value('contentPostGuide')); ?>" />
+                                </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="image_area" class="clear error"><?php echo form_error('image_area'); ?></div>
-                                <image src="<?php echo!(set_value('image')) ? ($info->image) : (set_value('image')); ?>" style="width: 145px"/>
+                                <div name="name_error" class="clear error"><?php echo form_error('contentPostGuide'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
                         <div class="formRow">
-                            <label class="formLeft" for="position_area">Vị trí hiển thị trên web:</label>
+                            <label class="formLeft" for="param_name">Nội dung(en):<span class="req">*</span></label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <input type="text" class="form-control" id="usr" name="sort" value="<?php echo!(set_value('sort')) ? ($info->sort) : (set_value('sort')); ?>">
+                                    <input type="text" name="contentPostGuide_en" id="param_name" _autocheck="true" value="<?php echo!(set_value('contentPostGuide_en')) ? ($info->content_en) : (set_value('contentPostGuide_en')); ?>" />
                                 </span>
+                                <span name="name_autocheck" class="autocheck"></span>
+                                <div name="name_error" class="clear error"><?php echo form_error('contentPostGuide_en'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
                         <div class="formRow">
-                            <label class="formLeft" for="view_footer">Vị trí hiển thị dưới footer:</label>
+                            <label class="formLeft" for="param_image">Trạng thái:<span class="req">*</span></label>
                             <div class="formRight">
-                                <span class="oneTwo">
-                                    <input type="text" class="form-control" id="usr" name="view_footer" value="<?php echo!(set_value('view_footer')) ? ($info->view_footer) : (set_value('view_footer')); ?>">
-                                </span>
+                                <select name="statusPostGuide" class="form-control">
+                                    <option value="1"> Hiển thị</option>
+                                    <option value="0" <?php echo !empty($info)&&$info->status==0?'selected':''?>>Ẩn</option>
+                                </select>
                             </div>
                             <div class="clear"></div>
-                        </div>	
+                        </div>
+                        <div class="formRow">
+                            <label class="formLeft" for="position_area">Tags:</label>
+                            <div class="formRight">
+                                <div class="oneTwo">
+                                    <input type="hidden" class="form-control" name="tags" id="tags" value="<?php echo !empty($info)?$info->tags:'';?>">
+                                    <div class="selectize-input">
+                                        <input class="" name="tagsPostGuide" id="tagsPostGuide" autocomplete="off" type="text" >
+                                        <?php if(!empty($tags)&&is_array($tags)):?>
+                                        <?php foreach ($tags as $tag):?>
+                                        <div data-value="<?php echo $tag->tag_id?>" class="item"><?php echo $tag->name?></div>
+                                        <?php endforeach;?>
+                                        <?php endif;?>
+                                    </div>
+                            </div>
+                            <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                         <div class="formRow">
+                            <label class="formLeft" for="param_image">Thuộc topic:<span class="req">*</span></label>
+                            <div class="formRight">
+                                <select name="topicPostGuide" class="form-control">
+                                    <?php if(!empty($topic)&&  is_array($topic)):?>
+                                    <?php foreach ($topic as $tp):?>
+                                    <option value="<?php echo $tp->topic_id?>" <?php echo !empty($info)&&$tp->topic_id==$info->topic_id?'selected':''?>> <?php echo $tp->title?></option>
+                                    <?php endforeach;?>
+                                    <?php endif;?>
+                                </select>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->
@@ -93,3 +126,102 @@
         </fieldset>
     </form>
 </div>
+<script>
+
+$(function () {
+    
+$('.selectize-input .item').tagAddActive();
+$(document).keyup(function (e) {
+        if (e.keyCode == 46) {
+            var itemActive = $('.selectize-input .item.active');
+            var tags = $("#tags");
+            if (typeof itemActive != 'undefined') {
+                if (tags.val() != '') {
+                    var elemt = tags.val().split(',');
+                    console.log(elemt)
+                    console.log(itemActive.data('value'));
+                    console.log(elemt.indexOf(itemActive.data('value')));
+                    //return;
+                    var position = elemt.indexOf(itemActive.data('value').toString());
+                    if (position > -1) {
+                        elemt.splice(position, 1);
+                        tags.val(elemt.toString());
+                    }
+                }
+            }
+            $('.selectize-input .item.active').remove();
+        }
+    });
+
+$("#tagsPostGuide").autocomplete({
+        source: function (request, response) {
+            if ($('#tags') != undefined && $('#tags').val().trim() != '') {
+                var TagsID = $('#tags').val().trim();
+            }
+            var TagsID = $('#tags').val().trim();
+            $.ajax({
+                url: '<?php echo site_url('admin/helps/suggest_tag'); ?>',
+                data: {term: request.term, Tags: TagsID},
+                dataType: "json",
+                type: "get",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            name: item.name,
+                            tag_id: item.tag_id
+                        }
+                    }));
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        },
+        dataType: "json",
+        minLength: 1,
+        messages: {
+            noResults: '',
+            results: function () {}
+        },
+        error: function (e, v) {
+            alert(e);
+            alert(v)
+        },
+        open: function (event) {
+            $('.ui-autocomplete').css('height', 'auto');
+            var $input = $(event.target),
+                    inputTop = $input.offset().top,
+                    inputHeight = $input.height(),
+                    autocompleteHeight = $('.ui-autocomplete').height(),
+                    windowHeight = $(window).height();
+            if ((inputHeight + inputTop + autocompleteHeight) > windowHeight) {
+                $('.ui-autocomplete').css('height', (windowHeight - inputHeight - inputTop - 20) + 'px');
+            }
+        },
+        select: function (event, ui) {
+            event.preventDefault();
+            if (ui.item.name != undefined && ui.item.tag_id != undefined) {
+                $(".selectize-input").append("<div data-value='" + ui.item.tag_id + "' class='item' >" + ui.item.name + "</div>");
+                var tags = $("#tags");
+                if (tags.val() != '') {
+                    var elemt = tags.val().split(',');
+                    if (elemt.indexOf(ui.item.tag_id) == -1) {
+                        elemt.push(ui.item.tag_id);
+                        tags.val(elemt.toString());
+                    }
+                } else
+                    tags.val(ui.item.tag_id);
+                $('.selectize-input .item').tagAddActive();
+                $('#tagsPostGuide').val('');
+                $('#tagsPostGuide').focus();
+            }
+        }
+    })
+            .data("uiAutocomplete")._renderItem = function (ul, item) {
+        return $("<li class='name-item'>").append("<a>" + item.name + "</a>").appendTo(ul);
+    };
+})
+</script>

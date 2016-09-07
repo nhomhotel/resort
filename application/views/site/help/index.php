@@ -15,13 +15,13 @@
                 <h3><?php echo lang('browse_by_topic');?></h3>
                 <div class="row">
                     <?php if(!empty($post_guides_topic1)&&!empty($post_guides_topic2)):?>
-                    <div class="col-xs-12 col-md-6">
-                        <a href="<?php // echo base_url().'help/topic/'.  convertUrl($row->title_en, $row->post_guide_id)?>"><?php // echo (empty($language)||$language==='vietnamese')?$row->title:$row->title_en;?></a>
+                    <div class="col-xs-12 col-md-6 cl1">
+                        <div class="row">
                         <ul>
                         <?php $topicTitle1 = '';?>
                         <?php foreach ($post_guides_topic1 as $row):?>
                         <?php if($topicTitle1!==$row->topic_title):?>
-                            <div class="row">
+                            
                                 <table>
                                     <tr>
                                         <td>
@@ -31,18 +31,18 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
                         <?php endif;?>
                             <li><a href="<?php echo base_url().'help/article/'.  convertUrl($row->title_en, $row->post_guide_id)?>"><?php echo (empty($language)||$language==='vietnamese')?$row->title:$row->title_en;?></a></li>
                         <?php endforeach;?>
                         </ul>
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-md-6">
+                    <div class="col-xs-12 col-md-6 cl2">
+                        <div class="row">
                         <ul>
                             <?php $topicTitle2 = '';?>
                         <?php foreach ($post_guides_topic2 as $row):?>
                         <?php if($topicTitle1!==$row->topic_title):?>
-                            <div class="row">
                                 <table>
                                     <tr>
                                         <td>
@@ -52,14 +52,15 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
                         <?php endif;?>
                         <li><a href="<?php echo base_url().'help/article/'.  convertUrl($row->title_en, $row->post_guide_id)?>"><?php echo (empty($language)||$language==='vietnamese')?$row->title:$row->title_en;?></a></li>
                         <?php endforeach;?>
                         </ul>
+                        </div>
                     </div>
                     <?php elseif (!empty($post_guides_topic1)):?>
                     <div class="col-xs-12">
+                        <div class="row">
                         <?php $topicTitle1 = '';?>
                         <ul>
                         <?php foreach ($post_guides_topic1 as $row):?>
@@ -70,9 +71,11 @@
                         <li><a href="<?php echo base_url().'help/article/'.  convertUrl($row->title_en, $row->post_guide_id)?>"><?php echo (empty($language)||$language==='vietnamese')?$row->title:$row->title_en;?></a></li>
                         <?php endforeach;?>
                         </ul>
+                        </div>
                     </div>
                     <?php elseif (!empty($post_guides_topic2)):?>
                     <div class="col-xs-12">
+                        <div class="row">
                         <?php $topicTitle2 = '';?>
                         <ul>
                         <?php foreach ($post_guides_topic2 as $row):?>
@@ -83,6 +86,7 @@
                         <li><a href="<?php echo base_url().'help/article/'.  convertUrl($row->title_en, $row->post_guide_id)?>"><?php echo (empty($language)||$language==='vietnamese')?$row->title:$row->title_en;?></a></li>
                         <?php endforeach;?>
                         </ul>
+                        </div>
                     </div>
                     <?php endif;?>
                 </div>

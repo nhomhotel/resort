@@ -2,3 +2,49 @@
     min-height: 254px;
     text-align: center;
 }
+.article{
+    border: 0;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+    outline: none;
+    margin: 0 0 30px;
+    background: url('/public/site/images/icon-types.png') 0 -276px no-repeat;
+    padding: 0 0 0 40px;
+}
+.article h4 {
+    font-size: 18px;
+    color: #434343 !important;
+    font-family: Arial,Arial,Helvetica,sans-serif !important;
+    margin: 0 0 5px;
+    font-weight: normal;
+}
+.article a:visited {
+    color: #254689;
+}
+.article a:link {
+    color: #254689;
+}
+.article a {
+    color: #398FD1 !important;
+}
+
+.article a {
+    color: #254689;
+    text-decoration: none;
+}
+#support-main .articles li p {
+    margin: 0 0 5px;
+    color: #777;
+}
+.article p {
+    font: 12pt Arial,Arial,Helvetica,sans-serif !important;
+    color: #434343 !important;
+}
+.support-body table tr td a{
+    margin-left: 10px; 
+}
+.support-body table tr td a:hover{
+    background-color: blue;
+    color: white;
+}

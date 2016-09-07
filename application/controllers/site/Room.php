@@ -145,18 +145,21 @@ class Room extends MY_Controller {
         } else {
             $data['id_encode'] = $id;
         }
-        
-        $checkin = $this->input->get('checkin') &&  validateDate(urldecode($this->input->get('checkin')))? urldecode($this->input->get('checkin')) : '';
-        $checkout = $this->input->get('checkout') &&  validateDate(urldecode($this->input->get('checkout')))? urldecode($this->input->get('checkout')) : '';
+
+        $checkin = $this->input->get('checkin') && validateDate(urldecode($this->input->get('checkin'))) ? urldecode($this->input->get('checkin')) : '';
+        $checkout = $this->input->get('checkout') && validateDate(urldecode($this->input->get('checkout'))) ? urldecode($this->input->get('checkout')) : '';
         $guests = $this->input->get('guests') ? $this->input->get('guests') : 1;
-        if($checkin!='')$data['checkin'] = $checkin;
-        if($checkout!='')$data['checkout'] = $checkout;
-        if($guests!='')$data['guests'] = $guests;
-        if($checkin!=''&&$checkout!=''&&$guests!=''){
-            if($this->Order_room_model->check_exists_room($encode[0], $data['checkin'], $data['checkout'])){
+        if ($checkin != '')
+            $data['checkin'] = $checkin;
+        if ($checkout != '')
+            $data['checkout'] = $checkout;
+        if ($guests != '')
+            $data['guests'] = $guests;
+        if ($checkin != '' && $checkout != '' && $guests != '') {
+            if ($this->Order_room_model->check_exists_room($encode[0], $data['checkin'], $data['checkout'])) {
                 $data['checkin'] = '';
                 $data['checkout'] = '';
-            }else{
+            } else {
                 $date1 = new DateTime();
                 $date2 = new DateTime();
                 $dateNow = new DateTime();
@@ -173,10 +176,10 @@ class Room extends MY_Controller {
                 if ($data['checkinObj'] < $dateNow || $data['checkoutObj'] < $dateNow) {
                     redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
                 }
-                $tax = $this->config->item('tax')?array('vat'=>10):array();
-                $price = $this->book_library->getMoney(array('checkin'=>$data['checkinObj']->format('d-m-Y'),'checkout'=>$data['checkoutObj']->format('d-m-Y')),$guests,'',$encode[0],$tax);
-                if(isset($price['money'])){
-                    $data['price']=$this->load->view('site/room/caculatorPrices',array('price'=>$price),true);
+                $tax = $this->config->item('tax') ? array('vat' => 10) : array();
+                $price = $this->book_library->getMoney(array('checkin' => $data['checkinObj']->format('d-m-Y'), 'checkout' => $data['checkoutObj']->format('d-m-Y')), $guests, '', $encode[0], $tax);
+                if (isset($price['money'])) {
+                    $data['price'] = $this->load->view('site/room/caculatorPrices', array('price' => $price), true);
                 }
             }
         }
@@ -201,69 +204,67 @@ class Room extends MY_Controller {
     }
 
     function order_room($id = '') {
-        if (!isset($_SESSION['user_name'])) {
-            redirect('home/register');
-        } else {
-            $user_id = $this->session->userdata('userLoginSite');
-            if(!empty($user_id))$user_id = $user_id['user_id'];
-            if (!isset($user_id) || $user_id == '') {
-                redirect(base_url());
-            }
-            if ($id == '') {
-                redirect(base_url());
-            }
-            $id_decode = $this->config->item('encode_id')->decode($id);
-            if (count($id_decode) <= 0) {
-                redirect(base_url());
-            } else {
-                $data['id_encode'] = $id;
-            }
-            $checkin = $this->input->get('checkin') ? $this->input->get('checkin') : '';
-            $checkout = $this->input->get('checkout') ? $this->input->get('checkout') : '';
-            $guests = $this->input->get('guests') ? $this->input->get('guests') : '';
-            if ($checkin == '' || $checkout == '' || $guests == '') {
-                redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
-            }
-            $input = array(
-                'where' => array(
-                    'post_room_id' => $id_decode[0],
-                )
-            );
-            $date1 = new DateTime();
-            $date2 = new DateTime();
-            $dateNow = new DateTime();
-            $data['checkin'] = $date1->setDate(
-                    date('Y', strtotime(str_replace('/', '-', $checkin))), date('m', strtotime(str_replace('/', '-', $checkin))), date('d', strtotime(str_replace('/', '-', $checkin)))
-            );
-            $data['guests'] = $guests;
-            $data['checkout'] = $date2->setDate(
-                    date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
-            );
-            if ($data['checkin'] > $data['checkout']) {
-                redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
-            }
-            if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
-                redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
-            }
-            $prices = $this->Post_room_model->get_row($input);
-            $data['name_room'] = $prices->post_room_name;
-            $tmp = json_decode($prices->image_list);
-            if(is_array($tmp))$data['image_room'] = $tmp[0];
-            //giá 1 đêm
-            $tax = $this->config->item('tax')?array('vat'=>10):array();
-            $priceCaculator = $this->book_library->getMoney(array('checkin'=>$data['checkin']->format('Y-m-d'),'checkout'=>$data['checkout']->format('Y-m-d')),$guests,$prices,-1,$tax);
-            $data['prices'] = $this->load->view('site/room/caculatorPrices',array('price'=>$priceCaculator),true);
-            $input = array();
-            $input = array(
-                'where' => array(
-                    'user_id' => $user_id,
-                )
-            );
-            $data['user'] = $this->User_model->get_row($input);
-            $data['meta_title'] = 'order room';
-            $data['temp'] = ('site/room/order');
-            $this->load->view('site/layout_index', isset($data) ? ($data) : null);
+        $user_id = $this->session->userdata('userLoginSite');
+        if (!empty($user_id))
+            $user_id = $user_id['user_id'];
+        if (!isset($user_id) || $user_id == '') {
+            redirect(base_url());
         }
+        if ($id == '') {
+            redirect(base_url());
+        }
+        $id_decode = $this->config->item('encode_id')->decode($id);
+        if (count($id_decode) <= 0) {
+            redirect(base_url());
+        } else {
+            $data['id_encode'] = $id;
+        }
+        $checkin = $this->input->get('checkin') ? $this->input->get('checkin') : '';
+        $checkout = $this->input->get('checkout') ? $this->input->get('checkout') : '';
+        $guests = $this->input->get('guests') ? $this->input->get('guests') : '';
+        if ($checkin == '' || $checkout == '' || $guests == '') {
+            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+        }
+        $input = array(
+            'where' => array(
+                'post_room_id' => $id_decode[0],
+            )
+        );
+        $date1 = new DateTime();
+        $date2 = new DateTime();
+        $dateNow = new DateTime();
+        $data['checkin'] = $date1->setDate(
+                date('Y', strtotime(str_replace('/', '-', $checkin))), date('m', strtotime(str_replace('/', '-', $checkin))), date('d', strtotime(str_replace('/', '-', $checkin)))
+        );
+        $data['guests'] = $guests;
+        $data['checkout'] = $date2->setDate(
+                date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
+        );
+        if ($data['checkin'] > $data['checkout']) {
+            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+        }
+        if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
+            redirect(base_url() . 'room/room_detail/' . $data['id_encode']);
+        }
+        $prices = $this->Post_room_model->get_row($input);
+        $data['name_room'] = $prices->post_room_name;
+        $tmp = json_decode($prices->image_list);
+        if (is_array($tmp))
+            $data['image_room'] = $tmp[0];
+        //giá 1 đêm
+        $tax = $this->config->item('tax') ? array('vat' => 10) : array();
+        $priceCaculator = $this->book_library->getMoney(array('checkin' => $data['checkin']->format('Y-m-d'), 'checkout' => $data['checkout']->format('Y-m-d')), $guests, $prices, -1, $tax);
+        $data['prices'] = $this->load->view('site/room/caculatorPrices', array('price' => $priceCaculator), true);
+        $input = array();
+        $input = array(
+            'where' => array(
+                'user_id' => $user_id,
+            )
+        );
+        $data['user'] = $this->User_model->get_row($input);
+        $data['meta_title'] = 'order room';
+        $data['temp'] = ('site/room/order');
+        $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 
     function validate_room($id = '') {
@@ -289,7 +290,8 @@ class Room extends MY_Controller {
 
         $data = array();
         $data['encode'] = $this->config->item('encode_id');
-        $data['per_page'] = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;;
+        $data['per_page'] = $this->config->item('item_per_page_site') ? $this->config->item('item_per_page_site') : 10;
+        ;
         $data['sort_by'] = 'popular';
 
         /* Step 1. Get Parameters */
@@ -297,7 +299,7 @@ class Room extends MY_Controller {
         $filters = array();
 
         if (!empty($_GET)) {
-            $params = onlyCharacter(securityServer(vn_str_filter( $_GET)));
+            $params = onlyCharacter(securityServer(vn_str_filter($_GET)));
             foreach ($params as $key => $value) {
                 $data[$key] = $value;
                 if ($key != 'page') {
@@ -314,7 +316,8 @@ class Room extends MY_Controller {
                 $data['experiences_ids'] = explode(',', $data['experiences_ids']);
             }
             if (!isset($data['per_page'])) {
-                $data['per_page'] = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;;
+                $data['per_page'] = $this->config->item('item_per_page_site') ? $this->config->item('item_per_page_site') : 10;
+                ;
             }
         }
 
@@ -348,9 +351,9 @@ class Room extends MY_Controller {
         $this->db->select('SQL_CALC_FOUND_ROWS null as rows', false);
         $this->db->select('post_room.*,house_type.house_type_name,house_type.house_type_id,address.address_detail,room_type.room_type_name');
         $this->db->from('post_room');
-        $this->db->where('post_room.status',1);
+        $this->db->where('post_room.status', 1);
         $this->db->join('address', 'address.address_id = post_room.address_id');
-        $this->db->join('area', 'area.area_id = address.area_id','left');
+        $this->db->join('area', 'area.area_id = address.area_id', 'left');
         $this->db->join('room_type', 'room_type.room_type_id = post_room.room_type');
         $this->db->join('house_type', 'house_type.house_type_id = post_room.house_type');
         $this->db->join('user c', 'post_room.user_id = c.user_id', 'left');
@@ -370,14 +373,14 @@ class Room extends MY_Controller {
                     $location_parts[$index] = str_replace(' ', '', $location_parts[$index]);
                 }
                 if (count($location_parts) >= 3) {
-                    $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[$number-3] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[$number-3] . '%\'  OR ' . 'replace(address_detail_ascii, " ", "") LIKE \'%' . $location_parts[$number-3] . '%\')');
-                    $this->db->where('(replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[$number-2] . '%\')');
-                    $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[$number-1] . '%\')');
+                    $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[$number - 3] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[$number - 3] . '%\'  OR ' . 'replace(address_detail_ascii, " ", "") LIKE \'%' . $location_parts[$number - 3] . '%\')');
+                    $this->db->where('(replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[$number - 2] . '%\')');
+                    $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[$number - 1] . '%\')');
                 } elseif (count($location_parts) == 2) {
                     $this->db->where('(replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\')');
                     $this->db->where('(replace(country_ascii, " ","") LIKE \'%' . $location_parts[1] . '%\')');
                 } else {
-                    $this->db->where('(replace(tbl_area.name, " ", "") like \'%'.$location_parts[0].'%\' or replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(country_ascii, " ","") LIKE \'%' . $location_parts[0] . '%\')');
+                    $this->db->where('(replace(tbl_area.name, " ", "") like \'%' . $location_parts[0] . '%\' or replace(address_street_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(district_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\'  OR ' . 'replace(provincial_ascii, " ", "") LIKE \'%' . $location_parts[0] . '%\' OR ' . 'replace(country_ascii, " ","") LIKE \'%' . $location_parts[0] . '%\')');
                 }
             }
 
@@ -512,13 +515,13 @@ class Room extends MY_Controller {
             }
         }
 
-        $page = securityServer($this->input->get('page'))?intval(securityServer($this->input->get('page'))):1;
-        if ($page>1) {
+        $page = securityServer($this->input->get('page')) ? intval(securityServer($this->input->get('page'))) : 1;
+        if ($page > 1) {
             $segment = $page;
         } else {
             $segment = 1;
         }
-        $item_per_page = $this->config->item('item_per_page_site')?$this->config->item('item_per_page_site'):10;
+        $item_per_page = $this->config->item('item_per_page_site') ? $this->config->item('item_per_page_site') : 10;
         $segment = (int) $segment;
         $start = ($segment - 1) * $item_per_page;
         $this->db->group_by('post_room.post_room_id');
