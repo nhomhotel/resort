@@ -1,8 +1,7 @@
 <style>
-    .selector{
-        z-index: 1000;
-    }
-    
+.selector{
+    z-index: 1000;
+}
 </style>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
@@ -141,10 +140,6 @@
                 if (typeof itemActive != 'undefined') {
                     if (tags.val() != '') {
                         var elemt = tags.val().split(',');
-                        console.log(elemt)
-                        console.log(itemActive.data('value'));
-                        console.log(elemt.indexOf(itemActive.data('value')));
-                        //return;
                         var position = elemt.indexOf(itemActive.data('value').toString());
                         if (position > -1) {
                             elemt.splice(position, 1);
