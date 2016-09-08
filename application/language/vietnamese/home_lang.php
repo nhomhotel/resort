@@ -40,3 +40,4 @@ $lang['home_contact'] = 'Liên hệ';
 $lang['home_news'] = 'Báo chí';
 $lang['home_help'] = 'Trợ giúp';
 
+

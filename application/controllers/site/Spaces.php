@@ -27,8 +27,8 @@ class Spaces extends MY_Controller {
         }
         $checkin = $this->input->post('checkin') ? $this->input->post('checkin') : '';
         $checkout = $this->input->post('checkout') ? $this->input->post('checkout') : '';
-        $guests = $this->input->post('guests') ? (int) $this->input->post('guests') : '';
-        if ($checkin == '' || $checkout == '' || $guests == '' || !is_int($guests)) {
+        $guests = $this->input->post('guests') ? intval($this->input->post('guests')) : 1;
+        if ($checkin == '' || $checkout == '' || $guests <1 ) {
             $data['href'] = base_url();
             echo json_encode($data);
             exit;
@@ -49,11 +49,11 @@ class Spaces extends MY_Controller {
                 date('Y', strtotime(str_replace('/', '-', $checkout))), date('m', strtotime(str_replace('/', '-', $checkout))), date('d', strtotime(str_replace('/', '-', $checkout)))
         );
         if ($data['checkin'] > $data['checkout']) {
-            echo json_encode(array('error'=>'Ngày trả phòng phải lớn hơn ngày nhận phòng'));
+            echo json_encode(array('error'=>lang('home_checkout').' '.lang('_bigger').' '.lang('home_checkin')));
             exit;
         }
         if ($data['checkin'] < $dateNow || $data['checkout'] < $dateNow) {
-            echo json_encode(array('error'=>'Ngày nhập phải tính từ thời điểm hiện tại trở đi'));
+            echo json_encode(array('error'=>lang('day_bigger_now')));
             exit();
         }
         if($this->order_room_model->check_exists_room($decode_id[0],$data['checkin'],$data['checkout'])){

@@ -10,14 +10,14 @@
         <div id="system-snippets-add_attachment">Add Another Attachment</div>
     </div>
     <div id="breadcrumbs">
-        <a href="/">Home</a> › Email us
+        <a href="/"><?php echo lang('comm_home')?></a> › <?php echo lang('contact_email')?>
     </div>
-    <div id="support-main">
-        <div class="support-body">
+    <div id="contact-main">
+        <div class="contact-body">
             <div class="content">
                 <h3>Email us</h3>
                 <div id="form">
-                    <form action="<?php echo base_url() ?>customer/portal/emails/pre_create" enctype="multipart/form-data" class="new_email" id="new_email" method="post" novalidate="novalidate">
+                    <form enctype="multipart/form-data" class="new_email" id="new_email" method="post" novalidate="novalidate">
                         <input id="authenticity_token" name="authenticity_token" type="hidden" value="9LTY7B2i2D9XKHygn/3rJpRuraEf3BPkCkU5ha8UHxI=">
                         <div class="input-block form-group">
                             <div class="form-label">Your name <span>(required)</span></div>
@@ -84,6 +84,14 @@
                                     <input disabled="disabled" type="text">
                                 </div>
                                 <input value="Choose File" type="button">
+                            </div><a href="javascript::void(0)" id="add_attachment" class="add_attachment" style="display:none;">Add Another Attachment</a>
+                        </div>
+                        <div class="input-block">
+                            <span class="label">
+                                File Attachment
+                            </span>
+                            <div class="desk_file_upload">
+                                <?php echo !empty($captcha)?$captcha:''?>
                             </div><a href="javascript::void(0)" id="add_attachment" class="add_attachment" style="display:none;">Add Another Attachment</a>
                         </div>
                         <div>

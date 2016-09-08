@@ -27,10 +27,13 @@ var id='<?php echo $id_encode;?>';
                 <?php endif;?>
                 <div id="book-left" class="col-sm-8 col-xs-12">
                     <div class="tit-room">
+                        <?php if(!empty($info)):?>
                         <h1><?php echo (isset($info))? $info->post_room_name : '';?></h1>
                         <p>
-                            <?php echo (isset($info))? $info->house_type_name.' - '.$info->room_type_name.' - '.$info->address_detail : '';?>
+                            <?php echo (empty($language) || $language === 'vietnamese') ? $info->house_type_name.' - '.$info->room_type_name.' - '.$info->address_detail : $info->house_type_name_en.' - '.$info->room_type_name_en.' - '.$info->address_detail;
+//                            echo (isset($info))? $info->house_type_name.' - '.$info->room_type_name.' - '.$info->address_detail : '';?>
                         </p>
+                        <?php endif;?>
                     </div>
                     <div class ="slider-img">
                         <div class="fotorama" data-nav="thumbs" data-allowfullscreen="native">
@@ -49,36 +52,36 @@ var id='<?php echo $id_encode;?>';
                             <ul class="wrap-fea clearfix">
                                 <li class="inline fea-item" >
                                     <span style = "background:url(<?php echo base_url(); ?>public/site/images/icon/feature-type-apartment.svg) no-repeat 50% 50%;"></span>
-                                    <?php echo (isset($info))? $info->house_type_name :'';?>
+                                    <?php echo (!empty($info)&&(empty($language) || $language === 'vietnamese')) ? $info->house_type_name : $info->house_type_name_en;?>
                                 </li>
                                 <li class="inline fea-item" >
                                     <span style = "background:url(<?php echo base_url(); ?>public/site/images/icon/feature-room-entire_home.svg) no-repeat 50% 50%;"></span>
-                                    <?php echo (isset($info))? $info->room_type_name :'';?>
+                                    <?php echo (!empty($info)&&(empty($language) || $language === 'vietnamese')) ? $info->room_type_name : $info->room_type_name_en;?>
                                 </li>
                                 <li class="inline fea-item" >
                                     <span style = "background:url(<?php echo base_url(); ?>public/site/images/icon/feature-guests.png) no-repeat 50% 50%;"></span>
-                                    <?php echo (isset($info))? $info->num_guest :'';?> Người
+                                    <?php echo (isset($info))? $info->num_guest :'';?> <?php echo lang('home_guest');?>
                                 </li>
                                 <li class="inline fea-item" >
                                     <span style = "background:url(<?php echo base_url(); ?>public/site/images/icon/feature-bedroom.png) no-repeat 50% 50%;"></span>
-                                    <?php echo (isset($info))? $info->num_bedroom :'';?> Phòng ngủ
+                                    <?php echo (isset($info))? $info->num_bedroom :'';?> <?php echo lang('room_bed_room');?>
                                 </li>
                                 <li class="inline fea-item" >
                                     <span style = "background:url(<?php echo base_url(); ?>public/site/images/icon/feature-bed.png) no-repeat 50% 50%;"></span>
-                                    <?php echo (isset($info))? $info->num_bed :''; ?> Giường
+                                    <?php echo (isset($info))? $info->num_bed :''; ?> <?php echo lang('room_bed');?>
                                 </li>
                                 <li class="inline fea-item" >
                                     <span style = "background:url(<?php echo base_url(); ?>public/site/images/icon/feature-bathroom.png) no-repeat 50% 50%;"></span>
-                                    <?php echo (isset($info))? $info->num_bathroom :'';?> Phòng tắm
+                                    <?php echo (isset($info))? $info->num_bathroom :'';?> <?php echo lang('room_bath_room');?>
                                 </li>
                             </ul>
                         </div>
                         <div class="item-room description">
-                                <h2>Mô tả</h2>
+                                <h2><?php echo lang('room_description')?></h2>
                                 <p><?php echo (isset($info))? $info->description : '' ;?></p>
                         </div>
                         <div class="item-room amenities">
-                                <h2>Tiện nghi</h2>
+                                <h2><?php echo lang('room_amenitie')?></h2>
                                 <ul class="clearfix">
                                 <?php
                                     $str_amenities = (isset($info))? $info->amenities: '';
@@ -87,7 +90,7 @@ var id='<?php echo $id_encode;?>';
                                         foreach ($arr_amenities as $amenitie) {
                                             foreach ($list_amenities as $value) {
                                                 if($amenitie == $value->amenities_id){?>
-                                                    <li><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo $value->name?></li>
+                                                    <li><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo (empty($language) || $language === 'vietnamese') ? $value->name : $value->name_en; ?></li>
                                                     <?php
                                                 }
                                             }
@@ -96,43 +99,43 @@ var id='<?php echo $id_encode;?>';
                                 </ul>
                         </div>
                         <div class="item-room price">
-                            <h2>Giá phòng</h2>
+                            <h2><?php echo lang('room_price')?></h2>
                             <div class="tb-price">
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr>
-                                            <th>Phí dọn dẹp</th>
-                                            <td><?php echo (isset($info) && $info->clearning_fee_vn) ? $info->clearning_fee_vn : 'Không có phí'?></td>
+                                            <th><?php echo lang('room_clearning_fee')?></th>
+                                            <td><?php echo (isset($info) && $info->clearning_fee_vn) ? $info->clearning_fee_vn : lang('room_no_fee')?></td>
                                         </tr>
                                         <tr>
-                                            <th>Phí cho mỗi khách thêm</th>
-                                            <td><?php echo (isset($info) && $info->price_guest_more_vn) ? $info->price_guest_more_vn : 'Không có phí'?></td>
+                                            <th><?php echo lang('room_price_guest_more')?></th>
+                                            <td><?php echo (isset($info) && $info->price_guest_more_vn) ? $info->price_guest_more_vn : lang('room_no_fee')?></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="item-room location">
-                                <h2>Địa điểm</h2>
+                                <h2><?php echo lang('room_location')?></h2>
                                 <div class="map-wrap" id="map-wrap">
                                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59587.962998060575!2d105.80194398283935!3d21.02277318570672!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab9bd9861ca1%3A0xe7887f7b72ca17a9!2zSGFub2ksIEhvw6BuIEtp4bq_bSwgSGFub2ksIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1461318424156" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
                                 </div>
                         </div>
                         <div class="item-room house-rules">
-                                <h2>Quy định</h2>
+                                <h2><?php echo lang('room_regulation')?></h2>
                                 <p>Xin vui lòng: <br>* được trách nhiệm và ân cần <br>* tắt đèn và tất cả các thiết bị điện / ghi khi bạn đang không ở trong nhà. Nó giúp để ngăn chặn quá nóng và tiết kiệm môi trường.
                                 <br>* Giữ giày / dép và tất cả các đồ đạc khác bên trong căn hộ.
                                 <br>* Không có thuốc trong căn hộ hay tòa nhà (hút thuốc trên ban công được phép) </p>
                         </div>
                         <div class="item-room other-detail">
-                            <h2>Chi tiết khác</h2>
+                            <h2><?php echo lang('room_other_detail')?></h2>
                             <div class="tb-detail table-responsive">
                                 <table class="table table-striped">
                                     <tbody>
-                                        <tr><th>Nhận phòng</th><td>...</td></tr>
-                                        <tr><th>Trả phòng</th><td>...</td></tr>
-                                        <tr><th>Diện tích</th><td><?php echo (isset($info))? $info->acreage : '';?> m<sup>2</sup></td></tr>
-                                        <tr><th>Số khách tối đa</th><td><?php echo (isset($info))? $info->num_guest : '';?> khách</td></tr>
+                                        <tr><th><?php echo lang('home_checkin')?></th><td>...</td></tr>
+                                        <tr><th><?php echo lang('home_checkout')?></th><td>...</td></tr>
+                                        <tr><th><?php echo lang('room_acreage')?></th><td><?php echo (isset($info))? $info->acreage : '';?> m<sup>2</sup></td></tr>
+                                        <tr><th><?php echo lang('room_max_guest')?></th><td><?php echo (isset($info))? $info->num_guest : '';?><?php echo lang('home_guest')?></td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -148,7 +151,7 @@ var id='<?php echo $id_encode;?>';
                                                         <!-- <span class="pr-old">500.000</span> -->
                                                 </p>
                                                 <p class="currency">VND</p>
-                                                <p class="price-method">Giá trung bình theo đêm</p>
+                                                <p class="price-method"><?php echo lang('room_average_price_of_night')?></p>
                                         </div>
                                 </div>
                                 <div class="dates-guests">
@@ -162,15 +165,15 @@ var id='<?php echo $id_encode;?>';
                                     <div class="dates-guests">
                                         <form  id="frm-book" class="clearfix" method="POST" action="<?php echo base_url().'payments/book/'.$id_encode?>">
                                                 <div class="form-group w30 pull-left book-wrap">
-                                                    <label for="">Nhận phòng</label>
+                                                    <label for=""><?php echo lang('home_checkin')?></label>
                                                     <input type="text" class="form-control bookin" id ="bookin-dpk" value="<?php echo isset($checkin)?$checkin:'';?>" placeholder="dd/mm/yyyy">
                                                 </div>
                                                 <div class="form-group w30 pull-left book-wrap middle">
-                                                    <label for="">Trả phòng</label>
+                                                    <label for=""><?php echo lang('home_checkout')?></label>
                                                     <input type="text" class="form-control bookout" id ="bookout-dpk" value="<?php echo isset($checkout)?$checkout:'';?>" placeholder="dd/mm/yyyy">
                                                 </div>
                                                 <div class="form-group w30 pull-left book-wrap">
-                                                    <label for="">Khách</label>
+                                                    <label for=""><?php echo lang('home_guest')?></label>
                                                     <select name="" id="guests" class="form-control">
                                                         <?php for($i=1;$i<10;$i++){?>
                                                             <option <?php echo isset($guests)&&$guests==$i?'selected':'';?> ><?php echo $i?></option>
@@ -184,9 +187,9 @@ var id='<?php echo $id_encode;?>';
                                     </div>
                                     <div class="book-action">
                                         <button  class="btn btn-success order_room_btn tclick" data-toggle="modal" data-target="#myModal">
-                                            <span class="glyphicon glyphicon-time"></span> Đặt phòng
+                                            <span class="glyphicon glyphicon-time"></span> <?php echo lang('room_book')?>
                                         </button>
-                                        <?php if(!empty($user))$user_id=$user['user_id'];if(!$user_id){?>
+                                        <?php if(empty($user)):?>
                                             <div class="modal fade" id="myModal" role="dialog">
                                                 <form method="post" name="form-save-info" id="form-save-info">
                                                     <div class="modal-dialog">
@@ -194,26 +197,26 @@ var id='<?php echo $id_encode;?>';
                                                       <div class="modal-content">
                                                         <div class="modal-header">
                                                           <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                          <h4 class="modal-title">Thông tin đặt phòng</h4>
+                                                          <h4 class="modal-title"><?php echo lang('room_info_book')?></h4>
                                                           <p class="error_submit"></p>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
-                                                                      <label for="input_name_customer" class="control-label ">Tên khách hàng</label>
+                                                                      <label for="input_name_customer" class="control-label "><?php echo lang('comm_name_customer')?></label>
                                                                       <div class="input-field">
                                                                           <input type="text" class="form-control " name = "name_customer" id="name_customer" required/>
                                                                       </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                      <label for="input_phone_number" class="control-label ">Số điện thoại</label>
+                                                                      <label for="input_phone_number" class="control-label "><?php echo lang('comm_phone')?></label>
                                                                       <div class="input-field">
                                                                           <input type="text" class="form-control" name="phone_number" id="phone_number"/>
                                                                       </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="input_email" class="control-label ">Địa chỉ email</label>
+                                                                        <label for="input_email" class="control-label ">Email</label>
                                                                         <div class="input-field">
                                                                             <input type="email" class="form-control" name="email" id="email"/>
                                                                         </div>
@@ -222,14 +225,14 @@ var id='<?php echo $id_encode;?>';
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" data-dismiss="modal" class="btn btn-default">Đóng</button>
-                                                            <button type="submit" class="btn btn-primary" id="save_info_customer">Lưu thông tin</button>
+                                                            <button type="button" data-dismiss="modal" class="btn btn-default"><?php echo lang('comm_close')?></button>
+                                                            <button type="submit" class="btn btn-primary" id="save_info_customer"><?php echo lang('comm_save_info')?></button>
                                                         </div>
                                                       </div>
                                                     </div>
                                                 </form>
                                               </div>
-                                        <?php }?>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                         </div>
@@ -355,7 +358,7 @@ $(document).ready(function(){
             var checkin = $('#bookin-dpk');
             var checkout = $('#bookout-dpk');
             var guest = $('#guests');
-            <?php if(!empty($user))$user_id=$user['user_id'];if(!$user_id){?>
+            <?php if(empty($user)){?>
 //            $('#myModal').modal('show');
             return false;
             <?php }?>

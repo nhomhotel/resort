@@ -133,6 +133,7 @@ class Room extends MY_Controller {
      */
 
     function room_detail($id) {
+        $data['language'] = getLanguage();
         $this->load->model('Order_room_model');
         $this->load->library('book_library');
         if ($id == null) {
@@ -205,9 +206,7 @@ class Room extends MY_Controller {
 
     function order_room($id = '') {
         $user_id = $this->session->userdata('userLoginSite');
-        if (!empty($user_id))
-            $user_id = $user_id['user_id'];
-        if (!isset($user_id) || $user_id == '') {
+        if (empty($user_id)){
             redirect(base_url());
         }
         if ($id == '') {
@@ -258,7 +257,7 @@ class Room extends MY_Controller {
         $input = array();
         $input = array(
             'where' => array(
-                'user_id' => $user_id,
+                'user_id' => $user_id['user_id'],
             )
         );
         $data['user'] = $this->User_model->get_row($input);

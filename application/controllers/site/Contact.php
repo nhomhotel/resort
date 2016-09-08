@@ -6,45 +6,32 @@ class Contact extends MY_Controller {
 
     function __construct() {
         parent:: __construct();
-        $current_language = $this->session->userdata('language');
-        if (empty($current_language)) {
-            $current_language = 'vietnamese';
-        }
     }
 
-    public function index($id = -1) {
-        $id = intval(securityServer($id));
-        $data = array();
-        if ($id > 0) {
-            $info = $this->db->from('contact')
-                    ->order_by('update', 'DESC')
-                    ->where('news_id', $id)
-                    ->get()
-                    ->row();
-
-            if (!empty($info)) {
-                $data['info'] = $info;
-                $data['release'] = $this->db->from('news')
-                        ->where('news_category_id', $info->news_category_id)
-                        ->order_by('update', 'DESC')
-                        ->get()
-                        ->result();
+    public function index() {
+        $this->load->library('Recaptcha');
+        if($this->input->post('commit')){
+            $this->recaptcha->recaptcha_check_answer(
+                $_SERVER['REMOTE_ADDR'],  
+                $this->input->post('recaptcha_challenge_field'), 
+                $this->input->post('recaptcha_response_field')
+            );
+            if ($this->recaptcha->getIsValid()) {
+                pre('success');
+            } 
+            else {
+                if(!$this->recaptcha->getIsValid()) {
+                    $this->session->set_flashdata('error','incorrect captcha');
+                    var_dump('incorrect captcha');
+                } else {
+                    var_dump('incorrect credentials');
+                    $this->session->set_flashdata('error','incorrect credentials');
+                }
             }
-        } else {
-            // get about from new category have new category_id=1
-            $info = $this->db->from('news')
-                    ->where('news_category_id', '1')->where('news.status', '1')
-                    ->order_by('update', 'DESC')
-                    ->get()
-                    ->result();
-            if (!empty($info))
-                $data['info'] = $info;
+            exit;
         }
-        $newsCategory = $this->db->from('news_category')
-                        ->get()->result();
-        if (!empty($newsCategory))
-            $data['newsCategory'] = $newsCategory;
         $data['temp'] = 'site/contact/index';
+        $data['captcha'] = $this->recaptcha->recaptcha_get_html();
         $this->load->view('site/layout', isset($data) ? ($data) : null);
     }
 

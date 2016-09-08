@@ -149,18 +149,22 @@ $(document).ready(function() {
                 }
                 $.ajax({
                     type : 'POST',
-                url  : baseurl+'/spaces/prices/'+id,
-                data : {checkin:checkin.val(),checkout:checkout.val(),guests:guest.val()},
-                success :  function(data){
-                    if((typeof data.error)!= 'undefined'){
+                    url  : baseurl+'spaces/prices/'+id,
+                    data : {checkin:checkin.val(),checkout:checkout.val(),guests:guest.val()},
+                    success :  function(data){
+                        if((typeof data.error)!== 'undefined'){
                             $('.fees').html(data.error);
                             $('.prices').html('');
-                        }else if((typeof data.prices)!= 'undefined'){
+                        }
+                        else if((typeof data.prices)!== 'undefined'){
                             window.location.href = baseurl + 'room/order_room/' + id + '?checkin=' + checkin.val() + "&checkout=" + checkout.val() + "&guests=" + guest.val();
                             return true;
-                        }                    
-                },
-                dataType:'json',
+                        }              
+                    },
+                    dataType:'json',
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(1234);
+                    }
                 })
             } else {
                 var bathrooms = $('#bathrooms');

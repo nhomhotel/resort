@@ -34,27 +34,36 @@ ul[class^="ui-autocomplete"] {
     <div class="container">
         <div class="row">
             <div class="block">
+                <?php if(!empty($manageText)):?>
+                <?php $index = -1;?>
                 <div class="col-sm-4 col-xs-12 item-news">
-                    <h3><?php echo lang('home_search_and_discovery') ?></h3>
-                    <p><?php echo lang('home_find_suitable_budget_style') ?></p>
+                    <?php $index++;if(!empty($manageText[$index])):?>
+                    <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                    <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
                     <div class="img-item">
                         <img src="<?php echo base_url(); ?>public/site/images/img-news1.png" class="img-responsive wow pulse" data-wow-duration = "1000ms" data-wow-delay = "600ms">
                     </div>
+                    <?php endif;?>
                 </div>
                 <div class="col-sm-4 col-xs-12 item-news">
-                    <h3><?php echo lang('home_contact_and_booking') ?></h3>
-                    <p><?php echo lang('home_contact_homeowners_travel_confirmation_booking') ?></p>
+                    <?php $index++;if(!empty($manageText[$index])): ?>
+                    <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                    <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
                     <div class="img-item">
                         <img src="<?php echo base_url(); ?>public/site/images/img-news2.png" class="img-responsive wow bounce" data-wow-duration = "600ms" data-wow-delay = "1200ms">
                     </div>
+                    <?php endif;?>
                 </div>
                 <div class="col-sm-4 col-xs-12 item-news">
-                    <h3><?php echo lang('home_travel_and_enjoy') ?></h3>
-                    <p><?php echo lang('home_live_local_any_place_world') ?></p>
+                    <?php $index++;if(!empty($manageText[$index])): ?>
+                    <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                    <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
                     <div class="img-item">
                         <img src="<?php echo base_url(); ?>public/site/images/img-news3.png" class="img-responsive wow swing" data-wow-duration = "600ms" data-wow-delay = "1800ms">
                     </div>
+                    <?php endif;?>
                 </div>
+                <?php endif;?>
             </div>
         </div>
     </div>
@@ -72,48 +81,62 @@ ul[class^="ui-autocomplete"] {
 <section id="tinh-nang">
     <div class="container">
         <div class="row">
+            <?php if(!empty($manageText)):?>
             <div class="col-md-4 col-xs-12 tinh-nang-item">
+                <?php $index++;if(!empty($manageText[$index])): ?>
                 <div class="icon-item">
                     <span class="glyphicon glyphicon-usd wow zoomIn" data-wow-duration = "400ms" data-wow-delay = "500ms"></span>
                 </div>
-                <h3><?php echo lang('home_facilities_save_more') ?></h3>
-                <p><?php echo lang('home_stay_home_instead_of_local') ?></p>
+                <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
+                <?php endif;?>
             </div>
             <div class="col-md-4 col-xs-12 tinh-nang-item">
+                <?php $index++;if(!empty($manageText[$index])): ?>
                 <div class="icon-item">
                     <span class="glyphicon glyphicon-resize-full wow zoomIn" data-wow-duration = "400ms" data-wow-delay = "700ms"></span>
                 </div>
-                <h3><?php echo lang('home_enjoy_more_space') ?></h3>
-                <p><?php echo lang('home_cost_of_hotel_room_info') ?></p>
+                <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
+                <?php endif;?>
             </div>
             <div class="col-md-4 col-xs-12 tinh-nang-item">
+                <?php $index++;if(!empty($manageText[$index])): ?>
                 <div class="icon-item">
                     <span class="glyphicon glyphicon-check wow zoomIn" data-wow-duration = "400ms" data-wow-delay = "900ms"></span>
                 </div>
-                <h3><?php echo lang('home_experience_as_native_speaker') ?></h3>
-                <p><?php echo lang('home_experience_life_with_trip') ?></p>
+                <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
+                <?php endif;?>
             </div>
             <div class="col-md-4 col-xs-12 tinh-nang-item">
+                <?php $index++;if(!empty($manageText[$index])): ?>
                 <div class="icon-item">
                     <span class="glyphicon glyphicon-lock wow zoomIn" data-wow-duration = "400ms" data-wow-delay = "1100ms"></span>
                 </div>
-                <h3><?php echo lang('home_absolute_safety') ?></h3>
-                <p><?php echo lang('home_system_secure_online_payment_info') ?></p>
+                <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
+                <?php endif;?>
             </div>
             <div class="col-md-4 col-xs-12 tinh-nang-item">
+                <?php $index++;if(!empty($manageText[$index])): ?>
                 <div class="icon-item">
                     <span class="glyphicon glyphicon-home wow zoomIn" data-wow-duration = "400ms" data-wow-delay = "1300ms"></span>
                 </div>
-                <h3><?php echo lang('home_like_home') ?></h3>
-                <p><?php echo lang('home_comfortable_living') ?></p>
+                <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
+                <?php endif;?>
             </div>
             <div class="col-md-4 col-xs-12 tinh-nang-item">
+                <?php $index++;if(!empty($manageText[$index])): ?>
                 <div class="icon-item">
                     <span class="glyphicon glyphicon-list-alt wow zoomIn" data-wow-duration = "400ms" data-wow-delay = "1500ms"></span>
                 </div>
-                <h3><?php echo lang('home_many_choose') ?></h3>
-                <p><?php echo lang('home_list_room') ?></p>
+                <h3><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->title:$manageText[$index]->title_en;?></h3>
+                <p><?php echo (empty($language)||$language==='vietnamese')?$manageText[$index]->content:$manageText[$index]->content_en;?></p>
+                <?php endif;?>
             </div>
+            <?php endif;?>
         </div>
     </div>
 </section>
@@ -177,4 +200,5 @@ $(document).ready(function(){
             }
         }
     });
-})</script>
+})
+</script>

@@ -38,7 +38,7 @@ class Post_room_model extends MY_Model {
 
     function getInfoDetail($id, $input = array()) {
 
-        $this->db->select('post_room.*,b.address_detail,b.lat,b.lng,c.last_name,c.first_name,c.user_name,c.created as user_created, d.house_type_name, e.room_type_name');
+        $this->db->select('post_room.*,b.address_detail,b.lat,b.lng,c.last_name,c.first_name,c.user_name,c.created as user_created, d.house_type_name, d.house_type_name_en, e.room_type_name, e.room_type_name_en');
         $this->db->from($this->table);
         $this->get_list_set_input($input);
         $this->db->join('address b', 'post_room.address_id = b.address_id');

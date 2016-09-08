@@ -11,12 +11,12 @@ class Home extends MY_Controller {
     }
 
     public function index() {
+        $data['language'] = getLanguage();
         $this->load->model('Amenities_model');
         $this->load->model('area_model');
         $this->load->model('Home_Slider_model');
         $this->load->model('Intro_Slider_model');
         $data['meta_title'] = $this->config->item('name_website');
-        $data['temp'] = ('site/home/index');
         $data['sliders'] = $this->area_model->get_list(array(
             'where' => array('sort>' => 0),
             'limit' => array('9' => '0'),
@@ -31,6 +31,9 @@ class Home extends MY_Controller {
         $data['popular'] = $this->load->view('site/slidePopular', $data, TRUE);
         $data['home_slider_image'] = $this->load->view('site/homeSliderImage', $data, TRUE);
         $data['intro_slider_image'] = $this->load->view('site/introSliderImage', $data, TRUE);
+        $data['manageText'] = $this->db->from('manager_text')
+                ->get()->result();
+        $data['temp'] = ('site/home/index');
         $this->load->view('site/layout_index', isset($data) ? ($data) : null);
     }
 
