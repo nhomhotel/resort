@@ -23,10 +23,12 @@
                                 <div class="input-block form-group">
                                     <div class="form-label"><?php echo lang('contact_your_name') ?> <span>(<?php echo lang('contact_required') ?>)</span></div>
                                     <input class="form-control" value="" id="interaction_name" maxlength="100" name="user_name" type="text">
+                                    <div name="name_error" class="clear error"><?php echo form_error('user_name')?></div>
                                 </div>
                                 <div class="input-block form-group">
                                     <div class="form-label"><?php echo lang('contact_email') ?> <span>(<?php echo lang('contact_required') ?>)</span></div>
                                     <input class="form-control" value="" id="interaction_name" maxlength="100" name="user_email" type="email">
+                                    <div name="name_error" class="clear error"><?php echo form_error('user_email')?></div>
                                 </div>          
                                 <div class="input-block">
                                     <div class="form-label">
@@ -34,6 +36,7 @@
                                     </div>
                                     <div>
                                         <input class="form-control" id="email_subject" maxlength="100" name="user_subject" type="text" value="">
+                                        <div name="name_error" class="clear error"><?php echo form_error('user_subject')?></div>
                                     </div>
                                 </div>
                                 <div class="input-block">
@@ -42,6 +45,7 @@
                                     </div>
                                     <div>
                                         <textarea class="form-control" id="email_body" name="user_body"></textarea>
+                                        <div name="name_error" class="clear error"><?php echo form_error('user_body')?></div>
                                     </div>
                                 </div>
                                 <div class="input-block">
@@ -54,9 +58,11 @@
                                             <input disabled="disabled" type="text">
                                         </div>
                                     </div>
+                                    <div name="name_error" class="clear error"><?php echo !empty($error_image)?$error_image:''?></div>
                                 </div>
                                 <div class="input-block">
                                     <?php echo!empty($captcha) ? $captcha : ''; ?>
+                                    <div name="name_error" class="clear error"><?php echo !empty($captcha_error)?$captcha_error:''?></div>
                                 </div>
                                 <div>
                                     <div class="input-button" style="margin-top: 12px;">

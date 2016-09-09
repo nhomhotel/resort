@@ -346,20 +346,19 @@ if (!function_exists('convertUrl')) {
 if (!function_exists('checkUploadImage')) {
 
     function checkUploadImage($file_name) {
-        $return = '';
-        
-        if($_FILES["imagefile"]["size"] > 4194304) {
+        $data = array();
+        if($_FILES[$file_name]["size"] > 4194304) {
             @unlink($_FILES[$file_name]['tmp_name']);
-            $return = lang('contact_image_over_size');
+            $data['error'] = lang('contact_image_over_size');
         } 
         else {
             $imageData = @getimagesize($_FILES[$file_name]["tmp_name"]);
             if($imageData === FALSE || !($imageData[2] == IMAGETYPE_GIF || $imageData[2] == IMAGETYPE_JPEG || $imageData[2] == IMAGETYPE_PNG)) {
                 @unlink($_FILES[$file_name]['tmp_name']);
-                $return = lang('contact_image_type');
+                $data['error'] = lang('contact_image_type');
             }
         }
-        return ($return);
+        return $data;
     }
 
 }
