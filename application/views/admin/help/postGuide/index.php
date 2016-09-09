@@ -78,16 +78,16 @@
                             </td>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
-                                <?php echo $row->title; ?>
+                                <?php echo shortNews($row->title,100); ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->title_en; ?>
+                                <?php echo shortNews($row->title_en,100); ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->content; ?>
+                                <?php echo shortNews($row->content,100); ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->content_en; ?>
+                                <?php echo shortNews($row->content_en,100); ?>
                             </td>
                             <td class="textC">
                                 <?php echo getStatus($row, $row->post_guide_id); ?>

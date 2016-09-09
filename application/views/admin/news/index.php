@@ -75,14 +75,13 @@
                             </td>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
-                                <?php echo $row->title; ?>
+                                <?php echo shortNews($row->title,100); ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->content; ?>
+                                <?php echo shortNews($row->content); ?>
                             </td>
                             <td class="textC">
                                 <?php
-                                
                                 echo getStatus($row, $row->news_id);
                                 ?>
                             </td>

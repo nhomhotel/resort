@@ -270,13 +270,18 @@ function getStringNumber($amount) {
 
 if (!function_exists('isTokent')) {
 
-    function isTokent($str) {
+    function isTokent($str,$type="login") {
         $CI = & get_instance();
-        if (strlen($str))
-            ;
-        $str = preg_replace('/[^a-zA-Z0-9 \/\-,]/', ' ', $str);
-        $str = preg_replace('/[ ]{2,}/', ' ', $str);
-        return ($str);
+        if (empty($str))
+            return false;;
+        $dec = unserialize($CI->my_ciphers_library->decryption($str));
+        if(!is_array($dec))
+            return false;
+        if($type==='login'){
+//            if(empty($dec['dateTime'])||empty($dec['IpAddress'])||  getIpAddressClient()!==$dec['IpAddress']||$dec['dateTime']!==date('Y-m-d',  $dec['dateTime']))
+//                return false;
+        }
+        return $dec;
     }
 
 }
@@ -304,7 +309,8 @@ if (!function_exists('shortNews')) {
         $CI = & get_instance();
         $return = '';
         if(!empty($content)){
-            if(strlen($content)>250)$return=  '“'.substr ($content, 0,250).'“';
+            if(!empty($length))$return=  '“'.substr ($content, 0,$length).'“';
+            elseif(strlen($content)>250)$return=  '“'.substr ($content, 0,250).'“';
             else $return = '“'.$content.'“';
         }
         return ($return);
@@ -359,6 +365,24 @@ if (!function_exists('checkUploadImage')) {
             }
         }
         return $data;
+    }
+
+}
+
+if (!function_exists('getIpAddressClient')) {
+
+    function getIpAddressClient() {
+        $ip = '';
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } 
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } 
+        else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
     }
 
 }

@@ -220,13 +220,25 @@ class User extends MY_Controller {
         echo 1;
     }
     
-    function forgot_password(){
-        $token = securityServer($this->input->post('tokent'));
+    function forgotPassword(){
+        $this->load->library('My_ciphers_library');
+//        $decode = $this->my_ciphers_library->decryption();
+//        $decode_array = unserialize($decode);
+//        pre($this->input->post('tokent'));exit;
+        ;
+        $token = isTokent(securityServer($this->input->post('authenticity_token')));
         $email = securityServer($this->input->post('email'));
-        if(!isset($token)||$token==''||!isset($email)||$email==''){
-            $this->session->set_flashdata(array('success'=>FALSE,'message'=>'Lỗi xác nhận chứng thực.'));
-            redirect('/');
+        if($token===FALSE ||  !filter_var($email,FILTER_VALIDATE_EMAIL)){
+            echo json_encode(array('success'=>false,'message'=>'Lỗi xác nhận'));
+            exit;
         }
+        $dataSendEmail = array(
+            'email'=>$email,
+            
+        );
+        echo json_encode($token);
+//        echo json_encode($token);
+        exit;
         
     }
 

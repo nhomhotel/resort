@@ -11,6 +11,10 @@ class Home extends MY_Controller {
     }
 
     public function index() {
+        $dateTime = date('Y-m-d H:i:s');
+        pre($dateTime);
+        pre(date('Y-m-d H:i:s',  strtotime($dateTime)));
+        exit;
         $data['language'] = getLanguage();
         $this->load->model('Amenities_model');
         $this->load->model('area_model');
@@ -50,6 +54,12 @@ class Home extends MY_Controller {
     }
 
     public function login() {
+        $this->load->library('My_ciphers_library');
+        $token = array(
+            'dateTime'=>strtotime(date('Y-m-d')),
+            'IpAddress'=>getIpAddressClient()
+        );
+        $data['token']= $this->my_ciphers_library->encryption(serialize($token));
         if ($this->session->userdata('userLoginSite') != null)
             redirect(base_url());
         if (count($_POST) > 0) {
@@ -277,7 +287,7 @@ class Home extends MY_Controller {
     
     # --- DECRYPTION ---
     
-    $ciphertext_dec = base64_decode($ciphertext_base64);
+    $ciphertext_dec = base64_decode('cALI0AL2OuYEaa3ffYHtofAAkcPT0+jURKLSYu+B1jQ=');
     
     # retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
     $iv_dec = substr($ciphertext_dec, 0, DEC_IV_SIZE);
@@ -289,7 +299,7 @@ class Home extends MY_Controller {
     $plaintext_dec = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key,
                                     $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
     
-    echo  $plaintext_dec . "\n";
+    var_dump($plaintext_dec=='aaaa');
     }
     
     function test3(){

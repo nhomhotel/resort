@@ -74,10 +74,10 @@
                             </td>
                             <td class="textC"><?php if(isset($start))echo ($i+$start); else echo $i; ?></td>
                             <td class="textC">
-                                <?php echo $row->title; ?>
+                                <?php echo shortNews($row->title,100); ?>
                             </td>
                             <td class="textC">
-                                <?php echo $row->title_en; ?>
+                                <?php echo shortNews($row->title_en); ?>
                             </td>
                             <td class="textC">
                                 <?php echo getStatus($row, $row->topic_id)?>
