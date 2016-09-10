@@ -236,8 +236,6 @@ class User extends MY_Controller {
             'email'=>$email,
             
         );
-        echo json_encode($token);
-//        echo json_encode($token);
         exit;
         
     }

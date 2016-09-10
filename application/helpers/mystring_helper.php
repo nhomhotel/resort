@@ -278,8 +278,8 @@ if (!function_exists('isTokent')) {
         if(!is_array($dec))
             return false;
         if($type==='login'){
-//            if(empty($dec['dateTime'])||empty($dec['IpAddress'])||  getIpAddressClient()!==$dec['IpAddress']||$dec['dateTime']!==date('Y-m-d',  $dec['dateTime']))
-//                return false;
+            if(empty($dec['dateTime'])||empty($dec['IpAddress'])||  getIpAddressClient()!==$dec['IpAddress'])
+                return false;
         }
         return $dec;
     }

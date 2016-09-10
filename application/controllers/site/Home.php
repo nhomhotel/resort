@@ -11,10 +11,6 @@ class Home extends MY_Controller {
     }
 
     public function index() {
-        $dateTime = date('Y-m-d H:i:s');
-        pre($dateTime);
-        pre(date('Y-m-d H:i:s',  strtotime($dateTime)));
-        exit;
         $data['language'] = getLanguage();
         $this->load->model('Amenities_model');
         $this->load->model('area_model');
