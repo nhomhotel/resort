@@ -190,10 +190,20 @@ if (!function_exists('securityServer')) {
         $CI = & get_instance();
         if (is_array($str)) {
             foreach ($str as &$row) {
-                $row = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($row))));
+                $row = convert_accented_characters(xssClean(trim($row)));
             }
         } else
-            $str = convert_accented_characters(vn_str_filter($CI->security->xss_clean(trim($str))));
+            $str = convert_accented_characters(xssClean(trim($str)));
+        return ($str);
+    }
+
+}
+
+if (!function_exists('xssClean')) {
+
+    function xssClean($str) {
+        $CI = & get_instance();
+        $str = vn_str_filter($CI->security->xss_clean(trim($str)));
         return ($str);
     }
 
@@ -274,12 +284,19 @@ if (!function_exists('isTokent')) {
         $CI = & get_instance();
         if (empty($str))
             return false;;
-        $dec = unserialize($CI->my_ciphers_library->decryption($str));
+        $dec = ($CI->my_ciphers_library->decryption($str));
+        return $dec;
         if(!is_array($dec))
             return false;
         if($type==='login'){
             if(empty($dec['dateTime'])||empty($dec['IpAddress'])||  getIpAddressClient()!==$dec['IpAddress'])
                 return false;
+        }
+        elseif($type==='reset_password'){
+            if(empty($dec['email'])||!filter_var($dec['email'],FILTER_VALIDATE_EMAIL)
+                ||empty($dec['password'])||$dec['password']<1000||$dec['password']>9999){
+                return false;
+            }
         }
         return $dec;
     }

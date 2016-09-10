@@ -3,28 +3,31 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/help/search.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/helpers/lang_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Contact_model.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Amenities.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/footer.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Amenities_model.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/helpers/mystring_helper.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Help.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/autoload.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/topic/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/House_type.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/help/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Area.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/core/MY_Model.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Room.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/libraries/Book_library.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/help/topic.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Home.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/postGuide/index.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/help/article.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/news/news_category.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/routes.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/User.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/libraries/My_ciphers_library.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/contact/index.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/system/helpers/text_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/site/home/login.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Contact.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Emails.php</file>
             <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Post_room_model.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Helps.php</file>
-            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/help/postGuide/create.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/libraries/Send_email_library.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/constants.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/config.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/IntroSlider.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/helpers/mystring_helper.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/AdminHome.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/config/autoload.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/site/Home.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/controllers/admin/Order_room.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/views/admin/amenities/create.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/libraries/Upload_library.php</file>
+            <file>file:/C:/xampp/htdocs/git/16.7/resort1/application/models/Help_postGuide_model.php</file>
         </group>
     </open-files>
 </project-private>

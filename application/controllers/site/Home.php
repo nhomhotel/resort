@@ -11,6 +11,7 @@ class Home extends MY_Controller {
     }
 
     public function index() {
+        $this->load->library('my_ciphers_library');
         $data['language'] = getLanguage();
         $this->load->model('Amenities_model');
         $this->load->model('area_model');

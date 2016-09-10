@@ -221,23 +221,69 @@ class User extends MY_Controller {
     }
     
     function forgotPassword(){
-        $this->load->library('My_ciphers_library');
-//        $decode = $this->my_ciphers_library->decryption();
-//        $decode_array = unserialize($decode);
-//        pre($this->input->post('tokent'));exit;
-        ;
+       
+        $this->load->library('my_ciphers_library');
+        $this->load->library('email');
         $token = isTokent(securityServer($this->input->post('authenticity_token')));
         $email = securityServer($this->input->post('email'));
         if($token===FALSE ||  !filter_var($email,FILTER_VALIDATE_EMAIL)){
             echo json_encode(array('success'=>false,'message'=>'Lỗi xác nhận'));
             exit;
         }
-        $dataSendEmail = array(
+        $token_reset_password = array(
             'email'=>$email,
-            
+            'password'=>  ''.rand(1000, 9999)
         );
+        $token_encode = $this->my_ciphers_library->encryption(serialize($token_reset_password));
+        $emailRtPwdTemplate=$this->db->from('email')
+                ->where('email_type',7)
+                ->get()->row();
+        $message_send_email= array('message'=>'');
+        $this->email->initialize(get_config_email($this->config->item('address_email'), $this->config->item('pass_email')));
+        $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
+        $this->email->to($email);
+
+        $this->email->subject($emailRtPwdTemplate->email_title);
+        $email_content = $emailRtPwdTemplate->description;
+        $email_content = str_replace('__reset_password__user_account__', base_url().'user/resetPasswordFinish?token='.urlencode($token_encode), $email_content);
+        $this->email->message($email_content);
+        if($this->email->send()){
+            $message_send_email['message'].='Reset password đã được gửi vào email<br/>Kiểm tra mail để xác nhận';
+            $message_send_email['success'] = TRUE;
+            $message_send_email['redirect'] = base_url();
+            $dataContentReset = array(
+                'token'=>$token_encode,
+                'email'=>$email,
+                'confirm'=>0,
+            );
+            $this->db->insert('reset_password',$dataContentReset);
+        }else  {
+            $message_send_email['message'].='Có lỗi trong việc gửi mail xác nhận';
+            $message_send_email['success'] = FALSE;
+        }
+        $this->session->set_flashdata(array('success'=>$message_send_email['success'],'message'=>$message_send_email['message']));
+        echo json_encode(array('success'=>$message_send_email['success'],'message'=>$message_send_email['message'],'redirect'=>!empty($message_send_email['redirect'])?$message_send_email['redirect']:NULL));
+//        echo json_encode($token_reset_password);
         exit;
-        
+    }
+    
+    function resetPasswordFinish(){
+        $this->load->library('my_ciphers_library');
+        $token = ($_GET['token']);
+        pre(111);
+        pre($token);return;
+        $tokenEncode = isTokent($token,'reset_password');
+        pre($tokenEncode);
+        exit;
+        if($tokenEncode===FALSE){
+            $this->session->set_flashdata(array('success'=>'false','message'=>'Reset password fail'));
+            redirect('/');
+        }
+        else{
+            $this->db->where('email',$tokenEncode['email'])->where('token',$token)
+                    ->update('reset_password',array('token'=>'',confirm=>'1'));
+            
+        }
     }
 
 }

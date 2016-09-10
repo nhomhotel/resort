@@ -75,14 +75,12 @@
                             $.ajax('/user/forgotPassword', {
                               method: 'POST',
                               beforeSend: function() {
-                                  console.log('111');return;
                                 mc.freeze({
                                   warnBeforeUnload: true
                                 });
                               },
                               data: $(form).serialize(),
                               success: function(data) {
-                                  console.log(data);return;
                                 if (data.redirect) {
                                   window.location.href = data.redirect;
                                 } else {
@@ -92,6 +90,7 @@
                                   });
                                 }
                               },
+                              dataType:'json',
 //                              complete: function() {
 //                                mc.unfreeze();
 //                              }

@@ -174,8 +174,9 @@ class Order_room extends AdminHome {
             echo json_encode(array('success'=>false,'message'=>'Chỉ thanh toán được những đơn hàng của cùng 1 đối tác.<br/>Xin thử lại'));
             exit;
         }
+        $data_check_result=$data_check->result();
         $data['total_payment'] = $this->db->select('SUM(payment_type) as total_money')->from('order')->where_in('order_id',$data['ids'])->get()->row();
-        $data['doitac'] =$this->db->from('user')->select('user_name,profit_rate')->where('user_id',$data_check->result()[0]->user_id)->get()->row();
+        $data['doitac'] =$this->db->from('user')->select('user_name,profit_rate')->where('user_id',$data_check_result[0]->user_id)->get()->row();
         $data['token']=  md5($user->user_name.$user->user_name);
         $data['payment'] = $this->load->view('admin/order_room/paymentConfirmation',$data,true);
         echo json_encode(array('success'=>true,'message'=>$data));

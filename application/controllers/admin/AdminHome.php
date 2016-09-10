@@ -10,7 +10,6 @@ class AdminHome extends MY_Controller {
 
     function __construct($module_id = NULL) {
         parent::__construct();
-//        echo 1;die;
         $this->module_id = $module_id;
         $module_admin = $this->uri->segment(1);
         switch ($module_admin) {
