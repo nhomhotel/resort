@@ -221,10 +221,9 @@ class User extends MY_Controller {
     }
     
     function forgotPassword(){
-       
         $this->load->library('my_ciphers_library');
         $this->load->library('email');
-        $token = isTokent(securityServer($this->input->post('authenticity_token')));
+        $token = isTokent(securityServer($this->input->post('authenticity_token')),TOKEN_FORGET_PASSWORD);
         $email = securityServer($this->input->post('email'));
         if($token===FALSE ||  !filter_var($email,FILTER_VALIDATE_EMAIL)){
             echo json_encode(array('success'=>false,'message'=>'Lỗi xác nhận'));
@@ -232,11 +231,12 @@ class User extends MY_Controller {
         }
         $token_reset_password = array(
             'email'=>$email,
-            'password'=>  ''.rand(1000, 9999)
+            'password'=>  ''.rand(TOKEN_MIN_PASSWORD, TOKEN_MAX_PASSWORD),
+            'type'=>TOKEN_FORGET_PASSWORD,
         );
         $token_encode = $this->my_ciphers_library->encryption(serialize($token_reset_password));
         $emailRtPwdTemplate=$this->db->from('email')
-                ->where('email_type',7)
+                ->where('email_type',EMAIL_TYPE_FORGET_PASSWORD)
                 ->get()->row();
         $message_send_email= array('message'=>'');
         $this->email->initialize(get_config_email($this->config->item('address_email'), $this->config->item('pass_email')));
@@ -245,6 +245,8 @@ class User extends MY_Controller {
 
         $this->email->subject($emailRtPwdTemplate->email_title);
         $email_content = $emailRtPwdTemplate->description;
+        $email_content = str_replace('__email__', $email, $email_content);
+        $email_content = str_replace('__new_password__', $token_reset_password['password'], $email_content);
         $email_content = str_replace('__reset_password__user_account__', base_url().'user/resetPasswordFinish?token='.urlencode($token_encode), $email_content);
         $this->email->message($email_content);
         if($this->email->send()){
@@ -257,31 +259,43 @@ class User extends MY_Controller {
                 'confirm'=>0,
             );
             $this->db->insert('reset_password',$dataContentReset);
-        }else  {
+        }
+        else  {
             $message_send_email['message'].='Có lỗi trong việc gửi mail xác nhận';
             $message_send_email['success'] = FALSE;
         }
         $this->session->set_flashdata(array('success'=>$message_send_email['success'],'message'=>$message_send_email['message']));
         echo json_encode(array('success'=>$message_send_email['success'],'message'=>$message_send_email['message'],'redirect'=>!empty($message_send_email['redirect'])?$message_send_email['redirect']:NULL));
-//        echo json_encode($token_reset_password);
         exit;
     }
     
     function resetPasswordFinish(){
         $this->load->library('my_ciphers_library');
-        $token = ($_GET['token']);
-        pre(111);
-        pre($token);return;
-        $tokenEncode = isTokent($token,'reset_password');
-        pre($tokenEncode);
-        exit;
+        $token = ($this->input->get('token'));
+        $tokenEncode = isTokent($token,TOKEN_FORGET_PASSWORD);
         if($tokenEncode===FALSE){
-            $this->session->set_flashdata(array('success'=>'false','message'=>'Reset password fail'));
+            $this->session->set_flashdata(array('success'=>FALSE,'message'=>'Reset password fail'));
             redirect('/');
         }
         else{
-            $this->db->where('email',$tokenEncode['email'])->where('token',$token)
-                    ->update('reset_password',array('token'=>'',confirm=>'1'));
+            $this->db
+                    ->where('email',$tokenEncode['email'])->where('token',$token)
+                    ->update('reset_password',array('token'=>'','confirm'=>'1'));
+            $updateResetPassword=  $this->db->affected_rows();
+            $updateUserPass=false;
+            if($updateResetPassword){
+                $this->db
+                    ->where('email',$tokenEncode['email'])
+                    ->update('user',array('password'=>md5($tokenEncode['password'])));
+                $updateUserPass = $this->db->affected_rows();
+            }
+            if($updateUserPass){
+                $this->session->set_flashdata(array('success'=>TRUE,'message'=>'Reset password success'));
+                redirect('/');
+            }else{
+                $this->session->set_flashdata(array('success'=>FALSE,'message'=>'Reset password fail'));
+                redirect('/');
+            }
             
         }
     }

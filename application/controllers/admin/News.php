@@ -43,6 +43,12 @@ class News extends AdminHome {
         $input['order'] = array('news_id', 'ASC');
 
         $list = $this->News_model->get_list($input);
+        $list = $this->db->from('news')
+                ->select('news.*,news_category.title as news_category_title')
+                ->join('news_category','news_category.news_category_id=news.news_category_id')
+                ->limit($config['per_page'],$start)
+                ->order_by('news_id','DESC')
+                ->get()->result();
         $data['total'] = $total;
         $data['list'] = $list;
         $data['start'] = $start;
@@ -72,6 +78,8 @@ class News extends AdminHome {
                     'content' => $content_news,
                     'news_category_id'=>$news_category_id,
                     'status' => $status,
+                    'create'=>  date('Y:m:d H:i:s'),
+                    'update'=>date('Y:m:d H:i:s')
                 );
                 if ($this->News_model->create($data)) {
                     $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
@@ -98,36 +106,20 @@ class News extends AdminHome {
             }
             $data['info'] = $info;
             if ($this->input->post('submit')) {
-                $this->form_validation->set_rules('News_name', 'News_name', 'trim|required');
-                $this->form_validation->set_rules('News_name_en', 'News_name_en', 'trim|required');
+                $this->form_validation->set_rules('titleNews', 'Tiêu đề', 'trim|required');
+                $this->form_validation->set_rules('contentNews', 'Nội dung', 'trim|required');
                 if ($this->form_validation->run()) {
-                    $name = $this->input->post('News_name');
-                    $name_en = $this->input->post('News_name_en');
-                    $sort = $this->input->post('sort');
-                    $view_footer = $this->input->post('view_footer');
-                    if (!empty($_FILES['image_News']['name'])) {
-                        $upload_path = './uploads/News';
-                        $this->load->library('upload_library');
-                        $image_data = $this->upload_library->upload($upload_path, 'image_News');
-                        if (!isset($image_data['error_upload']))
-                            $image = substr($upload_path, 1) . '/' . $image_data['data_upload']['file_name'];
-                        else
-                            $image = substr($upload_path, 1) . '/' . 'no_image_available.jpg';
-                        $data = array(
-                            'name' => $name,
-                            'name_en' => $name_en,
-                            'sort' => $sort,
-                            'view_footer' => $view_footer,
-                            'image' => $image,
-                        );
-                    }else {
-                        $data = array(
-                            'name' => $name,
-                            'name_en' => $name_en,
-                            'sort' => $sort,
-                            'view_footer' => $view_footer,
-                        );
-                    }
+                    $titleNews = $this->input->post('titleNews');
+                    $contentNews = $this->input->post('contentNews');
+                    $statusNews = intval($this->input->post('statusNews'));
+                    $newsCategory = intval($this->input->post('newsCategory'));
+                    $data = array(
+                        'title' => $titleNews,
+                        'content' => $contentNews,
+                        'status' => $statusNews,
+                        'news_category_id' => $newsCategory,
+                        'update'=>date('Y:m:d H:i:s')
+                    );
                     if ($this->News_model->update($id, $data)) {
                         $this->session->set_flashdata('message', 'Thêm dữ liệu thành công!');
                     } else {
@@ -137,6 +129,8 @@ class News extends AdminHome {
                 }
             }
             $data['title'] = 'Cập nhật tin';
+            $data['news_category'] = $this->db->from('news_category')
+                    ->get()->result();
             $data['temp'] = 'admin/news/edit';
             $this->load->view('admin/layout', isset($data) ? ($data) : NULL);
         }

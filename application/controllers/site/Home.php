@@ -11,7 +11,6 @@ class Home extends MY_Controller {
     }
 
     public function index() {
-        $this->load->library('my_ciphers_library');
         $data['language'] = getLanguage();
         $this->load->model('Amenities_model');
         $this->load->model('area_model');
@@ -54,7 +53,8 @@ class Home extends MY_Controller {
         $this->load->library('My_ciphers_library');
         $token = array(
             'dateTime'=>strtotime(date('Y-m-d')),
-            'IpAddress'=>getIpAddressClient()
+            'IpAddress'=>getIpAddressClient(),
+            'type'=>TOKEN_LOGIN
         );
         $data['token']= $this->my_ciphers_library->encryption(serialize($token));
         if ($this->session->userdata('userLoginSite') != null)

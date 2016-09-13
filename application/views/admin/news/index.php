@@ -86,7 +86,7 @@
                                 ?>
                             </td>
                             <td class="textC">
-                                <?php echo 'Loại tin';?>
+                                <?php echo $row->news_category_title;?>
                             </td>
                             <td class="textC">
                                 <a href="<?php echo base_url('admin/News/edit/' . $row->news_id); ?>" class="lightbox" title="edit">

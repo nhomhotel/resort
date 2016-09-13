@@ -280,21 +280,24 @@ function getStringNumber($amount) {
 
 if (!function_exists('isTokent')) {
 
-    function isTokent($str,$type="login") {
+    function isTokent($str,$type=TOKEN_LOGIN) {
         $CI = & get_instance();
         if (empty($str))
             return false;;
-        $dec = ($CI->my_ciphers_library->decryption($str));
+        $dec = unserialize($CI->my_ciphers_library->decryption($str));
         return $dec;
         if(!is_array($dec))
             return false;
-        if($type==='login'){
-            if(empty($dec['dateTime'])||empty($dec['IpAddress'])||  getIpAddressClient()!==$dec['IpAddress'])
+        if($type===TOKEN_LOGIN){
+            if(empty($dec['dateTime'])||
+                empty($dec['IpAddress'])||  getIpAddressClient()!==$dec['IpAddress']||
+                empty($dec['type'])||$dec['type']==TOKEN_LOGIN)
                 return false;
         }
-        elseif($type==='reset_password'){
+        elseif($type===TOKEN_FORGET_PASSWORD){
             if(empty($dec['email'])||!filter_var($dec['email'],FILTER_VALIDATE_EMAIL)
-                ||empty($dec['password'])||$dec['password']<1000||$dec['password']>9999){
+                ||empty($dec['password'])||$dec['password']<TOKEN_MIN_PASSWORD||$dec['password']>TOKEN_MAX_PASSWORD
+                ||empty($dec['type'])||$dec['type']!==TOKEN_FORGET_PASSWORD){
                 return false;
             }
         }

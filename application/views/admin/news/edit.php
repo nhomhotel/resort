@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo base_url(); ?>public/ckeditor/ckeditor.js"></script>
 <div class="titleArea clearfix">
     <div class="wrapper clearfix col-md-12">
         <div class="pageTitle">
@@ -29,56 +30,62 @@
                 <div class="tab_container tab-content">
                     <div id='tab1' class="tab_content pd0 tab-pane active" role="tabpanel">
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Tên khu vực:<span class="req">*</span></label>
+                            <label class="formLeft" for="param_name">Tiêu đề tin:<span class="req">*</span></label>
                             <div class="formRight">
                                 <span class="oneTwo">
-                                    <input type="text" name="area_name" id="param_name" _autocheck="true" value="<?php echo!(set_value('name')) ? ($info->name) : (set_value('name')); ?>" />
+                                    <input type="text" name="titleNews" id="param_name" _autocheck="true" value="<?php echo!(set_value('title')) ? ($info->title) : (set_value('title')); ?>" />
                                 </span>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('area_name'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('titleNews'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
-
+                        
                         <div class="formRow">
-                            <label class="formLeft" for="param_name">Tên khu vực (EN):<span class="req">*</span></label>
+                            <label class="formLeft" for="param_name">Nội dung tin :<span class="req">*</span></label>
                             <div class="formRight">
-                                <span class="oneTwo">
-                                    <input type="text" name="area_name_en" id="param_name" _autocheck="true" value="<?php echo!(set_value('area_name_en')) ? ($info->name_en) : (set_value('area_name_en')); ?>" />
-                                </span>
+                                    <?php
+                                        echo form_textarea(array(
+                                            'name' => 'contentNews',
+                                            'id' => 'contentNews',
+                                            'class' => 'ckeditor form-control',
+                                            'rows' => "5",
+                                            'value' => $info->content)
+                                        );
+                                        ?>
                                 <span name="name_autocheck" class="autocheck"></span>
-                                <div name="name_error" class="clear error"><?php echo form_error('area_name_en'); ?></div>
+                                <div name="name_error" class="clear error"><?php echo form_error('contentNews'); ?></div>
                             </div>
                             <div class="clear"></div>
                         </div>
+                        <script type="text/javascript">
+                            CKEDITOR.replace("contentNews");
+                        </script>
+                        
                         <div class="formRow">
-                            <label class="formLeft" for="param_image">Ảnh đại diện:<span class="req">*</span></label>
+                            <label class="formLeft" for="statusNews">Trạng thái:<span class="req">*</span></label>
                             <div class="formRight">
-                                <input type="file" name="image_area"/>
-                                <span name="name_autocheck" class="autocheck"></span>
-                                <div name="image_area" class="clear error"><?php echo form_error('image_area'); ?></div>
-                                <image src="<?php echo!(set_value('image')) ? ($info->image) : (set_value('image')); ?>" style="width: 145px"/>
+                                <select name="statusNews" class="form-control">
+                                    <option value="1"> Hiện</option>
+                                    <option value="0" <?php echo !empty($info->status)?' selected':'';?>> Ẩn</option>
+                                </select>
                             </div>
                             <div class="clear"></div>
                         </div>
+                        
                         <div class="formRow">
-                            <label class="formLeft" for="position_area">Vị trí hiển thị trên web:</label>
+                            <label class="formLeft" for="newsCategory">Danh mục tin:</label>
                             <div class="formRight">
-                                <span class="oneTwo">
-                                    <input type="text" class="form-control" id="usr" name="sort" value="<?php echo!(set_value('sort')) ? ($info->sort) : (set_value('sort')); ?>">
-                                </span>
+                                <select name="newsCategory" class="form-control">
+                                    <?php if(!empty($news_category)):?>
+                                        <?php foreach ($news_category as $row):?>
+                                        <option value="<?php echo $row->news_category_id?>" <?php echo ($info->news_category_id==$row->news_category_id)?' selected':'';?>><?php echo $row->title;?></option>
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                </select>
                             </div>
                             <div class="clear"></div>
                         </div>
-                        <div class="formRow">
-                            <label class="formLeft" for="view_footer">Vị trí hiển thị dưới footer:</label>
-                            <div class="formRight">
-                                <span class="oneTwo">
-                                    <input type="text" class="form-control" id="usr" name="view_footer" value="<?php echo!(set_value('view_footer')) ? ($info->view_footer) : (set_value('view_footer')); ?>">
-                                </span>
-                            </div>
-                            <div class="clear"></div>
-                        </div>	
                         <div class="formRow hide"></div>
                     </div> 
                 </div><!-- End tab_container-->

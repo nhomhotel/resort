@@ -13,6 +13,7 @@ class Contact extends MY_Controller {
         $this->load->library('upload_library');
         $this->load->model('Contact_model');
         $this->load->library('email');
+        $check = true;
         if ($this->input->post('commit')) {
             $this->form_validation->set_rules('user_name', lang('contact_your_name'), 'trim|required|callback_checkUserName');
             $this->form_validation->set_rules('user_email', lang('contact_email'), 'trim|required|valid_email');
@@ -21,6 +22,7 @@ class Contact extends MY_Controller {
             if ($_FILES['file_attachment']['error'] == 0) {
                 $check_image = checkUploadImage('file_attachment');
                 $data['error_image'] = !empty($check_image['error']) ? $check_image['error'] : null;
+                $check = !empty($check_image['error']) ? FALSE : TRUE;
                 if (empty($check_image)) {
                     $upload_path = './uploads/contact';
                     $image_data = $this->upload_library->upload($upload_path, 'file_attachment');
@@ -33,13 +35,14 @@ class Contact extends MY_Controller {
             );
             if (!$this->recaptcha->getIsValid()) {
                 $data['captcha_error'] = 'incorrect captcha';
+                $check =  FALSE ;
             }
-            if ($this->form_validation->run()) {
+            if ($check &&$this->form_validation->run()) {
                 $result = array();
                 $user_name = onlyCharacter(securityServer($this->input->post('user_name')));
-                $email = onlyCharacter(securityServer($this->input->post('user_email')));
-                $subject = onlyCharacter(securityServer($this->input->post('user_subject')));
-                $message = onlyCharacter(securityServer($this->input->post('user_body')));
+                $email = (securityServer($this->input->post('user_email')));
+                $subject = (securityServer($this->input->post('user_subject')));
+                $message = (securityServer($this->input->post('user_body')));
 
                 $data_contact = array(
                     'user_name' => $user_name,
@@ -50,29 +53,47 @@ class Contact extends MY_Controller {
                 );
                 if (!empty($image)) {
                     $data_contact['file_attachment'] = $image;
+                    $file_attachment = '<img src="'.base_url().substr($data_contact['file_attachment'], 1).'"/>';
                 }
-                if($this->load->Contact_model->create($data_contact)){
-                    
+                if($this->Contact_model->create($data_contact)){
+                    $emailContatTemplate = $this->db->from('email')
+                            ->where('email_type',EMAIL_TYPE_CONTACT)
+                            ->get()->row();
+                    $emailMessage = array();
                     $this->email->initialize(get_config_email($this->config->item('address_email'), $this->config->item('pass_email')));
-                            $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
-                            $this->email->to($email);
-                            
-                            $this->email->subject($email_template->email_title);
-                            $email_content = $email_template->description;
-                            $email_content = str_replace('__user_name__', $data['user_name'], $email_content);
-                            $email_content = str_replace('__first_name__', $data['first_name'], $email_content);
-                            $email_content = str_replace('__last_name__', $data['last_name'], $email_content);
-                            $email_content = str_replace('__password__', $this->input->post('password'), $email_content);
-                            $email_content = str_replace('__email__', $data['email'], $email_content);
-                            $email_content = str_replace('__confirm__user_account__', $data['validate_code'], $email_content);
-                            $this->email->message($email_content);
-                            if($this->email->send()){
-                                $message_register.='Thông tin tài khoản đã được gửi<br/>Kiểm tra mail để xác minh tài khoản';
-                    
-                            }
-                }else{
-                    $result['error']  ='error inster data';
+                    $this->email->from($this->config->item('address_email'), $this->config->item('name_website')); 
+                    $this->email->to($this->config->item('address_email'));
+
+                    $this->email->subject($emailContatTemplate->email_title);
+                    $email_content = $emailContatTemplate->description;
+                    $email_content = str_replace('__user_name__', $data_contact['user_name'], $email_content);
+                    $email_content = str_replace('__subject__', $data_contact['subject'], $email_content);
+                    $email_content = str_replace('__message__', $data_contact['message'], $email_content);
+                    $email_content = str_replace('__file_attachment__', !empty($file_attachment)?$file_attachment:'Không có', $email_content);
+                    $email_content = str_replace('__email__contact__', $data_contact['email'], $email_content);
+                    $this->email->message($email_content);
+                    if($this->email->send()){
+                        $emailMessage['message']='Yêu cầu đã được gửi đến quản trị viên';
+                        $emailMessage['success'] = true;
+                    }
+                    else{
+                        $emailMessage['message']='Có lỗi trong việc gửi mail';
+                        $emailMessage['success'] = FALSE;
+                    }
                 }
+                else{
+                    $emailMessage['message']='Có lỗi trong việc liên hệ';
+                    $emailMessage['success'] = FALSE;
+                    redirect(base_url().'lien-he');
+                }
+                $this->session->set_flashdata($emailMessage);
+                redirect('/');
+            }
+            else{
+                $data['info']['user_name'] = onlyCharacter(securityServer($this->input->post('user_name')));
+                $data['info']['user_email'] = (securityServer($this->input->post('user_email')));
+                $data['info']['user_subject'] = (securityServer($this->input->post('user_subject')));
+                $data['info']['user_body'] = (securityServer($this->input->post('user_body')));
             }
         }
         $data['temp'] = 'site/contact/index';

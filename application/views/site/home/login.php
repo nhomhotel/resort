@@ -31,8 +31,6 @@
         <div id="forgot-password-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="forgot-password-modal-title">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    
-                    
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                         <h4 id="forgot-password-modal-title" class="modal-title">Forgot password?</h4>
@@ -75,15 +73,16 @@
                             $.ajax('/user/forgotPassword', {
                               method: 'POST',
                               beforeSend: function() {
-                                mc.freeze({
-                                  warnBeforeUnload: true
-                                });
+//                                m.modal('hide');
+                                m.find('button[type="submit"]').attr('disabled','disabled');
                               },
                               data: $(form).serialize(),
                               success: function(data) {
+                                  if(data.success)m.modal('hide');
                                 if (data.redirect) {
                                   window.location.href = data.redirect;
                                 } else {
+                                    if(!data.success)
                                   mc.find('.dialog .modal-body').html(data.message);
                                   m.addClass('show-dialog').one('hidden.bs.modal', function() {
                                     $(this).removeClass('show-dialog');
@@ -91,9 +90,6 @@
                                 }
                               },
                               dataType:'json',
-//                              complete: function() {
-//                                mc.unfreeze();
-//                              }
                             });
                           }
                         });

@@ -85,3 +85,9 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 define('DEC_IV_SIZE', mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 define('DEC_IV', mcrypt_create_iv(DEC_IV_SIZE, MCRYPT_RAND));
+define('TOKEN_FORGET_PASSWORD', 1);
+define('TOKEN_LOGIN', 2);
+define('TOKEN_MIN_PASSWORD', 100009);
+define('TOKEN_MAX_PASSWORD', 999999);
+define('EMAIL_TYPE_FORGET_PASSWORD', 7);
+define('EMAIL_TYPE_CONTACT', 8);

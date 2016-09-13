@@ -16,7 +16,19 @@ ul[class^="ui-autocomplete"] {
                 <div class="alert alert-success info">
                     <strong>Success!</strong><br><?php echo $this->session->flashdata('message_confirm'); ?> 
                 </div>
-            <?php endif;
+            <?php endif;?>
+            <?php if(!empty($this->session->flashdata('message'))):?>
+            <?php if ($this->session->flashdata('success')): ?>
+                <div class="alert alert-success info">
+                    <strong>Success!</strong><br><?php echo $this->session->flashdata('message'); ?> 
+                </div>
+            <?php else:?>
+            <div class="alert alert-danger info">
+                    <strong>Errol!</strong><br><?php echo $this->session->flashdata('message'); ?> 
+                </div>
+            <?php endif;?>
+            <?php endif;?>
+            <?php
             if(isset($home_slider_image)) echo $home_slider_image;
             ?>
         </div>
