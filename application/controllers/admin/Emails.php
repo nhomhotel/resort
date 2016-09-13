@@ -84,11 +84,11 @@ class Emails extends AdminHome {
     
     function contact(){
         $this->load->library('pagination');
-        $total = $this->Email_model->get_total();
+        $total = $this->db->from('contact')->get()->num_rows();
 
         $config = array();
         $config["total_rows"] = $total;
-        $config['base_url'] = admin_url('emails/index');
+        $config['base_url'] = admin_url('emails/contact');
         $config['per_page'] = $this->config->item('item_per_page_system')?$this->config->item('item_per_page_system'):10;;
         $config['uri_segment'] = 4;
         $config['next_link'] = 'Trang kế tiếp';
@@ -112,14 +112,19 @@ class Emails extends AdminHome {
 
         $message = $this->session->flashdata();
         $data['message'] = $message;
-        $list = $this->db->from('email_history')
-                ->where('type','contact')
+        $data['list'] = $this->db->from('contact')
+                ->order_by('create','desc')
                 ->get()->result();
-        if(!empty($info))$data['list'] = $list;
         $data['total'] = $total;
-        $data['title'] = 'Danh sách email';
-        $data['temp'] = 'admin/emails/index';
+        $data['title'] = 'Danh sách email liên hệ ';
+        $data['temp'] = 'admin/contact/index';
+//        pre($list);
+//        exit;
         $this->load->view('admin/layout', (isset($data)) ? $data : NULL);
+    }
+    
+    function answerContact(){
+        echo '123';
     }
 
 }

@@ -22,5 +22,16 @@ class Email_model extends MY_Model {
         }
         return $this->db->get($this->table);
     }
+    
+    function setHistory($arrHistory = array()){
+        if(!empty($arrHistory)){
+            if($this->db->insert('email_history',$arrHistory)){
+                return $this->db->insert_id();
+            }
+            return false;;
+            
+        }
+        return false;
+    }
 
 }
