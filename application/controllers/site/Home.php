@@ -179,8 +179,26 @@ class Home extends MY_Controller {
                             $email_content = str_replace('__confirm__user_account__', $data['validate_code'], $email_content);
                             $this->email->message($email_content);
                             if($this->email->send()){
+                                $this->db->insert('email_history',array(
+                            'user_id'=>$data['user_name'],
+                            'title'=>$emailContatTemplate->email_title,
+                            'content'=>$email_content,
+                            'time'=>date('Y-m-d'),
+                            'status'=>1,
+                            'type'=>'Email Register'
+                        ));
                                 $message_register.='Thông tin tài khoản đã được gửi<br/>Kiểm tra mail để xác minh tài khoản';
-                            }else  $message_register.='Có lỗi trong việc gửi mail xác minh tài khoản<br/>Liên hệ quản trị để biết thông tin';
+                            }else  {
+                                $this->db->insert('email_history',array(
+                            'user_id'=>$data['user_name'],
+                            'title'=>$emailContatTemplate->email_title,
+                            'content'=>$email_content,
+                            'time'=>date('Y-m-d'),
+                            'status'=>0,
+                            'type'=>'Email contact'
+                        ));
+                                $message_register.='Có lỗi trong việc gửi mail xác minh tài khoản<br/>Liên hệ quản trị để biết thông tin';
+                            }
                         }
                         $this->session->set_flashdata('message_register', $message_register);
                         

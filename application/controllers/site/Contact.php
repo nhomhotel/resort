@@ -73,10 +73,27 @@ class Contact extends MY_Controller {
                     $email_content = str_replace('__email__contact__', $data_contact['email'], $email_content);
                     $this->email->message($email_content);
                     if($this->email->send()){
+                        //add data into history mail
+                        $this->db->insert('email_history',array(
+                            'user_id'=>$data_contact['user_name'],
+                            'title'=>$emailContatTemplate->email_title,
+                            'content'=>$email_content,
+                            'time'=>date('Y-m-d'),
+                            'status'=>1,
+                            'type'=>'Email contact'
+                        ));
                         $emailMessage['message']='Yêu cầu đã được gửi đến quản trị viên';
                         $emailMessage['success'] = true;
                     }
                     else{
+                        $this->db->insert('email_history',array(
+                            'user_id'=>$data_contact['user_name'],
+                            'title'=>$emailContatTemplate->email_title,
+                            'content'=>$email_content,
+                            'time'=>date('Y-m-d'),
+                            'status'=>0,
+                            'type'=>'Email contact'
+                        ));
                         $emailMessage['message']='Có lỗi trong việc gửi mail';
                         $emailMessage['success'] = FALSE;
                     }
